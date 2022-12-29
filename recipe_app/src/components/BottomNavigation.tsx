@@ -15,15 +15,18 @@ const BottomNavigation : FC = () => {
             initialRouteName="Home"
             screenOptions={{
                 headerShown: false,
-                tabBarShowLabel: false,
+                tabBarShowLabel: true,
                 tabBarStyle: {
-                    backgroundColor: '#F5F9FA',
-                    height: 87,
+                    backgroundColor: '#fff',
+                    height: 56,
                     justifyContent: 'center',
                     alignItems: 'center'
                 },
                 tabBarActiveTintColor : '#E19271',
                 tabBarInactiveTintColor : '#BDBDBD',
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                }
             }}
         >
             <Tab.Screen name="Home" component={Homepage} options={{

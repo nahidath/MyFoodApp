@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 
 
 const Notifications = () => {
@@ -15,7 +15,13 @@ const Notifications = () => {
 
     return (
         <View style={styles.container}>
-        <Text>Notifications</Text>
+        <ScrollView>
+            <View style={styles.notificationContainer}>
+                <View style={styles.notification}>
+                    <Text style={styles.notificationText}>Notification 1</Text>
+                </View>
+            </View>
+        </ScrollView>
         {/*{notifications.map((notification) => (*/}
         {/*    <Text key={notification.id}>{notification.message}</Text>*/}
         {/*))}*/}
@@ -29,6 +35,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#c7b922',
         flexDirection: 'column',
+    },
+    notificationContainer: {
+        flexDirection: 'column',
+    },
+    notification: {
+        backgroundColor: '#fff',
+        margin: 10,
+    },
+    notificationText: {
+        fontSize: 20,
+        padding: 10,
+
     },
 });
 
