@@ -9,11 +9,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.2",
+    "@react-navigation/native": "^6.1.1",
     "@types/jest": "^29.2.4",
     "@types/react-test-renderer": "^18.0.0",
     "axios": "^1.2.1",
     "expo": "~47.0.9",
     "expo-status-bar": "~1.4.2",
+    "feather-icons": "^4.29.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
