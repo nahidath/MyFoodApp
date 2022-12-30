@@ -14,7 +14,13 @@ const BottomNavigation : FC = () => {
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
-                headerShown: false,
+                headerStyle : {
+                    backgroundColor : '#8cae00',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
                 tabBarShowLabel: true,
                 tabBarStyle: {
                     backgroundColor: '#fff',
@@ -30,6 +36,7 @@ const BottomNavigation : FC = () => {
             }}
         >
             <Tab.Screen name="Home" component={Homepage} options={{
+                headerShown: false,
                 tabBarIcon: ({color}) => (
                     <Feather name={"home"} size={24} color={color} />
                 ),}

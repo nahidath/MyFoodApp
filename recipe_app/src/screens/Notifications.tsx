@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {FC} from "react";
+import styles from "../stylesheets/Notifications_stylesheet";
 
 
-const Notifications = () => {
+const Notifications : FC = () => {
     // const [notifications, setNotifications] = useState<Notification[]>([]);
     //
     // useEffect(() => {
@@ -29,25 +31,5 @@ const Notifications = () => {
     );
 };
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#c7b922',
-        flexDirection: 'column',
-    },
-    notificationContainer: {
-        flexDirection: 'column',
-    },
-    notification: {
-        backgroundColor: '#fff',
-        margin: 10,
-    },
-    notificationText: {
-        fontSize: 20,
-        padding: 10,
-
-    },
-});
 
 export default Notifications;
