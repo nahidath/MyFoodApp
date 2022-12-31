@@ -1,5 +1,5 @@
 # MyFoodApp
-My own version of food app
+My own version of food app. This project was made with React Native and Expo.
 
 ## Description
 This is a food app that allows you to search for recipes and add them to your favorites. You can also search for recipes by ingredients.
