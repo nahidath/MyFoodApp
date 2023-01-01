@@ -19,13 +19,22 @@ export default StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#fff',
-        marginTop: 70,
+        marginTop: 40,
         padding: 20,
     },
-    headerMenuLeft: {
-        position: 'relative',
-        top: 50,
-        left: 20,
+    subHeaderText: {
+        fontSize: 20,
+        color: '#fff',
+        paddingLeft: 20,
+        marginTop: -15,
+    },
+    headerNotification: {
+        // position: 'relative',
+        top: 100,
+        right: 20,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
     },
     blocTitle: {
         flexDirection: 'row',

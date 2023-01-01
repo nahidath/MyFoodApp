@@ -26,8 +26,8 @@ export default function App() {
             {/*    }}*/}
             {/*>*/}
             {/*    <Stack.Screen name="Notifications" component={Notifications}/>*/}
-            {/*    <Stack.Screen name="Favorites" component={Favorites} />*/}
-            {/*    <Stack.Screen name="Profile" component={Profile} />*/}
+            {/*    /!*<Stack.Screen name="Favorites" component={Favorites} />*!/*/}
+            {/*    /!*<Stack.Screen name="Profile" component={Profile} />*!/*/}
             {/*</Stack.Navigator>*/}
         <BottomNavigation/>
       </NavigationContainer>

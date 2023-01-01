@@ -3,19 +3,33 @@
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
+import Notifications from "./Notifications";
+import {useNavigation} from "@react-navigation/native";
+import {HomeStackList} from "../types";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
-const Homepage: FC = () => {
+
+
+// const navigation = useNavigation();
+// // const notif = () => {
+// //     navigation.navigate(Notifications);
+// // }
+
+type HomeScreenProps = NativeStackScreenProps<HomeStackList, 'HomePage'>;
+const Homepage: FC<HomeScreenProps> = (props) => {
   return (
 
     // <ScrollView>
         <View style={styles.container}>
 
             <View style={styles.headerBloc}>
-                <Pressable style={styles.headerMenuLeft}>
-                    <Feather name={'menu'} size={24} color={'#fff'} />
+                <Pressable style={styles.headerNotification} onPress={() => props.navigation.navigate('Notifications')}>
+                    <FontAwesome name={'bell'} size={24} color={'#fff'} />
                 </Pressable>
-                <Text style={styles.headerText}>Welcome to MyFoodApp</Text>
+                <Text style={styles.headerText}>MyFoodApp</Text>
+                <Text style={styles.subHeaderText}>Bonjour, John</Text>
             </View>
             <ScrollView>
                 <View>
