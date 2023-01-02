@@ -10,15 +10,21 @@ export default StyleSheet.create({
     searchContainer: {
         flexDirection: 'row',
     },
-    searchIcon: {
+    searchButton: {
         position: 'relative',
-        top: 10,
-        left: 10,
-        padding: 10,
+        top: 15,
+        left: 5,
+        // padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#E19271',
+        height: 45,
+        width: 45,
+        borderRadius: 50,
     },
     searchInput: {
         backgroundColor: '#fff',
-        height: 40,
+        height: 50,
         padding: 10,
         width: '80%',
         margin: 10,
@@ -26,8 +32,6 @@ export default StyleSheet.create({
     },
     resultsText: {
         paddingLeft: 10,
-        borderBottomColor: 'grey',
-        borderBottomWidth: hairlineWidth,
         fontSize: 20,
     },
     itemBloc: {
@@ -36,6 +40,11 @@ export default StyleSheet.create({
         marginTop: 10,
         height: 84,
         backgroundColor: '#fff',
+        padding: 10,
+        borderRadius: 15,
+    },
+    resultsContainer: {
+        flex: 1,
         padding: 10,
     }
 });

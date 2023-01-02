@@ -11,20 +11,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {Icon} from "react-native-elements";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types";
+import HomeStackScreen from "./HomeStackScreen";
 
-const HomeStack = createNativeStackNavigator<HomeStackList>();
-const HomeStackScreen = () => {
-    return (
-        <HomeStack.Navigator >
-            <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
-            <HomeStack.Screen name="Notifications" component={Notifications} options={{
-                "headerStyle": {
-                    "backgroundColor": '#8cae00',
-                },
-            }} />
-        </HomeStack.Navigator>
-    )
-}
+
 
 
 const BottomNavigation : FC = () => {

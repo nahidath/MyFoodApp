@@ -28,9 +28,11 @@ export default StyleSheet.create({
         paddingLeft: 20,
         marginTop: -15,
     },
+    headerBlocText:{
+      top: 20,
+    },
     headerNotification: {
-        // position: 'relative',
-        top: 100,
+        top: -30,
         right: 20,
         flexDirection: 'row',
         alignItems: 'flex-end',

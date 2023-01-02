@@ -1,8 +1,10 @@
 import {FC} from "react";
-import {View, Text, TextInput, FlatList, ScrollView} from "react-native";
+import {View, Text, TextInput, FlatList, ScrollView, Pressable, TouchableOpacity} from "react-native";
 import styles from '../stylesheets/Search_stylesheet';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import Feather from "react-native-vector-icons/Feather";
+import Separator from "../components/Separator";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 const Search : FC = () => {
@@ -15,24 +17,24 @@ const Search : FC = () => {
             <View style={styles.container}>
                 <View style={styles.searchContainer}>
                     <TextInput style={styles.searchInput} placeholder={'Rechercher une recette'} />
-                    <Feather style={styles.searchIcon} name={'search'} size={24} color={'#111111'} />
+                    <Pressable style={styles.searchButton}>
+                        <FontAwesome name={"search"} size={24} color={"#ffffff"} />
+                    </Pressable>
                 </View>
-                <View>
-                        <Text style={styles.resultsText}>Resultat de la recherche</Text>
-                        {/*<View style={styles.divider}></View>*/}
-                        <View style={{padding:10}}>
-                            <FlatList data={[
-                                {key: 'Devin'},
-                                {key: 'Dan'},
-                                {key: 'Dominic'},
-                                {key: 'Jackson'},
-                                {key: 'James'},
-                                {key: 'Joel'},
-                                {key: 'John'},
-                                {key: 'Jillian'},
-                                {key: 'Jimmy'},
-                                {key: 'Julie'},]} renderItem={ ({item}) => <View style={styles.itemBloc}><Text>{item.key}</Text></View>  } />
-                        </View>
+                <Text style={styles.resultsText}>Resultat de la recherche</Text>
+                <Separator />
+                <View style={styles.resultsContainer}>
+                    <FlatList data={[
+                        {key: 'Devin'},
+                        {key: 'Dan'},
+                        {key: 'Dominic'},
+                        {key: 'Jackson'},
+                        {key: 'James'},
+                        {key: 'Joel'},
+                        {key: 'John'},
+                        {key: 'Jillian'},
+                        {key: 'Jimmy'},
+                        {key: 'Julie'},]} renderItem={ ({item}) => <TouchableOpacity style={styles.itemBloc}><Text>{item.key}</Text></TouchableOpacity>  } />
                 </View>
             </View>
         // </KeyboardAwareScrollView>
