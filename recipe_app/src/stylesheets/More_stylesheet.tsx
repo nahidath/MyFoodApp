@@ -1,17 +1,18 @@
 import {StyleSheet} from "react-native";
-
+// import fontsLoaded from "../components/Fonts";
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#c7b922',
+        backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
     textTitle: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#1C1E21',
         margin: 10,
+        marginTop: 15,
     },
     btnStyle: {
         padding: 10,
@@ -25,20 +26,22 @@ export default StyleSheet.create({
     btnStyleText: {
         fontSize: 15,
         // fontWeight: 'bold',
-        color: '#1C1E21',
+        color: '#666666',
         paddingLeft: 10,
         alignContent: 'center',
         justifyContent: 'center',
+        paddingTop: 2,
+        // fontFamily: 'sans-serif-medium',
     },
     boxShadowIOS:{
-        shadowOffset: {width:-2, height: 4},
+        shadowOffset: {width:0, height: 1},
         shadowColor:'#171717',
         shadowOpacity: 0.2,
-        shadowRadius: 3,
+        shadowRadius: 1.41,
     },
     boxShadowAndroid:{
-        shadowColor:'#52006A',
-        elevation: 20,
+        shadowColor:'#000',
+        elevation: 2,
     }
 
 });

@@ -36,8 +36,8 @@ const BottomNavigation : FC = () => {
                     justifyContent: 'center',
                     alignItems: 'center'
                 },
-                tabBarActiveTintColor : '#E19271',
-                tabBarInactiveTintColor : '#BDBDBD',
+                tabBarActiveTintColor : '#c7b922',
+                tabBarInactiveTintColor : '#666',
                 tabBarLabelStyle: {
                     fontSize: 12,
                 }
