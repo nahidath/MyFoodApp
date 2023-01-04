@@ -24,7 +24,7 @@ export default StyleSheet.create({
     editProfilePic: {
         position: 'absolute',
         top: 100,
-        right: 132,
+        right: 120,
         backgroundColor: '#E19271',
         borderRadius: 50,
         height: 45,
@@ -45,14 +45,14 @@ export default StyleSheet.create({
     btnStyle: {
         padding: 10,
         backgroundColor: '#fff',
-        borderRadius: 20,
-        height: 70,
-        margin: 10,
+        borderRadius: 10,
+        height: 50,
+        margin: 5,
         alignContent: 'center',
         justifyContent: 'center',
     },
     btnStyleText: {
-        fontSize: 20,
+        fontSize: 15,
         // fontWeight: 'bold',
         color: '#1C1E21',
     },

@@ -16,23 +16,25 @@ const Profile : FC = () => {
                 <Text style={styles.profileName}>John Doe</Text>
             </View>
             <Separator />
-            <View style={styles.profileInfoContainer}>
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={styles.btnStyleText}>Informations personnelles</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={styles.btnStyleText}>Changer de mot de passe</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={styles.btnStyleText}>Mes recettes favorites</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={styles.btnStyleText}>Supprimer mon compte</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={styles.btnStyleText}>Se déconnecter</Text>
-                </TouchableOpacity>
-            </View>
+            <ScrollView>
+                <View style={styles.profileInfoContainer}>
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.btnStyleText}>Informations personnelles</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.btnStyleText}>Changer de mot de passe</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.btnStyleText}>Mes recettes favorites</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.btnStyleText}>Supprimer mon compte</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnStyle}>
+                        <Text style={styles.btnStyleText}>Se déconnecter</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </View>
     );
 }
