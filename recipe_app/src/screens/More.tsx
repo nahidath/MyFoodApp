@@ -1,9 +1,13 @@
 import React, {FC} from "react";
-import {View, Text, TouchableOpacity, ScrollView} from "react-native";
+import {View, Text, TouchableOpacity, ScrollView, Platform} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import styles from "../stylesheets/More_stylesheet";
+import DropShadow from "react-native-drop-shadow";
+
+
+
 
 
 const More : FC = () => {
@@ -12,7 +16,7 @@ const More : FC = () => {
             <ScrollView>
                 <View>
                     <Text style={styles.textTitle}>Paramètres</Text>
-                    <TouchableOpacity style={styles.btnStyle}>
+                    <TouchableOpacity style={[styles.btnStyle, Platform.OS==='ios'] ? styles.boxShadowIOS : styles.boxShadowAndroid}>
                         <Feather name={"bell"} size={24} color={"#1C1E21"} />
                         <Text style={styles.btnStyleText}>Notifications</Text>
                     </TouchableOpacity>

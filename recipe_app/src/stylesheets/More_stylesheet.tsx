@@ -20,6 +20,7 @@ export default StyleSheet.create({
         height: 50,
         margin: 5,
         flexDirection: 'row',
+
     },
     btnStyleText: {
         fontSize: 15,
@@ -29,5 +30,15 @@ export default StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
     },
+    boxShadowIOS:{
+        shadowOffset: {width:-2, height: 4},
+        shadowColor:'#171717',
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
+    boxShadowAndroid:{
+        shadowColor:'#52006A',
+        elevation: 20,
+    }
 
 });
