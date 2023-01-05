@@ -23,7 +23,7 @@ const BottomNavigation : FC = () => {
             initialRouteName="Home"
             screenOptions={{
                 headerStyle : {
-                    backgroundColor : '#8cae00',
+                    backgroundColor : '#064851',
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {
@@ -31,12 +31,12 @@ const BottomNavigation : FC = () => {
                 },
                 tabBarShowLabel: true,
                 tabBarStyle: {
-                    backgroundColor: '#fff',
+                    backgroundColor: '#f5f2eb',
                     height: 56,
                     justifyContent: 'center',
                     alignItems: 'center'
                 },
-                tabBarActiveTintColor : '#c7b922',
+                tabBarActiveTintColor : '#fdc727',
                 tabBarInactiveTintColor : '#666',
                 tabBarLabelStyle: {
                     fontSize: 12,

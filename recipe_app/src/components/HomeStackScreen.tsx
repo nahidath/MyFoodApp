@@ -10,7 +10,7 @@ export default function HomeStackScreen () {
             <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
             <HomeStack.Screen name="Notifications" component={Notifications} options={{
                 headerStyle: {
-                    backgroundColor: '#8cae00',
+                    backgroundColor: '#064851',
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {

@@ -6,6 +6,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import styles from "../stylesheets/More_stylesheet";
 import DropShadow from "react-native-drop-shadow";
 import { useFonts } from 'expo-font';
+import FocusAwareStatusBar from "../components/StatusBarStyle";
 
 
 
@@ -20,6 +21,7 @@ const More : FC = () => {
 
     return (
         <View style={styles.container}>
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#064851" />
             <ScrollView>
                 <View>
                     <Text style={styles.textTitle}>Paramètres</Text>

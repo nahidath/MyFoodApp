@@ -3,10 +3,6 @@ import hairlineWidth = StyleSheet.hairlineWidth;
 
 
 export default StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#c7b922',
-    },
     searchContainer: {
         flexDirection: 'row',
     },
@@ -17,7 +13,7 @@ export default StyleSheet.create({
         // padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#E19271',
+        backgroundColor: '#064851',
         height: 45,
         width: 45,
         borderRadius: 50,

@@ -1,13 +1,15 @@
-import {FC} from "react";
+import React, {FC} from "react";
 import {View, Text, Pressable, TouchableOpacity, ScrollView} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import styles from "../stylesheets/Profile_stylesheet";
-
+import FocusAwareStatusBar from "../components/StatusBarStyle";
+import general from "../stylesheets/General_stylesheet";
 
 const Profile : FC = () => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, general.container]}>
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#064851" />
             <View style={styles.profilePicContainer}>
                 <View style={styles.profilePic}></View>
                 <Pressable style={styles.editProfilePic}>
