@@ -31,16 +31,23 @@ const BottomNavigation : FC = () => {
                 },
                 tabBarShowLabel: true,
                 tabBarStyle: {
-                    backgroundColor: '#f5f2eb',
+                    backgroundColor: '#fefefe',
                     height: 56,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    // borderTopRightRadius: 20,
                 },
                 tabBarActiveTintColor : '#fdc727',
                 tabBarInactiveTintColor : '#666',
                 tabBarLabelStyle: {
                     fontSize: 12,
-                }
+                },
+                // tabBarActiveBackgroundColor : '#064851',
+                // tabBarInactiveBackgroundColor : '#fefefe',
+                // tabBarItemStyle: {
+                //     borderRadius: 100,
+                // }
+
             }}
         >
             <Tab.Screen name="Home" component={HomeStackScreen} options={{

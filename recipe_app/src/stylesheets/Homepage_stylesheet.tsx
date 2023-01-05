@@ -4,7 +4,7 @@ import {StyleSheet} from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#064851',
+        backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
     headerBloc: {
@@ -49,7 +49,7 @@ export default StyleSheet.create({
     recipe1Title: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#f5f2eb',
+        color: '#064851',
     },
     recipe1Button: {
         padding: 6,
@@ -62,7 +62,7 @@ export default StyleSheet.create({
         width: 170,
         height: 260,
         borderRadius: 20,
-        backgroundColor: '#f5f2eb',
+        backgroundColor: '#064851',
         margin: 20,
 
     }

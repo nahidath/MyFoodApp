@@ -30,10 +30,10 @@ const Homepage: FC = () => {
 
     // <ScrollView>
         <View style={styles.container}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fdc727" />
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#064851" />
             <View style={styles.headerBloc}>
                 {/*<Pressable style={styles.headerNotification} >*/}
-                {/*    <FontAwesome name={'bell'} size={24} color={'#f5f2eb'} onPress={onTap}/>*/}
+                {/*    <FontAwesome name={'bell'} size={24} color={'#064851'} onPress={onTap}/>*/}
                 {/*</Pressable>*/}
                 <View style={styles.headerBlocText}>
                     <Text style={styles.headerText}>MyFoodApp</Text>
@@ -48,7 +48,7 @@ const Homepage: FC = () => {
                     <View style={styles.blocTitle}>
                         <Text style={styles.recipe1Title}>Recettes à la une</Text>
                         <Pressable style={styles.recipe1Button}>
-                            <Feather name={'arrow-right'} size={24} color={'#f5f2eb'} />
+                            <Feather name={'arrow-right'} size={24} color={'#064851'} />
                         </Pressable>
                     </View>
                     <View style={styles.blocDisplay}>
@@ -65,7 +65,7 @@ const Homepage: FC = () => {
                     <View style={styles.blocTitle}>
                         <Text style={styles.recipe1Title}>L'ingrédient du jour : La tomate</Text>
                         <Pressable style={styles.recipe1Button}>
-                            <Feather name={'arrow-right'} size={24} color={'#f5f2eb'} />
+                            <Feather name={'arrow-right'} size={24} color={'#064851'} />
                         </Pressable>
                     </View>
                     <View style={styles.blocDisplay}>
