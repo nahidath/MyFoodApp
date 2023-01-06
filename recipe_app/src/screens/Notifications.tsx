@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, Text, View} from "react-native";
 import {FC} from "react";
 import styles from "../stylesheets/Notifications_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -18,10 +18,10 @@ const Notifications : FC = () => {
 
     return (
         <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#064851" />
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
             <ScrollView>
             <View style={styles.notificationContainer}>
-                <View style={styles.notification}>
+                <View style={[styles.notification, general.shadow]}>
                     <Text style={styles.notificationText}>Notification 1</Text>
                 </View>
             </View>

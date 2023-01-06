@@ -12,6 +12,9 @@ import {Icon} from "react-native-elements";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types";
 import HomeStackScreen from "./HomeStackScreen";
+import {StyleSheet} from "react-native";
+import general from "../stylesheets/General_stylesheet";
+
 
 
 
@@ -23,21 +26,29 @@ const BottomNavigation : FC = () => {
             initialRouteName="Home"
             screenOptions={{
                 headerStyle : {
-                    backgroundColor : '#064851',
+                    backgroundColor : '#FAF9F6',
+                    ...general.shadow
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     fontWeight: 'bold',
+                    color: '#041721',
                 },
-                tabBarShowLabel: true,
+                tabBarShowLabel: false,
                 tabBarStyle: {
-                    backgroundColor: '#fefefe',
-                    height: 56,
+                    backgroundColor: '#9fc131',
+                    height: 80,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    // borderTopRightRadius: 20,
+                    position: 'absolute',
+                    bottom: 25,
+                    left: 20,
+                    right: 20,
+                    // elevation: 0,
+                    borderRadius: 50,
+                    ...styles.shadow,
                 },
-                tabBarActiveTintColor : '#fdc727',
+                tabBarActiveTintColor : '#fff',
                 tabBarInactiveTintColor : '#666',
                 tabBarLabelStyle: {
                     fontSize: 12,
@@ -58,28 +69,46 @@ const BottomNavigation : FC = () => {
             } />
             <Tab.Screen name="Favorites" component={Favorites} options={{
                 tabBarIcon: ({color}) => (
-                    <FontAwesome name={"heart"} size={24} color={color} />
+                    <Feather name={"heart"} size={24} color={color} />
                 ),}
             } />
-            <Tab.Screen name="Search" component={Search} options={{
-                tabBarIcon: ({color}) => (
-                    <FontAwesome name={"search"} size={24} color={color} />
-                ),}
-            } />
+            {/*<Tab.Screen name="Search" component={Search} options={{*/}
+            {/*    tabBarIcon: ({color}) => (*/}
+            {/*        <FontAwesome name={"search"} size={24} color={color} />*/}
+            {/*    ),}*/}
+            {/*} />*/}
 
-            <Tab.Screen name="Profile" component={Profile} options={{
+            {/*<Tab.Screen name="Profile" component={Profile} options={{*/}
+            {/*    tabBarIcon: ({color}) => (*/}
+            {/*        <Feather name={"user"} size={24} color={color} />*/}
+            {/*    ),}*/}
+            {/*}/>*/}
+            <Tab.Screen name="Notifications" component={Notifications} options={{
                 tabBarIcon: ({color}) => (
-                    <Feather name={"user"} size={24} color={color} />
+                    <Feather name={"bell"} size={24} color={color} />
                 ),}
             }/>
-            <Tab.Screen name="More" component={More} options={{
+            <Tab.Screen name="Settings" component={More} options={{
                 tabBarIcon: ({color}) => (
-                    <Feather name={"more-horizontal"} size={24} color={color} />
+                    <Feather name={"settings"} size={24} color={color} />
                 ),}
             }/>
         </Tab.Navigator>
 
     );
 };
+
+const styles = StyleSheet.create({
+    shadow: {
+        shadowColor: '#7F5DF0',
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.5,
+        elevation: 5,
+    },
+});
 
 export default BottomNavigation;

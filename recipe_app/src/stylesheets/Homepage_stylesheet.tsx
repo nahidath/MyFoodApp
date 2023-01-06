@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 
 export default StyleSheet.create({
@@ -9,20 +10,15 @@ export default StyleSheet.create({
     },
     headerBloc: {
         width: '100%',
-        height: 130,
-        // backgroundColor: '#8cae00',
-        backgroundColor:'#064851',
-        borderBottomRightRadius: 50,
-        borderBottomLeftRadius: 50,
+        padding : 0,
 
     },
     headerText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#f5f2eb',
-        // marginTop: 5,
+        color: '#041721',
         padding: 20,
-        paddingTop: 15,
+        paddingTop: 10,
     },
     subHeaderText: {
         fontSize: 20,
@@ -31,14 +27,18 @@ export default StyleSheet.create({
         marginTop: -15,
     },
     headerBlocText:{
-      top: 20,
+        top: 20,
+
     },
     headerNotification: {
-        top: -30,
+        top: -40,
         right: 20,
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
+    },
+    recipesDisplay: {
+       top: -30,
     },
     blocTitle: {
         flexDirection: 'row',
@@ -49,7 +49,7 @@ export default StyleSheet.create({
     recipe1Title: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#064851',
+        color: '#041721',
     },
     recipe1Button: {
         padding: 6,
@@ -62,8 +62,49 @@ export default StyleSheet.create({
         width: 170,
         height: 260,
         borderRadius: 20,
-        backgroundColor: '#064851',
+        backgroundColor: '#fefefe',
         margin: 20,
+        marginTop: 0,
+        borderColor: '#d9d9d9',
+        borderWidth: hairlineWidth,
 
+    },
+    blocRecipeShadowAndroid: {
+        shadowColor:'#000',
+        elevation: 5,
+    },
+    blocRecipeShadowIOS: {
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        shadowColor:'#171717',
+    },
+    profile: {
+        width: 35,
+        height: 35,
+        borderRadius: 20,
+        borderColor: '#064851',
+        backgroundColor: '#9fc131',
+    },
+    searchBloc: {
+        margin: 20,
+        marginBottom: 0,
+        top: -20,
+    },
+    searchInput: {
+        height: 50,
+        width: '100%',
+        backgroundColor: '#fefefe',
+        borderRadius: 10,
+        padding: 10,
+        paddingRight: 50,
+    },
+    searchButton: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        top: -40,
+        right: 20,
     }
+
 });

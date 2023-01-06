@@ -10,7 +10,7 @@ export default StyleSheet.create({
     textTitle: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#1C1E21',
+        color: '#041721',
         margin: 10,
         marginTop: 15,
     },
@@ -32,16 +32,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 2,
         // fontFamily: 'sans-serif-medium',
-    },
-    boxShadowIOS:{
-        shadowOffset: {width:0, height: 1},
-        shadowColor:'#171717',
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-    },
-    boxShadowAndroid:{
-        shadowColor:'#000',
-        elevation: 2,
     }
 
 });

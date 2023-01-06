@@ -1,12 +1,14 @@
 import React, {FC} from "react";
 import {View, Text} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
+import styles from "../stylesheets/Notifications_stylesheet";
+import general from "../stylesheets/General_stylesheet";
 
 
 const Favorites : FC = () => {
     return (
-        <View>
-            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#064851" />
+        <View style={[styles.container, general.container]}>
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
             <Text>Favorites</Text>
         </View>
     );
