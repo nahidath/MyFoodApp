@@ -20,6 +20,16 @@ import general from "../stylesheets/General_stylesheet";
 
 
 const BottomNavigation : FC = () => {
+    // const getTabBarVisible = (route: any) => {
+    //     const params = route.params;
+    //     if (params) {
+    //         if (params.tabBarVisible === false) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // };
+
     const Tab = createBottomTabNavigator();
     return (
         <Tab.Navigator
@@ -61,12 +71,19 @@ const BottomNavigation : FC = () => {
 
             }}
         >
+            {/*<Tab.Screen name="Home" component={HomeStackScreen} options={({ route }) =>({*/}
+            {/*    tabBarVisible: getTabBarVisible(route),*/}
+            {/*    headerShown: false,*/}
+            {/*    tabBarIcon: ({color}) => (*/}
+            {/*        <Feather name={"home"} size={24} color={color} />*/}
+            {/*    ),*/}
+            {/*})} />*/}
             <Tab.Screen name="Home" component={HomeStackScreen} options={{
                 headerShown: false,
                 tabBarIcon: ({color}) => (
                     <Feather name={"home"} size={24} color={color} />
-                ),}
-            } />
+                ),
+            }} />
             <Tab.Screen name="Favorites" component={Favorites} options={{
                 tabBarIcon: ({color}) => (
                     <Feather name={"heart"} size={24} color={color} />

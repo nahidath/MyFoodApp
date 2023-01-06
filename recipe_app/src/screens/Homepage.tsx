@@ -1,6 +1,7 @@
 // @ts-ignore
 
 import {
+    Dimensions,
     Platform,
     Pressable,
     ScrollView,
@@ -11,24 +12,70 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
-import {useNavigation} from "@react-navigation/native";
+import {CommonActions, useNavigation} from "@react-navigation/native";
 import {HomeStackList} from "../types";
 import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 
 type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
-const Homepage: FC = () => {
-    const navigation = useNavigation<HomeScreenProps>();
-  return (
+
+// @ts-ignore
+const Homepage :  FC = ({navigation}) => {
+    // const navigation = useNavigation<HomeScreenProps>();
+    const [ offset, setOffset ] = useState(0);
+
+    const hideTabBar = () => {
+        if (offset > 0) {
+            return {
+                height: 0,
+                opacity: 0,
+            };
+        }
+        // navigation.setOptions({
+        //     tabBarStyle: {
+        //         backgroundColor: '#316fc1',
+        //     },
+        // });
+        console.log('hide');
+    };
+    const showTabBar = () => {
+        if (offset === 0) {
+            return {
+                height: 0,
+                opacity: 0,
+            };
+        }
+        // navigation.setOptions({
+        //     tabBarStyle: { display: 'flex' },
+        // });
+        console.log('show');
+    };
+
+    return (
 
         <View style={[styles.container, general.container]}>
             <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
-            <ScrollView>
+            <ScrollView
+                onScroll={(e) => {
+                    const currentOffset = e.nativeEvent.contentOffset.y;
+                    let direction = currentOffset > offset ? "down" : "up";
+                    if (direction === "up") {
+                        console.log("up")
+                        hideTabBar()
+                    } else {
+                        console.log("down")
+                        showTabBar()
+                    }
+                    setOffset(currentOffset)
+                    console.log(offset);
+                }
+                }
+            >
                 <View style={styles.headerBloc}>
                     <View style={styles.headerBlocText}>
                         <Text style={styles.headerText}>Welcome !</Text>

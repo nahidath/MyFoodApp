@@ -47,9 +47,10 @@ export default StyleSheet.create({
 
     },
     recipe1Title: {
-        fontSize: 28,
+        fontSize: 22,
         fontWeight: 'bold',
         color: '#041721',
+        width: '80%',
     },
     recipe1Button: {
         padding: 6,
