@@ -44,6 +44,7 @@ export default function App() {
     // }
   // @ts-ignore
     // @ts-ignore
+    // const displayTab = Homepage.navigationOptions.tabBarStyle.display;
     return (
       <NavigationContainer>
             {/*<Stack.Navigator*/}

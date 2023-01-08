@@ -20,55 +20,60 @@ import general from "../stylesheets/General_stylesheet";
 
 
 const BottomNavigation : FC = () => {
+    // const currentRoute = route.params.display;
     // const getTabBarVisible = (route: any) => {
     //     const params = route.params;
     //     if (params) {
-    //         if (params.tabBarVisible === false) {
+    //         if (params.display === 'none') {
     //             return false;
     //         }
     //     }
     //     return true;
     // };
 
-    const Tab = createBottomTabNavigator();
+    let Tab = createBottomTabNavigator();
+    // const displayTab = Homepage.navigationOptions.tabBarStyle;
+    const displayTab = Homepage.navigationOptions.tabBarStyle.display;
+    console.log(Homepage.navigationOptions.tabBarStyle);
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
-            screenOptions={{
-                headerStyle : {
-                    backgroundColor : '#FAF9F6',
-                    ...general.shadow
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                    color: '#041721',
-                },
-                tabBarShowLabel: false,
-                tabBarStyle: {
-                    backgroundColor: '#9fc131',
-                    height: 80,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    position: 'absolute',
-                    bottom: 25,
-                    left: 20,
-                    right: 20,
-                    // elevation: 0,
-                    borderRadius: 50,
-                    ...styles.shadow,
-                },
-                tabBarActiveTintColor : '#fff',
-                tabBarInactiveTintColor : '#666',
-                tabBarLabelStyle: {
-                    fontSize: 12,
-                },
-                // tabBarActiveBackgroundColor : '#064851',
-                // tabBarInactiveBackgroundColor : '#fefefe',
-                // tabBarItemStyle: {
-                //     borderRadius: 100,
-                // }
+            // screenOptions:({navigation}) =>({
+                screenOptions= {{
+                    headerStyle: {
+                        backgroundColor: '#FAF9F6',
+                        ...general.shadow
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                        color: '#041721',
+                    },
+                    tabBarShowLabel: false,
+                    tabBarStyle: {
+                        backgroundColor: '#9fc131',
+                        height: 80,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        bottom: 25,
+                        left: 20,
+                        right: 20,
+                        // elevation: 0,
+                        borderRadius: 50,
+                        ...styles.shadow,
+                        display: displayTab
+                        // navigation
+                        // .state.routes[navigation.state.index].params.display === 'none' ? {display: 'none'} : {display: 'flex'}
+                    },
+                    tabBarActiveTintColor: '#fff',
+                    tabBarInactiveTintColor: '#666',
+                    tabBarLabelStyle: {
+                        fontSize: 12,
+                    },
 
+                // })}
             }}
         >
             {/*<Tab.Screen name="Home" component={HomeStackScreen} options={({ route }) =>({*/}

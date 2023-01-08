@@ -21,38 +21,33 @@ import {HomeStackList} from "../types";
 import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
+import {NavigationScreenProp, NavigationScreenComponent } from 'react-navigation';
 
 type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
+interface Props extends NavigationScreenProp<{ displayTab: string}> {}
 
 // @ts-ignore
-const Homepage :  FC = ({navigation}) => {
+const Homepage :  NavigationScreenComponent<Props> = ({navigation}) => {
     // const navigation = useNavigation<HomeScreenProps>();
     const [ offset, setOffset ] = useState(0);
+    let [displayTab, setDisplayTab ] = useState('flex');
+
+
 
     const hideTabBar = () => {
-        if (offset > 0) {
-            return {
-                height: 0,
-                opacity: 0,
-            };
-        }
         // navigation.setOptions({
         //     tabBarStyle: {
         //         backgroundColor: '#316fc1',
         //     },
         // });
+        setDisplayTab('none');
         console.log('hide');
     };
     const showTabBar = () => {
-        if (offset === 0) {
-            return {
-                height: 0,
-                opacity: 0,
-            };
-        }
         // navigation.setOptions({
         //     tabBarStyle: { display: 'flex' },
         // });
+        setDisplayTab('flex');
         console.log('show');
     };
 
@@ -64,11 +59,11 @@ const Homepage :  FC = ({navigation}) => {
                 onScroll={(e) => {
                     const currentOffset = e.nativeEvent.contentOffset.y;
                     let direction = currentOffset > offset ? "down" : "up";
-                    if (direction === "up") {
-                        console.log("up")
+                    if (direction === "down") {
+                        console.log("down")
                         hideTabBar()
                     } else {
-                        console.log("down")
+                        console.log("up")
                         showTabBar()
                     }
                     setOffset(currentOffset)
@@ -130,6 +125,13 @@ const Homepage :  FC = ({navigation}) => {
         </View>
   );
 };
+
+Homepage.navigationOptions = {
+    tabBarStyle: {
+        display: Homepage.displayTab,
+    }
+}
+console.log(Homepage.displayTab);
 
 
 
