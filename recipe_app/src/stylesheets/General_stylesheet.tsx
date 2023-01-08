@@ -3,8 +3,9 @@ import {StyleSheet} from "react-native";
 
 export default  StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         backgroundColor: '#FAF9F6',
+        borderBottomLeftRadius: 20,
     },
     shadow:{
         shadowOffset: {width:0, height: 1},

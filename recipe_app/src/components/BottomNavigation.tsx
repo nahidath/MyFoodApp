@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect, useState} from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Homepage from "../screens/Homepage";
 import Notifications from "../screens/Notifications";
@@ -12,35 +12,24 @@ import {Icon} from "react-native-elements";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types";
 import HomeStackScreen from "./HomeStackScreen";
-import {StyleSheet} from "react-native";
+import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet} from "react-native";
 import general from "../stylesheets/General_stylesheet";
+import {useNavigation} from "@react-navigation/native";
 
 
 
 
 
 const BottomNavigation : FC = () => {
-    // const currentRoute = route.params.display;
-    // const getTabBarVisible = (route: any) => {
-    //     const params = route.params;
-    //     if (params) {
-    //         if (params.display === 'none') {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // };
 
-    let Tab = createBottomTabNavigator();
-    // const displayTab = Homepage.navigationOptions.tabBarStyle;
-    const displayTab = Homepage.navigationOptions.tabBarStyle.display;
-    console.log(Homepage.navigationOptions.tabBarStyle);
+    const Tab = createBottomTabNavigator();
 
     return (
         <Tab.Navigator
             initialRouteName="Home"
             // screenOptions:({navigation}) =>({
                 screenOptions= {{
+
                     headerStyle: {
                         backgroundColor: '#FAF9F6',
                         ...general.shadow
@@ -50,20 +39,21 @@ const BottomNavigation : FC = () => {
                         fontWeight: 'bold',
                         color: '#041721',
                     },
-                    tabBarShowLabel: false,
+                    tabBarShowLabel: true,
                     tabBarStyle: {
                         backgroundColor: '#9fc131',
-                        height: 80,
+                        height: 56,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        position: 'absolute',
-                        bottom: 25,
-                        left: 20,
-                        right: 20,
-                        // elevation: 0,
-                        borderRadius: 50,
-                        ...styles.shadow,
-                        display: displayTab
+                        // borderTopRightRadius: 20,
+                        // position: 'absolute',
+                        // bottom: 25,
+                        // left: 20,
+                        // right: 20,
+                        // // elevation: 0,
+                        // borderRadius: 50,
+                        // ...styles.shadow,
+                        // display: displayTab === 'flex' ? 'flex' : 'none'
                         // navigation
                         // .state.routes[navigation.state.index].params.display === 'none' ? {display: 'none'} : {display: 'flex'}
                     },

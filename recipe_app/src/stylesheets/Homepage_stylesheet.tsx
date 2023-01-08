@@ -4,8 +4,8 @@ import hairlineWidth = StyleSheet.hairlineWidth;
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fefefe',
+        // flex: 1,
+        // backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
     headerBloc: {
