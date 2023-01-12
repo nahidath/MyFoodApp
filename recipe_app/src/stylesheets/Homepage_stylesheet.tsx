@@ -4,7 +4,7 @@ import hairlineWidth = StyleSheet.hairlineWidth;
 
 export default StyleSheet.create({
     container: {
-        // flex: 1,
+        flex: 1,
         // backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
@@ -69,6 +69,24 @@ export default StyleSheet.create({
         borderColor: '#d9d9d9',
         borderWidth: hairlineWidth,
 
+    },
+    blocRecipeImageText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#fefefe',
+    },
+    blocRecipeLabel: {
+        fontSize: 15,
+        color: '#fefefe',
+        backgroundColor: '#c3e56f',
+        position: 'absolute',
+        top: 10,
+        left: 10,
+    },
+    blocRecipeLike: {
+      position: 'absolute',
+        top: 10,
+        left: 50,
     },
     blocRecipeShadowAndroid: {
         shadowColor:'#000',

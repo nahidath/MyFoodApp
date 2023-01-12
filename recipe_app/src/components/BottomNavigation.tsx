@@ -42,9 +42,10 @@ const BottomNavigation : FC = () => {
                     tabBarShowLabel: true,
                     tabBarStyle: {
                         backgroundColor: '#9fc131',
-                        height: 56,
+                        height: 60,
                         justifyContent: 'center',
                         alignItems: 'center',
+                        zIndex: 0,
                         // borderTopRightRadius: 20,
                         // position: 'absolute',
                         // bottom: 25,

@@ -27,11 +27,16 @@ type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
 // @ts-ignore
 const Homepage :  FC = () => {
     const navigation = useNavigation<HomeScreenProps>();
+    const height = Dimensions.get('window').height;
+
+    // const displayTopRecipe = () => {
+    //
+    // }
 
 
     return (
 
-        <View style={[styles.container, general.container]}>
+        <View style={[styles.container, general.container, {height: height}]}>
             <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
             <ScrollView>
                 <View style={styles.headerBloc}>
@@ -58,7 +63,12 @@ const Homepage :  FC = () => {
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
+                                <View style={[styles.blocRecipe, general.shadow]}>
+                                    <Text style={styles.blocRecipeImageText}>Image</Text>
+                                    <View style={styles.blocRecipeLabel}>Label</View>
+                                    <View style={styles.blocRecipeLike}><Feather name={'heart'} size={24} color={'#ffffff'} /></View>
+                                </View>
+
                                 <View style={[styles.blocRecipe, general.shadow]}></View>
                                 <View style={[styles.blocRecipe, general.shadow]}></View>
                                 <View style={[styles.blocRecipe, general.shadow]}></View>
@@ -88,6 +98,5 @@ const Homepage :  FC = () => {
         </View>
   );
 };
-
 
 export default Homepage;
