@@ -70,23 +70,32 @@ export default StyleSheet.create({
         borderWidth: hairlineWidth,
 
     },
+    blocRecipeImage: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        padding: 10,
+    },
     blocRecipeImageText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#fefefe',
     },
     blocRecipeLabel: {
-        fontSize: 15,
-        color: '#fefefe',
-        backgroundColor: '#c3e56f',
+        backgroundColor: 'rgba(195,229,111,0.75)',
         position: 'absolute',
         top: 10,
         left: 10,
+        borderRadius: 10,
+    },
+    blocRecipeLabelText : {
+        fontSize: 10,
+        color: '#041721',
+        padding: 5,
     },
     blocRecipeLike: {
-      position: 'absolute',
+        position: 'absolute',
         top: 10,
-        left: 50,
+        left: 135,
     },
     blocRecipeShadowAndroid: {
         shadowColor:'#000',

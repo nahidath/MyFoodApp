@@ -1,7 +1,7 @@
 // @ts-ignore
 
 import {
-    Dimensions,
+    Dimensions, ImageBackground,
     Platform,
     Pressable,
     ScrollView,
@@ -12,7 +12,7 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
@@ -21,6 +21,10 @@ import {HomeStackList} from "../types";
 import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
+import axios from "axios";
+// @ts-ignore
+import {REACT_APP_API_KEY} from "@env";
+
 
 
 type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
@@ -28,11 +32,34 @@ type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
 const Homepage :  FC = () => {
     const navigation = useNavigation<HomeScreenProps>();
     const height = Dimensions.get('window').height;
+    const [recipes, setRecipes] = useState([]);
+    const [recipes2, setRecipes2] = useState([]);
+    const configValue : string | undefined = REACT_APP_API_KEY;
+    // console.log(configValue);
 
-    // const displayTopRecipe = () => {
-    //
-    // }
+    const getRandomRecipe = () => {
+        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4} }).then((response) => {
+            setRecipes(response.data.recipes);
+        },).catch((error) => {
+            console.log(error);
+        });
 
+    }
+
+    const getRecipesByTags = () => {
+        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4, tags: "carrot"} }).then((response) => {
+            setRecipes2(response.data.recipes);
+        },).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    useEffect(() => {
+        getRandomRecipe();
+        getRecipesByTags();
+    }, []);
+
+    // console.log(recipes);
 
     return (
 
@@ -63,31 +90,48 @@ const Homepage :  FC = () => {
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <View style={[styles.blocRecipe, general.shadow]}>
-                                    <Text style={styles.blocRecipeImageText}>Image</Text>
-                                    <View style={styles.blocRecipeLabel}>Label</View>
-                                    <View style={styles.blocRecipeLike}><Feather name={'heart'} size={24} color={'#ffffff'} /></View>
-                                </View>
-
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
+                                {recipes.map((recipe: any) => {
+                                    return (
+                                        <View key={recipe.id} style={[styles.blocRecipe, general.shadow]}>
+                                            <ImageBackground source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
+                                                <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
+                                                <View style={styles.blocRecipeLabel}>
+                                                    <Text style={styles.blocRecipeLabelText}>Label</Text>
+                                                </View>
+                                                <View style={styles.blocRecipeLike}>
+                                                    <Feather name={'heart'} size={24} color={'#041721'} />
+                                                </View>
+                                            </ImageBackground>
+                                        </View>
+                                    )
+                                })}
                             </ScrollView>
                         </View>
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>L'ingrédient du jour : La tomate</Text>
+                            <Text style={styles.recipe1Title}>L'ingrédient du jour : La carrote</Text>
                             <Pressable style={styles.recipe1Button}>
                                 <Feather name={'arrow-right'} size={24} color={'#041721'} />
                             </Pressable>
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
-                                <View style={[styles.blocRecipe, general.shadow]}></View>
+                                {recipes2.map((recipe: any) => {
+                                    return (
+                                        <View key={recipe.id} style={[styles.blocRecipe, general.shadow]}>
+                                            <ImageBackground source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
+                                                <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
+                                                <View style={styles.blocRecipeLabel}>
+                                                    <Text style={styles.blocRecipeLabelText}>Label</Text>
+                                                </View>
+                                                <View style={styles.blocRecipeLike}>
+                                                    <Feather name={'heart'} size={24} color={'#041721'} />
+                                                </View>
+                                            </ImageBackground>
+                                        </View>
+                                    )
+                                })}
                             </ScrollView>
                         </View>
 
