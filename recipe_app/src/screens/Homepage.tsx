@@ -24,6 +24,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import axios from "axios";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
@@ -92,17 +93,23 @@ const Homepage :  FC = () => {
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes.map((recipe: any) => {
                                     return (
-                                        <View key={recipe.id} style={[styles.blocRecipe, general.shadow]}>
-                                            <ImageBackground source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
-                                                <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
-                                                <View style={styles.blocRecipeLabel}>
-                                                    <Text style={styles.blocRecipeLabelText}>Label</Text>
-                                                </View>
-                                                <View style={styles.blocRecipeLike}>
-                                                    <Feather name={'heart'} size={24} color={'#041721'} />
-                                                </View>
-                                            </ImageBackground>
-                                        </View>
+                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe')}>
+
+                                                <ImageBackground source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
+                                                    <LinearGradient
+                                                        colors={['transparent','rgba(0,0,0,0.8)' ]}
+                                                        style={styles.blocRecipeGradient}
+                                                    >
+                                                    <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
+                                                    </LinearGradient>
+                                                    <View style={styles.blocRecipeLabel}>
+                                                        <Text style={styles.blocRecipeLabelText}>Label</Text>
+                                                    </View>
+                                                    <View style={styles.blocRecipeLike}>
+                                                        <Feather name={'heart'} size={24} color={'#041721'} />
+                                                    </View>
+                                                </ImageBackground>
+                                        </TouchableOpacity>
                                     )
                                 })}
                             </ScrollView>
@@ -110,18 +117,24 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>L'ingrédient du jour : La carrote</Text>
+                            <Text style={styles.recipe1Title}>L'ingrédient du jour : {'\n'}La carotte</Text>
                             <Pressable style={styles.recipe1Button}>
                                 <Feather name={'arrow-right'} size={24} color={'#041721'} />
                             </Pressable>
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                {recipes2.map((recipe: any) => {
+                                {recipes2.map((recipe2: any) => {
                                     return (
-                                        <View key={recipe.id} style={[styles.blocRecipe, general.shadow]}>
-                                            <ImageBackground source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
-                                                <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
+                                        <View key={recipe2.id} style={[styles.blocRecipe, general.shadow]}>
+
+                                            <ImageBackground source={{uri: recipe2.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
+                                                <LinearGradient
+                                                    colors={['transparent','rgba(0,0,0,0.8)' ]}
+                                                    style={styles.blocRecipeGradient}
+                                                >
+                                                    <Text style={styles.blocRecipeImageText}>{recipe2.title}</Text>
+                                                </LinearGradient>
                                                 <View style={styles.blocRecipeLabel}>
                                                     <Text style={styles.blocRecipeLabelText}>Label</Text>
                                                 </View>

@@ -79,6 +79,7 @@ export default StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#fefefe',
+        padding: 10,
     },
     blocRecipeLabel: {
         backgroundColor: 'rgba(195,229,111,0.75)',
@@ -96,6 +97,15 @@ export default StyleSheet.create({
         position: 'absolute',
         top: 10,
         left: 135,
+    },
+    blocRecipeGradient:{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        width: 170,
     },
     blocRecipeShadowAndroid: {
         shadowColor:'#000',
@@ -120,7 +130,7 @@ export default StyleSheet.create({
         top: -20,
     },
     searchInput: {
-        height: 50,
+        height: 60,
         width: '100%',
         backgroundColor: '#fefefe',
         borderRadius: 10,
