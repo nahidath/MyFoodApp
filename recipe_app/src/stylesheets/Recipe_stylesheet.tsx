@@ -11,6 +11,11 @@ export default StyleSheet.create({
     headerRecipeImage: {
         height: 300,
     },
+    blocRecipeImage: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        padding: 10,
+    },
     headerRecipeImageText: {
         fontSize: 30,
         fontWeight: 'bold',

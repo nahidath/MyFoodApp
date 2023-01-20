@@ -95,7 +95,7 @@ const Homepage :  FC = () => {
                                     return (
                                         <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe')}>
 
-                                                <ImageBackground source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
+                                                {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} /> : <ImageBackground source={require('../assets/no-photo.png')} style={styles.blocRecipeImage} />}
                                                     <LinearGradient
                                                         colors={['transparent','rgba(0,0,0,0.8)' ]}
                                                         style={styles.blocRecipeGradient}
@@ -108,7 +108,7 @@ const Homepage :  FC = () => {
                                                     <View style={styles.blocRecipeLike}>
                                                         <Feather name={'heart'} size={24} color={'#041721'} />
                                                     </View>
-                                                </ImageBackground>
+                                                {/*</ImageBackground>*/}
                                         </TouchableOpacity>
                                     )
                                 })}
