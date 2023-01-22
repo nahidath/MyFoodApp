@@ -13,56 +13,89 @@ import {REACT_APP_API_KEY} from "@env";
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
 
-const Recipe : FC<Props> = ({id}) => {
+const Recipe = ({route}: Props) => {
     const configValue : string | undefined = REACT_APP_API_KEY;
-    const [recipe, setRecipe] = useState([]);
-    const [ingredients, setIngredients] = useState([]);
-    const [instructions, setInstructions] = useState([]);
+    const [recipe, setRecipe] = useState<any>([]);
+    const [ingredients, setIngredients] = useState<string[]>([]);
+    const [instructions, setInstructions] = useState<string[]>([]);
+    const [instructions2, setInstructions2] = useState<string[]>([]);
+    const {id} = route.params;
 
     const getRecipe = () => {
-        axios.get('https://api.spoonacular.com/recipes/'+id+'/information',{params:{apiKey: configValue} }).then((response) => {
+        // let dataIngredient: string | any[] = [];
+        // let dataInstruction : string | any[] = [];
+        axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/information',{params:{apiKey: configValue} }).then((response) => {
             setRecipe(response.data);
-            setIngredients(response.data.extendedIngredients);
+            // console.log(response.data);
+            // console.log(response.data.extendedIngredients);
+            setIngredients(response.data.extendedIngredients.map((item: any) => item.original));
+            setInstructions(response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step)));
+
+            // dataIngredient = response.data.extendedIngredients;
+            // dataInstruction = response.data.analyzedInstructions;
+            // console.log(dataIngredient);
+            // for (let i = 0; i < response.data.extendedIngredients.length; i++) {
+            //     setIngredients([...ingredients, response.data.extendedIngredients[i].original]);
+            // }
+            // for (let i = 0; i < response.data.analyzedInstructions.length; i++) {
+            //     setInstructions([...instructions, response.data.analyzedInstructions[i].steps[i].number + response.data.analyzedInstructions[i].steps[i].step]);
+            // }
         },).catch((error) => {
             console.log(error);
         });
+
+
     }
 
-    const getInstructions = () => {
-        axios.get('https://api.spoonacular.com/recipes/'+id+'/analyzedInstructions',{params:{apiKey: configValue} }).then((response) => {
-            setInstructions(response.data);
-        },).catch((error) => {
-            console.log(error);
-        });
-    }
+
+
+    // const getInstructions = () => {
+    //     let dataInstruction : string | any[] = [];
+    //     axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/analyzedInstructions',{params:{apiKey: configValue} }).then((response) => {
+    //         setInstructions(response.data);
+    //     },).catch((error) => {
+    //         console.log(error);
+    //     });
+    //
+    //     for (let i = 0; i < dataInstruction.length; i++) {
+    //         setInstructions([...instructions, dataInstruction[i].steps[i].number + dataInstruction[i].steps[i].step]);
+    //     }
+    // }
 
     useEffect(() => {
         getRecipe();
-        getInstructions();
+        // getInstructions();
     }, []);
 
     return (
         <View style={[styles.container, general.container]}>
             <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
             <ScrollView>
-                    {recipe.map((r: any) => {
-                        return (
-                            <View style={styles.headerRecipeImage} key={r.id}>
-                               {r.image ? <ImageBackground source={{uri: r.image}} style={styles.blocRecipeImage} /> : <ImageBackground source={require('../assets/no-photo.png')} style={styles.blocRecipeImage} />}
-                                <Text style={styles.headerRecipeImageText}>{r.title}</Text>
-                                <View style={styles.headerRecipeLabel}>
-                                    <Text style={styles.headerRecipeLabelText}>Label</Text>
-                                </View>
-                                <View style={styles.recipeLikes}>
-                                    <Text style={styles.recipeLikesText}>{r.aggregateLikes}</Text>
-                                    <FontAwesome name="heart" size={20} color="#9fc131" />
-                                </View>
-                            </View>
-                            // </ImageBackground>
-                        )
-                    })}
-                    {/*}*/}
+                <View style={styles.headerRecipeImage} key={recipe.id}>
+                   {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}>
 
+                           <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
+                           <View style={styles.headerRecipeLabel}><Text style={styles.headerRecipeLabelText}>Label</Text>
+                           </View>
+                           <View style={styles.recipeLikes}>
+                           <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
+                           <FontAwesome name="heart" size={20} color="#9fc131" />
+                           </View>
+                     </ImageBackground>
+
+                       : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage}>
+                           <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
+                           <View style={styles.headerRecipeLabel}>
+                               <Text style={styles.headerRecipeLabelText}>Label</Text>
+                           </View>
+                           <View style={styles.recipeLikes}>
+                               <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
+                               <FontAwesome name="heart" size={20} color="#9fc131" />
+                           </View>
+                          </ImageBackground>
+                       }
+                </View>
+            </ScrollView>
                 {/*    /!*<ImageBackground*!/*/}
                 {/*    /!*    // source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}*!/*/}
                 {/*    /!*    >*!/*/}
@@ -76,23 +109,19 @@ const Recipe : FC<Props> = ({id}) => {
                 {/*        </View>*/}
                 {/*    /!*</ImageBackground>*!/*/}
                 {/*</View>*/}
+
+
                 <View style={styles.recipeInfos}>
                     <View style={styles.ingredientList}>
                         <Text style={styles.ingredientListTitle}>INGREDIENTS</Text>
-                        {ingredients.map((i: any) => {
-                            return (
-                                <FlatList data={[
-                                    {key: i.id},]} renderItem={ ({item}) => <Text>{item.key}</Text>  } />
-                            )
-                        }
+                        <FlatList data={ingredients} renderItem={ ({item}) => <Text>{item}</Text>  } />
 
                     </View>
                     <View style={styles.recipeDescription}>
                         <Text style={styles.titleDesc}>PREPARATION</Text>
-
+                        <FlatList data={instructions[0]} renderItem={ ({item}) => <Text>{item}</Text>  } />
                     </View>
                 </View>
-            </ScrollView>
         </View>
     );
 }

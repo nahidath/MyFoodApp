@@ -10,6 +10,8 @@ export default StyleSheet.create({
     },
     headerRecipeImage: {
         height: 300,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
     },
     blocRecipeImage: {
         flex: 1,

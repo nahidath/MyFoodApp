@@ -29,6 +29,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
+type RecipesScreenProps = StackNavigationProp<HomeStackList, 'Recipe'>;
 // @ts-ignore
 const Homepage :  FC = () => {
     const navigation = useNavigation<HomeScreenProps>();
@@ -93,9 +94,9 @@ const Homepage :  FC = () => {
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes.map((recipe: any) => {
                                     return (
-                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe')}>
+                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe.id})}>
 
-                                                {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} /> : <ImageBackground source={require('../assets/no-photo.png')} style={styles.blocRecipeImage} />}
+                                                {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                                     <LinearGradient
                                                         colors={['transparent','rgba(0,0,0,0.8)' ]}
                                                         style={styles.blocRecipeGradient}
