@@ -7,8 +7,14 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types";
 import axios from "axios";
+import * as WebBrowser from 'expo-web-browser';
+import { LogBox } from 'react-native';
+import Share from "react-native-share";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
+import {A} from "@expo/html-elements";
+import Feather from "react-native-vector-icons/Feather";
+import {LinearGradient} from "expo-linear-gradient";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -18,28 +24,15 @@ const Recipe = ({route}: Props) => {
     const [recipe, setRecipe] = useState<any>([]);
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [instructions, setInstructions] = useState<string[]>([]);
-    const [instructions2, setInstructions2] = useState<string[]>([]);
     const {id} = route.params;
 
     const getRecipe = () => {
-        // let dataIngredient: string | any[] = [];
-        // let dataInstruction : string | any[] = [];
+        let dataInstruction : string | any[] = [];
         axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/information',{params:{apiKey: configValue} }).then((response) => {
             setRecipe(response.data);
-            // console.log(response.data);
-            // console.log(response.data.extendedIngredients);
             setIngredients(response.data.extendedIngredients.map((item: any) => item.original));
-            setInstructions(response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step)));
-
-            // dataIngredient = response.data.extendedIngredients;
-            // dataInstruction = response.data.analyzedInstructions;
-            // console.log(dataIngredient);
-            // for (let i = 0; i < response.data.extendedIngredients.length; i++) {
-            //     setIngredients([...ingredients, response.data.extendedIngredients[i].original]);
-            // }
-            // for (let i = 0; i < response.data.analyzedInstructions.length; i++) {
-            //     setInstructions([...instructions, response.data.analyzedInstructions[i].steps[i].number + response.data.analyzedInstructions[i].steps[i].step]);
-            // }
+            dataInstruction = response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step))
+            setInstructions(dataInstruction[0]);
         },).catch((error) => {
             console.log(error);
         });
@@ -48,39 +41,52 @@ const Recipe = ({route}: Props) => {
     }
 
 
-
-    // const getInstructions = () => {
-    //     let dataInstruction : string | any[] = [];
-    //     axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/analyzedInstructions',{params:{apiKey: configValue} }).then((response) => {
-    //         setInstructions(response.data);
-    //     },).catch((error) => {
-    //         console.log(error);
-    //     });
-    //
-    //     for (let i = 0; i < dataInstruction.length; i++) {
-    //         setInstructions([...instructions, dataInstruction[i].steps[i].number + dataInstruction[i].steps[i].step]);
-    //     }
-    // }
-
     useEffect(() => {
         getRecipe();
-        // getInstructions();
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, []);
+
+    //share recipe
+    const urlToShare : string = recipe.sourceUrl;
+    const title : string = recipe.title;
+    const message : string = "Hey, I found this recipe on Recipe App, check it out!";
+
+    const options = {
+        title: title,
+        message: message,
+        url: urlToShare,
+    }
+    const onShare = async (customOptions = options) => {
+        try {
+            await Share.open(customOptions);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     return (
         <View style={[styles.container, general.container]}>
             <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
-                   {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}>
-
+                   {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
+                          {/*<TouchableOpacity onPress={async () => {await onShare();}}>*/}
+                          {/*  <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
+                          {/*</TouchableOpacity>*/}
+                       <View style={styles.headerRecipeLabel}>
+                           <Text style={styles.headerRecipeLabelText}>Label</Text>
+                       </View>
+                       <LinearGradient
+                           colors={['transparent','rgba(0,0,0,0.8)' ]}
+                           style={styles.blocRecipeGradient}
+                       >
                            <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
-                           <View style={styles.headerRecipeLabel}><Text style={styles.headerRecipeLabelText}>Label</Text>
-                           </View>
                            <View style={styles.recipeLikes}>
-                           <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
-                           <FontAwesome name="heart" size={20} color="#9fc131" />
+                               <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
+                               <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
                            </View>
+                       </LinearGradient>
                      </ImageBackground>
 
                        : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage}>
@@ -95,33 +101,21 @@ const Recipe = ({route}: Props) => {
                           </ImageBackground>
                        }
                 </View>
-            </ScrollView>
-                {/*    /!*<ImageBackground*!/*/}
-                {/*    /!*    // source={{uri: recipe.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}*!/*/}
-                {/*    /!*    >*!/*/}
-                {/*        <Text style={styles.headerRecipeImageText}>Recipe</Text>*/}
-                {/*        <View style={styles.headerRecipeLabel}>*/}
-                {/*            <Text style={styles.headerRecipeLabelText}>Label</Text>*/}
-                {/*        </View>*/}
-                {/*        <View style={styles.recipeLikes}>*/}
-                {/*            <Text style={styles.recipeLikesText}>20</Text>*/}
-                {/*            <FontAwesome name="heart" size={20} color="#9fc131" />*/}
-                {/*        </View>*/}
-                {/*    /!*</ImageBackground>*!/*/}
-                {/*</View>*/}
-
 
                 <View style={styles.recipeInfos}>
                     <View style={styles.ingredientList}>
                         <Text style={styles.ingredientListTitle}>INGREDIENTS</Text>
-                        <FlatList data={ingredients} renderItem={ ({item}) => <Text>{item}</Text>  } />
+                        <FlatList data={ingredients} renderItem={ ({item}) => <Text style={styles.items}>{item}</Text>  } />
 
                     </View>
                     <View style={styles.recipeDescription}>
                         <Text style={styles.titleDesc}>PREPARATION</Text>
-                        <FlatList data={instructions[0]} renderItem={ ({item}) => <Text>{item}</Text>  } />
+                        <FlatList data={instructions} renderItem={ ({item}) => <Text style={styles.items}>{item}</Text>  } />
                     </View>
                 </View>
+                <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
+                <Text style={styles.source}>Source : <Text style={styles.sourceLink} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
+            </ScrollView>
         </View>
     );
 }
