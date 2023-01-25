@@ -33,8 +33,16 @@ export default StyleSheet.create({
         top: 10,
         left: 10,
         borderRadius: 10,
+        flexDirection: 'row',
+
     },
     headerRecipeLabelText : {
+        backgroundColor: 'rgba(195,229,111,0.75)',
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        borderRadius: 10,
+        flexDirection: 'row',
         fontSize: 10,
         color: '#041721',
         padding: 5,
@@ -126,5 +134,16 @@ export default StyleSheet.create({
         color: '#d59b24',
         fontStyle: 'italic',
         padding: 20,
+    },
+    time:{
+        fontSize: 15,
+        color: '#041721',
+        fontStyle: 'italic',
+    },
+    servings: {
+        fontSize: 15,
+        color: '#041721',
+        marginBottom: 10,
+        fontStyle: 'italic',
     }
 });

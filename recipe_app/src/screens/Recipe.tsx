@@ -1,9 +1,10 @@
-import {FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, ImageBackground, Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import React, {FC, useEffect, useState} from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import FontAwesome5Free from "react-native-vector-icons/FontAwesome";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types";
 import axios from "axios";
@@ -24,6 +25,7 @@ const Recipe = ({route}: Props) => {
     const [recipe, setRecipe] = useState<any>([]);
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [instructions, setInstructions] = useState<string[]>([]);
+    const [labels, setLabels] = useState<string[]>([]);
     const {id} = route.params;
 
     const getRecipe = () => {
@@ -43,26 +45,52 @@ const Recipe = ({route}: Props) => {
 
     useEffect(() => {
         getRecipe();
+        getLabels();
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, []);
 
-    //share recipe
-    const urlToShare : string = recipe.sourceUrl;
-    const title : string = recipe.title;
-    const message : string = "Hey, I found this recipe on Recipe App, check it out!";
+    const getLabels = () => {
+        const vegan : string = 'Vegan';
+        const vegetarian : string = 'Vegetarian';
+        const glutenFree : string = 'Gluten Free';
+        const dairyFree : string = 'Dairy Free';
+        const veryHealthy : string = 'Very Healthy';
 
-    const options = {
-        title: title,
-        message: message,
-        url: urlToShare,
-    }
-    const onShare = async (customOptions = options) => {
-        try {
-            await Share.open(customOptions);
-        } catch (err) {
-            console.log(err);
+        if (recipe.vegan) {
+            setLabels((labels) => [...labels, vegan]);
+        }
+        if (recipe.vegetarian) {
+            setLabels((labels) => [...labels, vegetarian]);
+        }
+        if (recipe.glutenFree) {
+            setLabels((labels) => [...labels, glutenFree]);
+        }
+        if (recipe.dairyFree) {
+            setLabels((labels) => [...labels, dairyFree]);
+        }
+        if (recipe.veryHealthy) {
+            setLabels((labels) => [...labels, veryHealthy]);
         }
     }
+
+
+    //share recipe
+    // const urlToShare : string = recipe.sourceUrl;
+    // const title : string = recipe.title;
+    // const message : string = "Hey, I found this recipe on Recipe App, check it out!";
+    //
+    // const options = {
+    //     title: title,
+    //     message: message,
+    //     url: urlToShare,
+    // }
+    // const onShare = async (customOptions = options) => {
+    //     try {
+    //         await Share.open(customOptions);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
 
 
     return (
@@ -74,9 +102,19 @@ const Recipe = ({route}: Props) => {
                           {/*<TouchableOpacity onPress={async () => {await onShare();}}>*/}
                           {/*  <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
                           {/*</TouchableOpacity>*/}
-                       <View style={styles.headerRecipeLabel}>
-                           <Text style={styles.headerRecipeLabelText}>Label</Text>
-                       </View>
+                       {/*<Pressable onPress={async () => {await onShare();}}>*/}
+                       {/*     <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
+                       {/*</Pressable>*/}
+                           {labels.map((label, index) => (
+                               <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
+                               // <Text style={styles.headerRecipeLabelText}>Label</Text>
+                           ))}
+                       {/*<View style={styles.headerRecipeLabel}>*/}
+                       {/*     {labels.map((label, index) => (*/}
+                       {/*         <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>*/}
+                       {/*    // <Text style={styles.headerRecipeLabelText}>Label</Text>*/}
+                       {/*     ))}*/}
+                       {/*</View>*/}
                        <LinearGradient
                            colors={['transparent','rgba(0,0,0,0.8)' ]}
                            style={styles.blocRecipeGradient}
@@ -103,6 +141,8 @@ const Recipe = ({route}: Props) => {
                 </View>
 
                 <View style={styles.recipeInfos}>
+                    <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> Ready in {recipe.readyInMinutes} minutes</Text>
+                    <Text style={styles.servings}><Feather name="user" size={20} color="#041721"/>Serves {recipe.servings} people</Text>
                     <View style={styles.ingredientList}>
                         <Text style={styles.ingredientListTitle}>INGREDIENTS</Text>
                         <FlatList data={ingredients} renderItem={ ({item}) => <Text style={styles.items}>{item}</Text>  } />
