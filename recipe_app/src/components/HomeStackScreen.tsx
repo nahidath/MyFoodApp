@@ -1,7 +1,6 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types";
 import Homepage from "../screens/Homepage";
-import Notifications from "../screens/Notifications";
 import Profile from "../screens/Profile";
 import Recipe from "../screens/Recipe";
 

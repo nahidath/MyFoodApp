@@ -28,24 +28,18 @@ export default StyleSheet.create({
         top: 40,
     },
     headerRecipeLabel: {
-        backgroundColor: 'rgba(195,229,111,0.75)',
         position: 'absolute',
         top: 10,
-        left: 10,
-        borderRadius: 10,
         flexDirection: 'row',
 
     },
     headerRecipeLabelText : {
         backgroundColor: 'rgba(195,229,111,0.75)',
-        position: 'absolute',
-        top: 10,
-        left: 10,
         borderRadius: 10,
-        flexDirection: 'row',
         fontSize: 10,
         color: '#041721',
         padding: 5,
+        marginLeft: 5,
     },
     recipeLikes: {
         flexDirection: 'row',

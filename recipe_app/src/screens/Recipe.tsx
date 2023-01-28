@@ -16,17 +16,23 @@ import {REACT_APP_API_KEY} from "@env";
 import {A} from "@expo/html-elements";
 import Feather from "react-native-vector-icons/Feather";
 import {LinearGradient} from "expo-linear-gradient";
+import {useNavigation} from "@react-navigation/native";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
+// @ts-ignore
+type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 
 const Recipe = ({route}: Props) => {
+    const navigation = useNavigation<RecipesScreenProps>();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipe, setRecipe] = useState<any>([]);
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [instructions, setInstructions] = useState<string[]>([]);
     const [labels, setLabels] = useState<string[]>([]);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const {id} = route.params;
+    const {name} = route.params;
 
     const getRecipe = () => {
         let dataInstruction : string | any[] = [];
@@ -35,6 +41,7 @@ const Recipe = ({route}: Props) => {
             setIngredients(response.data.extendedIngredients.map((item: any) => item.original));
             dataInstruction = response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step))
             setInstructions(dataInstruction[0]);
+            setIsLoaded(true);
         },).catch((error) => {
             console.log(error);
         });
@@ -44,10 +51,16 @@ const Recipe = ({route}: Props) => {
 
 
     useEffect(() => {
+        navigation.setOptions({
+            headerTitle: name,
+        })
         getRecipe();
-        getLabels();
-        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    }, []);
+        if(isLoaded) {
+            getLabels();
+        }
+
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.']);
+    }, [isLoaded, name]);
 
     const getLabels = () => {
         const vegan : string = 'Vegan';
@@ -72,6 +85,7 @@ const Recipe = ({route}: Props) => {
             setLabels((labels) => [...labels, veryHealthy]);
         }
     }
+
 
 
     //share recipe
@@ -105,16 +119,16 @@ const Recipe = ({route}: Props) => {
                        {/*<Pressable onPress={async () => {await onShare();}}>*/}
                        {/*     <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
                        {/*</Pressable>*/}
-                           {labels.map((label, index) => (
-                               <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
-                               // <Text style={styles.headerRecipeLabelText}>Label</Text>
-                           ))}
-                       {/*<View style={styles.headerRecipeLabel}>*/}
-                       {/*     {labels.map((label, index) => (*/}
-                       {/*         <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>*/}
-                       {/*    // <Text style={styles.headerRecipeLabelText}>Label</Text>*/}
-                       {/*     ))}*/}
-                       {/*</View>*/}
+                       {/*    {labels.map((label, index) => (*/}
+                       {/*        <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>*/}
+                       {/*        // <Text style={styles.headerRecipeLabelText}>Label</Text>*/}
+                       {/*    ))}*/}
+                       <View style={styles.headerRecipeLabel}>
+                            {labels.map((label, index) => (
+                                <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
+                           // <Text style={styles.headerRecipeLabelText}>Label</Text>
+                            ))}
+                       </View>
                        <LinearGradient
                            colors={['transparent','rgba(0,0,0,0.8)' ]}
                            style={styles.blocRecipeGradient}

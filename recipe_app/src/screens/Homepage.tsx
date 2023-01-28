@@ -25,11 +25,15 @@ import axios from "axios";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
+import MyStackNavigationProp from "../components/MyStackNavigationProp";
 
 
 
-type HomeScreenProps = StackNavigationProp<HomeStackList, 'HomePage'>;
-type RecipesScreenProps = StackNavigationProp<HomeStackList, 'Recipe'>;
+
+// @ts-ignore
+type HomeScreenProps = MyStackNavigationProp<HomeStackList, 'HomePage'>;
+// @ts-ignore
+// type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 // @ts-ignore
 const Homepage :  FC = () => {
     const navigation = useNavigation<HomeScreenProps>();
@@ -37,11 +41,16 @@ const Homepage :  FC = () => {
     const [recipes, setRecipes] = useState([]);
     const [recipes2, setRecipes2] = useState([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
+    const [labels, setLabels] = useState<string[]>([]);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [isLoaded2, setIsLoaded2] = useState<boolean>(false);
+
     // console.log(configValue);
 
     const getRandomRecipe = () => {
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4} }).then((response) => {
             setRecipes(response.data.recipes);
+            setIsLoaded(true);
         },).catch((error) => {
             console.log(error);
         });
@@ -51,6 +60,7 @@ const Homepage :  FC = () => {
     const getRecipesByTags = () => {
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4, tags: "carrot"} }).then((response) => {
             setRecipes2(response.data.recipes);
+            setIsLoaded2(true);
         },).catch((error) => {
             console.log(error);
         });
@@ -61,7 +71,34 @@ const Homepage :  FC = () => {
         getRecipesByTags();
     }, []);
 
-    // console.log(recipes);
+    // const getLabels = (r : string[]) => {
+    //     const vegan : string = 'Vegan';
+    //     const vegetarian : string = 'Vegetarian';
+    //     const glutenFree : string = 'Gluten Free';
+    //     const dairyFree : string = 'Dairy Free';
+    //     const veryHealthy : string = 'Very Healthy';
+    //
+    //
+    //     for(let i = 0; i < r.length; i++) {
+    //         if (r[vegan]) {
+    //             setLabels((labels) => [...labels, vegan]);
+    //         }
+    //         if (r[vegetarian]) {
+    //             setLabels((labels) => [...labels, vegetarian]);
+    //         }
+    //         if (r[glutenFree]) {
+    //             setLabels((labels) => [...labels, glutenFree]);
+    //         }
+    //         if (r[dairyFree]) {
+    //             setLabels((labels) => [...labels, dairyFree]);
+    //         }
+    //         if (r[veryHealthy]) {
+    //             setLabels((labels) => [...labels, veryHealthy]);
+    //         }
+    //     }
+    //
+    //
+    // }
 
     return (
 
@@ -94,7 +131,7 @@ const Homepage :  FC = () => {
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes.map((recipe: any) => {
                                     return (
-                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe.id})}>
+                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe.id, name: recipe.title})}>
 
                                                 {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                                     <LinearGradient
@@ -103,9 +140,12 @@ const Homepage :  FC = () => {
                                                     >
                                                     <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
                                                     </LinearGradient>
-                                                    <View style={styles.blocRecipeLabel}>
-                                                        <Text style={styles.blocRecipeLabelText}>Label</Text>
-                                                    </View>
+                                                    {/*<View style={styles.blocRecipeLabel}>*/}
+                                                    {/*    {isLoaded ? getLabels(recipe) : null}*/}
+                                                    {/*    {labels.map((label: string) => {*/}
+                                                    {/*         <Text style={styles.blocRecipeLabelText}>{label}</Text>*/}
+                                                    {/*    })}*/}
+                                                    {/*</View>*/}
                                                     <View style={styles.blocRecipeLike}>
                                                         <Feather name={'heart'} size={24} color={'#041721'} />
                                                     </View>

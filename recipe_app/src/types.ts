@@ -3,5 +3,6 @@ export type HomeStackList = {
     Profile: undefined;
     Recipe: {
         id: string;
+        name: string;
     }
 }
