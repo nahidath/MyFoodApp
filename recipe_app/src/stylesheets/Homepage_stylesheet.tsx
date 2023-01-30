@@ -82,16 +82,17 @@ export default StyleSheet.create({
         padding: 10,
     },
     blocRecipeLabel: {
-        backgroundColor: 'rgba(195,229,111,0.75)',
         position: 'absolute',
         top: 10,
-        left: 10,
-        borderRadius: 10,
+        flexDirection: 'row',
     },
     blocRecipeLabelText : {
+        backgroundColor: 'rgba(195,229,111,0.75)',
         fontSize: 10,
         color: '#041721',
         padding: 5,
+        marginLeft: 5,
+        borderRadius: 10,
     },
     blocRecipeLike: {
         position: 'absolute',

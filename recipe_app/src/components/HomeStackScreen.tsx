@@ -3,6 +3,7 @@ import {HomeStackList} from "../types";
 import Homepage from "../screens/Homepage";
 import Profile from "../screens/Profile";
 import Recipe from "../screens/Recipe";
+import SpotlightRecipes from "../screens/SpotlightRecipes";
 
 const HomeStack = createNativeStackNavigator<HomeStackList>();
 export default function HomeStackScreen () {
@@ -26,6 +27,16 @@ export default function HomeStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
+            }} />
+            <HomeStack.Screen name="SpotlightRecipes" component={SpotlightRecipes} options={{
+                headerStyle: {
+                    backgroundColor: '#fefefe',
+                },
+                headerTintColor: '#041721',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                headerTitle: 'Spotlight Recipes',
             }} />
         </HomeStack.Navigator>
     )

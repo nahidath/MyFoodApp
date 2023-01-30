@@ -38,19 +38,14 @@ type HomeScreenProps = MyStackNavigationProp<HomeStackList, 'HomePage'>;
 const Homepage :  FC = () => {
     const navigation = useNavigation<HomeScreenProps>();
     const height = Dimensions.get('window').height;
-    const [recipes, setRecipes] = useState([]);
-    const [recipes2, setRecipes2] = useState([]);
+    const [recipes, setRecipes] = useState<string[]>([]);
+    const [recipes2, setRecipes2] = useState<string[]>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
-    const [labels, setLabels] = useState<string[]>([]);
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
-    const [isLoaded2, setIsLoaded2] = useState<boolean>(false);
 
-    // console.log(configValue);
 
     const getRandomRecipe = () => {
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4} }).then((response) => {
             setRecipes(response.data.recipes);
-            setIsLoaded(true);
         },).catch((error) => {
             console.log(error);
         });
@@ -58,9 +53,8 @@ const Homepage :  FC = () => {
     }
 
     const getRecipesByTags = () => {
-        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4, tags: "carrot"} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4, tags: "potato"} }).then((response) => {
             setRecipes2(response.data.recipes);
-            setIsLoaded2(true);
         },).catch((error) => {
             console.log(error);
         });
@@ -70,35 +64,6 @@ const Homepage :  FC = () => {
         getRandomRecipe();
         getRecipesByTags();
     }, []);
-
-    // const getLabels = (r : string[]) => {
-    //     const vegan : string = 'Vegan';
-    //     const vegetarian : string = 'Vegetarian';
-    //     const glutenFree : string = 'Gluten Free';
-    //     const dairyFree : string = 'Dairy Free';
-    //     const veryHealthy : string = 'Very Healthy';
-    //
-    //
-    //     for(let i = 0; i < r.length; i++) {
-    //         if (r[vegan]) {
-    //             setLabels((labels) => [...labels, vegan]);
-    //         }
-    //         if (r[vegetarian]) {
-    //             setLabels((labels) => [...labels, vegetarian]);
-    //         }
-    //         if (r[glutenFree]) {
-    //             setLabels((labels) => [...labels, glutenFree]);
-    //         }
-    //         if (r[dairyFree]) {
-    //             setLabels((labels) => [...labels, dairyFree]);
-    //         }
-    //         if (r[veryHealthy]) {
-    //             setLabels((labels) => [...labels, veryHealthy]);
-    //         }
-    //     }
-    //
-    //
-    // }
 
     return (
 
@@ -123,16 +88,15 @@ const Homepage :  FC = () => {
                     <View>
                         <View style={styles.blocTitle}>
                             <Text style={styles.recipe1Title}>Recettes à la une</Text>
-                            <Pressable style={styles.recipe1Button}>
-                                <Feather name={'arrow-right'} size={24} color={'#041721'} />
-                            </Pressable>
+                            <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.navigate('SpotlightRecipes', {recipe: recipes})}>
+                                <Feather name={'arrow-right'} size={24} color={'#fefefe'} />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes.map((recipe: any) => {
                                     return (
                                         <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe.id, name: recipe.title})}>
-
                                                 {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                                     <LinearGradient
                                                         colors={['transparent','rgba(0,0,0,0.8)' ]}
@@ -140,14 +104,12 @@ const Homepage :  FC = () => {
                                                     >
                                                     <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
                                                     </LinearGradient>
-                                                    {/*<View style={styles.blocRecipeLabel}>*/}
-                                                    {/*    {isLoaded ? getLabels(recipe) : null}*/}
-                                                    {/*    {labels.map((label: string) => {*/}
-                                                    {/*         <Text style={styles.blocRecipeLabelText}>{label}</Text>*/}
-                                                    {/*    })}*/}
-                                                    {/*</View>*/}
+                                                    <View style={styles.blocRecipeLabel}>
+                                                        {recipe.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
+                                                        {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
+                                                    </View>
                                                     <View style={styles.blocRecipeLike}>
-                                                        <Feather name={'heart'} size={24} color={'#041721'} />
+                                                        <Feather name={'heart'} size={24} color={'#fefefe'} />
                                                     </View>
                                                 {/*</ImageBackground>*/}
                                         </TouchableOpacity>
@@ -158,32 +120,32 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>L'ingrédient du jour : {'\n'}La carotte</Text>
-                            <Pressable style={styles.recipe1Button}>
+                            <Text style={styles.recipe1Title}>L'ingrédient du jour : {'\n'}La pomme de terre</Text>
+                            <TouchableOpacity style={styles.recipe1Button} >
                                 <Feather name={'arrow-right'} size={24} color={'#041721'} />
-                            </Pressable>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes2.map((recipe2: any) => {
                                     return (
-                                        <View key={recipe2.id} style={[styles.blocRecipe, general.shadow]}>
-
-                                            <ImageBackground source={{uri: recipe2.image}} resizeMode="cover" style={styles.blocRecipeImage}  imageStyle={{borderRadius: 10}}>
-                                                <LinearGradient
-                                                    colors={['transparent','rgba(0,0,0,0.8)' ]}
-                                                    style={styles.blocRecipeGradient}
-                                                >
-                                                    <Text style={styles.blocRecipeImageText}>{recipe2.title}</Text>
-                                                </LinearGradient>
-                                                <View style={styles.blocRecipeLabel}>
-                                                    <Text style={styles.blocRecipeLabelText}>Label</Text>
-                                                </View>
-                                                <View style={styles.blocRecipeLike}>
-                                                    <Feather name={'heart'} size={24} color={'#041721'} />
-                                                </View>
-                                            </ImageBackground>
-                                        </View>
+                                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
+                                            {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
+                                            <LinearGradient
+                                                colors={['transparent','rgba(0,0,0,0.8)' ]}
+                                                style={styles.blocRecipeGradient}
+                                            >
+                                                <Text style={styles.blocRecipeImageText}>{recipe2.title}</Text>
+                                            </LinearGradient>
+                                            <View style={styles.blocRecipeLabel}>
+                                                {recipe2.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
+                                                {recipe2.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
+                                            </View>
+                                            <View style={styles.blocRecipeLike}>
+                                                <Feather name={'heart'} size={24} color={'#041721'} />
+                                            </View>
+                                            {/*</ImageBackground>*/}
+                                        </TouchableOpacity>
                                     )
                                 })}
                             </ScrollView>

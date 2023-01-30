@@ -5,4 +5,7 @@ export type HomeStackList = {
         id: string;
         name: string;
     }
+    SpotlightRecipes: {
+        recipes: string[];
+    }
 }
