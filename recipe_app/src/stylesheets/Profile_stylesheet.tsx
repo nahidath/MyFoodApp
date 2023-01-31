@@ -5,7 +5,6 @@ import {StyleSheet} from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#c7b922',
         flexDirection: 'column',
     },
     profilePicContainer: {
@@ -36,7 +35,7 @@ export default StyleSheet.create({
     profileName: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#041721',
         marginTop: 30,
     },
     profileInfoContainer: {
@@ -48,12 +47,16 @@ export default StyleSheet.create({
         borderRadius: 10,
         height: 50,
         margin: 5,
-        alignContent: 'center',
-        justifyContent: 'center',
+        flexDirection: 'row',
     },
     btnStyleText: {
         fontSize: 15,
         // fontWeight: 'bold',
-        color: '#1C1E21',
+        color: '#666666',
+        paddingLeft: 10,
+        alignContent: 'center',
+        justifyContent: 'center',
+        paddingTop: 2,
+        // fontFamily: 'sans-serif-medium',
     },
 });
