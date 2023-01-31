@@ -4,6 +4,7 @@ import Homepage from "../screens/Homepage";
 import Profile from "../screens/Profile";
 import Recipe from "../screens/Recipe";
 import SpotlightRecipes from "../screens/SpotlightRecipes";
+import Search from "../screens/Search";
 
 const HomeStack = createNativeStackNavigator<HomeStackList>();
 export default function HomeStackScreen () {
@@ -38,6 +39,7 @@ export default function HomeStackScreen () {
                 },
                 headerTitle: 'Spotlight Recipes',
             }} />
+            <HomeStack.Screen name="Search" component={Search} options={{headerShown: false}} />
         </HomeStack.Navigator>
     )
 }

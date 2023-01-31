@@ -8,4 +8,5 @@ export type HomeStackList = {
     SpotlightRecipes: {
         recipesArray: string[];
     }
+    Search: undefined;
 }

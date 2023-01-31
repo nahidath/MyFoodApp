@@ -84,10 +84,11 @@ const Homepage :  FC = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.searchBloc}>
-                    <TextInput style={[styles.searchInput, general.shadow]} placeholder={'Rechercher une recette'} />
-                    <Pressable style={styles.searchButton}>
-                        <FontAwesome name={"search"} size={24} color={"#041721"} />
-                    </Pressable>
+                    <TextInput style={[styles.searchInput, general.shadow]} placeholder={'Rechercher une recette'} onPressIn={() => navigation.navigate('Search')} />
+                    {/*<FontAwesome style={styles.searchButton} name={"search"} size={24} color={"#041721"} />*/}
+                    {/*<Pressable style={styles.searchButton} >*/}
+                    {/*   */}
+                    {/*</Pressable>*/}
                 </View>
                 <View style={styles.recipesDisplay}>
                     <View>
