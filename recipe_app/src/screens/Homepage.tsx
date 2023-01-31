@@ -44,8 +44,13 @@ const Homepage :  FC = () => {
 
 
     const getRandomRecipe = () => {
+        let dataRecipes : string[] = [];
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4} }).then((response) => {
-            setRecipes(response.data.recipes);
+            dataRecipes = response.data.recipes;
+            dataRecipes.sort((a: any, b: any) => {
+                return b.aggregateLikes - a.aggregateLikes;
+            });
+            setRecipes(dataRecipes);
         },).catch((error) => {
             console.log(error);
         });
@@ -53,7 +58,7 @@ const Homepage :  FC = () => {
     }
 
     const getRecipesByTags = () => {
-        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 4, tags: "potato"} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 10, tags: "potato"} }).then((response) => {
             setRecipes2(response.data.recipes);
         },).catch((error) => {
             console.log(error);
@@ -88,8 +93,8 @@ const Homepage :  FC = () => {
                     <View>
                         <View style={styles.blocTitle}>
                             <Text style={styles.recipe1Title}>Recettes à la une</Text>
-                            <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.navigate('SpotlightRecipes', {recipe: recipes})}>
-                                <Feather name={'arrow-right'} size={24} color={'#fefefe'} />
+                            <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.navigate('SpotlightRecipes', {recipesArray: recipes})}>
+                                <Feather name={'arrow-right'} size={24} color={'#041721'} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.blocDisplay}>
@@ -109,7 +114,7 @@ const Homepage :  FC = () => {
                                                         {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
                                                     </View>
                                                     <View style={styles.blocRecipeLike}>
-                                                        <Feather name={'heart'} size={24} color={'#fefefe'} />
+                                                        <FontAwesome  name={"heart"} size={24} color={'#fefefe'} />
                                                     </View>
                                                 {/*</ImageBackground>*/}
                                         </TouchableOpacity>
@@ -121,9 +126,9 @@ const Homepage :  FC = () => {
                     <View>
                         <View style={styles.blocTitle}>
                             <Text style={styles.recipe1Title}>L'ingrédient du jour : {'\n'}La pomme de terre</Text>
-                            <TouchableOpacity style={styles.recipe1Button} >
-                                <Feather name={'arrow-right'} size={24} color={'#041721'} />
-                            </TouchableOpacity>
+                            {/*<TouchableOpacity style={styles.recipe1Button} >*/}
+                            {/*    <Feather name={'arrow-right'} size={24} color={'#041721'} />*/}
+                            {/*</TouchableOpacity>*/}
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -142,7 +147,7 @@ const Homepage :  FC = () => {
                                                 {recipe2.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
                                             </View>
                                             <View style={styles.blocRecipeLike}>
-                                                <Feather name={'heart'} size={24} color={'#041721'} />
+                                                <FontAwesome  name="heart" size={24} color='#fefefe' />
                                             </View>
                                             {/*</ImageBackground>*/}
                                         </TouchableOpacity>

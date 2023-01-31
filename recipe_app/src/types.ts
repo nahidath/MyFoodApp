@@ -6,6 +6,6 @@ export type HomeStackList = {
         name: string;
     }
     SpotlightRecipes: {
-        recipes: string[];
+        recipesArray: string[];
     }
 }

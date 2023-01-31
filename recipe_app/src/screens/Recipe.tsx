@@ -59,7 +59,8 @@ const Recipe = ({route}: Props) => {
             getLabels();
         }
 
-        LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.']);
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed c\n' +
+        'ontainer instead.']);
     }, [isLoaded, name]);
 
     const getLabels = () => {
