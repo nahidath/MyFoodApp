@@ -1,5 +1,15 @@
-import React, {FC, useEffect, useState} from "react";
-import {View, Text, TextInput, FlatList, ScrollView, Pressable, TouchableOpacity, ImageBackground} from "react-native";
+import React, {FC, useEffect, useRef, useState} from "react";
+import {
+    View,
+    Text,
+    TextInput,
+    FlatList,
+    ScrollView,
+    Pressable,
+    TouchableOpacity,
+    ImageBackground,
+    Image
+} from "react-native";
 import styles from '../stylesheets/Search_stylesheet';
 import recipeStyles from '../stylesheets/SpotlightRecipes_stylesheet';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
@@ -21,23 +31,56 @@ type SearchScreenProps = MyStackNavigationProp<HomeStackList, 'Search'>;
 const Search : FC = () => {
     const navigation = useNavigation<SearchScreenProps>();
     const [search, setSearch] = useState<string>('');
-    const [results, setResults] = useState<string[]>([]);
+    const [results, setResults] = useState<any>([]);
+    const [noResults, setNoResults] = useState<string>('');
+    const [nbResults, setNbResults] = useState<number>(0);
     const [isSearch, setIsSearch] = useState<boolean>(false);
+    const [ids, setIds] = useState<string>('');
+    const [infoR, setInfoR] = useState<any>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
+    const inputRef = useRef<TextInput>(null);
 
 
     const getSearchResult = () => {
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search} }).then((response) => {
+        let dataIds : string | any = [];
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100} }).then((response) => {
             setResults(response.data.results);
+            setNbResults(response.data.totalResults);
+            dataIds=response.data.results.map((item: any) => item.id)
+            setIds(dataIds.toString());
             setIsSearch(true);
+            if(response.data.results.length == 0){
+                setNoResults('No results found');
+            }
         },).catch((error) => {
             console.log(error);
         });
     }
 
+    const getRecipeInfo = () => {
+        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:ids} }).then((response) => {
+            setInfoR(response.data);
+        },).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const handleSearch = () => {
+        if(search!=''){
+            getSearchResult();
+            getRecipeInfo();
+        }
+    }
+
     useEffect(() => {
-        getSearchResult();
-    }, [search]);
+        inputRef.current?.focus();
+        setNoResults('');
+        // if(search!='' && isSearch){
+        //     getSearchResult();
+        //     console.log('search', search);
+        // }
+
+    }, [search, isSearch]);
 
     return (
         // <KeyboardAwareScrollView
@@ -47,45 +90,61 @@ const Search : FC = () => {
         // >
             <View style={general.container}>
                 <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
-                <View style={styles.searchContainer}>
-                    <TextInput style={styles.searchInput} placeholder={'Rechercher une recette'} onSubmitEditing={(searchTxt) => setSearch(searchTxt.nativeEvent.text)} />
-                    {/*<Pressable style={styles.searchButton}>*/}
-                    {/*    <FontAwesome name={"search"} size={24} color={"#ffffff"} />*/}
-                    {/*</Pressable>*/}
+                <View style={[styles.searchContainer, general.shadow]}>
+                    <FontAwesome style={styles.icon} name={"search"} size={22} color={"#9e9e9e"} />
+                    <TextInput
+                        ref={inputRef}
+                        // style={styles.searchInput}
+                        placeholder={'Rechercher une recette'}
+                        keyboardType="default"
+                        value={search}
+                        onChangeText={setSearch}
+                        onSubmitEditing={handleSearch} />
                 </View>
-                <Separator />
                 {isSearch && results.length > 0 ? (
                     <View style={styles.resultsContainer}>
-                        <Text style={styles.resultsText}>{results.length} Resultat(s) trouvé(s)</Text>
+                        <Text style={styles.resultsText}>{nbResults} {results.length == 1 ? "Resultat trouvé" : "Resultats trouvés" } </Text>
                         <Separator />
-                        {results.map((result : any) => {
-                            return (
-                                <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
-                                <View style={[recipeStyles.imgRecipe]}>
-                                    {result.image ? <ImageBackground source={{uri: result.image}} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
-                                </View>
-                                <View style={recipeStyles.blocRecipeBelow}>
-                                    <Text style={recipeStyles.blocRecipeImageText}>{result.title}</Text>
-                                    <Text style={recipeStyles.time}><Feather name="clock" size={20} color="#041721"/> {result.readyInMinutes} min</Text>
-                                    <View style={recipeStyles.blocRecipeLikes}>
-                                        <Text style={recipeStyles.recipeLikesText}>{result.aggregateLikes}</Text>
-                                        <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
+                        <ScrollView>
+                            {results.map((result : any) => {
+                                return (
+                                    <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
+                                    <View style={[recipeStyles.imgRecipe]}>
+                                        {result.image ? <ImageBackground source={{uri: result.image}} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                     </View>
-                                </View>
-                                <View style={recipeStyles.blocRecipeLabel}>
-                                    {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
-                                    {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
-                                    {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
-                                    {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
-                                    {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
-                                </View>
-                            </TouchableOpacity>
-                            )
-                        })}
+                                    <View style={recipeStyles.blocRecipeBelow}>
+                                        <Text style={recipeStyles.blocRecipeImageText}>{result.title}</Text>
+                                        {infoR.map((info : any) => (
+                                            <View>
+                                                {info.map((i : any) => (
+                                                    <View>
+                                                        <View style={recipeStyles.blocRecipeLabel}>
+                                                            {i.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
+                                                            {i.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
+                                                            {i.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
+                                                            {i.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
+                                                            {i.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
+                                                        </View>
+
+                                                        <Text style={recipeStyles.time}><Feather name="clock" size={20} color="#041721"/> {i.readyInMinutes} min</Text>
+                                                        <View style={recipeStyles.blocRecipeLikes}>
+                                                            <Text style={recipeStyles.recipeLikesText}>{i.aggregateLikes}</Text>
+                                                            <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
+                                                        </View>
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        ))}
+                                    </View>
+
+                                </TouchableOpacity>
+                                )
+                            })}
+                        </ScrollView>
 
                     </View>
                 ) : (
-                    <Text style={styles.resultsText}>Aucun résultat</Text>
+                    <Text style={styles.resultsText}>{noResults}</Text>
                 )}
 
             </View>

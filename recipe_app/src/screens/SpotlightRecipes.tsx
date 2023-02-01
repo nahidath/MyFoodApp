@@ -48,6 +48,13 @@ const SpotlightRecipes = ({route}: Props) => {
         getRecipes();
     },[])
 
+    const formatTime = (time: number) => {
+        const hours = Math.floor(time / 60);
+        const minutes = time % 60;
+        const m = minutes < 10 ? '0' + minutes : minutes
+        return hours +'h' + m + ' min';
+    }
+
 
 
     return (
@@ -58,11 +65,11 @@ const SpotlightRecipes = ({route}: Props) => {
                     return (
                         <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
                             <View style={[styles.imgRecipe]}>
-                                {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
+                                {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                             </View>
                             <View style={styles.blocRecipeBelow}>
                                 <Text style={styles.blocRecipeImageText}>{recipe2.title}</Text>
-                                <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> {recipe2.readyInMinutes} min</Text>
+                                <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> {recipe2.readyInMinutes > 59 ? formatTime(recipe2.readyInMinutes) :recipe2.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
                                     <Text style={styles.recipeLikesText}>{recipe2.aggregateLikes}</Text>
                                     <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />

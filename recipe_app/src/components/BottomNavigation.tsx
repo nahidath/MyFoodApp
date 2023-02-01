@@ -101,9 +101,9 @@ const BottomNavigation : FC = () => {
                     <Feather name={"bell"} size={24} color={color} />
                 ),}
             }/>
-            <Tab.Screen name="Settings" component={More} options={{
+            <Tab.Screen name="More" component={More} options={{
                 tabBarIcon: ({color}) => (
-                    <Feather name={"settings"} size={24} color={color} />
+                    <Feather name={"more-horizontal"} size={24} color={color} />
                 ),}
             }/>
         </Tab.Navigator>

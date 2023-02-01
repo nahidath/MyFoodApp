@@ -83,12 +83,11 @@ const Homepage :  FC = () => {
                         <View style={styles.profile}></View>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.searchBloc}>
-                    <TextInput style={[styles.searchInput, general.shadow]} placeholder={'Rechercher une recette'} onPressIn={() => navigation.navigate('Search')} />
-                    {/*<FontAwesome style={styles.searchButton} name={"search"} size={24} color={"#041721"} />*/}
-                    {/*<Pressable style={styles.searchButton} >*/}
-                    {/*   */}
-                    {/*</Pressable>*/}
+                <View style={[styles.searchBloc, general.shadow]}>
+                    <FontAwesome style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />
+                    {/*<Feather style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />*/}
+
+                    <TextInput placeholder={'Rechercher une recette'} onFocus={() => navigation.navigate('Search')} />
                 </View>
                 <View style={styles.recipesDisplay}>
                     <View>
@@ -103,7 +102,7 @@ const Homepage :  FC = () => {
                                 {recipes.map((recipe: any) => {
                                     return (
                                         <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe.id, name: recipe.title})}>
-                                                {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
+                                                {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
                                                     <LinearGradient
                                                         colors={['transparent','rgba(0,0,0,0.8)' ]}
                                                         style={styles.blocRecipeGradient}

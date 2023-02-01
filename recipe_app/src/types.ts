@@ -10,3 +10,14 @@ export type HomeStackList = {
     }
     Search: undefined;
 }
+
+export type MoreStackList = {
+    More : undefined;
+    NotificationSettings : undefined;
+    DisplaySettings: undefined;
+    LanguageSettings : undefined;
+    Faq: undefined;
+    Contact: undefined;
+    PrivacyPolicy: undefined;
+    TermsOfUse: undefined;
+}

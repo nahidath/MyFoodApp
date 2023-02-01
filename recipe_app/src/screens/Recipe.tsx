@@ -87,6 +87,13 @@ const Recipe = ({route}: Props) => {
         }
     }
 
+    const formatTime = (time: number) => {
+        const hours = Math.floor(time / 60);
+        const minutes = time % 60;
+        const m = minutes < 10 ? '0' + minutes : minutes
+        return hours +'h' + m + ' minutes';
+    }
+
 
 
     //share recipe
@@ -120,14 +127,9 @@ const Recipe = ({route}: Props) => {
                        {/*<Pressable onPress={async () => {await onShare();}}>*/}
                        {/*     <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
                        {/*</Pressable>*/}
-                       {/*    {labels.map((label, index) => (*/}
-                       {/*        <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>*/}
-                       {/*        // <Text style={styles.headerRecipeLabelText}>Label</Text>*/}
-                       {/*    ))}*/}
                        <View style={styles.headerRecipeLabel}>
                             {labels.map((label, index) => (
                                 <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
-                           // <Text style={styles.headerRecipeLabelText}>Label</Text>
                             ))}
                        </View>
                        <LinearGradient
@@ -142,7 +144,7 @@ const Recipe = ({route}: Props) => {
                        </LinearGradient>
                      </ImageBackground>
 
-                       : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage}>
+                       : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}>
                            <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
                            <View style={styles.headerRecipeLabel}>
                                <Text style={styles.headerRecipeLabelText}>Label</Text>
@@ -156,8 +158,8 @@ const Recipe = ({route}: Props) => {
                 </View>
 
                 <View style={styles.recipeInfos}>
-                    <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> Ready in {recipe.readyInMinutes} minutes</Text>
-                    <Text style={styles.servings}><Feather name="user" size={20} color="#041721"/>Serves {recipe.servings} people</Text>
+                    <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> Ready in {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " minutes"} </Text>
+                    <Text style={styles.servings}><Feather name="user" size={20} color="#041721"/> Serves {recipe.servings} people</Text>
                     <View style={styles.ingredientList}>
                         <Text style={styles.ingredientListTitle}>INGREDIENTS</Text>
                         <FlatList data={ingredients} renderItem={ ({item}) => <Text style={styles.items}>{item}</Text>  } />

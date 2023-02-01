@@ -126,8 +126,13 @@ export default StyleSheet.create({
         backgroundColor: '#9fc131',
     },
     searchBloc: {
+        flexDirection: 'row',
+        height: 50,
+        borderRadius: 10,
         margin: 20,
-        marginBottom: 0,
+        backgroundColor: '#fefefe',
+        // margin: 20,
+        // marginBottom: 0,
         top: -20,
     },
     searchInput: {
@@ -139,11 +144,7 @@ export default StyleSheet.create({
         paddingRight: 50,
     },
     searchButton: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-        top: -40,
-        right: 20,
+        padding: 10,
     }
 
 });

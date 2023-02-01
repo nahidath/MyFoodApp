@@ -5,6 +5,10 @@ import hairlineWidth = StyleSheet.hairlineWidth;
 export default StyleSheet.create({
     searchContainer: {
         flexDirection: 'row',
+        height: 50,
+        borderRadius: 10,
+        margin: 10,
+        backgroundColor: '#fefefe',
     },
     searchButton: {
         position: 'relative',
@@ -19,12 +23,13 @@ export default StyleSheet.create({
         borderRadius: 50,
     },
     searchInput: {
-        backgroundColor: '#fff',
-        height: 50,
-        padding: 10,
-        width: '80%',
-        margin: 10,
-        borderRadius: 20,
+        // backgroundColor: '#fefefe',
+        // height: 50,
+        // padding: 10,
+        // // margin: 10,
+        // borderRadius: 10,
+        // flex : 1,
+        fontSize: 15,
     },
     resultsText: {
         paddingLeft: 10,
@@ -41,6 +46,9 @@ export default StyleSheet.create({
     },
     resultsContainer: {
         flex: 1,
+        padding: 10,
+    },
+    icon:{
         padding: 10,
     }
 });
