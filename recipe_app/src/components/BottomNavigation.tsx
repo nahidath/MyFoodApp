@@ -15,6 +15,7 @@ import HomeStackScreen from "./HomeStackScreen";
 import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet} from "react-native";
 import general from "../stylesheets/General_stylesheet";
 import {useNavigation} from "@react-navigation/native";
+import MoreStackScreen from "./MoreStackScreen";
 
 
 
@@ -101,7 +102,8 @@ const BottomNavigation : FC = () => {
                     <Feather name={"bell"} size={24} color={color} />
                 ),}
             }/>
-            <Tab.Screen name="More" component={More} options={{
+            <Tab.Screen name="More" component={MoreStackScreen} options={{
+                headerShown: false,
                 tabBarIcon: ({color}) => (
                     <Feather name={"more-horizontal"} size={24} color={color} />
                 ),}

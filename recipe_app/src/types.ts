@@ -12,7 +12,7 @@ export type HomeStackList = {
 }
 
 export type MoreStackList = {
-    More : undefined;
+    MorePage : undefined;
     NotificationSettings : undefined;
     DisplaySettings: undefined;
     LanguageSettings : undefined;

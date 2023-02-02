@@ -13,7 +13,7 @@ import {useNavigation} from "@react-navigation/native";
 
 
 // @ts-ignore
-type MoreScreenProps = MyStackNavigationProp<MoreStackList, 'More'>;
+type MoreScreenProps = MyStackNavigationProp<MoreStackList, 'MorePage'>;
 
 const More : FC = () => {
     const navigation = useNavigation<MoreScreenProps>();
