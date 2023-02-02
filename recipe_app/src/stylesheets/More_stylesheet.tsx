@@ -8,7 +8,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
     },
     textTitle: {
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#041721',
         margin: 10,
