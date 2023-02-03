@@ -13,18 +13,7 @@ export default function MoreStackScreen () {
     return (
         <MoreStack.Navigator >
             <MoreStack.Screen name="MorePage" component={More} options={{
-                // headerTitle: 'More',
-                // headerStyle: {
-                //     backgroundColor: '#fefefe',
-                // },
-                // headerTintColor: '#041721',
-                // headerTitleStyle: {
-                //     fontWeight: 'bold',
-                // },
-                headerShown: false,
-            }}  />
-            <MoreStack.Screen name="NotificationSettings" component={NotificationSettings} options={{
-                headerTitle: 'Notification Settings',
+                headerTitle: 'More',
                 headerStyle: {
                     backgroundColor: '#fefefe',
                 },
@@ -32,6 +21,18 @@ export default function MoreStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
+                // headerShown: false,
+            }}  />
+            <MoreStack.Screen name="NotificationSettings" component={NotificationSettings} options={{
+                headerTitle: 'Notifications Settings',
+                headerStyle: {
+                    backgroundColor: '#fefefe',
+                },
+                headerTintColor: '#041721',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                headerShadowVisible: false,
             }}  />
             <MoreStack.Screen name="DisplaySettings" component={DisplaySettings} options={{
                 headerTitle: 'Display Settings',

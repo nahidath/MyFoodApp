@@ -1,5 +1,5 @@
-import React, {FC} from "react";
-import {View, Text, TouchableOpacity, ScrollView} from "react-native";
+import React, {FC, useState} from "react";
+import {View, Text, TouchableOpacity, ScrollView, Modal, FlatList} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import styles from "../stylesheets/More_stylesheet";
@@ -9,6 +9,7 @@ import general from "../stylesheets/General_stylesheet";
 import {MoreStackList} from "../types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {useNavigation} from "@react-navigation/native";
+import Separator from "../components/Separator";
 
 
 
@@ -17,6 +18,7 @@ type MoreScreenProps = MyStackNavigationProp<MoreStackList, 'MorePage'>;
 
 const More : FC = () => {
     const navigation = useNavigation<MoreScreenProps>();
+    const [modalVisible, setModalVisible] = useState(false);
 
     // const [fontsLoaded] = useFonts({
     //     // 'PlusJakartaSans': require('../../assets/fonts/PlusJakartaSans-VariableFont_wght.ttf'),
@@ -39,7 +41,38 @@ const More : FC = () => {
                         <Feather name={"monitor"} size={22} color={"#666666"} />
                         <Text style={styles.btnStyleText}>Display Settings</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => navigation.push('LanguageSettings')}>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <View style={styles.centeredView}>
+                            <View style={[styles.modalView, general.shadow]}>
+                                <Text style={styles.modalText}>Choose your language</Text>
+                                <Separator />
+                                <TouchableOpacity style={styles.languageBtn}>
+                                    <Text style={styles.languageBtnText}>English</Text>
+                                </TouchableOpacity>
+                                <Separator />
+                                <TouchableOpacity style={styles.languageBtn}>
+                                    <Text style={styles.languageBtnText}>French</Text>
+                                </TouchableOpacity>
+
+                                {/*<TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => setModalVisible(!modalVisible)}>*/}
+                                {/*    <Feather name={"x"} size={22} color={"#666666"} />*/}
+                                {/*    <Text style={styles.btnStyleText}>Close</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                                {/*<Pressable*/}
+                                {/*    style={[styles.button, styles.buttonClose]}*/}
+                                {/*    onPress={() => setModalVisible(!modalVisible)}>*/}
+                                {/*    <Text style={styles.textStyle}>Hide Modal</Text>*/}
+                                {/*</Pressable>*/}
+                            </View>
+                        </View>
+                    </Modal>
+                    <TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => setModalVisible(true)}>
                         <Feather name={"globe"} size={22} color={"#666666"} />
                         <Text style={styles.btnStyleText}>Languages</Text>
                     </TouchableOpacity>
