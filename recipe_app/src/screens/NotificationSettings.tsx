@@ -1,7 +1,8 @@
 import {View, Text, Switch} from "react-native";
 import styles from "../stylesheets/NS_stylesheet";
-import {useState} from "react";
+import React, {useState} from "react";
 import general from "../stylesheets/General_stylesheet";
+import FocusAwareStatusBar from "../components/StatusBarStyle";
 
 const NotificationSettings = () => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -12,7 +13,8 @@ const NotificationSettings = () => {
 
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, general.container]}>
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
             <View style={styles.switchContainer}>
                 <View style={[styles.pusherContainer, general.shadow]}>
                     <Text style={styles.textTitle}>Notification Push</Text>

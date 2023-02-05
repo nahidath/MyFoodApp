@@ -1,11 +1,25 @@
-import {ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, useState} from "react";
+import {ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, useState, FC} from "react";
 import {View, Text, LayoutAnimation, TouchableOpacity} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {StyleSheet} from "react-native";
+import general from "../stylesheets/General_stylesheet";
 
 
-const Accordion = (title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, data: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined) => {
+// interface TitleProps{
+//     title?: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined;
+// }
+//
+// interface DataProps{
+//     data?: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined;
+// }
+
+interface AccordionProps{
+    title?: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined;
+    data?: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined;
+}
+
+const Accordion : FC<AccordionProps>  = ({title, data})  => {
 
     const [expanded, setExpanded] = useState(false);
 
@@ -16,7 +30,9 @@ const Accordion = (title: string | number | boolean | ReactElement<any, string |
 
     return (
         <View>
-            <TouchableOpacity style={styles.row} onPress={()=>toggleExpand()}>
+            <TouchableOpacity style={[styles.row, general.shadow]} onPress={()=>toggleExpand()}>
+            {/*<TouchableOpacity style={styles.row} onPress={()=>toggleExpand()}>*/}
+
                 <Text style={styles.title}>{title}</Text>
                 <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={"#041721"} />
             </TouchableOpacity>
@@ -24,7 +40,7 @@ const Accordion = (title: string | number | boolean | ReactElement<any, string |
             {
                 expanded &&
                 <View style={styles.child}>
-                    <Text>{data}</Text>
+                    <Text style={{paddingLeft:10, color: "#041721"}}>{data}</Text>
                 </View>
             }
 
@@ -53,8 +69,10 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     child:{
-        backgroundColor: "#fefefe",
-        padding:16,
+        backgroundColor: "#fff",
+        padding: 16,
+
+        // marginLeft: 10,
     }
 
 });

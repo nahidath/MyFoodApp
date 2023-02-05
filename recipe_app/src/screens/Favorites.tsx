@@ -8,7 +8,7 @@ import general from "../stylesheets/General_stylesheet";
 const Favorites : FC = () => {
     return (
         <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
             <Text>Favorites</Text>
         </View>
     );

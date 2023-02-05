@@ -89,13 +89,13 @@ const Search : FC = () => {
         //     scrollEnabled={true}
         // >
             <View style={general.container}>
-                <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+                <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
                 <View style={[styles.searchContainer, general.shadow]}>
                     <FontAwesome style={styles.icon} name={"search"} size={22} color={"#9e9e9e"} />
                     <TextInput
                         ref={inputRef}
                         // style={styles.searchInput}
-                        placeholder={'Rechercher une recette'}
+                        placeholder={'Search recipes'}
                         keyboardType="default"
                         value={search}
                         onChangeText={setSearch}
@@ -103,7 +103,7 @@ const Search : FC = () => {
                 </View>
                 {isSearch && results.length > 0 ? (
                     <View style={styles.resultsContainer}>
-                        <Text style={styles.resultsText}>{nbResults} {results.length == 1 ? "Resultat trouvé" : "Resultats trouvés" } </Text>
+                        <Text style={styles.resultsText}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
                         <Separator />
                         <ScrollView>
                             {results.map((result : any) => {

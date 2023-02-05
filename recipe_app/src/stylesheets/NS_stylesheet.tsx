@@ -4,7 +4,7 @@ import {StyleSheet} from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fefefe',
+        backgroundColor: '#FAF9F6',
         flexDirection: 'column',
     },
     pusherContainer: {

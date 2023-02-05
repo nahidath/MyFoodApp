@@ -12,6 +12,27 @@ export default StyleSheet.create({
         color: '#666666',
         margin: 10,
         marginTop: 15,
-    }
+    },
+    textTitle: {
+        fontSize: 18,
+        color: '#666666',
+        margin: 10,
+        marginTop: 15,
+        fontWeight: 'bold',
+    },
+    textSubTitle: {
+        fontSize: 16,
+        color: '#666666',
+        margin: 10,
+        marginTop: 15,
+        fontWeight: 'bold',
+    },
+    textSub: {
+        fontWeight: "bold",
+        fontSize: 15,
+        color: '#666666',
+        margin: 10,
+        marginTop: 15,
+    },
 
 });

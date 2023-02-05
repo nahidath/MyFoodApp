@@ -1,7 +1,8 @@
 import {View, Text, Switch} from "react-native";
 import styles from "../stylesheets/DS_stylesheet";
 import general from "../stylesheets/General_stylesheet";
-import {useState} from "react";
+import React, {useState} from "react";
+import FocusAwareStatusBar from "../components/StatusBarStyle";
 
 const DisplaySettings = () => {
 
@@ -10,7 +11,8 @@ const DisplaySettings = () => {
     const toggleSwitchDarkMode = () => setIsEnabled(previousState => !previousState);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, general.container]}>
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
             <View style={styles.switchContainer}>
                 <View style={[styles.pusherContainer, general.shadow]}>
                     <Text style={styles.textTitle}>Switch to Dark Mode</Text>

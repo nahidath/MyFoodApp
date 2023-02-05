@@ -6,4 +6,10 @@ export default StyleSheet.create({
         backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
+    faqContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        marginTop: 10,
+    }
+
 });

@@ -14,7 +14,7 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="MorePage" component={More} options={{
                 headerTitle: 'More',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {
@@ -25,18 +25,18 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="NotificationSettings" component={NotificationSettings} options={{
                 headerTitle: 'Notifications Settings',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerShadowVisible: false,
+                // headerShadowVisible: false,
             }}  />
             <MoreStack.Screen name="DisplaySettings" component={DisplaySettings} options={{
                 headerTitle: 'Display Settings',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {
@@ -56,7 +56,7 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="Faq" component={Faq} options={{
                 headerTitle: 'FAQ',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {
@@ -67,7 +67,7 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="Contact" component={Contact} options={{
                 headerTitle: 'Contact',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {
@@ -78,7 +78,7 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{
                 headerTitle: 'Privacy Policy',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {
@@ -88,7 +88,7 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="TermsOfUse" component={TermsOfUse} options={{
                 headerTitle: 'Terms of Use',
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: '#FAF9F6',
                 },
                 headerTintColor: '#041721',
                 headerTitleStyle: {

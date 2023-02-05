@@ -58,12 +58,12 @@ const SpotlightRecipes = ({route}: Props) => {
 
 
     return (
-        <View style={styles.container}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+        <View style={[styles.container, general.container]}>
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
             <ScrollView>
                 {recipesR.map((recipe2: any) => {
                     return (
-                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
+                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.push('Recipe', {id :recipe2.id, name: recipe2.title})}>
                             <View style={[styles.imgRecipe]}>
                                 {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                             </View>

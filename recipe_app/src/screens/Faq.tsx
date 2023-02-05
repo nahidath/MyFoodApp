@@ -1,6 +1,9 @@
 import {View, Text} from "react-native";
 import styles from "../stylesheets/Faq_stylesheet";
 import Accordion from "../components/Accordion";
+import FocusAwareStatusBar from "../components/StatusBarStyle";
+import React from "react";
+import general from "../stylesheets/General_stylesheet";
 
 
 const Faq = () => {
@@ -36,8 +39,11 @@ const Faq = () => {
 
 
     return (
-        <View style={styles.container}>
-            {renderQuestions()}
+        <View style={[styles.container, general.container]}>
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
+            <View style={styles.faqContainer}>
+                {renderQuestions()}
+            </View>
         </View>
     );
 };

@@ -117,7 +117,7 @@ const Recipe = ({route}: Props) => {
 
     return (
         <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
                    {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>

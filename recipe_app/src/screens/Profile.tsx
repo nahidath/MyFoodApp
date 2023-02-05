@@ -13,7 +13,7 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 const Profile : FC = () => {
     return (
         <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
             <View style={styles.profilePicContainer}>
                 <View style={styles.profilePic}></View>
                 <Pressable style={styles.editProfilePic}>

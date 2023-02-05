@@ -28,7 +28,7 @@ const More : FC = () => {
 
     return (
         <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
             <ScrollView>
                 <View>
                     <Text style={styles.textTitle}>Settings</Text>

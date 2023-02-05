@@ -73,7 +73,7 @@ const Homepage :  FC = () => {
     return (
 
         <View style={[styles.container, general.container, {height: height}]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fafafa" />
+            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
             <ScrollView>
                 <View style={styles.headerBloc}>
                     <View style={styles.headerBlocText}>
@@ -87,12 +87,12 @@ const Homepage :  FC = () => {
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />
                     {/*<Feather style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />*/}
 
-                    <TextInput placeholder={'Rechercher une recette'} onFocus={() => navigation.navigate('Search')} />
+                    <TextInput placeholder={'Search recipes'} onFocus={() => navigation.push('Search')} />
                 </View>
                 <View style={styles.recipesDisplay}>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>Recettes à la une</Text>
+                            <Text style={styles.recipe1Title}>Spotlight Recipes</Text>
                             <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.navigate('SpotlightRecipes', {recipesArray: recipes})}>
                                 <Feather name={'arrow-right'} size={24} color={'#041721'} />
                             </TouchableOpacity>
@@ -125,7 +125,7 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>L'ingrédient du jour : {'\n'}La pomme de terre</Text>
+                            <Text style={styles.recipe1Title}>Today's ingredient : {'\n'}Potato</Text>
                             {/*<TouchableOpacity style={styles.recipe1Button} >*/}
                             {/*    <Feather name={'arrow-right'} size={24} color={'#041721'} />*/}
                             {/*</TouchableOpacity>*/}
@@ -135,7 +135,7 @@ const Homepage :  FC = () => {
                                 {recipes2.map((recipe2: any) => {
                                     return (
                                         <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
-                                            {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
+                                            {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                             <LinearGradient
                                                 colors={['transparent','rgba(0,0,0,0.8)' ]}
                                                 style={styles.blocRecipeGradient}
