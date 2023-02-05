@@ -16,7 +16,7 @@ import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet} from "react-native"
 import general from "../stylesheets/General_stylesheet";
 import {useNavigation} from "@react-navigation/native";
 import MoreStackScreen from "./MoreStackScreen";
-
+import {useTheme} from '@react-navigation/native';
 
 
 
@@ -24,6 +24,7 @@ import MoreStackScreen from "./MoreStackScreen";
 const BottomNavigation : FC = () => {
 
     const Tab = createBottomTabNavigator();
+    const colors = useTheme().colors;
 
     return (
         <Tab.Navigator
@@ -32,21 +33,22 @@ const BottomNavigation : FC = () => {
                 screenOptions= {{
 
                     headerStyle: {
-                        backgroundColor: '#FAF9F6',
+                        backgroundColor: colors.background,
                         ...general.shadow
                     },
                     headerTintColor: '#fff',
                     headerTitleStyle: {
                         fontWeight: 'bold',
-                        color: '#041721',
+                        color: colors.text,
                     },
                     tabBarShowLabel: true,
                     tabBarStyle: {
-                        backgroundColor: '#9fc131',
+                        backgroundColor: colors.primary,
                         height: 60,
                         justifyContent: 'center',
                         alignItems: 'center',
                         zIndex: 0,
+
                         // borderTopRightRadius: 20,
                         // position: 'absolute',
                         // bottom: 25,

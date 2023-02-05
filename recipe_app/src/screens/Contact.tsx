@@ -1,4 +1,14 @@
-import {Button, Pressable, TextInput, View, Text, TouchableHighlight, TouchableOpacity, Alert} from "react-native";
+import {
+    Button,
+    Pressable,
+    TextInput,
+    View,
+    Text,
+    TouchableHighlight,
+    TouchableOpacity,
+    Alert,
+    ScrollView
+} from "react-native";
 import React, {useRef, useState} from "react";
 import styles from "../stylesheets/Contact_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -23,8 +33,6 @@ const Contact = () => {
         message: message,
     }
 
-    console.log(emailPublicKey);
-    // console.log(emailService);
 
     const sendMail = () => {
 
@@ -62,22 +70,25 @@ const Contact = () => {
     return (
         <View style={[styles.container, general.container]}>
             <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
-            <View style={styles.form}>
+            <ScrollView>
                 <Text style={styles.headerText}> A problem ? Any suggestions ? Let's us know !!</Text>
-                <TextInput style={styles.input} placeholder="Name" onChangeText={setName} value={name}/>
-                <TextInput style={styles.input} placeholder="Email" onChangeText={setEmail} value={email}/>
-                <TextInput
-                    style={styles.inputMsg}
-                    placeholder="Message"
-                    multiline={true}
-                    numberOfLines={4}
-                    onChangeText={setMessage}
-                    value={message}
-                />
-                <TouchableOpacity style={styles.sendBtn} onPress={() => sendMail()}>
-                   <Text style={styles.btnText}>Send</Text>
-                </TouchableOpacity>
-            </View>
+                <Text style={styles.headerText}> We will answer you as soon as possible</Text>
+                <View style={styles.form}>
+                    <TextInput style={styles.input} placeholder="Name" onChangeText={value => setName(value)} value={name}/>
+                    <TextInput style={styles.input} placeholder="Email" onChangeText={value => setEmail(value)} value={email}/>
+                    <TextInput
+                        style={styles.inputMsg}
+                        placeholder="Message"
+                        multiline={true}
+                        numberOfLines={4}
+                        onChangeText={value => setMessage(value)}
+                        value={message}
+                    />
+                    <TouchableOpacity style={styles.sendBtn} onPress={() => sendMail()}>
+                       <Text style={styles.btnText}>Send</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </View>
     );
 };
