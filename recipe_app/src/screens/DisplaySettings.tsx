@@ -12,7 +12,7 @@ const DisplaySettings = () => {
 
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
     // const theme = useSelector((state: { themeReducer: { theme: any; }; }) => state.themeReducer.theme);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     // const [mode, setMode] = useState(theme);
     // console.log(mode);
 
@@ -27,8 +27,15 @@ const DisplaySettings = () => {
 
     const toggleSwitchDarkMode = () => {
         setIsEnabled(previousState => !previousState);
+        if(isEnabled){
+            dispatch(themeChange('light'));
+        }else{
+            dispatch(themeChange('dark'));
+        }
         // handleThemeChange();
     }
+
+    console.log(isEnabled);
 
     // useEffect(() => {
     //     setMode(theme);

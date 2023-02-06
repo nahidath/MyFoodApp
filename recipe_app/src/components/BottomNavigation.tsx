@@ -48,7 +48,7 @@ const BottomNavigation : FC = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         zIndex: 0,
-
+                        borderTopColor: 'transparent',
                         // borderTopRightRadius: 20,
                         // position: 'absolute',
                         // bottom: 25,

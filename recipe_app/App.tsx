@@ -8,8 +8,9 @@ import {useColorScheme} from 'react-native';
 export default function App() {
 
     const store = configureStore();
+    console.log(store.getState());
     const scheme = useColorScheme();
-    console.log(scheme);
+    console.log(scheme === 'dark' ? "DarkTheme" : "LightTheme");
     const DarkTheme = {
         dark: true,
         colors: {
@@ -33,12 +34,12 @@ export default function App() {
         }
     }
     return (
-        // <Provider store={store}>
-        //
-        // </Provider>
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
-        <BottomNavigation />
-    </NavigationContainer>
+        <Provider store={store}>
+            <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
+                <BottomNavigation />
+            </NavigationContainer>
+        </Provider>
+
   );
 }
 
