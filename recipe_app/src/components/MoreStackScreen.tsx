@@ -7,16 +7,19 @@ import More from "../screens/More";
 import Contact from "../screens/Contact";
 import PrivacyPolicy from "../screens/PrivacyPolicy";
 import TermsOfUse from "../screens/TermsOfUse";
+import {useTheme} from "@react-navigation/native";
 const MoreStack = createNativeStackNavigator<MoreStackList>();
 export default function MoreStackScreen () {
+    const {colors} = useTheme();
+
     return (
         <MoreStack.Navigator >
             <MoreStack.Screen name="MorePage" component={More} options={{
                 headerTitle: 'More',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
@@ -25,9 +28,9 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="NotificationSettings" component={NotificationSettings} options={{
                 headerTitle: 'Notifications Settings',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
@@ -36,9 +39,9 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="DisplaySettings" component={DisplaySettings} options={{
                 headerTitle: 'Display Settings',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
@@ -56,9 +59,9 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="Faq" component={Faq} options={{
                 headerTitle: 'FAQ',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
@@ -67,9 +70,9 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="Contact" component={Contact} options={{
                 headerTitle: 'Contact',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
@@ -78,9 +81,9 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{
                 headerTitle: 'Privacy Policy',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor:colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
@@ -88,9 +91,9 @@ export default function MoreStackScreen () {
             <MoreStack.Screen name="TermsOfUse" component={TermsOfUse} options={{
                 headerTitle: 'Terms of Use',
                 headerStyle: {
-                    backgroundColor: '#FAF9F6',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },

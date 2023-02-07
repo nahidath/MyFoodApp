@@ -5,6 +5,7 @@ import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
+import {useTheme} from "@react-navigation/native";
 
 const NotificationSettings = () => {
     const [isEnabledPush, setIsEnabledPush] = useState(false);
@@ -119,12 +120,15 @@ const NotificationSettings = () => {
     //     }
     // }, [isEnabledPush]);
 
+    const {colors} = useTheme();
+    const theme = useTheme();
+
     return (
-        <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={styles.switchContainer}>
-                <View style={[styles.pusherContainer, general.shadow]}>
-                    <Text style={styles.textTitle}>Notification Push</Text>
+                <View style={[styles.pusherContainer, general.shadow, {backgroundColor:colors.notification}]}>
+                    <Text style={[styles.textTitle, {color:colors.text}]}>Notification Push</Text>
                     <Switch
                         trackColor={{false: '#767577', true: '#b1dad6'}}
                         thumbColor={isEnabledPush ? '#008375' : '#f4f3f4'}
@@ -133,8 +137,8 @@ const NotificationSettings = () => {
                         value={isEnabledPush}
                     />
                 </View>
-                <View style={[styles.pusherContainer, general.shadow]}>
-                    <Text style={styles.textTitle}>Notification Email</Text>
+                <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
+                    <Text style={[styles.textTitle, {color: colors.text}]}>Notification Email</Text>
                     <Switch
                         trackColor={{false: '#767577', true: '#b1dad6'}}
                         thumbColor={isEnabledEmail? '#008375' : '#f4f3f4'}

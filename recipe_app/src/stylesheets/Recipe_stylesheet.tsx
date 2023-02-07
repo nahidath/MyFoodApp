@@ -65,7 +65,6 @@ export default StyleSheet.create({
         textDecorationColor: 'rgba(254,254,254,0.82)',
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#041721',
         marginBottom: 10,
     },
     recipeDescription: {
@@ -84,7 +83,6 @@ export default StyleSheet.create({
     },
     source : {
         fontSize: 12,
-        color: '#041721',
         marginBottom: 10,
         fontStyle: 'italic',
         padding: 20,
@@ -131,12 +129,10 @@ export default StyleSheet.create({
     },
     time:{
         fontSize: 15,
-        color: '#041721',
         fontStyle: 'italic',
     },
     servings: {
         fontSize: 15,
-        color: '#041721',
         marginBottom: 10,
         fontStyle: 'italic',
     }

@@ -5,35 +5,37 @@ import Profile from "../screens/Profile";
 import Recipe from "../screens/Recipe";
 import SpotlightRecipes from "../screens/SpotlightRecipes";
 import Search from "../screens/Search";
+import {useTheme} from "@react-navigation/native";
 
 const HomeStack = createNativeStackNavigator<HomeStackList>();
 export default function HomeStackScreen () {
+    const { colors } = useTheme();
     return (
         <HomeStack.Navigator >
             <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
             <HomeStack.Screen name="Profile" component={Profile} options={{
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
             }} />
             <HomeStack.Screen name="Recipe" component={Recipe}  options={{
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
             }} />
             <HomeStack.Screen name="SpotlightRecipes" component={SpotlightRecipes} options={{
                 headerStyle: {
-                    backgroundColor: '#fefefe',
+                    backgroundColor: colors.notification,
                 },
-                headerTintColor: '#041721',
+                headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },

@@ -8,7 +8,6 @@ export default StyleSheet.create({
         height: 50,
         borderRadius: 10,
         margin: 10,
-        backgroundColor: '#fefefe',
     },
     searchButton: {
         position: 'relative',

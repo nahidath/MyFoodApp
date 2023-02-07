@@ -6,7 +6,7 @@ export default  StyleSheet.create({
         flex: 1,
         backgroundColor: '#FAF9F6',
         // borderBottomLeftRadius: 20,
-        zIndex: 100,
+        // zIndex: 100,
 
     },
     container_dark: {

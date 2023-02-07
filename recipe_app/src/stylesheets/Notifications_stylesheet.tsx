@@ -4,7 +4,6 @@ import {StyleSheet} from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#c7b922',
         flexDirection: 'column',
     },
     notificationContainer: {

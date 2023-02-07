@@ -16,7 +16,7 @@ import React, {FC, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
-import {CommonActions, useNavigation} from "@react-navigation/native";
+import {CommonActions, useNavigation, useTheme} from "@react-navigation/native";
 import {HomeStackList} from "../types";
 import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 import general from "../stylesheets/General_stylesheet";
@@ -41,6 +41,8 @@ const Homepage :  FC = () => {
     const [recipes, setRecipes] = useState<string[]>([]);
     const [recipes2, setRecipes2] = useState<string[]>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
+    const { colors } = useTheme();
+    const theme = useTheme();
 
 
     const getRandomRecipe = () => {
@@ -72,36 +74,36 @@ const Homepage :  FC = () => {
 
     return (
 
-        <View style={[styles.container, general.container, {height: height}]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
+        <View style={[styles.container, general.container, {height: height, backgroundColor:colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#121212" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />}
             <ScrollView>
                 <View style={styles.headerBloc}>
                     <View style={styles.headerBlocText}>
-                        <Text style={styles.headerText}>Welcome !</Text>
+                        <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
                     </View>
                     <TouchableOpacity style={styles.headerNotification}  onPress={() => navigation.navigate('Profile')}>
                         <View style={styles.profile}></View>
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.searchBloc, general.shadow]}>
-                    <FontAwesome style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />
+                <View style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]}>
+                    <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
                     {/*<Feather style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />*/}
 
-                    <TextInput placeholder={'Search recipes'} onFocus={() => navigation.push('Search')} />
+                    <TextInput placeholderTextColor={colors.text} placeholder={'Search recipes'} onFocus={() => navigation.push('Search')} />
                 </View>
                 <View style={styles.recipesDisplay}>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>Spotlight Recipes</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Spotlight Recipes</Text>
                             <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.navigate('SpotlightRecipes', {recipesArray: recipes})}>
-                                <Feather name={'arrow-right'} size={24} color={'#041721'} />
+                                <Feather name={'arrow-right'} size={24} color={colors.text} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.blocDisplay}>
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes.map((recipe: any) => {
                                     return (
-                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe.id, name: recipe.title})}>
+                                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Recipe', {id :recipe.id, name: recipe.title})}>
                                                 {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
                                                     <LinearGradient
                                                         colors={['transparent','rgba(0,0,0,0.8)' ]}
@@ -125,7 +127,7 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={styles.recipe1Title}>Today's ingredient : {'\n'}Potato</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Today's ingredient : {'\n'}Potato</Text>
                             {/*<TouchableOpacity style={styles.recipe1Button} >*/}
                             {/*    <Feather name={'arrow-right'} size={24} color={'#041721'} />*/}
                             {/*</TouchableOpacity>*/}
@@ -134,7 +136,7 @@ const Homepage :  FC = () => {
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {recipes2.map((recipe2: any) => {
                                     return (
-                                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
+                                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
                                             {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                             <LinearGradient
                                                 colors={['transparent','rgba(0,0,0,0.8)' ]}

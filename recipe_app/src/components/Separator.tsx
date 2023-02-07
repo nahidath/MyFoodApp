@@ -1,9 +1,12 @@
 import {View, StyleSheet} from "react-native";
+import {useTheme} from "@react-navigation/native";
 
 
 const Separator = () => {
+    const {colors} = useTheme();
+
     return (
-        <View style={styles.separator}></View>
+        <View style={[styles.separator, {borderBottomColor: colors.border}]}></View>
     );
 }
 

@@ -1,44 +1,41 @@
 import {NavigationContainer,DarkTheme,DefaultTheme} from "@react-navigation/native";
 import BottomNavigation from "./src/components/BottomNavigation";
-import {Provider} from "react-redux";
-import configureStore from "./src/redux-store/store";
-import React from "react";
-import {useColorScheme} from 'react-native';
+import React, {useEffect, useState} from "react";
 
+// @ts-ignore
+export const ThemeContext = React.createContext();
 export default function App() {
 
-    const store = configureStore();
-    console.log(store.getState());
-    const scheme = useColorScheme();
-    console.log(scheme === 'dark' ? "DarkTheme" : "LightTheme");
-    const DarkTheme = {
+    const [theme, setTheme] = useState('Light');
+    const themeData = { theme, setTheme };
+    const MyDarkTheme = {
         dark: true,
         colors: {
-            primary: 'rgba(159,193,49,0.55)',
+            primary: '#121212',
             background: '#121212',
-            card: 'rgb(255, 255, 255)',
+            card: '#9fc131',
             text: '#f2f2f2',
             border: '#fff',
-            notification: 'rgb(255, 69, 58)',
+            notification: '#252525',
         },
     };
-    const LightTheme = {
+    const MyLightTheme = {
         dark: false,
         colors: {
             primary: '#9fc131',
             background: '#FAF9F6',
-            card: 'rgb(255, 255, 255)',
+            card: '#fff',
             text: '#041721',
             border: '#041721',
-            notification: 'rgb(255, 69, 58)',
+            notification: '#fefefe',
         }
     }
     return (
-        <Provider store={store}>
-            <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
+        <ThemeContext.Provider value={themeData}>
+            <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
                 <BottomNavigation />
             </NavigationContainer>
-        </Provider>
+        </ThemeContext.Provider>
 
   );
 }

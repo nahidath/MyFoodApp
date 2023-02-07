@@ -23,7 +23,7 @@ import axios from "axios";
 import {REACT_APP_API_KEY} from "@env";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {HomeStackList} from "../types";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useTheme} from "@react-navigation/native";
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<HomeStackList, 'Search'>;
@@ -82,19 +82,23 @@ const Search : FC = () => {
 
     }, [search, isSearch]);
 
+    const {colors} = useTheme();
+    const theme = useTheme();
+
     return (
         // <KeyboardAwareScrollView
         //     resetScrollToCoords={{ x: 0, y: 0 }}
         //     style={{ backgroundColor: '#F5F9FA' }}
         //     scrollEnabled={true}
         // >
-            <View style={general.container}>
-                <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
-                <View style={[styles.searchContainer, general.shadow]}>
+            <View style={[general.container, {backgroundColor: colors.background}]}>
+                {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+                <View style={[styles.searchContainer, general.shadow, {backgroundColor: colors.notification}]}>
                     <FontAwesome style={styles.icon} name={"search"} size={22} color={"#9e9e9e"} />
                     <TextInput
                         ref={inputRef}
-                        // style={styles.searchInput}
+                        style={{color:colors.text}}
+                        placeholderTextColor={colors.text}
                         placeholder={'Search recipes'}
                         keyboardType="default"
                         value={search}
@@ -103,7 +107,7 @@ const Search : FC = () => {
                 </View>
                 {isSearch && results.length > 0 ? (
                     <View style={styles.resultsContainer}>
-                        <Text style={styles.resultsText}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
+                        <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
                         <Separator />
                         <ScrollView>
                             {results.map((result : any) => {
@@ -113,7 +117,7 @@ const Search : FC = () => {
                                         {result.image ? <ImageBackground source={{uri: result.image}} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                                     </View>
                                     <View style={recipeStyles.blocRecipeBelow}>
-                                        <Text style={recipeStyles.blocRecipeImageText}>{result.title}</Text>
+                                        <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
                                         {infoR.map((info : any) => (
                                             <View>
                                                 {info.map((i : any) => (
@@ -126,9 +130,9 @@ const Search : FC = () => {
                                                             {i.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
                                                         </View>
 
-                                                        <Text style={recipeStyles.time}><Feather name="clock" size={20} color="#041721"/> {i.readyInMinutes} min</Text>
+                                                        <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color="#041721"/> {i.readyInMinutes} min</Text>
                                                         <View style={recipeStyles.blocRecipeLikes}>
-                                                            <Text style={recipeStyles.recipeLikesText}>{i.aggregateLikes}</Text>
+                                                            <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{i.aggregateLikes}</Text>
                                                             <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
                                                         </View>
                                                     </View>
@@ -144,7 +148,7 @@ const Search : FC = () => {
 
                     </View>
                 ) : (
-                    <Text style={styles.resultsText}>{noResults}</Text>
+                    <Text style={[styles.resultsText, {color:colors.text}]}>{noResults}</Text>
                 )}
 
             </View>

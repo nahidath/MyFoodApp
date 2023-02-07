@@ -1,7 +1,5 @@
 import {StyleSheet} from "react-native";
 import hairlineWidth = StyleSheet.hairlineWidth;
-
-
 export default StyleSheet.create({
     container: {
         flex: 1,
@@ -16,7 +14,6 @@ export default StyleSheet.create({
     headerText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#041721',
         padding: 20,
         paddingTop: 10,
     },
@@ -49,7 +46,6 @@ export default StyleSheet.create({
     recipe1Title: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#041721',
         width: '80%',
     },
     recipe1Button: {
@@ -63,10 +59,9 @@ export default StyleSheet.create({
         width: 170,
         height: 260,
         borderRadius: 20,
-        backgroundColor: '#fefefe',
         margin: 20,
         marginTop: 0,
-        borderColor: '#d9d9d9',
+        borderColor: 'transparent',
         borderWidth: hairlineWidth,
 
     },
@@ -130,7 +125,6 @@ export default StyleSheet.create({
         height: 50,
         borderRadius: 10,
         margin: 20,
-        backgroundColor: '#fefefe',
         // margin: 20,
         // marginBottom: 0,
         top: -20,
@@ -138,7 +132,6 @@ export default StyleSheet.create({
     searchInput: {
         height: 60,
         width: '100%',
-        backgroundColor: '#fefefe',
         borderRadius: 10,
         padding: 10,
         paddingRight: 50,

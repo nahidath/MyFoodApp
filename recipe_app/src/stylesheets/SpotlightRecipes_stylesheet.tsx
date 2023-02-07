@@ -5,7 +5,6 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#fefefe',
     },
     blocRecipe: {
         flexDirection: 'column',
@@ -22,7 +21,6 @@ export default StyleSheet.create({
         paddingTop: 10,
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#041721',
         width: '70%',
     },
     blocRecipeLabel: {
@@ -47,7 +45,6 @@ export default StyleSheet.create({
     },
     recipeLikesText: {
         fontSize: 20,
-        color: '#041721',
         padding: 5,
     },
     heart: {
@@ -58,7 +55,6 @@ export default StyleSheet.create({
     },
     time:{
         fontSize: 15,
-        color: '#041721',
         fontStyle: 'italic',
         marginTop: 10,
     },

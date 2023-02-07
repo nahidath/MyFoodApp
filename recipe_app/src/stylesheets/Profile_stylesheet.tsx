@@ -35,7 +35,6 @@ export default StyleSheet.create({
     profileName: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#041721',
         marginTop: 30,
     },
     profileInfoContainer: {
@@ -43,7 +42,6 @@ export default StyleSheet.create({
     },
     btnStyle: {
         padding: 10,
-        backgroundColor: '#fff',
         borderRadius: 10,
         height: 50,
         margin: 5,
@@ -52,7 +50,6 @@ export default StyleSheet.create({
     btnStyleText: {
         fontSize: 15,
         // fontWeight: 'bold',
-        color: '#666666',
         paddingLeft: 10,
         alignContent: 'center',
         justifyContent: 'center',

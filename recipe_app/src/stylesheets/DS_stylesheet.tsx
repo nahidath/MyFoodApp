@@ -5,7 +5,6 @@ import {StyleSheet} from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
     pusherContainer: {
@@ -26,26 +25,5 @@ export default StyleSheet.create({
     switchContainer: {
         marginTop: 15,
     },
-    container_dark: {
-        flex: 1,
-        backgroundColor: '#121212',
-        flexDirection: 'column',
-    },
-    textTitleDark: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: "#fff"
-    },
-    pusherContainerDark: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 10,
-        backgroundColor: '#121212',
-        borderRadius: 10,
-        height: 56,
-        margin: 10,
-    },
-
 
 });

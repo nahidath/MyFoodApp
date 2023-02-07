@@ -33,10 +33,10 @@ const BottomNavigation : FC = () => {
                 screenOptions= {{
 
                     headerStyle: {
-                        backgroundColor: colors.background,
+                        backgroundColor: colors.notification,
                         ...general.shadow
                     },
-                    headerTintColor: '#fff',
+                    headerTintColor: colors.card,
                     headerTitleStyle: {
                         fontWeight: 'bold',
                         color: colors.text,
@@ -48,7 +48,7 @@ const BottomNavigation : FC = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         zIndex: 0,
-                        borderTopColor: 'transparent',
+                        borderTopColor: colors.border,
                         // borderTopRightRadius: 20,
                         // position: 'absolute',
                         // bottom: 25,
@@ -61,7 +61,7 @@ const BottomNavigation : FC = () => {
                         // navigation
                         // .state.routes[navigation.state.index].params.display === 'none' ? {display: 'none'} : {display: 'flex'}
                     },
-                    tabBarActiveTintColor: '#fff',
+                    tabBarActiveTintColor: colors.card,
                     tabBarInactiveTintColor: '#666',
                     tabBarLabelStyle: {
                         fontSize: 12,

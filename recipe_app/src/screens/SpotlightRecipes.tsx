@@ -3,7 +3,7 @@ import {HomeStackList} from "../types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import React, {useEffect, useState} from "react";
 import {ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useTheme} from "@react-navigation/native";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import axios from "axios";
@@ -12,6 +12,7 @@ import general from "../stylesheets/General_stylesheet";
 import Feather from "react-native-vector-icons/Feather";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {colors} from "react-native-elements";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'SpotlightRecipes'>;
@@ -55,11 +56,12 @@ const SpotlightRecipes = ({route}: Props) => {
         return hours +'h' + m + ' min';
     }
 
-
+    const {colors} = useTheme();
+    const theme = useTheme();
 
     return (
-        <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
                 {recipesR.map((recipe2: any) => {
                     return (
@@ -68,10 +70,10 @@ const SpotlightRecipes = ({route}: Props) => {
                                 {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
                             </View>
                             <View style={styles.blocRecipeBelow}>
-                                <Text style={styles.blocRecipeImageText}>{recipe2.title}</Text>
-                                <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> {recipe2.readyInMinutes > 59 ? formatTime(recipe2.readyInMinutes) :recipe2.readyInMinutes + " min"} </Text>
+                                <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe2.title}</Text>
+                                <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe2.readyInMinutes > 59 ? formatTime(recipe2.readyInMinutes) :recipe2.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={styles.recipeLikesText}>{recipe2.aggregateLikes}</Text>
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes}</Text>
                                     <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
                                 </View>
                             </View>

@@ -16,7 +16,7 @@ import {REACT_APP_API_KEY} from "@env";
 import {A} from "@expo/html-elements";
 import Feather from "react-native-vector-icons/Feather";
 import {LinearGradient} from "expo-linear-gradient";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useTheme} from "@react-navigation/native";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -114,10 +114,13 @@ const Recipe = ({route}: Props) => {
     //     }
     // }
 
+    const {colors} = useTheme();
+    const theme = useTheme();
+
 
     return (
-        <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
                    {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
@@ -158,20 +161,20 @@ const Recipe = ({route}: Props) => {
                 </View>
 
                 <View style={styles.recipeInfos}>
-                    <Text style={styles.time}><Feather name="clock" size={20} color="#041721"/> Ready in {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " minutes"} </Text>
-                    <Text style={styles.servings}><Feather name="user" size={20} color="#041721"/> Serves {recipe.servings} people</Text>
+                    <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> Ready in {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " minutes"} </Text>
+                    <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/> Serves {recipe.servings} people</Text>
                     <View style={styles.ingredientList}>
-                        <Text style={styles.ingredientListTitle}>INGREDIENTS</Text>
-                        <FlatList data={ingredients} renderItem={ ({item}) => <Text style={styles.items}>{item}</Text>  } />
+                        <Text style={[styles.ingredientListTitle, {color:colors.text}]}>INGREDIENTS</Text>
+                        <FlatList data={ingredients} renderItem={ ({item}) => <Text style={[styles.items, {color:colors.text}]}>{item}</Text>  } />
 
                     </View>
                     <View style={styles.recipeDescription}>
-                        <Text style={styles.titleDesc}>PREPARATION</Text>
-                        <FlatList data={instructions} renderItem={ ({item}) => <Text style={styles.items}>{item}</Text>  } />
+                        <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
+                        <FlatList data={instructions} renderItem={ ({item}) => <Text style={[styles.items, {color:colors.text}]}>{item}</Text>  } />
                     </View>
                 </View>
                 <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
-                <Text style={styles.source}>Source : <Text style={styles.sourceLink} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
+                <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={styles.sourceLink} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
             </ScrollView>
         </View>
     );

@@ -4,6 +4,7 @@ import Accordion from "../components/Accordion";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import React from "react";
 import general from "../stylesheets/General_stylesheet";
+import {useTheme} from "@react-navigation/native";
 
 
 const Faq = () => {
@@ -37,10 +38,13 @@ const Faq = () => {
         return items;
     }
 
+    const {colors} = useTheme();
+    const theme = useTheme();
+
 
     return (
-        <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
+        <View style={[styles.container, general.container, {backgroundColor:colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={styles.faqContainer}>
                 {renderQuestions()}
             </View>

@@ -4,19 +4,17 @@ import {StyleSheet} from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fefefe',
         flexDirection: 'column',
     },
     textTitle: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#041721',
         margin: 10,
         marginTop: 15,
     },
     btnStyle: {
         padding: 10,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         borderRadius: 10,
         height: 50,
         margin: 5,

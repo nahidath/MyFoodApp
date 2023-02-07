@@ -4,6 +4,7 @@ import {FC} from "react";
 import styles from "../stylesheets/Notifications_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import general from "../stylesheets/General_stylesheet";
+import {useTheme} from "@react-navigation/native";
 
 const Notifications : FC = () => {
     // const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -15,14 +16,16 @@ const Notifications : FC = () => {
     //
     //     return () => unsubscribe();
     // }, []);
+    const {colors} = useTheme();
+    const theme = useTheme();
 
     return (
-        <View style={[styles.container, general.container]}>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#faf9f6" />
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
             <View style={styles.notificationContainer}>
-                <View style={[styles.notification, general.shadow]}>
-                    <Text style={styles.notificationText}>Notification 1</Text>
+                <View style={[styles.notification, general.shadow, {backgroundColor: colors.notification}]}>
+                    <Text style={[styles.notificationText, {color: colors.text}]}>Notification 1</Text>
                 </View>
             </View>
         </ScrollView>

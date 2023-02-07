@@ -3,65 +3,31 @@ import styles from "../stylesheets/DS_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import React, {useEffect, useState} from "react";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
-import {useDispatch, useSelector} from "react-redux";
-import {themeChange} from "../redux-store/actions";
-import {themeReducer} from "../redux-store/reducers";
+import {ThemeContext} from "../../App";
+import {useTheme} from "@react-navigation/native";
 
 
 const DisplaySettings = () => {
 
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
-    // const theme = useSelector((state: { themeReducer: { theme: any; }; }) => state.themeReducer.theme);
-    const dispatch = useDispatch();
-    // const [mode, setMode] = useState(theme);
-    // console.log(mode);
 
-    // const handleThemeChange = () => {
-    //     if (mode === 'light') {
-    //         dispatch(themeChange('dark'));
-    //     } else {
-    //         dispatch(themeChange('light'));
-    //     }
-    //
-    // }
+    // @ts-ignore
+    const { setTheme, theme } = React.useContext(ThemeContext);
 
     const toggleSwitchDarkMode = () => {
         setIsEnabled(previousState => !previousState);
-        if(isEnabled){
-            dispatch(themeChange('light'));
-        }else{
-            dispatch(themeChange('dark'));
-        }
-        // handleThemeChange();
-    }
+        setTheme(theme === 'Light' ? 'Dark' : 'Light');
+    };
 
-    console.log(isEnabled);
-
-    // useEffect(() => {
-    //     setMode(theme);
-    // }, [theme]);
+    const {colors} = useTheme();
+    const theme2 = useTheme();
 
     return (
-        // <View style={mode == 'light' ? [styles.container, general.container] : [styles.container_dark, general.container_dark] }>
-        //     {mode == 'light' ? <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" /> : <FocusAwareStatusBar barStyle="light-content" backgroundColor="#1E1E1E" />}
-        //     <View style={styles.switchContainer}>
-        //         <View style={mode == 'light' ? [styles.pusherContainer, general.shadow]: [styles.pusherContainerDark, general.shadowDark]}>
-        //             <Text style={mode == 'light' ? styles.textTitle: styles.textTitleDark }>Switch to Dark Mode</Text>
-        //             <Switch
-        //                 trackColor={{false: '#767577', true: '#b1dad6'}}
-        //                 thumbColor={isEnabled ? '#008375' : '#f4f3f4'}
-        //                 ios_backgroundColor="#3e3e3e"
-        //                 onValueChange={toggleSwitchDarkMode}
-        //                 value={isEnabled}
-        //             />
-        //         </View>
-        //     </View>
-        // </View>
-        <View style={[styles.container, general.container] }>
-            <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
+        <View style={[styles.container, general.container, {backgroundColor:colors.background}] }>
+            {theme2.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={styles.switchContainer}>
-                <View style={[styles.pusherContainer, general.shadow]}>
-                    <Text style={styles.textTitle}>Switch to Dark Mode</Text>
+                <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
+                    <Text style={[styles.textTitle, {color: colors.text}]}>Switch to Dark Mode</Text>
                     <Switch
                         trackColor={{false: '#767577', true: '#b1dad6'}}
                         thumbColor={isEnabled ? '#008375' : '#f4f3f4'}
