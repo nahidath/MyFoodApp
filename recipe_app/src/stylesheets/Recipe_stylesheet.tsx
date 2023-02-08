@@ -89,7 +89,7 @@ export default StyleSheet.create({
     },
     sourceLink: {
         fontSize: 12,
-        color: '#2319ad',
+        // color: '#2319ad',
         marginBottom: 10,
         fontStyle: 'italic',
         marginLeft: 10,

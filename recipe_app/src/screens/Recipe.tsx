@@ -1,4 +1,14 @@
-import {FlatList, ImageBackground, Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {
+    Button,
+    FlatList,
+    ImageBackground,
+    Pressable,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+    Share,
+} from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -10,13 +20,14 @@ import {HomeStackList} from "../types";
 import axios from "axios";
 import * as WebBrowser from 'expo-web-browser';
 import { LogBox } from 'react-native';
-import Share from "react-native-share";
+// import Share from "react-native-share";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import {A} from "@expo/html-elements";
 import Feather from "react-native-vector-icons/Feather";
 import {LinearGradient} from "expo-linear-gradient";
 import {useNavigation, useTheme} from "@react-navigation/native";
+import MyStackNavigationProp from "../components/MyStackNavigationProp";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -97,26 +108,21 @@ const Recipe = ({route}: Props) => {
 
 
     //share recipe
-    // const urlToShare : string = recipe.sourceUrl;
-    // const title : string = recipe.title;
-    // const message : string = "Hey, I found this recipe on Recipe App, check it out!";
-    //
-    // const options = {
-    //     title: title,
-    //     message: message,
-    //     url: urlToShare,
-    // }
-    // const onShare = async (customOptions = options) => {
-    //     try {
-    //         await Share.open(customOptions);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
+    let message : string = "Hey, I found this recipe on Recipe App, check it out!"+'\n'+'\n'+recipe.title+'\n'+'\n'+recipe.sourceUrl;
+    const onShare = async () => {
+        try {
+            await Share.share({
+                message
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     const {colors} = useTheme();
     const theme = useTheme();
 
+    const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
@@ -124,12 +130,9 @@ const Recipe = ({route}: Props) => {
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
                    {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
-                          {/*<TouchableOpacity onPress={async () => {await onShare();}}>*/}
-                          {/*  <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
-                          {/*</TouchableOpacity>*/}
-                       {/*<Pressable onPress={async () => {await onShare();}}>*/}
-                       {/*     <Feather style={styles.shareBtn} name="share-2" size={25} color={"#fefefe"}  />*/}
-                       {/*</Pressable>*/}
+                      <TouchableOpacity style={styles.shareBtn} onPress={() => onShare()}>
+                        <Feather  name="share-2" size={32} color={"#fefefe"}  />
+                      </TouchableOpacity>
                        <View style={styles.headerRecipeLabel}>
                             {labels.map((label, index) => (
                                 <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
@@ -174,7 +177,7 @@ const Recipe = ({route}: Props) => {
                     </View>
                 </View>
                 <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
-                <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={styles.sourceLink} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
+                <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
             </ScrollView>
         </View>
     );

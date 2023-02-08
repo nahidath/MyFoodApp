@@ -123,6 +123,21 @@ const NotificationSettings = () => {
     const {colors} = useTheme();
     const theme = useTheme();
 
+    // useEffect(() => {
+    //     // Notifications.getPermissionsAsync().then(r => setIsEnabledPush(r.granted));
+    //     if (isEnabledPush) {
+    //         setIsEnabledPush(true);
+    //     } else {
+    //         setIsEnabledPush(false);
+    //     }
+    //     //
+    //     // if (isEnabledEmail) {
+    //     //     setIsEnabledEmail(true);
+    //     // } else {
+    //     //     setIsEnabledEmail(false);
+    //     // }
+    // }, [isEnabledPush]);
+
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}

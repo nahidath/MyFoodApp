@@ -22,6 +22,14 @@ const DisplaySettings = () => {
     const {colors} = useTheme();
     const theme2 = useTheme();
 
+    useEffect(() => {
+        if (theme2.dark) {
+            setIsEnabled(true);
+        } else {
+            setIsEnabled(false);
+        }
+    }, [theme2.dark]);
+
     return (
         <View style={[styles.container, general.container, {backgroundColor:colors.background}] }>
             {theme2.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}

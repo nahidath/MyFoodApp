@@ -49,7 +49,6 @@ const Contact = () => {
                     setName('');
                     setEmail('');
                     setMessage('');
-                    console.log(result.text);
                 }, (error) => {
                     console.log(error.text);
                 });
@@ -59,7 +58,7 @@ const Contact = () => {
     //Alert when email is sent
     const alert = () => {
         Alert.alert(
-            "Email sent",
+            "Email sent 🚀",
             "Thank you for your message, your request has been sent",
             [
                 {
@@ -81,10 +80,10 @@ const Contact = () => {
                 <Text style={[styles.headerText, {color: colors.text}]}> A problem ? Any suggestions ? Let's us know !!</Text>
                 <Text style={[styles.headerText, {color: colors.text}]}> We will answer you as soon as possible</Text>
                 <View style={styles.form}>
-                    <TextInput style={[styles.input, {borderColor: colors.border}]}   placeholderTextColor={colors.text} placeholder="Name" onChangeText={value => setName(value)} value={name}/>
-                    <TextInput style={[styles.input, {borderColor: colors.border}]}   placeholderTextColor={colors.text} placeholder="Email" onChangeText={value => setEmail(value)} value={email}/>
+                    <TextInput style={[styles.input, {borderColor: colors.border, color: colors.text}]}   placeholderTextColor={colors.text} placeholder="Name" onChangeText={value => setName(value)} value={name}/>
+                    <TextInput style={[styles.input, {borderColor: colors.border, color:colors.text}]}   placeholderTextColor={colors.text} placeholder="Email" onChangeText={value => setEmail(value)} value={email}/>
                     <TextInput
-                        style={[styles.inputMsg, {borderColor: colors.border}]}
+                        style={[styles.inputMsg, {borderColor: colors.border, color: colors.text}]}
                         placeholder="Message"
                         placeholderTextColor={colors.text}
                         multiline={true}
