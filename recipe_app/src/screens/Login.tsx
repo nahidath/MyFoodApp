@@ -5,6 +5,10 @@ import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
+import {auth} from "../firebase/config";
+import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import Profile from "./Profile";
+import Register from "./Register";
 
 
 class User {
@@ -21,135 +25,54 @@ const Login = () => {
       const [email, setEmail] = useState('');
 
       const [password, setPassword] = useState('');
+    const [screen, setScreen] = useState<any>(null);
 
-      // const [error, setError] = useState('');
+      const [error, setError] = useState('');
       //
       // const [loading, setLoading] = useState(false);
       //
-      // const [loggedIn, setLoggedIn] = useState(false);
-      //
-      // const [user, setUser] = useState<User | null>(null);
-      //
-      // const history = useHistory();
+      const [loggedIn, setLoggedIn] = useState(false);
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    });
 
-    // function useAuth() {
-    //     const [authUser, setAuthUser] = useState(null);
-    //     useEffect(() => {
-    //         let auth = firebase.auth();
-    //         const unsubscribe = auth.onAuthStateChanged(user => {
-    //             if (user) {
-    //                 setAuthUser(user);
-    //             } else {
-    //                 setAuthUser(null);
-    //             }
-    //         });
-    //         return () => unsubscribe();
-    //     }, []);
-    //     return authUser;
-    // }
-    //
-    // const { currentUser } = useAuth();
-    //
-    //   useEffect(() => {
-    //
-    //  if (currentUser) {
-    //
-    //     setLoggedIn(true);
-    //
-    //     setUser(currentUser);
-    //
-    //  }
-    //
-    //   }, [currentUser]);
-    //
-    //   const handleSubmit = async (e: React.FormEvent) => {
-    //
-    //  e.preventDefault();
-    //
-    //  try {
-    //
-    //     setError('');
-    //
-    //     setLoading(true);
-    //
-    //     await login(email, password);
-    //
-    //     history.push('/');
-    //
-    //  } catch (err) {
-    //
-    //     setError('Failed to log in');
-    //
-    //  }
-    //
-    //  setLoading(false);
-    //
-    //   };
-    const {colors} = useTheme();
-    const theme = useTheme();
-    const colorSpec = theme.dark ? '#252525' : '#041721';
+    const goToProfile = () => {
+        if (loggedIn) return <Profile />;
+        if (screen === 'register') return <Register setScreen={setScreen} />;
+        return <SignIn setScreen={setScreen} />;
+    }
 
+    const handleLogin = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password') {
+                setError('Your email or password was incorrect');
+            } else if (error.code === 'auth/email-already-in-use') {
+                setError('An account with this email already exists');
+            } else {
+                setError('There was a problem with your request');
+            }
+        }
+    };
+    
+    const resetPassword = () => {
+        return (
+            <View style={styles.outer}>
+                <View style={styles.inner}>
+                    <Text style={styles.header}>Reset Password</Text>
+                </View>
+            </View>
+        );
+    }
 
-    return (
-
-     // <div>
-     //
-     //    <h2>Login</h2>
-     //
-     //    {error && <p>{error}</p>}
-     //
-     //    {loading && <p>Loading...</p>}
-     //
-     //    {loggedIn && (
-     //
-     //      <p>
-     //
-     //         You are logged in as {user?.email}.
-     //
-     //         <Link to="/">Go to home page</Link>
-     //
-     //      </p>
-     //
-     //    )}
-     //
-     //    <form onSubmit={handleSubmit}>
-     //
-     //      <label htmlFor="email">Email</label>
-     //
-     //      <input
-     //
-     //         type="email"
-     //
-     //         id="email"
-     //
-     //         value={email}
-     //
-     //         onChange={(e) => setEmail(e.target.value)}
-     //
-     //      />
-     //
-     //      <label htmlFor="password">Password</label>
-     //
-     //      <input
-     //
-     //         type="password"
-     //
-     //         id="password"
-     //
-     //         value={password}
-     //
-     //         onChange={(e) => setPassword(e.target.value)}
-     //
-     //      />
-     //
-     //      <button type="submit">Login</button>
-     //
-     //    </form>
-     //
-     // </div>
-
-          <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
-              {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+    const SignIn = ({setScreen}) => {
+        return(
+            <View>
                 <View style={styles.header}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Login</Text>
                 </View>
@@ -171,7 +94,7 @@ const Login = () => {
                     />
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                                      // onPress={() => handleSubmit()}
+                        onPress={() => setScreen('register')}
                     >
                         <Text style={styles.btnText}>Login</Text>
                     </TouchableOpacity>
@@ -179,7 +102,23 @@ const Login = () => {
                 </View>
             </View>
 
+        )
+    }
+
+    const {colors} = useTheme();
+    const theme = useTheme();
+    const colorSpec = theme.dark ? '#252525' : '#041721';
+
+
+    return (
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+
+            {goToProfile()}
+        </View>
 
       );
 
 };
+
+export default Login;
