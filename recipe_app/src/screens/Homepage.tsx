@@ -26,6 +26,7 @@ import axios from "axios";
 import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
+import {auth} from "../firebase/config";
 
 
 
@@ -43,6 +44,8 @@ const Homepage :  FC = () => {
     const configValue : string | undefined = REACT_APP_API_KEY;
     const { colors } = useTheme();
     const theme = useTheme();
+    const user = auth.currentUser;
+
 
 
     const getRandomRecipe = () => {
@@ -81,7 +84,7 @@ const Homepage :  FC = () => {
                     <View style={styles.headerBlocText}>
                         <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
                     </View>
-                    <TouchableOpacity style={styles.headerNotification}  onPress={() => navigation.navigate('Login')}>
+                    <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.push('Profile')}}>
                         <View style={styles.profile}>
                             <Feather name={"user"} size={24} color={colors.text} />
                         </View>

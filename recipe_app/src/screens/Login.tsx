@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Link, useNavigation, useTheme} from "@react-navigation/native";
-import {Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Link, NavigationContainer, useNavigation, useTheme} from "@react-navigation/native";
+import {Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -15,13 +15,16 @@ import Separator from "../components/Separator";
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
 
-const {colors} = useTheme();
-const theme = useTheme();
-const colorSpec = theme.dark ? '#252525' : '#041721';
-export const ResetPassword = () => {
+
+
+//Reset Password function
+export function ResetPassword (navigation : any) {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const {colors} = useTheme();
+    const theme = useTheme();
+    const colorSpec = theme.dark ? '#252525' : '#041721';
 
     const handleSubmit = async () => {
         try {
@@ -57,43 +60,40 @@ export const ResetPassword = () => {
                     <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit} disabled={!email}>
                         <Text style={styles.btnText}>Reset Password</Text>
                     </TouchableOpacity>
-                    {/*<TouchableOpacity onPress={() => setScreen('login')}>*/}
-                    {/*    <Text style={styles.link}>Back to login</Text>*/}
-                    {/*</TouchableOpacity>*/}
+
                 </>
             )}
         </View>
     );
 }
 
-const Login = () => {
+
+//Login function and principal screen
+export default function Login () {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [screen, setScreen] = useState<any>(null);
     const [error, setError] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const navigation = useNavigation<LoginProps>();
+    const {colors} = useTheme();
+    const theme = useTheme();
+    const colorSpec = theme.dark ? '#252525' : '#041721';
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
             setLoggedIn(true);
+            // navigation.push('Profile');
         } else {
             setLoggedIn(false);
         }
     });
 
-    // const goToProfile = () => {
-    //     if (loggedIn) return <Profile />;
-    //     if (screen === 'register') return <Register setScreen={setScreen} />;
-    //     if (screen === 'reset-password') return <ResetPassword setScreen={setScreen} />;
-    //     return <SignIn setScreen={setScreen} />;
-    // }
-
     const handleLogin = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
+            navigation.navigate('HomePage', {screen : 'HomePage'});
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
@@ -107,17 +107,11 @@ const Login = () => {
             }
         }
     };
-    
-
-
-
-
-
 
     return (
-        // {error ? navigation.navigate('Profile') : (
-            <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
-                {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            <ScrollView>
                 <View style={styles.header}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Login</Text>
                 </View>
@@ -129,6 +123,7 @@ const Login = () => {
                         placeholderTextColor={colors.text}
                         onChangeText={setEmail}
                         value={email}
+                        autoCapitalize={'none'}
                     />
                     <TextInput
                         style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
@@ -144,19 +139,16 @@ const Login = () => {
                     >
                         <Text style={styles.btnText}>Login</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login', {screen : 'ResetPassword'})}>
                         <Text style={[styles.link, { color: '#333' }]}>I've forgotten my password</Text>
                     </TouchableOpacity>
                     <Separator />
-                    <Text style={[styles.text, {color: colors.text}]}>Don't have an account? <Link to={{screen : 'Register'}}>Register</Link></Text>
+                    <Text style={[styles.text, {color: colors.text}]}>Don't have an account?
+                        <Link to={{screen : 'Register'}} style={styles.link}>Sign up</Link></Text>
                 </View>
-
-                {/*{goToProfile()}*/}
-            </View>
-        // )}
-
-      );
+            </ScrollView>
+        </View>
+    );
 
 };
 
-export default Login;

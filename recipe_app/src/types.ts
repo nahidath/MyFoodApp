@@ -1,3 +1,5 @@
+import Register from "./screens/Register";
+
 export type HomeStackList = {
     HomePage: undefined;
     Profile: undefined;
@@ -9,7 +11,7 @@ export type HomeStackList = {
         recipesArray: string[];
     }
     Search: undefined;
-    Login: undefined;
+    LoginStackScreen: undefined;
 }
 
 export type MoreStackList = {

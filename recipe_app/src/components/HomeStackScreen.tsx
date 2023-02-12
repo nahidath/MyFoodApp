@@ -7,6 +7,7 @@ import SpotlightRecipes from "../screens/SpotlightRecipes";
 import Search from "../screens/Search";
 import {useTheme} from "@react-navigation/native";
 import Login from "../screens/Login";
+import LoginStackScreen from "./LoginStackScreen";
 
 const HomeStack = createNativeStackNavigator<HomeStackList>();
 export default function HomeStackScreen () {
@@ -43,14 +44,16 @@ export default function HomeStackScreen () {
                 headerTitle: 'Spotlight Recipes',
             }} />
             <HomeStack.Screen name="Search" component={Search} options={{headerShown: false}} />
-            <HomeStack.Screen name="Login" component={Login} options={{
-                headerStyle: {
-                    backgroundColor: colors.notification,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
+            <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
+                // headerStyle: {
+                //     backgroundColor: colors.notification,
+                // },
+                // headerTintColor: colors.text,
+                // headerTitleStyle: {
+                //     fontWeight: 'bold',
+                // },
+                // headerTitle: 'Login',
+                headerShown: false
             }} />
         </HomeStack.Navigator>
     )

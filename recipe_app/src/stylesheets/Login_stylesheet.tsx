@@ -7,7 +7,7 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
     },
     header: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -20,7 +20,7 @@ export default StyleSheet.create({
         margin: 10,
     },
     form: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -61,6 +61,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
+        backgroundColor: 'rgba(255,79,79,0.34)',
     },
     inner: {
         flex: 1,
@@ -73,6 +74,10 @@ export default StyleSheet.create({
         // fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
+        textDecorationLine: 'underline',
+    },
+    belowContainer: {
+        flexDirection: 'row',
     }
 
 

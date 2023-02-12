@@ -18,7 +18,7 @@ export default StyleSheet.create({
         width: 130,
         height: 130,
         borderRadius: 70,
-        backgroundColor: '#fff',
+        backgroundColor: '#d9d9d9',
     },
     editProfilePic: {
         position: 'absolute',

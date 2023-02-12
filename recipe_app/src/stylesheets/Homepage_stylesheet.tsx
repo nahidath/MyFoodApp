@@ -120,6 +120,9 @@ export default StyleSheet.create({
         borderColor: '#041721',
         borderWidth: 1,
         backgroundColor: '#fefefe',
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     searchBloc: {
         flexDirection: 'row',

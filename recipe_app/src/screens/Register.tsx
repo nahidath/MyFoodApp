@@ -1,63 +1,82 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {colors} from "react-native-elements";
-import {Link, useTheme} from "@react-navigation/native";
-import {TextInput, TouchableOpacity, View, Text} from "react-native";
+import {Link, useNavigation, useTheme} from "@react-navigation/native";
+import {TextInput, TouchableOpacity, View, Text, ScrollView} from "react-native";
 import styles from "../stylesheets/Login_stylesheet";
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../firebase/config";
+import MyStackNavigationProp from "../components/MyStackNavigationProp";
+import {LoginStackList} from "../types";
+import general from "../stylesheets/General_stylesheet";
+import FocusAwareStatusBar from "../components/StatusBarStyle";
+import {updateProfile} from "firebase/auth";
+
+
+// @ts-ignore
+type RegisterProps = MyStackNavigationProp<LoginStackList, 'Register'>
 
 const Register = () => {
 
     const {colors} = useTheme();
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    const navigation = useNavigation<RegisterProps>();
 
-        const [email, setEmail] = useState('');
-        const [password, setPassword] = useState('');
-        const [confPassword, setConfPassword] = useState('');
-        const [error, setError] = useState('');
-        // const [loading, setLoading] = useState(false);
-        // const [loggedIn, setLoggedIn] = useState(false);
-        // const history = useHistory();
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confPassword, setConfPassword] = useState<string>('');
+    const [error, setError] = useState<any>('');
 
-        // const { currentUser } = useAuth();
-        //
-        // useEffect(() => {
-        //
-        //     if (currentUser) {
-        //
-        //         setLoggedIn(true);
-        //
-        //         setUser(currentUser);
-        //
-        //     }
-        //
-        // }, [currentUser]);
-
-        const handleSubmit = async () => {
-            try {
-                if(password === confPassword) {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                } else {
-                    setError('Passwords do not match');
+    const handleSubmit = async () => {
+        try {
+            if(password === confPassword) {
+                await createUserWithEmailAndPassword(auth, email, password);
+                if (auth.currentUser) {
+                    updateProfile(auth.currentUser, {displayName: username}).then(() => {
+                        console.log('Profile updated');
+                    }).catch((error: any) => {
+                        console.log(error);
+                    });
                 }
-            } catch (err) {
-                setError('Failed to create an account');
+                setError('');
+                navigation.push('Profile');
+            } else {
+                setError('Passwords do not match');
             }
+        } catch (err) {
+            setError('Failed to create an account');
         }
+    }
 
-        return (
+    // useEffect(() => {
+    //     navigation.setOptions({
+    //         headerTitle: 'Register',
+    //     })
+    // },[navigation]);
 
-            <View style={styles.container}>
+    return (
+
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            <ScrollView>
                 <View style={styles.form}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Register</Text>
                     {error && <Text style={styles.error}>{error}</Text>}
+                    <TextInput
+                        style={[styles.input, {color: colors.text}]}
+                        placeholder="Username"
+                        placeholderTextColor={colors.text}
+                        value={username}
+                        onChangeText={setUsername}
+                    />
                     <TextInput
                         style={[styles.input, {color: colors.text}]}
                         placeholder="Email"
                         placeholderTextColor={colors.text}
                         value={email}
                         onChangeText={setEmail}
+                        autoCapitalize={'none'}
                     />
                     <TextInput
                         style={[styles.input, {color: colors.text}]}
@@ -71,24 +90,23 @@ const Register = () => {
                         style={[styles.input, {color: colors.text}]}
                         placeholder="Confirm Your Password"
                         placeholderTextColor={colors.text}
-                        value={password}
+                        value={confPassword}
                         onChangeText={setConfPassword}
                         secureTextEntry
                     />
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                        onPress={() => handleSubmit}
-                        disabled={!email || !password || !confPassword}
+                        onPress={handleSubmit}
+                        disabled={!email || !password || !confPassword || !username}
                     >
                         <Text style={styles.btnText}>Register</Text>
                     </TouchableOpacity>
-                    <Text style={[styles.text, {color: colors.text}]}>Already have an account? <Link to="/login">Login</Link></Text>
-
+                    <Text style={[styles.text, {color: colors.text}]}>Already have an account? <Link to={{screen : 'Login'}}>Login</Link></Text>
                 </View>
+            </ScrollView>
+        </View>
 
-            </View>
-
-        )
+    );
 
 }
 
