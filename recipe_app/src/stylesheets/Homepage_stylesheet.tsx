@@ -117,8 +117,9 @@ export default StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        borderColor: '#064851',
-        backgroundColor: '#9fc131',
+        borderColor: '#041721',
+        borderWidth: 1,
+        backgroundColor: '#fefefe',
     },
     searchBloc: {
         flexDirection: 'row',

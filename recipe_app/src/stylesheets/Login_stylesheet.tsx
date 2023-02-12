@@ -61,6 +61,18 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
+    },
+    inner: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    link: {
+        color: '#003f5c',
+        fontSize: 18,
+        // fontWeight: 'bold',
+        textAlign: 'center',
+        margin: 10,
     }
 
 

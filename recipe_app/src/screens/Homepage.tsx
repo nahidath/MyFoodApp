@@ -81,8 +81,10 @@ const Homepage :  FC = () => {
                     <View style={styles.headerBlocText}>
                         <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
                     </View>
-                    <TouchableOpacity style={styles.headerNotification}  onPress={() => navigation.navigate('Profile')}>
-                        <View style={styles.profile}></View>
+                    <TouchableOpacity style={styles.headerNotification}  onPress={() => navigation.navigate('Login')}>
+                        <View style={styles.profile}>
+                            <Feather name={"user"} size={24} color={colors.text} />
+                        </View>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]}>

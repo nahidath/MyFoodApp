@@ -9,6 +9,7 @@ export type HomeStackList = {
         recipesArray: string[];
     }
     Search: undefined;
+    Login: undefined;
 }
 
 export type MoreStackList = {
@@ -20,4 +21,11 @@ export type MoreStackList = {
     Contact: undefined;
     PrivacyPolicy: undefined;
     TermsOfUse: undefined;
+}
+
+export type LoginStackList = {
+    Login: undefined;
+    Register: undefined;
+    ResetPassword: undefined;
+    Profile: undefined;
 }
