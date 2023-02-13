@@ -24,6 +24,7 @@ import {REACT_APP_API_KEY} from "@env";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {HomeStackList} from "../types";
 import {useNavigation, useTheme} from "@react-navigation/native";
+import ingredientsList from "../data/ingredientsList";
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<HomeStackList, 'Search'>;
@@ -39,7 +40,7 @@ const Search : FC = () => {
     const [infoR, setInfoR] = useState<any>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
     const inputRef = useRef<TextInput>(null);
-
+    const myList = ingredientsList;
 
     const getSearchResult = () => {
         let dataIds : string | any = [];
@@ -104,6 +105,17 @@ const Search : FC = () => {
                         value={search}
                         onChangeText={setSearch}
                         onSubmitEditing={handleSearch} />
+                </View>
+                <View style={styles.ingredientListContainer}>
+                    <FlatList
+                        // numColumns={3}
+                        data={myList}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({item}) => (
+                            <TouchableOpacity style={styles.ingreBox} onPress={() => setSearch(item.name)}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
+                        )}
+                    />
                 </View>
                 {isSearch && results.length > 0 ? (
                     <View style={styles.resultsContainer}>

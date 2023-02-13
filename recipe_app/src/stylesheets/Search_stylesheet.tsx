@@ -49,5 +49,21 @@ export default StyleSheet.create({
     },
     icon:{
         padding: 10,
-    }
+    },
+    ingredientListContainer: {
+        // flex: 4,
+        flexDirection: 'row',
+    },
+    ingreBox: {
+        backgroundColor: '#d9d9d9',
+        padding: 10,
+        margin: 5,
+        borderRadius: 10,
+        height: 100,
+        width: 100,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // textAlign: 'center',
+    },
 });
