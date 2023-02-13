@@ -42,27 +42,32 @@ export function ResetPassword (navigation : any) {
     }
 
     return (
-        <View style={styles.inner}>
-            <Text style={styles.header}>Reset Password</Text>
-            {error && <Text style={styles.error}>{error}</Text>}
-            {submitted ? (
-                <Text>Please check your email for a reset password link.</Text>
-            ) : (
-                <>
-                    <Text style={styles.text}>Enter your email address below and we will send you a link to reset your password.</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        placeholderTextColor={colors.text}
-                        onChangeText={setEmail}
-                        value={email}
-                    />
-                    <TouchableOpacity style={styles.loginBtn} onPress={handleSubmit} disabled={!email}>
-                        <Text style={styles.btnText}>Reset Password</Text>
-                    </TouchableOpacity>
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            <ScrollView>
+                <View style={styles.header}>
+                    <Text style={[styles.headerText, {color: colors.text}]}>Reset Password</Text>
+                </View>
+                {error && <Text style={styles.error}>{error}</Text>}
+                {submitted ? (
+                    <Text>Please check your email for a reset password link.</Text>
+                ) : (
+                    <View style={styles.form}>
+                        <Text style={styles.text}>Enter your email address below and we will send you a link to reset your password.</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            placeholderTextColor={colors.text}
+                            onChangeText={setEmail}
+                            value={email}
+                        />
+                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={handleSubmit} disabled={!email}>
+                            <Text style={styles.btnText}>Reset Password</Text>
+                        </TouchableOpacity>
 
-                </>
-            )}
+                    </View>
+                )}
+            </ScrollView>
         </View>
     );
 }
@@ -139,12 +144,10 @@ export default function Login () {
                     >
                         <Text style={styles.btnText}>Login</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login', {screen : 'ResetPassword'})}>
-                        <Text style={[styles.link, { color: '#333' }]}>I've forgotten my password</Text>
-                    </TouchableOpacity>
+                    <Link to={{screen : 'ResetPassword'}} style={[styles.link, {color: colors.text}]}>I've forgotten my password</Link>
                     <Separator />
                     <Text style={[styles.text, {color: colors.text}]}>Don't have an account?
-                        <Link to={{screen : 'Register'}} style={styles.link}>Sign up</Link></Text>
+                         <Link to={{screen : 'Register'}} style={[styles.link, {color: colors.text}]}>Sign up</Link></Text>
                 </View>
             </ScrollView>
         </View>

@@ -12,6 +12,7 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         marginTop: 50,
+
     },
     headerText: {
         fontSize: 18,
@@ -64,7 +65,7 @@ export default StyleSheet.create({
         backgroundColor: 'rgba(255,79,79,0.34)',
     },
     inner: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
