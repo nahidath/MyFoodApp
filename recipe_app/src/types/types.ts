@@ -1,4 +1,5 @@
-import Register from "./screens/Register";
+import Register from "../screens/Register";
+import EditProfile from "../screens/EditProfile";
 
 export type HomeStackList = {
     HomePage: undefined;
@@ -12,6 +13,7 @@ export type HomeStackList = {
     }
     Search: undefined;
     LoginStackScreen: undefined;
+    ProfileStackScreen: undefined;
 }
 
 export type MoreStackList = {
@@ -29,5 +31,11 @@ export type LoginStackList = {
     Login: undefined;
     Register: undefined;
     ResetPassword: undefined;
+    ProfileStackScreen: undefined;
+}
+
+export type ProfileStackList = {
     Profile: undefined;
+    EditProfile: undefined;
+    FavoritesRecipesUser: undefined;
 }

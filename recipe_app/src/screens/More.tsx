@@ -6,7 +6,7 @@ import styles from "../stylesheets/More_stylesheet";
 import { useFonts } from 'expo-font';
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import general from "../stylesheets/General_stylesheet";
-import {MoreStackList} from "../types";
+import {MoreStackList} from "../types/types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import Separator from "../components/Separator";

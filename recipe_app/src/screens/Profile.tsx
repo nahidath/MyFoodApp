@@ -9,12 +9,12 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import {auth} from "../firebase/config";
-import {LoginStackList} from "../types";
+import {LoginStackList, ProfileStackList} from "../types/types";
 import {deleteUser} from "firebase/auth";
 
 
 // @ts-ignore
-type ProfileProps = MyStackNavigationProp<LoginStackList, 'Profile'>
+type ProfileProps = MyStackNavigationProp<ProfileStackList, 'Profile'>
 
 const Profile : FC = () => {
 
@@ -59,7 +59,7 @@ const Profile : FC = () => {
                     [
                         {
                             text: "Go back to login",
-                            onPress: () => navigation.navigate('Login')
+                            onPress: () => navigation.navigate('Login', {screen: 'Login'})
                         }
                     ]
                 );
@@ -93,14 +93,14 @@ const Profile : FC = () => {
             <Separator />
             <ScrollView>
                 <View style={styles.profileInfoContainer}>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
+                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('EditProfile')}>
                         <Feather name={"info"} size={24} color={colors.text} />
-                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Personal information</Text>
+                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
-                        <FontAwesome name={"key"} size={24} color={colors.text} />
-                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*/}
+                    {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
+                    {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
+                    {/*</TouchableOpacity>*/}
                     <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
                         <FontAwesome name={"heart"} size={24} color={colors.text} />
                         <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>

@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {HomeStackList} from "../types";
+import {HomeStackList} from "../types/types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import React, {useEffect, useState} from "react";
 import {ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";

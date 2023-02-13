@@ -79,6 +79,19 @@ export default StyleSheet.create({
     },
     belowContainer: {
         flexDirection: 'row',
+    },
+    editButton:{
+        position: 'absolute',
+        right: 20,
+        padding: 10,
+        // marginRight: ,
+        // marginTop: 10,
+        // top: 0,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     }
 
 

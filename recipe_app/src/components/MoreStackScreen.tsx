@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {MoreStackList} from "../types";
+import {MoreStackList} from "../types/types";
 import NotificationSettings from "../screens/NotificationSettings";
 import DisplaySettings from "../screens/DisplaySettings";
 import Faq from "../screens/Faq";

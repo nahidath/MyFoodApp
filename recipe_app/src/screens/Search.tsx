@@ -22,7 +22,7 @@ import axios from "axios";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {HomeStackList} from "../types";
+import {HomeStackList} from "../types/types";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import ingredientsList from "../data/ingredientsList";
 

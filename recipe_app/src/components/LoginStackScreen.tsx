@@ -1,9 +1,10 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {LoginStackList} from "../types";
+import {LoginStackList} from "../types/types";
 import Login, {ResetPassword} from "../screens/Login";
 import {useTheme} from "@react-navigation/native";
 import Register from "../screens/Register";
 import Profile from "../screens/Profile";
+import ProfileStackScreen from "./ProfileStackScreen";
 
 
 const LoginStack = createNativeStackNavigator<LoginStackList>();
@@ -40,14 +41,8 @@ return (
                     fontWeight: 'bold',
                 },
             }} />
-            <LoginStack.Screen name="Profile" component={Profile} options={{
-                headerStyle: {
-                    backgroundColor: colors.notification,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
+            <LoginStack.Screen name="Profile" component={ProfileStackScreen} options={{
+                headerShown: false,
             }} />
         </LoginStack.Navigator>
     )

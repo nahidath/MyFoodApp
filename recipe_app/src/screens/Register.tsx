@@ -6,7 +6,7 @@ import styles from "../stylesheets/Login_stylesheet";
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../firebase/config";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {LoginStackList} from "../types";
+import {LoginStackList} from "../types/types";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import {updateProfile} from "firebase/auth";

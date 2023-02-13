@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {HomeStackList} from "../types";
+import {HomeStackList} from "../types/types";
 import Homepage from "../screens/Homepage";
 import Profile from "../screens/Profile";
 import Recipe from "../screens/Recipe";
@@ -8,6 +8,7 @@ import Search from "../screens/Search";
 import {useTheme} from "@react-navigation/native";
 import Login from "../screens/Login";
 import LoginStackScreen from "./LoginStackScreen";
+import ProfileStackScreen from "./ProfileStackScreen";
 
 const HomeStack = createNativeStackNavigator<HomeStackList>();
 export default function HomeStackScreen () {
@@ -45,14 +46,9 @@ export default function HomeStackScreen () {
             }} />
             <HomeStack.Screen name="Search" component={Search} options={{headerShown: false}} />
             <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
-                // headerStyle: {
-                //     backgroundColor: colors.notification,
-                // },
-                // headerTintColor: colors.text,
-                // headerTitleStyle: {
-                //     fontWeight: 'bold',
-                // },
-                // headerTitle: 'Login',
+                headerShown: false
+            }} />
+            <HomeStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
                 headerShown: false
             }} />
         </HomeStack.Navigator>

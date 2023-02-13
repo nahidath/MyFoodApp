@@ -16,7 +16,7 @@ import React, {FC, useEffect, useState} from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Free from "react-native-vector-icons/FontAwesome";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {HomeStackList} from "../types";
+import {HomeStackList} from "../types/types";
 import axios from "axios";
 import * as WebBrowser from 'expo-web-browser';
 import { LogBox } from 'react-native';

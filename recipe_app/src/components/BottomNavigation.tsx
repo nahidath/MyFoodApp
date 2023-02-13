@@ -10,7 +10,7 @@ import More from "../screens/More";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {Icon} from "react-native-elements";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {HomeStackList} from "../types";
+import {HomeStackList} from "../types/types";
 import HomeStackScreen from "./HomeStackScreen";
 import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet} from "react-native";
 import general from "../stylesheets/General_stylesheet";

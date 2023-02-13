@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
 import {CommonActions, useNavigation, useTheme} from "@react-navigation/native";
-import {HomeStackList} from "../types";
+import {HomeStackList} from "../types/types";
 import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -84,7 +84,7 @@ const Homepage :  FC = () => {
                     <View style={styles.headerBlocText}>
                         <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
                     </View>
-                    <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.push('Profile')}}>
+                    <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.navigate('ProfileStackScreen')}}>
                         <View style={styles.profile}>
                             <Feather name={"user"} size={24} color={colors.text} />
                         </View>

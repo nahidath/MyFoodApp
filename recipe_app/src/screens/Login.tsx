@@ -9,7 +9,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword,sendPasswordResetEmail }
 import Profile from "./Profile";
 import Register from "./Register";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {LoginStackList} from "../types";
+import {LoginStackList} from "../types/types";
 import Separator from "../components/Separator";
 
 // @ts-ignore
