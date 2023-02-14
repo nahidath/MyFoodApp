@@ -17,5 +17,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Screenshots
-![](C:\Users\vatoc\food-app\recipe_app\assets\Screenshot_HomePage.jpg)
+![](recipe_app/assets/Screenshot_HomePage.jpg)
 
