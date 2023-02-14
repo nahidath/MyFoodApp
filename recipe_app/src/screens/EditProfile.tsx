@@ -19,7 +19,15 @@ const EditProfile = () => {
     const [password, setPassword] = useState<string>('');
     const [confPassword, setConfPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
-    const [isEditable, setIsEditable] = useState<boolean>(false);
+    const [isEditable, setIsEditable] = useState<any>({
+        email: false,
+        username: false,
+
+    });
+    const [isVisible, setIsVisible] = useState<any>({
+        password: true,
+        confPassword: true
+    });
     const {colors} = useTheme();
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
@@ -61,8 +69,51 @@ const EditProfile = () => {
         }
     }
 
-    const inputEditable = () => {
-        setIsEditable(!isEditable);
+    const inputEditable = (inputN : any) => {
+        if(inputN === 'email'){
+            setIsEditable({
+                email: !isEditable.email,
+                username: isEditable.username,
+                password: isEditable.password,
+                confPassword: isEditable.confPassword
+            });
+        } else if(inputN === 'username'){
+            setIsEditable({
+                email: isEditable.email,
+                username: !isEditable.username,
+                password: isEditable.password,
+                confPassword: isEditable.confPassword
+            });
+        } else if(inputN === 'password'){
+            setIsEditable({
+                email: isEditable.email,
+                username: isEditable.username,
+                password: !isEditable.password,
+                confPassword: isEditable.confPassword
+            });
+        } else if(inputN === 'confPassword'){
+            setIsEditable({
+                email: isEditable.email,
+                username: isEditable.username,
+                password: isEditable.password,
+                confPassword: !isEditable.confPassword
+            });
+        }
+
+    }
+
+    const togglePassword = (inputN : any) => {
+        if(inputN === 'password'){
+            setIsVisible({
+                password: !isVisible.password,
+                confPassword: isVisible.confPassword
+            });
+        } else if(inputN === 'confPassword'){
+            setIsVisible({
+                password: isVisible.password,
+                confPassword: !isVisible.confPassword
+            });
+        }
     }
 
 
@@ -71,7 +122,7 @@ const EditProfile = () => {
     return (
         <View style={styles.container}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.header}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Your profile</Text>
                 </View>
@@ -79,54 +130,54 @@ const EditProfile = () => {
                 <View style={styles.form}>
                     <View style={styles.inputContainer}>
                         <TextInput
-                            style={[styles.input,  {borderColor: isEditable ? 'red' : colors.border, borderWidth: isEditable ? 2 : 1, color: colors.text, backgroundColor: isEditable ?
-                                    'white' : '#d8d8d8',}]}
+                            style={[styles.input,  {borderColor: isEditable.email ? 'red' : colors.border, borderWidth: isEditable.email ? 2 : 1, color: colors.text, backgroundColor: isEditable.email ?
+                                    'white' : '#F0F0F0',}]}
                             placeholder="Email"
                             placeholderTextColor={colors.text}
                             onChangeText={setEmail}
                             value={email}
                             autoCapitalize={'none'}
-                            editable={isEditable}
+                            editable={isEditable.email}
                         />
-                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable()}/>
+                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable('email')}/>
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
-                            style={[styles.input,  {borderColor: isEditable ? 'red' : colors.border, borderWidth: isEditable ? 2 : 1, color: colors.text, backgroundColor: isEditable ?
-                                    'white' : '#d8d8d8',}]}
+                            style={[styles.input,  {borderColor: isEditable.username ? 'red' : colors.border, borderWidth: isEditable.username ? 2 : 1, color: colors.text, backgroundColor: isEditable.username ?
+                                    'white' : '#F0F0F0',}]}
                             placeholder="Username"
                             placeholderTextColor={colors.text}
                             onChangeText={setUsername}
                             value={username}
-                            editable={isEditable}
+                            editable={isEditable.username}
                         />
-                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable()}/>
+                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable('username')}/>
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
-                            style={[styles.input,  {borderColor: isEditable ? 'red' : colors.border, color: colors.text, borderWidth: isEditable ? 2 : 1, backgroundColor: isEditable ?
-                                    'white' : '#d8d8d8',}]}
+                            style={[styles.input,  {borderColor: colors.border, color: colors.text, borderWidth: 1, backgroundColor:'#F0F0F0',}]}
                             placeholder="New password"
                             placeholderTextColor={colors.text}
                             onChangeText={setPassword}
                             value={password}
-                            secureTextEntry={true}
-                            editable={isEditable}
+                            secureTextEntry={isVisible.password }
+                            editable={true}
+                            // onPressIn={() => {{borderColor: 'red', borderWidth: 2, backgroundColor: 'white'}}}
                         />
-                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable()}/>
+                        {isVisible.password ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')}/>}
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
-                            style={[styles.input,  {borderColor: isEditable ? 'red' : colors.border, color: colors.text, borderWidth: isEditable ? 2 : 1, backgroundColor: isEditable ?
-                                    'white' : '#d8d8d8',}]}
+                            style={[styles.input,  {borderColor: isEditable.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isEditable.confPassword ? 2 : 1, backgroundColor: isEditable.confPassword ?
+                                    'white' : '#F0F0F0',}]}
                             placeholder="Confirm your new password"
                             placeholderTextColor={colors.text}
                             onChangeText={setConfPassword}
                             value={confPassword}
-                            secureTextEntry={true}
-                            editable={isEditable}
+                            secureTextEntry={isVisible.confPassword}
+                            editable={isEditable.confPassword}
                         />
-                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable()}/>
+                        {isVisible.confPassword ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')}/>}
                     </View>
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}

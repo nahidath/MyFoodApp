@@ -94,7 +94,7 @@ const Profile : FC = () => {
             <ScrollView>
                 <View style={styles.profileInfoContainer}>
                     <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('EditProfile')}>
-                        <Feather name={"info"} size={24} color={colors.text} />
+                        <Feather name={"edit-3"} size={24} color={colors.text} />
                         <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
                     </TouchableOpacity>
                     {/*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*/}
