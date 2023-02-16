@@ -92,6 +92,7 @@ export default function Login () {
             setLoggedIn(true);
             // navigation.push('Profile');
         } else {
+            console.log('not logged in')
             setLoggedIn(false);
         }
     });
@@ -100,18 +101,19 @@ export default function Login () {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
-            navigation.navigate('HomePage', {screen : 'HomePage'});
+            navigation.push('HomePage');
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
                 setError('Your email or password was incorrect');
-            } else { // @ts-ignore
-                if (e.code === 'auth/email-already-in-use') {
-                                setError('An account with this email already exists');
-                            } else {
-                                setError('There was a problem with your request');
-                            }
             }
+            // else { // @ts-ignore
+            //     if (e.code === 'auth/email-already-in-use') {
+            //                     setError('An account with this email already exists');
+            //                 } else {
+            //                     setError('There was a problem with your request');
+            //                 }
+            // }
         }
     };
 
@@ -142,9 +144,9 @@ export default function Login () {
                         placeholderTextColor={colors.text}
                         onChangeText={setPassword}
                         value={password}
-                        secureTextEntry={true}
+                        secureTextEntry={isVisible}
                     />
-                    {isVisible ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword()} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword()}/>}
+                    {isVisible ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()}/>}
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
                                       onPress={() => handleLogin()}

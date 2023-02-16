@@ -25,7 +25,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 50,
+        marginTop: 20,
     },
     input: {
         width: '80%',
@@ -92,7 +92,13 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-    }
+    },
+    showButton: {
+        position: 'absolute',
+        right: 35,
+        padding: 10,
+        top: 100,
+    },
 
 
 });

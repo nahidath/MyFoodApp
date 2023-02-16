@@ -1,5 +1,5 @@
-import React, {FC} from "react";
-import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert} from "react-native";
+import React, {FC, useState} from "react";
+import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import styles from "../stylesheets/Profile_stylesheet";
@@ -10,11 +10,15 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import {auth} from "../firebase/config";
 import {LoginStackList, ProfileStackList} from "../types/types";
-import {deleteUser} from "firebase/auth";
+import {deleteUser, signOut} from "firebase/auth";
+// @ts-ignore
+import * as ImagePicker from 'expo-image-picker';
+import profile from "../stylesheets/Profile_stylesheet";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 
 // @ts-ignore
-type ProfileProps = MyStackNavigationProp<ProfileStackList, 'Profile'>
+type ProfileProps = MyStackNavigationProp<ProfileStackList, 'Profile'>;
 
 const Profile : FC = () => {
 
@@ -25,14 +29,17 @@ const Profile : FC = () => {
     // @ts-ignore
     const name = user == null ? "" : user.displayName;
     const navigation = useNavigation<ProfileProps>();
+    const userPic = user == null ? "" : user.photoURL;
 
-    const logOut = async () => {
-        try {
-            await auth.signOut();
+
+    const logOut = () => {
+
+        signOut(auth).then(() => {
+            console.log('User signed out!');
             navigation.navigate('Login', {screen: 'Login'});
-        } catch (e) {
+        }).catch((e) => {
             console.log(e);
-        }
+        });
     }
 
     const confirmation = () => {
@@ -84,10 +91,12 @@ const Profile : FC = () => {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={styles.profilePicContainer}>
-                <View style={styles.profilePic}></View>
-                <Pressable style={styles.editProfilePic}>
-                    <Feather name={"camera"} size={24} color={"#ffffff"} />
-                </Pressable>
+                <View style={styles.profileView}>
+                    {userPic ? <ImageBackground source={{uri: userPic}} style={profile.profilePic} resizeMode="contain" /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                </View>
+                {/*<Pressable style={styles.editProfilePic}>*/}
+                {/*    <Feather name={"camera"} size={24} color={"#ffffff"} />*/}
+                {/*</Pressable>*/}
                 <Text style={[styles.profileName, {color: colors.text}]}>{name}</Text>
             </View>
             <Separator />

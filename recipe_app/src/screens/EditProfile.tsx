@@ -1,14 +1,18 @@
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import React, {useState} from "react";
-import {View, Text, ScrollView, TextInput, TouchableOpacity, Alert} from "react-native";
+import {View, Text, ScrollView, TextInput, TouchableOpacity, Alert, Pressable, ImageBackground, StyleSheet} from "react-native";
 import styles from "../stylesheets/Login_stylesheet";
 import {Link, useTheme} from "@react-navigation/native";
 import Separator from "../components/Separator";
 import {colors} from "react-native-elements";
-import {auth} from "../firebase/config";
+import {auth, storage} from "../firebase/config";
 import {updateEmail, updatePassword, updateProfile} from "firebase/auth";
 import Feather from "react-native-vector-icons/Feather";
 import general from "../stylesheets/General_stylesheet";
+import profile from "../stylesheets/Profile_stylesheet";
+import * as ImagePicker from "expo-image-picker";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 
 const EditProfile = () => {
@@ -20,6 +24,8 @@ const EditProfile = () => {
     const [password, setPassword] = useState<string>('');
     const [confPassword, setConfPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
+    // @ts-ignore
+    const [userPicture, setUserPicture] = useState<any>(user.photoURL);
     const [isFocused, setIsFocused] = useState<any>({
         password: false,
         confPassword: false
@@ -36,6 +42,7 @@ const EditProfile = () => {
     const {colors} = useTheme();
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    const [image, setImage] = useState<any>(null);
 
 
     const updateInfos = () => {
@@ -67,12 +74,22 @@ const EditProfile = () => {
                         setError(error.message);
                     });
                 }
+                // if(image !== null && image !== user.photoURL){
+                //     updateProfile(user,{
+                //         photoURL: image
+                //     }).then(() => {
+                //         setUserPicture(image);
+                //     }).catch((error) => {
+                //         setError(error.message);
+                //     });
+                // }
 
             }
 
 
         }
     }
+
 
     const inputEditable = (inputN : any) => {
         if(inputN === 'email'){
@@ -137,15 +154,67 @@ const EditProfile = () => {
 
 
 
+    const pickImage = async () => {
+        // let image = null;
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if(!result.canceled){
+            // @ts-ignore
+            setImage(result.assets[0].uri);
+        }
+        await uploadImage(image);
+
+    };
+
+    const uploadImage = async (img: Blob | Uint8Array | ArrayBuffer) => {
+        if(user){
+            const fileRef = ref(storage, 'gs://my-recipe-app-72535.appspot.com/profilePics' + user.uid + '.jpg');
+            const snapshot = await uploadBytes(fileRef, img);
+            getDownloadURL(snapshot.ref).then((url) => {
+                updateProfile(user,{
+                    photoURL: url
+                }).then(() => {
+                    setUserPicture(url);
+                }).catch((error) => {
+                    setError(error.message);
+                });
+            });
+            // const url = await ref.getDownloadURL(snapshot.ref);
+            // updateProfile(user,{
+            //     photoURL: url
+            // }).then(() => {
+            //     setUserPicture(url);
+            // }).catch((error) => {
+            //     setError(error.message);
+            // });
+
+        }
+
+    }
+
+
+
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
-                <View style={styles.header}>
-                    <Text style={[styles.headerText, {color: colors.text}]}>Your profile</Text>
-                </View>
+                {/*<View style={styles.header}>*/}
+                {/*    <Text style={[styles.headerText, {color: colors.text}]}>Your profile</Text>*/}
+                {/*</View>*/}
                 {error && <Text style={styles.error}>{error}</Text>}
+                <View style={profile.profilePicContainer}>
+                    <View style={stylesEdit.profileView}>
+                        {userPicture ? <ImageBackground source={{uri: userPicture}} style={profile.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                    </View>
+                    <TouchableOpacity style={profile.editProfilePic} onPress={pickImage}>
+                        <Feather name={"camera"} size={24} color={"#ffffff"} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.form}>
                     <View style={styles.inputContainer}>
                         <TextInput
@@ -185,7 +254,7 @@ const EditProfile = () => {
                             onFocus={() => handleFocus('password')}
                             onBlur={() => {!isFocused.password }}
                         />
-                        {isVisible.password ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')}/>}
+                        {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')}/>}
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
@@ -213,5 +282,17 @@ const EditProfile = () => {
         </View>
     );
 }
+
+const stylesEdit = StyleSheet.create({
+    profileView: {
+        top: 10,
+        width: 150,
+        height: 150,
+        borderRadius: 80,
+        backgroundColor: '#d9d9d9',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+});
 
 export default EditProfile;
