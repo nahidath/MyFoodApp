@@ -3,6 +3,7 @@ import {ProfileStackList} from "../types/types";
 import Profile from "../screens/Profile";
 import {useTheme} from "@react-navigation/native";
 import EditProfile from "../screens/EditProfile";
+import LoginStackScreen from "./LoginStackScreen";
 
 
 const ProfilStack = createNativeStackNavigator<ProfileStackList>();
@@ -30,6 +31,9 @@ export default function ProfileStackScreen () {
                 },
                 headerTitle: 'Edit Profile',
             }} />
+            <ProfilStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
+                headerShown: false,
+            }}/>
         </ProfilStack.Navigator>
     )
 }

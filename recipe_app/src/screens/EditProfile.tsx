@@ -8,6 +8,7 @@ import {colors} from "react-native-elements";
 import {auth} from "../firebase/config";
 import {updateEmail, updatePassword, updateProfile} from "firebase/auth";
 import Feather from "react-native-vector-icons/Feather";
+import general from "../stylesheets/General_stylesheet";
 
 
 const EditProfile = () => {
@@ -19,6 +20,10 @@ const EditProfile = () => {
     const [password, setPassword] = useState<string>('');
     const [confPassword, setConfPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [isFocused, setIsFocused] = useState<any>({
+        password: false,
+        confPassword: false
+    });
     const [isEditable, setIsEditable] = useState<any>({
         email: false,
         username: false,
@@ -116,11 +121,25 @@ const EditProfile = () => {
         }
     }
 
+    const handleFocus = (inputN : any) => {
+        if(inputN === 'password'){
+            setIsFocused({
+                password: true,
+                confPassword: isFocused.confPassword
+            });
+        } else if(inputN === 'confPassword'){
+            setIsFocused({
+                password: isFocused.password,
+                confPassword: true
+            });
+        }
+    }
+
 
 
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.header}>
@@ -155,27 +174,31 @@ const EditProfile = () => {
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
-                            style={[styles.input,  {borderColor: colors.border, color: colors.text, borderWidth: 1, backgroundColor:'#F0F0F0',}]}
+                            style={[styles.input,  {borderColor: isFocused.password ? 'red' : colors.border, borderWidth: isFocused.password ? 2 : 1, color: colors.text, backgroundColor: isFocused.password ?
+                                    'white' : '#F0F0F0',}]}
                             placeholder="New password"
                             placeholderTextColor={colors.text}
                             onChangeText={setPassword}
                             value={password}
                             secureTextEntry={isVisible.password }
                             editable={true}
-                            // onPressIn={() => {{borderColor: 'red', borderWidth: 2, backgroundColor: 'white'}}}
+                            onFocus={() => handleFocus('password')}
+                            onBlur={() => {!isFocused.password }}
                         />
                         {isVisible.password ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')}/>}
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
-                            style={[styles.input,  {borderColor: isEditable.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isEditable.confPassword ? 2 : 1, backgroundColor: isEditable.confPassword ?
+                            style={[styles.input,  {borderColor: isFocused.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isFocused.confPassword ? 2 : 1, backgroundColor: isFocused.confPassword ?
                                     'white' : '#F0F0F0',}]}
                             placeholder="Confirm your new password"
                             placeholderTextColor={colors.text}
                             onChangeText={setConfPassword}
                             value={confPassword}
                             secureTextEntry={isVisible.confPassword}
-                            editable={isEditable.confPassword}
+                            editable={true}
+                            onFocus={() => handleFocus('confPassword')}
+                            onBlur={() => {!isFocused.confPassword}}
                         />
                         {isVisible.confPassword ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')}/>}
                     </View>

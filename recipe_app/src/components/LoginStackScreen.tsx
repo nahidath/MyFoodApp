@@ -41,7 +41,7 @@ return (
                     fontWeight: 'bold',
                 },
             }} />
-            <LoginStack.Screen name="Profile" component={ProfileStackScreen} options={{
+            <LoginStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
                 headerShown: false,
             }} />
         </LoginStack.Navigator>

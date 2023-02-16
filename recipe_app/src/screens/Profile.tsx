@@ -29,7 +29,7 @@ const Profile : FC = () => {
     const logOut = async () => {
         try {
             await auth.signOut();
-            navigation.popToTop();
+            navigation.navigate('Login', {screen: 'Login'});
         } catch (e) {
             console.log(e);
         }

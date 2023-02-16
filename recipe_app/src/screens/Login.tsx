@@ -11,6 +11,7 @@ import Register from "./Register";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {LoginStackList} from "../types/types";
 import Separator from "../components/Separator";
+import Feather from "react-native-vector-icons/Feather";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
@@ -44,7 +45,7 @@ export function ResetPassword (navigation : any) {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.header}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Reset Password</Text>
                 </View>
@@ -84,6 +85,7 @@ export default function Login () {
     const {colors} = useTheme();
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    const [isVisible, setIsVisible] = useState(true);
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -113,10 +115,14 @@ export default function Login () {
         }
     };
 
+    const togglePassword = () => {
+        setIsVisible(!isVisible);
+    }
+
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.header}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Login</Text>
                 </View>
@@ -138,6 +144,7 @@ export default function Login () {
                         value={password}
                         secureTextEntry={true}
                     />
+                    {isVisible ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword()} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword()}/>}
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
                                       onPress={() => handleLogin()}

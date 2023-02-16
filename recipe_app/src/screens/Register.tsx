@@ -59,7 +59,7 @@ const Register = () => {
 
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.form}>
                     <Text style={[styles.headerText, {color: colors.text}]}>Register</Text>
                     {error && <Text style={styles.error}>{error}</Text>}

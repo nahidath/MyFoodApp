@@ -38,4 +38,5 @@ export type ProfileStackList = {
     Profile: undefined;
     EditProfile: undefined;
     FavoritesRecipesUser: undefined;
+    LoginStackScreen: undefined;
 }
