@@ -8,14 +8,19 @@ export default StyleSheet.create({
         flexDirection: 'column',
     },
     profilePicContainer: {
+        marginTop: 20,
         height: 200,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
     profilePic: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        width: 150,
+        height: 150,
+        borderRadius: 80,
+
     },
     profileView: {
         top: 10,

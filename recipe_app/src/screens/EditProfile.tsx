@@ -1,6 +1,17 @@
 import FocusAwareStatusBar from "../components/StatusBarStyle";
-import React, {useState} from "react";
-import {View, Text, ScrollView, TextInput, TouchableOpacity, Alert, Pressable, ImageBackground, StyleSheet} from "react-native";
+import React, {useEffect, useState} from "react";
+import {
+    View,
+    Text,
+    ScrollView,
+    TextInput,
+    TouchableOpacity,
+    Alert,
+    Pressable,
+    ImageBackground,
+    StyleSheet,
+    Image
+} from "react-native";
 import styles from "../stylesheets/Login_stylesheet";
 import {Link, useTheme} from "@react-navigation/native";
 import Separator from "../components/Separator";
@@ -13,6 +24,7 @@ import profile from "../stylesheets/Profile_stylesheet";
 import * as ImagePicker from "expo-image-picker";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import axios from "axios";
 
 
 const EditProfile = () => {
@@ -43,6 +55,9 @@ const EditProfile = () => {
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [image, setImage] = useState<any>(null);
+    const [imageType, setImageType] = useState<any>(null);
+    const [permission, setPermission] = useState<any>(null);
+
 
 
     const updateInfos = () => {
@@ -74,15 +89,6 @@ const EditProfile = () => {
                         setError(error.message);
                     });
                 }
-                // if(image !== null && image !== user.photoURL){
-                //     updateProfile(user,{
-                //         photoURL: image
-                //     }).then(() => {
-                //         setUserPicture(image);
-                //     }).catch((error) => {
-                //         setError(error.message);
-                //     });
-                // }
 
             }
 
@@ -152,27 +158,54 @@ const EditProfile = () => {
         }
     }
 
+    useEffect(() => {
+        (async () => {
+            const  status  = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            setPermission(status.status === 'granted');
+        })();
+    }, []);
 
 
     const pickImage = async () => {
         // let image = null;
+        // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        // if (status !== 'granted') {
+        //     alert('Sorry, we need camera roll permissions to make this work!');
+        //     return;
+        // }
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
+        console.log('results');
         if(!result.canceled){
             // @ts-ignore
-            setImage(result.uri);
+            setImage(result.assets[0].uri);
+            setImageType(result.assets[0].uri.split('.').pop());
         }
-        // await uploadImage(image);
+        console.log('image', image);
+        // await uploadImage();
+
+    };
+
+
+    const uploadImage = async () => {
         if(user){
-            const fileRef = ref(storage, '/profilePics/' + user.uid + '.jpg' );
-            uploadBytes(fileRef, image).then(() => {
-                console.log('Uploaded a blob or file!');
+            console.log('img url',image);
+            const fileRef = ref(storage, '/profilePics/' + user.uid + '.' + imageType );
+            // const response = await fetch(image);
+            // const blob = await response.blob();
+            const response = await axios.get(image, {
+                responseType: 'blob'
+            });
+            const blob = await response.data;
+            // console.log(fileRef);
+            uploadBytes(fileRef, blob, {contentType: 'image/'+ imageType}).then(() => {
+                // console.log('Uploaded a blob or file!');
                 getDownloadURL(fileRef).then((url) => {
-                    console.log(url);
+                    // console.log(url);
                     updateProfile(user,{
                         photoURL: url
                     }).then(() => {
@@ -188,40 +221,17 @@ const EditProfile = () => {
             }).catch((error) => {
                 setError(error.message);
             });
-            // const snapshot = await uploadBytes(fileRef, image);
 
         }
-
-    };
-
-    // const uploadImage = async (img: Blob | Uint8Array | ArrayBuffer) => {
-    //     if(user){
-    //         const fileRef = ref(storage, 'gs://my-recipe-app-72535.appspot.com/profilePics' + user.uid + '.jpg');
-    //         const snapshot = await uploadBytes(fileRef, img);
-    //         getDownloadURL(snapshot.ref).then((url) => {
-    //             updateProfile(user,{
-    //                 photoURL: url
-    //             }).then(() => {
-    //                 setUserPicture(url);
-    //             }).catch((error) => {
-    //                 setError(error.message);
-    //             });
-    //         });
-    //         // const url = await ref.getDownloadURL(snapshot.ref);
-    //         // updateProfile(user,{
-    //         //     photoURL: url
-    //         // }).then(() => {
-    //         //     setUserPicture(url);
-    //         // }).catch((error) => {
-    //         //     setError(error.message);
-    //         // });
-    //
-    //     }
-    //
-    // }
+    }
+    console.log('uri user',userPicture);
 
 
-
+    if(!permission){
+        return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: colors.text}}>You need to give permission to access your gallery</Text>
+        </View>
+    }
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
@@ -232,10 +242,12 @@ const EditProfile = () => {
                 {/*</View>*/}
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={profile.profilePicContainer}>
-                    <View style={stylesEdit.profileView}>
-                        {userPicture ? <ImageBackground source={{uri: userPicture}} style={profile.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
-                    </View>
-                    <TouchableOpacity style={profile.editProfilePic} onPress={pickImage}>
+                    {/*<View style={stylesEdit.profileView}>*/}
+                    {/*    /!*{userPicture ? <ImageBackground source={{uri: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fflowers%2F&psig=AOvVaw36BXlRLvzAIjSwNpy6SNNZ&ust=1676833925794000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNDM8aXjn_0CFQAAAAAdAAAAABAE"}}  /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}*!/*/}
+                    {/*</View>*/}
+                    {userPicture ? <Image source={{uri: userPicture}} style={stylesEdit.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+
+                    <TouchableOpacity style={profile.editProfilePic} onPress={() => pickImage()}>
                         <Feather name={"camera"} size={24} color={"#ffffff"} />
                     </TouchableOpacity>
                 </View>
@@ -316,6 +328,11 @@ const stylesEdit = StyleSheet.create({
         backgroundColor: '#d9d9d9',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    profilePic: {
+        width: 150,
+        height: 150,
+        borderRadius: 80,
     }
 });
 

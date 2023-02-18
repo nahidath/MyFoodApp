@@ -92,7 +92,6 @@ export default function Login () {
             setLoggedIn(true);
             // navigation.push('Profile');
         } else {
-            console.log('not logged in')
             setLoggedIn(false);
         }
     });

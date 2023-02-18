@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground} from "react-native";
+import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground, Image} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import styles from "../stylesheets/Profile_stylesheet";
@@ -91,9 +91,10 @@ const Profile : FC = () => {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={styles.profilePicContainer}>
-                <View style={styles.profileView}>
-                    {userPic ? <ImageBackground source={{uri: userPic}} style={profile.profilePic} resizeMode="contain" /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
-                </View>
+                {/*<View style={styles.profileView}>*/}
+                {/*    {userPic ? <ImageBackground source={{uri: userPic}} style={profile.profilePic} resizeMode="contain" /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}*/}
+                {/*</View>*/}
+                {userPic ? <Image source={{uri: userPic}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
                 {/*<Pressable style={styles.editProfilePic}>*/}
                 {/*    <Feather name={"camera"} size={24} color={"#ffffff"} />*/}
                 {/*</Pressable>*/}
