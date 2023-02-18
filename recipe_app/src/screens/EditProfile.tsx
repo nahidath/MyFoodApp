@@ -164,37 +164,61 @@ const EditProfile = () => {
         });
         if(!result.canceled){
             // @ts-ignore
-            setImage(result.assets[0].uri);
+            setImage(result.uri);
         }
-        await uploadImage(image);
-
-    };
-
-    const uploadImage = async (img: Blob | Uint8Array | ArrayBuffer) => {
+        // await uploadImage(image);
         if(user){
-            const fileRef = ref(storage, 'gs://my-recipe-app-72535.appspot.com/profilePics' + user.uid + '.jpg');
-            const snapshot = await uploadBytes(fileRef, img);
-            getDownloadURL(snapshot.ref).then((url) => {
-                updateProfile(user,{
-                    photoURL: url
-                }).then(() => {
-                    setUserPicture(url);
+            const fileRef = ref(storage, '/profilePics/' + user.uid + '.jpg' );
+            uploadBytes(fileRef, image).then(() => {
+                console.log('Uploaded a blob or file!');
+                getDownloadURL(fileRef).then((url) => {
+                    console.log(url);
+                    updateProfile(user,{
+                        photoURL: url
+                    }).then(() => {
+                        setUserPicture(url);
+                        console.log('photoURL updated');
+                    }).catch((error) => {
+                        setError(error.message);
+                    });
                 }).catch((error) => {
                     setError(error.message);
                 });
+
+            }).catch((error) => {
+                setError(error.message);
             });
-            // const url = await ref.getDownloadURL(snapshot.ref);
-            // updateProfile(user,{
-            //     photoURL: url
-            // }).then(() => {
-            //     setUserPicture(url);
-            // }).catch((error) => {
-            //     setError(error.message);
-            // });
+            // const snapshot = await uploadBytes(fileRef, image);
 
         }
 
-    }
+    };
+
+    // const uploadImage = async (img: Blob | Uint8Array | ArrayBuffer) => {
+    //     if(user){
+    //         const fileRef = ref(storage, 'gs://my-recipe-app-72535.appspot.com/profilePics' + user.uid + '.jpg');
+    //         const snapshot = await uploadBytes(fileRef, img);
+    //         getDownloadURL(snapshot.ref).then((url) => {
+    //             updateProfile(user,{
+    //                 photoURL: url
+    //             }).then(() => {
+    //                 setUserPicture(url);
+    //             }).catch((error) => {
+    //                 setError(error.message);
+    //             });
+    //         });
+    //         // const url = await ref.getDownloadURL(snapshot.ref);
+    //         // updateProfile(user,{
+    //         //     photoURL: url
+    //         // }).then(() => {
+    //         //     setUserPicture(url);
+    //         // }).catch((error) => {
+    //         //     setError(error.message);
+    //         // });
+    //
+    //     }
+    //
+    // }
 
 
 
