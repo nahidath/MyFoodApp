@@ -46,7 +46,7 @@ export default StyleSheet.create({
     profileName: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 30,
+        marginTop: 10,
     },
     profileInfoContainer: {
         flexDirection: 'column',

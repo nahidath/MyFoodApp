@@ -51,8 +51,11 @@ export default StyleSheet.create({
         padding: 10,
     },
     ingredientListContainer: {
-        // flex: 4,
-        flexDirection: 'row',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: -25,
     },
     ingreBox: {
         backgroundColor: '#d9d9d9',
@@ -65,5 +68,9 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         // textAlign: 'center',
+    },
+    contentContainer: {
+        alignItems: 'flex-start',
+        justifyContent: 'center',
     },
 });

@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground, Image} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
@@ -7,7 +7,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import general from "../stylesheets/General_stylesheet";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {useNavigation, useTheme} from "@react-navigation/native";
+import {useFocusEffect, useNavigation, useTheme} from "@react-navigation/native";
 import {auth} from "../firebase/config";
 import {LoginStackList, ProfileStackList} from "../types/types";
 import {deleteUser, signOut} from "firebase/auth";
@@ -30,7 +30,35 @@ const Profile : FC = () => {
     const name = user == null ? "" : user.displayName;
     const navigation = useNavigation<ProfileProps>();
     const userPic = user == null ? "" : user.photoURL;
+    const [image, setImage] = useState<string | null>(null);
+    const [newName, setNewName] = useState<string | null>(null);
 
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let isActive = true;
+            const getNewInfos = async () => {
+                try{
+                    // @ts-ignore
+                    const userPP = user?.photoURL;
+                    const nameUser= user?.displayName;
+                    if (isActive) {
+                        // @ts-ignore
+                        setImage(userPP);
+                        // @ts-ignore
+                        setNewName(nameUser);
+                    }
+                }catch (e) {
+                    console.log(e);
+                }
+
+            };
+            getNewInfos();
+            return () => {
+                isActive = false;
+            };
+        },[user, userPic, name])
+    );
 
     const logOut = () => {
 
@@ -91,14 +119,8 @@ const Profile : FC = () => {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={styles.profilePicContainer}>
-                {/*<View style={styles.profileView}>*/}
-                {/*    {userPic ? <ImageBackground source={{uri: userPic}} style={profile.profilePic} resizeMode="contain" /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}*/}
-                {/*</View>*/}
-                {userPic ? <Image source={{uri: userPic}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
-                {/*<Pressable style={styles.editProfilePic}>*/}
-                {/*    <Feather name={"camera"} size={24} color={"#ffffff"} />*/}
-                {/*</Pressable>*/}
-                <Text style={[styles.profileName, {color: colors.text}]}>{name}</Text>
+                {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>
             </View>
             <Separator />
             <ScrollView>

@@ -10,13 +10,14 @@ import {
     TextInput,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View
+    View,
+    Image, RefreshControl
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
-import {CommonActions, useNavigation, useTheme} from "@react-navigation/native";
+import {CommonActions, useFocusEffect, useNavigation, useTheme} from "@react-navigation/native";
 import {HomeStackList} from "../types/types";
 import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 import general from "../stylesheets/General_stylesheet";
@@ -45,6 +46,40 @@ const Homepage :  FC = () => {
     const { colors } = useTheme();
     const theme = useTheme();
     const user = auth.currentUser;
+    let photoProfile : string | null | undefined =   user?.photoURL ;
+    const [joke, setJoke] = useState<string>('');
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [pp, setPP] = useState<string | null>(null);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let isActive = true;
+            const getNewInfos = async () => {
+                try{
+                    // @ts-ignore
+                    const userPP = user?.photoURL;
+                    if (isActive) {
+                        // @ts-ignore
+                        setPP(userPP);
+                    }
+                }catch (e) {
+                    console.log(e);
+                }
+
+            };
+            getNewInfos();
+            return () => {
+                isActive = false;
+            };
+        },[user, photoProfile])
+    );
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
 
 
@@ -69,24 +104,40 @@ const Homepage :  FC = () => {
             console.log(error);
         });
     }
+    const getRandomJokes = () => {
+        axios.get('https://api.spoonacular.com/food/trivia/random',{params:{apiKey: configValue} }).then((response) => {
+            setJoke(response.data.text);
+            console.log(response.data.text);
+        },).catch((error) => {
+            console.log(error);
+        });
+    }
 
     useEffect(() => {
         getRandomRecipe();
         getRecipesByTags();
+        // getRandomJokes();
     }, []);
 
     return (
 
         <View style={[styles.container, general.container, {height: height, backgroundColor:colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#121212" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />}
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
                 <View style={styles.headerBloc}>
                     <View style={styles.headerBlocText}>
                         <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
+                        {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                     </View>
                     <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.navigate('ProfileStackScreen')}}>
                         <View style={styles.profile}>
-                            <Feather name={"user"} size={24} color={colors.text} />
+
+                            {pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
+                            {/*<Feather name={"user"} size={24} color={colors.text} />*/}
                         </View>
                     </TouchableOpacity>
                 </View>

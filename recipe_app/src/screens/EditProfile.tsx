@@ -10,7 +10,7 @@ import {
     Pressable,
     ImageBackground,
     StyleSheet,
-    Image
+    Image, ActivityIndicator
 } from "react-native";
 import styles from "../stylesheets/Login_stylesheet";
 import {Link, useTheme} from "@react-navigation/native";
@@ -22,9 +22,12 @@ import Feather from "react-native-vector-icons/Feather";
 import general from "../stylesheets/General_stylesheet";
 import profile from "../stylesheets/Profile_stylesheet";
 import * as ImagePicker from "expo-image-picker";
+import FileSystem from "expo-file-system";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import axios from "axios";
+import stylesEdit from "../stylesheets/EditProfile_Stylesheet";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 const EditProfile = () => {
@@ -54,9 +57,8 @@ const EditProfile = () => {
     const {colors} = useTheme();
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
-    const [image, setImage] = useState<any>(null);
-    const [imageType, setImageType] = useState<any>(null);
-    const [permission, setPermission] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const loadingColor = theme.dark ? '#E5E2E3' : '#929090';
 
 
 
@@ -92,8 +94,15 @@ const EditProfile = () => {
 
             }
 
-
         }
+        Alert.alert(
+            'Updated 🎉',
+            'Your profile has been updated successfully',
+            [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+            );
     }
 
 
@@ -158,97 +167,71 @@ const EditProfile = () => {
         }
     }
 
-    useEffect(() => {
-        (async () => {
-            const  status  = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            setPermission(status.status === 'granted');
-        })();
-    }, []);
-
 
     const pickImage = async () => {
-        // let image = null;
-        // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        // if (status !== 'granted') {
-        //     alert('Sorry, we need camera roll permissions to make this work!');
-        //     return;
-        // }
+        let imagePicked : string = "";
+        let imageExt  = null;
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Sorry, we need camera roll permissions to make this work!');
+            return;
+        }
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-        console.log('results');
         if(!result.canceled){
             // @ts-ignore
-            setImage(result.assets[0].uri);
-            setImageType(result.assets[0].uri.split('.').pop());
+            imagePicked = result.assets[0].uri;
+            imageExt = result.assets[0].uri.split('.').pop();
         }
-        console.log('image', image);
-        // await uploadImage();
 
-    };
-
-
-    const uploadImage = async () => {
         if(user){
-            console.log('img url',image);
-            const fileRef = ref(storage, '/profilePics/' + user.uid + '.' + imageType );
-            // const response = await fetch(image);
-            // const blob = await response.blob();
-            const response = await axios.get(image, {
+            const fileRef = ref(storage, '/profilePics/' + user.uid + '.' + imageExt );
+            const response = await axios.get(imagePicked, {
                 responseType: 'blob'
             });
             const blob = await response.data;
-            // console.log(fileRef);
-            uploadBytes(fileRef, blob, {contentType: 'image/'+ imageType}).then(() => {
-                // console.log('Uploaded a blob or file!');
+
+            uploadBytes(fileRef, blob, {contentType: 'image/'+ imageExt}).then(() => {
                 getDownloadURL(fileRef).then((url) => {
-                    // console.log(url);
                     updateProfile(user,{
                         photoURL: url
                     }).then(() => {
+                        setLoading(true);
                         setUserPicture(url);
                         console.log('photoURL updated');
+                        setLoading(false);
                     }).catch((error) => {
                         setError(error.message);
                     });
                 }).catch((error) => {
                     setError(error.message);
                 });
-
             }).catch((error) => {
                 setError(error.message);
             });
-
         }
-    }
-    console.log('uri user',userPicture);
 
+    };
 
-    if(!permission){
-        return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: colors.text}}>You need to give permission to access your gallery</Text>
-        </View>
-    }
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
-                {/*<View style={styles.header}>*/}
-                {/*    <Text style={[styles.headerText, {color: colors.text}]}>Your profile</Text>*/}
-                {/*</View>*/}
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={profile.profilePicContainer}>
-                    {/*<View style={stylesEdit.profileView}>*/}
-                    {/*    /!*{userPicture ? <ImageBackground source={{uri: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fflowers%2F&psig=AOvVaw36BXlRLvzAIjSwNpy6SNNZ&ust=1676833925794000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNDM8aXjn_0CFQAAAAAdAAAAABAE"}}  /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}*!/*/}
-                    {/*</View>*/}
-                    {userPicture ? <Image source={{uri: userPicture}} style={stylesEdit.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                    {loading ? (
+                            <ActivityIndicator size="large" color={loadingColor} style={stylesEdit.profilePic} />
+                        ):
+                    userPicture ? <Image source={{uri: userPicture}} style={stylesEdit.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
 
-                    <TouchableOpacity style={profile.editProfilePic} onPress={() => pickImage()}>
-                        <Feather name={"camera"} size={24} color={"#ffffff"} />
+                    <TouchableOpacity style={stylesEdit.editProfileBtn} onPress={() => pickImage()}>
+                        <FontAwesome name={"camera"} size={18} color={"#ffffff"} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.form}>
@@ -305,7 +288,7 @@ const EditProfile = () => {
                             onFocus={() => handleFocus('confPassword')}
                             onBlur={() => {!isFocused.confPassword}}
                         />
-                        {isVisible.confPassword ? <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')}/>}
+                        {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')}/>}
                     </View>
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
@@ -315,25 +298,10 @@ const EditProfile = () => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+
         </View>
     );
 }
 
-const stylesEdit = StyleSheet.create({
-    profileView: {
-        top: 10,
-        width: 150,
-        height: 150,
-        borderRadius: 80,
-        backgroundColor: '#d9d9d9',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    profilePic: {
-        width: 150,
-        height: 150,
-        borderRadius: 80,
-    }
-});
 
 export default EditProfile;

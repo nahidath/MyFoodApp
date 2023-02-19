@@ -40,7 +40,7 @@ const Search : FC = () => {
     const [infoR, setInfoR] = useState<any>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
     const inputRef = useRef<TextInput>(null);
-    const myList = ingredientsList;
+    const myList = ingredientsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
     const getSearchResult = () => {
         let dataIds : string | any = [];
@@ -48,7 +48,8 @@ const Search : FC = () => {
             setResults(response.data.results);
             setNbResults(response.data.totalResults);
             dataIds=response.data.results.map((item: any) => item.id)
-            setIds(dataIds.toString());
+            // setIds(dataIds.toString());
+            getRecipeInfo(dataIds.toString());
             setIsSearch(true);
             if(response.data.results.length == 0){
                 setNoResults('No results found');
@@ -56,10 +57,11 @@ const Search : FC = () => {
         },).catch((error) => {
             console.log(error);
         });
+
     }
 
-    const getRecipeInfo = () => {
-        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:ids} }).then((response) => {
+    const getRecipeInfo = (idsArray: string)  => {
+        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:idsArray} }).then((response) => {
             setInfoR(response.data);
         },).catch((error) => {
             console.log(error);
@@ -69,7 +71,7 @@ const Search : FC = () => {
     const handleSearch = () => {
         if(search!=''){
             getSearchResult();
-            getRecipeInfo();
+            // getRecipeInfo();
         }
     }
 
@@ -106,22 +108,25 @@ const Search : FC = () => {
                         onChangeText={setSearch}
                         onSubmitEditing={handleSearch} />
                 </View>
-                <View style={styles.ingredientListContainer}>
-                    <FlatList
-                        // numColumns={3}
-                        data={myList}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({item}) => (
-                            <TouchableOpacity style={styles.ingreBox} onPress={() => setSearch(item.name)}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
-                        )}
-                    />
-                </View>
+                {!isSearch && (
+                    <View style={styles.ingredientListContainer}>
+                        <FlatList
+                            numColumns={3}
+                            data={myList}
+                            contentContainerStyle={styles.contentContainer}
+                            showsVerticalScrollIndicator={false}
+                            keyboardShouldPersistTaps='always'
+                            renderItem={({item}) => (
+                                <TouchableOpacity style={styles.ingreBox} onPress={() => setSearch(item.name)}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
+                            )}
+                        />
+                    </View>
+                )}
                 {isSearch && results.length > 0 ? (
                     <View style={styles.resultsContainer}>
                         <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
                         <Separator />
-                        <ScrollView>
+                        <ScrollView keyboardShouldPersistTaps='always'>
                             {results.map((result : any) => {
                                 return (
                                     <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>

@@ -142,6 +142,17 @@ export default StyleSheet.create({
     },
     searchButton: {
         padding: 10,
+    },
+    pp: {
+        width: 35,
+        height: 35,
+        borderRadius: 20,
+        borderColor: '#041721',
+        borderWidth: 1,
+    },
+    headerJoke: {
+        fontSize: 15,
+        fontStyle: 'italic',
     }
 
 });

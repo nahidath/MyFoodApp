@@ -98,7 +98,7 @@ export default StyleSheet.create({
     items: {
         marginBottom: 5,
         fontSize: 15,
-        textAlign: 'justify',
+
     },
     shareBtn: {
         position: 'absolute',
