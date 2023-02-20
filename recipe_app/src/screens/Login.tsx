@@ -46,9 +46,6 @@ export function ResetPassword (navigation : any) {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
-                <View style={styles.header}>
-                    <Text style={[styles.headerText, {color: colors.text}]}>Reset Password</Text>
-                </View>
                 {error && <Text style={styles.error}>{error}</Text>}
                 {submitted ? (
                     <Text>Please check your email for a reset password link.</Text>
@@ -124,9 +121,6 @@ export default function Login () {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
-                <View style={styles.header}>
-                    <Text style={[styles.headerText, {color: colors.text}]}>Login</Text>
-                </View>
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
                     <TextInput

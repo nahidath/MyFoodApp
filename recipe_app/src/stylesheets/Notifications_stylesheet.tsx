@@ -19,4 +19,30 @@ export default StyleSheet.create({
         padding: 10,
 
     },
+    restricted: {
+        backgroundColor: '#E19271',
+        margin: 10,
+        height: 84,
+    },
+    restrictedText: {
+        fontSize: 20,
+        padding: 10,
+    },
+    button: {
+        width: '80%',
+        // height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 10,
+        color: '#fff',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 18,
+    }
+
+
 });

@@ -10,6 +10,7 @@ import {LoginStackList} from "../types/types";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import {updateProfile} from "firebase/auth";
+import Feather from "react-native-vector-icons/Feather";
 
 
 // @ts-ignore
@@ -27,6 +28,11 @@ const Register = () => {
     const [password, setPassword] = useState<string>('');
     const [confPassword, setConfPassword] = useState<string>('');
     const [error, setError] = useState<any>('');
+    const [isVisible, setIsVisible] = useState<any>({
+        password: true,
+        confPassword: true
+    });
+
 
     const handleSubmit = async () => {
         try {
@@ -54,6 +60,19 @@ const Register = () => {
     //         headerTitle: 'Register',
     //     })
     // },[navigation]);
+    const togglePassword = (inputN : any) => {
+        if(inputN === 'password'){
+            setIsVisible({
+                password: !isVisible.password,
+                confPassword: isVisible.confPassword
+            });
+        } else if(inputN === 'confPassword'){
+            setIsVisible({
+                password: isVisible.password,
+                confPassword: !isVisible.confPassword
+            });
+        }
+    }
 
     return (
 
@@ -61,39 +80,48 @@ const Register = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.form}>
-                    <Text style={[styles.headerText, {color: colors.text}]}>Register</Text>
                     {error && <Text style={styles.error}>{error}</Text>}
-                    <TextInput
-                        style={[styles.input, {color: colors.text}]}
-                        placeholder="Username"
-                        placeholderTextColor={colors.text}
-                        value={username}
-                        onChangeText={setUsername}
-                    />
-                    <TextInput
-                        style={[styles.input, {color: colors.text}]}
-                        placeholder="Email"
-                        placeholderTextColor={colors.text}
-                        value={email}
-                        onChangeText={setEmail}
-                        autoCapitalize={'none'}
-                    />
-                    <TextInput
-                        style={[styles.input, {color: colors.text}]}
-                        placeholder="Password"
-                        placeholderTextColor={colors.text}
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                    />
-                    <TextInput
-                        style={[styles.input, {color: colors.text}]}
-                        placeholder="Confirm Your Password"
-                        placeholderTextColor={colors.text}
-                        value={confPassword}
-                        onChangeText={setConfPassword}
-                        secureTextEntry
-                    />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={[styles.input, {color: colors.text}]}
+                            placeholder="Username"
+                            placeholderTextColor={colors.text}
+                            value={username}
+                            onChangeText={setUsername}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={[styles.input, {color: colors.text}]}
+                            placeholder="Email"
+                            placeholderTextColor={colors.text}
+                            value={email}
+                            onChangeText={setEmail}
+                            autoCapitalize={'none'}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={[styles.input, {color: colors.text}]}
+                            placeholder="Password"
+                            placeholderTextColor={colors.text}
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry={isVisible.password}
+                        />
+                        {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('password')}/>}
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={[styles.input, {color: colors.text}]}
+                            placeholder="Confirm Your Password"
+                            placeholderTextColor={colors.text}
+                            value={confPassword}
+                            onChangeText={setConfPassword}
+                            secureTextEntry={isVisible.confPassword}
+                        />
+                        {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('confPassword')}/>}
+                    </View>
 
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
                         onPress={handleSubmit}
@@ -101,7 +129,7 @@ const Register = () => {
                     >
                         <Text style={styles.btnText}>Register</Text>
                     </TouchableOpacity>
-                    <Text style={[styles.text, {color: colors.text}]}>Already have an account? <Link to={{screen : 'Login'}}>Login</Link></Text>
+                    <Text style={[styles.text, {color: colors.text}]}>Already have an account? <Link to={{screen : 'Login'}} style={[styles.link, {color: colors.text}]}>Login</Link></Text>
                 </View>
             </ScrollView>
         </View>

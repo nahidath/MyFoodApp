@@ -11,12 +11,11 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {Icon} from "react-native-elements";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types/types";
-import HomeStackScreen from "./HomeStackScreen";
 import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet} from "react-native";
 import general from "../stylesheets/General_stylesheet";
 import {useNavigation} from "@react-navigation/native";
-import MoreStackScreen from "./MoreStackScreen";
 import {useTheme} from '@react-navigation/native';
+import {FavoriteStackScreen, HomeStackScreen, MoreStackScreen, NotificationsStackScreen} from "./AllStackScreen";
 
 
 
@@ -83,7 +82,7 @@ const BottomNavigation : FC = () => {
                     <Feather name={"home"} size={24} color={color} />
                 ),
             }} />
-            <Tab.Screen name="Favorites" component={Favorites} options={{
+            <Tab.Screen name="Favorites" component={FavoriteStackScreen} options={{
                 tabBarIcon: ({color}) => (
                     <Feather name={"heart"} size={24} color={color} />
                 ),}
@@ -99,7 +98,7 @@ const BottomNavigation : FC = () => {
             {/*        <Feather name={"user"} size={24} color={color} />*/}
             {/*    ),}*/}
             {/*}/>*/}
-            <Tab.Screen name="Notifications" component={Notifications} options={{
+            <Tab.Screen name="Notifications" component={NotificationsStackScreen} options={{
                 tabBarIcon: ({color}) => (
                     <Feather name={"bell"} size={24} color={color} />
                 ),}

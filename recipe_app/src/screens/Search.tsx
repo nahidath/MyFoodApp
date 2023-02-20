@@ -44,16 +44,22 @@ const Search : FC = () => {
 
     const getSearchResult = () => {
         let dataIds : string | any = [];
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100} }).then((response) => {
-            setResults(response.data.results);
-            setNbResults(response.data.totalResults);
-            dataIds=response.data.results.map((item: any) => item.id)
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100} }).then((response1) => {
+            setResults(response1.data.results);
+            setNbResults(response1.data.totalResults);
+            dataIds=response1.data.results.map((item: any) => item.id)
             // setIds(dataIds.toString());
-            getRecipeInfo(dataIds.toString());
+            // getRecipeInfo(dataIds.toString());
             setIsSearch(true);
-            if(response.data.results.length == 0){
+            if(response1.data.results.length == 0){
                 setNoResults('No results found');
             }
+            axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:dataIds.toString()} }).then((response2) => {
+                setInfoR(response2.data);
+                console.log(response2.data);
+            },).catch((error) => {
+                console.log(error);
+            });
         },).catch((error) => {
             console.log(error);
         });
@@ -63,6 +69,7 @@ const Search : FC = () => {
     const getRecipeInfo = (idsArray: string)  => {
         axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:idsArray} }).then((response) => {
             setInfoR(response.data);
+            console.log(response.data);
         },).catch((error) => {
             console.log(error);
         });

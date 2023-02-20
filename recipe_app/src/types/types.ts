@@ -40,3 +40,17 @@ export type ProfileStackList = {
     FavoritesRecipesUser: undefined;
     LoginStackScreen: undefined;
 }
+
+export type FavoritesStackList = {
+    Favs: undefined;
+    LoginStackScreen: undefined;
+    Recipe: {
+        id: string;
+        name: string;
+    }
+}
+
+export type NotificationsStackList = {
+    Notifs: undefined;
+    LoginStackScreen: undefined;
+}

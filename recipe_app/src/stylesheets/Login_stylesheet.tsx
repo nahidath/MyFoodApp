@@ -21,11 +21,11 @@ export default StyleSheet.create({
         margin: 10,
     },
     form: {
-        // flex: 1,
+        flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 60,
     },
     input: {
         width: '80%',
@@ -99,6 +99,12 @@ export default StyleSheet.create({
         padding: 10,
         top: 100,
     },
+    showBtn : {
+        position: 'absolute',
+        right: 20,
+        padding: 10,
+        // top: 100,
+    }
 
 
 });
