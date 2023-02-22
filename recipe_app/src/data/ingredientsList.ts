@@ -1,79 +1,87 @@
 const ingredientsList = [
     {
-        name: 'Butter',
+        name: 'Butter ',
         icon: '🧈',
     },
     {
-        name: 'Chicken',
+        name: 'Chicken ',
         icon: '🐔',
     },
     {
-        name: 'Sugar',
+        name: 'Sugar ',
         icon: '🍬',
     },
     {
-        name: 'Salt',
+        name: 'Salt ',
         icon: '🧂',
     },
     {
-        name: 'Eggs',
+        name: 'Eggs ',
         icon: '🥚',
     },
     {
-        name: 'Flour',
+        name: 'Flour ',
         icon: '🥖',
     },
     {
-        name: 'Milk',
+        name: 'Milk ',
         icon: '🥛',
     },
     {
-        name: 'Rice',
+        name: 'Rice ',
         icon: '🍚',
     },
     {
-        name: 'Tomatoes',
+        name: 'Tomatoes ',
         icon: '🍅',
     },
     {
-        name: 'Onions',
+        name: 'Onions ',
         icon: '🧅',
     },
     {
-        name: 'Potatoes',
+        name: 'Potatoes ',
         icon: '🥔',
     },
     {
-        name: 'Carrots',
+        name: 'Carrots ',
         icon: '🥕',
     },
     {
-        name: 'Cabbage',
+        name: 'Cabbage ',
         icon: '🥬',
     },
     {
-        name: 'Pasta',
+        name: 'Pasta ',
         icon: '🍝',
     },
     {
-        name: 'Bacon',
+        name: 'Bacon ',
         icon: '🥓',
     },
     {
-        name: 'Beef',
+        name: 'Beef ',
         icon: '🥩',
     },
     {
-        name: 'Fish',
+        name: 'Fish ',
         icon: '🐟',
     },
     {
-        name: 'Cheese',
+        name: 'Cheese ',
         icon: '🧀',
     },
     {
-        name: 'Chocolate',
+        name: 'Chocolate ',
         icon: '🍫',
+    },
+    {
+        name: 'Shrimp ',
+        icon: '🦐',
+    },
+    {
+        name: 'Garlic ',
+        icon: '🧄',
     }
 ];
 

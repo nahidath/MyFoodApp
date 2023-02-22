@@ -67,6 +67,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: StyleSheet.hairlineWidth,
         // textAlign: 'center',
     },
     contentContainer: {

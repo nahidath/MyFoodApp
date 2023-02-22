@@ -118,7 +118,7 @@ export default StyleSheet.create({
         height: 35,
         borderRadius: 20,
         borderColor: '#041721',
-        borderWidth: 1,
+        borderWidth: StyleSheet.hairlineWidth,
         backgroundColor: '#fefefe',
         justifyContent: 'center',
         alignItems: 'center',

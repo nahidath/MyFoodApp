@@ -23,6 +23,7 @@ import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/ven
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import axios from "axios";
+import randomIngredients from "../data/randomIngredients";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -50,6 +51,7 @@ const Homepage :  FC = () => {
     const [joke, setJoke] = useState<string>('');
     const [refreshing, setRefreshing] = React.useState(false);
     const [pp, setPP] = useState<string | null>(null);
+    // const [date, setDate] = useState<string | null>(new Date());
 
     useFocusEffect(
         React.useCallback(() => {

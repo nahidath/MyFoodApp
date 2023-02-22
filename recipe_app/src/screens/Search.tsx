@@ -44,22 +44,23 @@ const Search : FC = () => {
 
     const getSearchResult = () => {
         let dataIds : string | any = [];
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100} }).then((response1) => {
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
             setResults(response1.data.results);
             setNbResults(response1.data.totalResults);
             dataIds=response1.data.results.map((item: any) => item.id)
+            console.log("dataids ",dataIds.toString());
             // setIds(dataIds.toString());
             // getRecipeInfo(dataIds.toString());
             setIsSearch(true);
             if(response1.data.results.length == 0){
                 setNoResults('No results found');
             }
-            axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:dataIds.toString()} }).then((response2) => {
-                setInfoR(response2.data);
-                console.log(response2.data);
-            },).catch((error) => {
-                console.log(error);
-            });
+            // axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:dataIds.toString()} }).then((response2) => {
+            //     setInfoR(response2.data);
+            //     console.log(response2.data);
+            // },).catch((error) => {
+            //     console.log(error);
+            // });
         },).catch((error) => {
             console.log(error);
         });
@@ -92,8 +93,16 @@ const Search : FC = () => {
 
     }, [search, isSearch]);
 
+    const formatTime = (time: number) => {
+        const hours = Math.floor(time / 60);
+        const minutes = time % 60;
+        const m = minutes < 10 ? '0' + minutes : minutes
+        return hours +'h' + m + ' min';
+    }
+
     const {colors} = useTheme();
     const theme = useTheme();
+    const borderSpec=theme.dark ? "#fefefe" : "#505050";
 
     return (
         // <KeyboardAwareScrollView
@@ -124,7 +133,7 @@ const Search : FC = () => {
                             showsVerticalScrollIndicator={false}
                             keyboardShouldPersistTaps='always'
                             renderItem={({item}) => (
-                                <TouchableOpacity style={styles.ingreBox} onPress={() => setSearch(item.name)}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
+                                <TouchableOpacity style={[styles.ingreBox, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() => [setSearch(item.name.trim()), handleSearch()]}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
                             )}
                         />
                     </View>
@@ -142,29 +151,19 @@ const Search : FC = () => {
                                     </View>
                                     <View style={recipeStyles.blocRecipeBelow}>
                                         <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
-                                        {infoR.map((info : any) => (
-                                            <View>
-                                                {info.map((i : any) => (
-                                                    <View>
-                                                        <View style={recipeStyles.blocRecipeLabel}>
-                                                            {i.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
-                                                            {i.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
-                                                            {i.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
-                                                            {i.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
-                                                            {i.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
-                                                        </View>
-
-                                                        <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color="#041721"/> {i.readyInMinutes} min</Text>
-                                                        <View style={recipeStyles.blocRecipeLikes}>
-                                                            <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{i.aggregateLikes}</Text>
-                                                            <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
-                                                        </View>
-                                                    </View>
-                                                ))}
-                                            </View>
-                                        ))}
+                                        <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color="#041721"/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
+                                        <View style={recipeStyles.blocRecipeLikes}>
+                                            <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{result.aggregateLikes}</Text>
+                                            <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
+                                        </View>
                                     </View>
-
+                                    <View style={recipeStyles.blocRecipeLabel}>
+                                        {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
+                                        {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
+                                        {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
+                                        {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
+                                        {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
+                                    </View>
                                 </TouchableOpacity>
                                 )
                             })}
