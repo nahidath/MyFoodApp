@@ -16,6 +16,7 @@ export default StyleSheet.create({
     blocRecipeImage: {
         flex: 1,
         padding: 10,
+        borderRadius: 10,
     },
     blocRecipeImageText: {
         paddingTop: 10,

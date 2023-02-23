@@ -8,7 +8,7 @@ import {
     Pressable,
     TouchableOpacity,
     ImageBackground,
-    Image
+    Image, ActivityIndicator
 } from "react-native";
 import styles from '../stylesheets/Search_stylesheet';
 import recipeStyles from '../stylesheets/SpotlightRecipes_stylesheet';
@@ -36,56 +36,46 @@ const Search : FC = () => {
     const [noResults, setNoResults] = useState<string>('');
     const [nbResults, setNbResults] = useState<number>(0);
     const [isSearch, setIsSearch] = useState<boolean>(false);
-    const [ids, setIds] = useState<string>('');
-    const [infoR, setInfoR] = useState<any>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
     const inputRef = useRef<TextInput>(null);
     const myList = ingredientsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
+    const [loading, setLoading] = useState<boolean>(false);
 
     const getSearchResult = () => {
-        let dataIds : string | any = [];
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
+        console.log("loading",loading);
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase().trim(), number: 100, addRecipeInformation:true} }).then((response1) => {
             setResults(response1.data.results);
             setNbResults(response1.data.totalResults);
-            dataIds=response1.data.results.map((item: any) => item.id)
-            console.log("dataids ",dataIds.toString());
-            // setIds(dataIds.toString());
-            // getRecipeInfo(dataIds.toString());
             setIsSearch(true);
+            setLoading(false);
             if(response1.data.results.length == 0){
                 setNoResults('No results found');
             }
-            // axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:dataIds.toString()} }).then((response2) => {
-            //     setInfoR(response2.data);
-            //     console.log(response2.data);
-            // },).catch((error) => {
-            //     console.log(error);
-            // });
         },).catch((error) => {
             console.log(error);
         });
 
     }
 
-    const getRecipeInfo = (idsArray: string)  => {
-        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, includeNutrition: false, ids:idsArray} }).then((response) => {
-            setInfoR(response.data);
-            console.log(response.data);
-        },).catch((error) => {
-            console.log(error);
-        });
-    }
 
     const handleSearch = () => {
         if(search!=''){
+            // console.log('search', search);
+            setLoading(true);
             getSearchResult();
-            // getRecipeInfo();
         }
     }
 
     useEffect(() => {
         inputRef.current?.focus();
         setNoResults('');
+        const searchPress = search;
+        if(searchPress!=''){
+            setSearch(searchPress);
+            setLoading(true);
+            getSearchResult();
+        }
+
         // if(search!='' && isSearch){
         //     getSearchResult();
         //     console.log('search', search);
@@ -105,77 +95,78 @@ const Search : FC = () => {
     const borderSpec=theme.dark ? "#fefefe" : "#505050";
 
     return (
-        // <KeyboardAwareScrollView
-        //     resetScrollToCoords={{ x: 0, y: 0 }}
-        //     style={{ backgroundColor: '#F5F9FA' }}
-        //     scrollEnabled={true}
-        // >
-            <View style={[general.container, {backgroundColor: colors.background}]}>
-                {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-                <View style={[styles.searchContainer, general.shadow, {backgroundColor: colors.notification}]}>
-                    <FontAwesome style={styles.icon} name={"search"} size={22} color={"#9e9e9e"} />
-                    <TextInput
-                        ref={inputRef}
-                        style={{color:colors.text}}
-                        placeholderTextColor={colors.text}
-                        placeholder={'Search recipes'}
-                        keyboardType="default"
-                        value={search}
-                        onChangeText={setSearch}
-                        onSubmitEditing={handleSearch} />
-                </View>
-                {!isSearch && (
-                    <View style={styles.ingredientListContainer}>
-                        <FlatList
-                            numColumns={3}
-                            data={myList}
-                            contentContainerStyle={styles.contentContainer}
-                            showsVerticalScrollIndicator={false}
-                            keyboardShouldPersistTaps='always'
-                            renderItem={({item}) => (
-                                <TouchableOpacity style={[styles.ingreBox, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() => [setSearch(item.name.trim()), handleSearch()]}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
-                            )}
-                        />
-                    </View>
-                )}
-                {isSearch && results.length > 0 ? (
-                    <View style={styles.resultsContainer}>
-                        <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
-                        <Separator />
-                        <ScrollView keyboardShouldPersistTaps='always'>
-                            {results.map((result : any) => {
-                                return (
-                                    <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
-                                    <View style={[recipeStyles.imgRecipe]}>
-                                        {result.image ? <ImageBackground source={{uri: result.image}} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
-                                    </View>
-                                    <View style={recipeStyles.blocRecipeBelow}>
-                                        <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
-                                        <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color="#041721"/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
-                                        <View style={recipeStyles.blocRecipeLikes}>
-                                            <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{result.aggregateLikes}</Text>
-                                            <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
-                                        </View>
-                                    </View>
-                                    <View style={recipeStyles.blocRecipeLabel}>
-                                        {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
-                                        {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
-                                        {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
-                                        {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
-                                        {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
-                                    </View>
-                                </TouchableOpacity>
-                                )
-                            })}
-                        </ScrollView>
 
-                    </View>
-                ) : (
-                    <Text style={[styles.resultsText, {color:colors.text}]}>{noResults}</Text>
-                )}
-
+        <View style={[general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            <View style={[styles.searchContainer, general.shadow, {backgroundColor: colors.notification}]}>
+                <FontAwesome style={styles.icon} name={"search"} size={22} color={"#9e9e9e"} />
+                <TextInput
+                    ref={inputRef}
+                    style={{color:colors.text}}
+                    placeholderTextColor={colors.text}
+                    placeholder={'Search recipes'}
+                    keyboardType="default"
+                    value={search}
+                    onChangeText={setSearch}
+                    onSubmitEditing={handleSearch} />
             </View>
-        // </KeyboardAwareScrollView>
+            {!isSearch && (
+                <View style={styles.ingredientListContainer}>
+                    <FlatList
+                        numColumns={3}
+                        data={myList}
+                        contentContainerStyle={styles.contentContainer}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps='always'
+                        renderItem={({item}) => (
+                            <TouchableOpacity style={[styles.ingreBox, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() => [setSearch(item.name.trim()), handleSearch()]}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
+                        )}
+                    />
+                </View>
+            )}
+            {loading && (
+                <View style={styles.loading}>
+                    <ActivityIndicator size="large" color="#9fc131" />
+                </View>
+            )}
+
+            {isSearch && results.length > 0 ? (
+                <View style={styles.resultsContainer}>
+                    <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
+                    <Separator />
+                    <ScrollView keyboardShouldPersistTaps='always'>
+                        {results.map((result : any) => {
+                            return (
+                                <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
+                                <View style={recipeStyles.imgRecipe}>
+                                    {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
+                                </View>
+                                <View style={recipeStyles.blocRecipeBelow}>
+                                    <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
+                                    <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color="#041721"/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
+                                    <View style={recipeStyles.blocRecipeLikes}>
+                                        <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{result.aggregateLikes}</Text>
+                                        <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
+                                    </View>
+                                </View>
+                                <View style={recipeStyles.blocRecipeLabel}>
+                                    {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
+                                    {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
+                                    {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
+                                    {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
+                                    {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
+                                </View>
+                            </TouchableOpacity>
+                            )
+                        })}
+                    </ScrollView>
+
+                </View>
+            ) : (
+                <Text style={[styles.resultsText, {color:colors.text}]}>{noResults}</Text>
+            )}
+
+        </View>
 
     );
 }

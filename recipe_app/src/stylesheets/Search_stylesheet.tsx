@@ -74,4 +74,14 @@ export default StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
     },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(155,155,155,0.52)',
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 100,
+
+    }
+
 });
