@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
-    Image, RefreshControl
+    Image, RefreshControl, FlatList
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
@@ -24,6 +24,7 @@ import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import axios from "axios";
 import randomIngredients from "../data/randomIngredients";
+import cuisinesList from "../data/cuisinesList";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -216,6 +217,25 @@ const Homepage :  FC = () => {
                             </ScrollView>
                         </View>
 
+                    </View>
+                    <View>
+                        <View style={styles.cuisineDisplay}>
+                            <Text style={[styles.cuisineTitle, {color: colors.text}]}>Cuisines</Text>
+                            <View style={styles.cuisineBloc}>
+                                <FlatList
+                                    numColumns={2}
+                                    data={cuisinesList}
+                                    contentContainerStyle={styles.contentContainer}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({item}) => (
+                                        <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Cuisine', {cuisine: item.name})}>
+                                            <Text style={[styles.cuisineBlocItemText, {color: colors.text}]}>{item.name}</Text>
+                                            <Image source={{uri :item.image}} style={styles.cuisineBlocItemImage} />
+                                         </TouchableOpacity>
+                                    )}
+                                />
+                            </View>
+                        </View>
                     </View>
                 </View>
             </ScrollView>

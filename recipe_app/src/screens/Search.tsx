@@ -41,9 +41,9 @@ const Search : FC = () => {
     const myList = ingredientsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
     const [loading, setLoading] = useState<boolean>(false);
 
-    const getSearchResult = () => {
-        console.log("loading",loading);
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase().trim(), number: 100, addRecipeInformation:true} }).then((response1) => {
+    const getSearchResult = (s?: string) => {
+        let query = s ? s : search.trim();
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: query.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
             setResults(response1.data.results);
             setNbResults(response1.data.totalResults);
             setIsSearch(true);
@@ -60,27 +60,23 @@ const Search : FC = () => {
 
     const handleSearch = () => {
         if(search!=''){
-            // console.log('search', search);
             setLoading(true);
             getSearchResult();
         }
     }
 
+    const handleIngredient = (ingredient: string) => {
+        setSearch(ingredient.trim());
+        setLoading(true);
+        getSearchResult(ingredient.trim());
+    }
+
     useEffect(() => {
         inputRef.current?.focus();
         setNoResults('');
-        const searchPress = search;
-        if(searchPress!=''){
-            setSearch(searchPress);
-            setLoading(true);
-            getSearchResult();
+        if(search == ''){
+            setIsSearch(false);
         }
-
-        // if(search!='' && isSearch){
-        //     getSearchResult();
-        //     console.log('search', search);
-        // }
-
     }, [search, isSearch]);
 
     const formatTime = (time: number) => {
@@ -108,7 +104,8 @@ const Search : FC = () => {
                     keyboardType="default"
                     value={search}
                     onChangeText={setSearch}
-                    onSubmitEditing={handleSearch} />
+                    onSubmitEditing={handleSearch}
+                />
             </View>
             {!isSearch && (
                 <View style={styles.ingredientListContainer}>
@@ -119,7 +116,7 @@ const Search : FC = () => {
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps='always'
                         renderItem={({item}) => (
-                            <TouchableOpacity style={[styles.ingreBox, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() => [setSearch(item.name.trim()), handleSearch()]}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.ingreBox, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() =>  handleIngredient(item.name.trim())}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
                         )}
                     />
                 </View>

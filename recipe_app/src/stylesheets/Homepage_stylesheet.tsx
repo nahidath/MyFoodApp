@@ -153,6 +153,48 @@ export default StyleSheet.create({
     headerJoke: {
         fontSize: 15,
         fontStyle: 'italic',
+    },
+    cuisineTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        width: '80%',
+        padding: 20,
+    },
+    cuisineDisplay: {
+        top: -30,
+    },
+    cuisineBloc: {
+        width: 170,
+        height: 260,
+        borderRadius: 20,
+        margin: 20,
+        marginTop: 0,
+        borderColor: 'transparent',
+        borderWidth: hairlineWidth,
+    },
+    contentContainer: {
+        paddingVertical: 20,
+    },
+    cuisineBlocItem: {
+        width: 170,
+        height: 260,
+        borderRadius: 20,
+        margin: 20,
+        marginTop: 0,
+        borderColor: 'transparent',
+        borderWidth: hairlineWidth,
+    },
+    cuisineBlocItemText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#fefefe',
+        padding: 10,
+    },
+    cuisineBlocItemImage: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        padding: 10,
     }
+
 
 });
