@@ -26,6 +26,7 @@ import TermsOfUse from "../screens/TermsOfUse";
 import EditProfile from "../screens/EditProfile";
 import Favorites from "../screens/Favorites";
 import Notifications from "../screens/Notifications";
+import Cuisine from "../screens/Cuisine";
 
 
 export function HomeStackScreen () {
@@ -68,6 +69,15 @@ export function HomeStackScreen () {
             }} />
             <HomeStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
                 headerShown: false
+            }} />
+            <HomeStack.Screen name="Cuisine" component={Cuisine} options={{
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
             }} />
         </HomeStack.Navigator>
     )

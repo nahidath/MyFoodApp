@@ -14,6 +14,9 @@ export type HomeStackList = {
     Search: undefined;
     LoginStackScreen: undefined;
     ProfileStackScreen: undefined;
+    Cuisine: {
+        cuisine: string;
+    }
 }
 
 export type MoreStackList = {
