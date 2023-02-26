@@ -24,7 +24,7 @@ const Cuisine = ({route}: Props) => {
     const navigation = useNavigation<CuisineScreenProps>();
 
     const getRecipesByCuisine = () => {
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP.toLowerCase()} }).then((response) => {
             setRecipesC(response.data.results);
         },).catch((error) => {
             console.log(error);
@@ -32,6 +32,9 @@ const Cuisine = ({route}: Props) => {
     }
 
     useEffect(() => {
+        navigation.setOptions({
+            headerTitle: cuisineFromHP,
+        })
         getRecipesByCuisine();
     },[])
 

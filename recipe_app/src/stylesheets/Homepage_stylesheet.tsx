@@ -160,32 +160,24 @@ export default StyleSheet.create({
         width: '80%',
         padding: 20,
     },
-    cuisineDisplay: {
-        top: -30,
-    },
     cuisineBloc: {
-        width: 170,
-        height: 260,
-        borderRadius: 20,
-        margin: 20,
-        marginTop: 0,
-        borderColor: 'transparent',
-        borderWidth: hairlineWidth,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    contentContainer: {
-        paddingVertical: 20,
-    },
+
     cuisineBlocItem: {
-        width: 170,
-        height: 260,
+        width: 160,
+        height: 250,
         borderRadius: 20,
-        margin: 20,
+        margin: 10,
         marginTop: 0,
         borderColor: 'transparent',
         borderWidth: hairlineWidth,
     },
     cuisineBlocItemText: {
-        fontSize: 20,
+        fontSize: 17,
         fontWeight: 'bold',
         color: '#fefefe',
         padding: 10,
@@ -194,6 +186,15 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         padding: 10,
+    },
+    cuisineGradient: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        zIndex: 100,
     }
 
 

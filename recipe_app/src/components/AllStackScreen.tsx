@@ -12,7 +12,7 @@ import {
     LoginStackList,
     MoreStackList,
     NotificationsStackList,
-    ProfileStackList
+    ProfileStackList, SearchStackList
 } from "../types/types";
 import Login, {ResetPassword} from "../screens/Login";
 import Register from "../screens/Register";
@@ -63,7 +63,7 @@ export function HomeStackScreen () {
                 },
                 headerTitle: 'Spotlight Recipes',
             }} />
-            <HomeStack.Screen name="Search" component={Search} options={{headerShown: false}} />
+            {/*<HomeStack.Screen name="Search" component={SearchStackScreen} options={{headerShown: false}} />*/}
             <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false
             }} />
@@ -289,5 +289,28 @@ export function NotificationsStackScreen () {
                 headerShown: false,
             }}/>
         </NotificationsStack.Navigator>
+    )
+}
+
+export function SearchStackScreen () {
+    const SearchStack = createNativeStackNavigator<SearchStackList>();
+    const {colors} = useTheme();
+
+    return (
+        <SearchStack.Navigator >
+            <SearchStack.Screen name="SearchPage" component={Search} options={{
+                headerShown: false,
+            }} />
+            <SearchStack.Screen name="Recipe" component={Recipe} options={{
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }} />
+
+        </SearchStack.Navigator>
     )
 }

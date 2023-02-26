@@ -11,11 +11,18 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {Icon} from "react-native-elements";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types/types";
-import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet} from "react-native";
+import {NativeScrollEvent, NativeSyntheticEvent, StyleSheet, TouchableOpacity} from "react-native";
 import general from "../stylesheets/General_stylesheet";
 import {useNavigation} from "@react-navigation/native";
 import {useTheme} from '@react-navigation/native';
-import {FavoriteStackScreen, HomeStackScreen, MoreStackScreen, NotificationsStackScreen} from "./AllStackScreen";
+import {
+    FavoriteStackScreen,
+    HomeStackScreen,
+    MoreStackScreen,
+    NotificationsStackScreen,
+    SearchStackScreen
+} from "./AllStackScreen";
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 
 
@@ -24,6 +31,9 @@ const BottomNavigation : FC = () => {
 
     const Tab = createBottomTabNavigator();
     const colors = useTheme().colors;
+    const theme = useTheme();
+    const roundBckColor = theme.dark ? "#9fc131" : "#FAF9F6";
+    const iconColor = theme.dark ? "#FAF9F6" : "#9fc131";
 
     return (
         <Tab.Navigator
@@ -87,11 +97,15 @@ const BottomNavigation : FC = () => {
                     <Feather name={"heart"} size={24} color={color} />
                 ),}
             } />
-            {/*<Tab.Screen name="Search" component={Search} options={{*/}
-            {/*    tabBarIcon: ({color}) => (*/}
-            {/*        <FontAwesome name={"search"} size={24} color={color} />*/}
-            {/*    ),}*/}
-            {/*} />*/}
+            <Tab.Screen name="Search" component={SearchStackScreen} options={{
+                headerShown: false,
+                tabBarLabel:'',
+                tabBarIcon: () => (
+                    <FontAwesome name={"search"} size={40} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor}}/>
+
+                ),
+            }
+            } />
 
             {/*<Tab.Screen name="Profile" component={Profile} options={{*/}
             {/*    tabBarIcon: ({color}) => (*/}
@@ -125,6 +139,17 @@ const styles = StyleSheet.create({
         shadowRadius: 3.5,
         elevation: 5,
     },
+    roundTabButton: {
+        borderRadius: 30,
+        padding: 5,
+        height: 55,
+        width: 55,
+        backgroundColor: 'white',
+        textAlign: 'center',
+        borderColor: '#9fc131',
+        borderWidth: hairlineWidth,
+
+    }
 });
 
 export default BottomNavigation;

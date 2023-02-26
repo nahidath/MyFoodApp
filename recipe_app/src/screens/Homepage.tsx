@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
-    Image, RefreshControl, FlatList
+    Image, RefreshControl, FlatList, LogBox
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
@@ -53,6 +53,11 @@ const Homepage :  FC = () => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [pp, setPP] = useState<string | null>(null);
     // const [date, setDate] = useState<string | null>(new Date());
+    const currentDate = new Date();
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+    const twentyFourHoursAgo = new Date(currentDate.getTime() - twentyFourHours);
+    const [isPass, setPass] = useState<boolean>(false);
+    const [newIngredient, setNewIngredient] = useState<string>(randomIngredients[Math.floor(Math.random() * randomIngredients.length)]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -101,7 +106,7 @@ const Homepage :  FC = () => {
     }
 
     const getRecipesByTags = () => {
-        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 10, tags: "potato"} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 10, tags: newIngredient} }).then((response) => {
             setRecipes2(response.data.recipes);
         },).catch((error) => {
             console.log(error);
@@ -116,11 +121,28 @@ const Homepage :  FC = () => {
         });
     }
 
+    const checkPassed = () => {
+        if(currentDate.getTime() < twentyFourHoursAgo.getTime()){
+            setPass(true);
+        }
+    }
+
     useEffect(() => {
+        checkPassed();
         getRandomRecipe();
         getRecipesByTags();
         // getRandomJokes();
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed c\n' +
+        'ontainer instead.']);
     }, []);
+
+    useEffect(() => {
+        if(isPass){
+            //give a new ingredient
+            const random = Math.floor(Math.random() * randomIngredients.length);
+            setNewIngredient(randomIngredients[random]);
+        }
+    }, [isPass]);
 
     return (
 
@@ -148,7 +170,7 @@ const Homepage :  FC = () => {
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
                     {/*<Feather style={styles.searchButton} name={"search"} size={24} color={"#9e9e9e"} />*/}
 
-                    <TextInput placeholderTextColor={colors.text} placeholder={'Search recipes'} onFocus={() => navigation.push('Search')} />
+                    <TextInput placeholderTextColor={colors.text} placeholder={'Search recipes'} onFocus={() => navigation.navigate('Search')} />
                 </View>
                 <View style={styles.recipesDisplay}>
                     <View>
@@ -186,7 +208,7 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Today's ingredient : {'\n'}Potato</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Today's ingredient : {'\n'}{newIngredient.charAt(0).toUpperCase() + newIngredient.slice(1)}</Text>
                             {/*<TouchableOpacity style={styles.recipe1Button} >*/}
                             {/*    <Feather name={'arrow-right'} size={24} color={'#041721'} />*/}
                             {/*</TouchableOpacity>*/}
@@ -219,22 +241,24 @@ const Homepage :  FC = () => {
 
                     </View>
                     <View>
-                        <View style={styles.cuisineDisplay}>
-                            <Text style={[styles.cuisineTitle, {color: colors.text}]}>Cuisines</Text>
-                            <View style={styles.cuisineBloc}>
-                                <FlatList
-                                    numColumns={2}
-                                    data={cuisinesList}
-                                    contentContainerStyle={styles.contentContainer}
-                                    showsVerticalScrollIndicator={false}
-                                    renderItem={({item}) => (
-                                        <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Cuisine', {cuisine: item.name})}>
-                                            <Text style={[styles.cuisineBlocItemText, {color: colors.text}]}>{item.name}</Text>
-                                            <Image source={{uri :item.image}} style={styles.cuisineBlocItemImage} />
-                                         </TouchableOpacity>
-                                    )}
-                                />
-                            </View>
+                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>Cuisines</Text>
+                        <View style={styles.cuisineBloc}>
+                            <FlatList
+                                numColumns={2}
+                                data={cuisinesList}
+                                showsVerticalScrollIndicator={false}
+                                renderItem={({item}) => (
+                                    <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Cuisine', {cuisine: item.name})}>
+                                        <LinearGradient
+                                            colors={['rgba(0,0,0,0.8)','transparent' ]}
+                                            style={styles.cuisineGradient}
+                                        >
+                                        <Text style={styles.cuisineBlocItemText}>{item.name}</Text>
+                                        </LinearGradient>
+                                        <ImageBackground source={{uri :item.image}} style={styles.cuisineBlocItemImage} imageStyle={{borderRadius: 10}} />
+                                    </TouchableOpacity>
+                                )}
+                            />
                         </View>
                     </View>
                 </View>

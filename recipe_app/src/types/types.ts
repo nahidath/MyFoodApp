@@ -11,7 +11,7 @@ export type HomeStackList = {
     SpotlightRecipes: {
         recipesArray: string[];
     }
-    Search: undefined;
+    // Search: undefined;
     LoginStackScreen: undefined;
     ProfileStackScreen: undefined;
     Cuisine: {
@@ -56,4 +56,12 @@ export type FavoritesStackList = {
 export type NotificationsStackList = {
     Notifs: undefined;
     LoginStackScreen: undefined;
+}
+
+export type SearchStackList = {
+    SearchPage: undefined;
+    Recipe: {
+        id: string;
+        name: string;
+    }
 }

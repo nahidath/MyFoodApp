@@ -8,7 +8,7 @@ import {
     Pressable,
     TouchableOpacity,
     ImageBackground,
-    Image, ActivityIndicator
+    Image, ActivityIndicator, Keyboard
 } from "react-native";
 import styles from '../stylesheets/Search_stylesheet';
 import recipeStyles from '../stylesheets/SpotlightRecipes_stylesheet';
@@ -22,12 +22,12 @@ import axios from "axios";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {HomeStackList} from "../types/types";
-import {useNavigation, useTheme} from "@react-navigation/native";
+import {HomeStackList, SearchStackList} from "../types/types";
+import {useIsFocused, useNavigation, useTheme} from "@react-navigation/native";
 import ingredientsList from "../data/ingredientsList";
 
 // @ts-ignore
-type SearchScreenProps = MyStackNavigationProp<HomeStackList, 'Search'>;
+type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
 
 const Search : FC = () => {
     const navigation = useNavigation<SearchScreenProps>();
@@ -40,6 +40,7 @@ const Search : FC = () => {
     const inputRef = useRef<TextInput>(null);
     const myList = ingredientsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
     const [loading, setLoading] = useState<boolean>(false);
+    const isFocused = useIsFocused();
 
     const getSearchResult = (s?: string) => {
         let query = s ? s : search.trim();
@@ -72,12 +73,16 @@ const Search : FC = () => {
     }
 
     useEffect(() => {
-        inputRef.current?.focus();
+        if(isFocused){
+            Keyboard.addListener('keyboardDidShow', () => {
+                inputRef.current?.focus();
+            });
+        }
         setNoResults('');
         if(search == ''){
             setIsSearch(false);
         }
-    }, [search, isSearch]);
+    }, [search, isSearch, isFocused]);
 
     const formatTime = (time: number) => {
         const hours = Math.floor(time / 60);
@@ -101,7 +106,6 @@ const Search : FC = () => {
                     style={{color:colors.text}}
                     placeholderTextColor={colors.text}
                     placeholder={'Search recipes'}
-                    keyboardType="default"
                     value={search}
                     onChangeText={setSearch}
                     onSubmitEditing={handleSearch}
