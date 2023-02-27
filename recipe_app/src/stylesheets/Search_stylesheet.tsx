@@ -82,6 +82,65 @@ export default StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         zIndex: 100,
 
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(155,155,155,0.52)',
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 100,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        padding: 10,
+        backgroundColor: '#064851',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    modalTitle: {
+        fontSize: 20,
+    },
+    modalBody: {
+        backgroundColor: '#fff',
+        width: '100%',
+        padding: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+    },
+    modalText: {
+        fontSize: 15,
+    },
+    modalFilter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        padding: 10,
+        // backgroundColor: '#064851',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    modalFilterButton: {
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // backgroundColor: '#064851',
+        height: 45,
+    },
+    filterButton: {
+        // position: 'absolute',
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        flexDirection: 'row',
+        // backgroundColor: '#064851',
+        height: 45,
+        width: 45,
+        // borderRadius: 50,
     }
 
 });

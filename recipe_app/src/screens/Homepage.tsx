@@ -108,6 +108,12 @@ const Homepage :  FC = () => {
     const getRecipesByTags = () => {
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 10, tags: newIngredient} }).then((response) => {
             setRecipes2(response.data.recipes);
+            //check if array is empty
+            if(response.data.recipes.length === 0){
+                randomIngredients.splice(randomIngredients.indexOf(newIngredient), 1);
+                setNewIngredient(randomIngredients[Math.floor(Math.random() * randomIngredients.length)]);
+                setPass(true);
+            }
         },).catch((error) => {
             console.log(error);
         });
@@ -115,7 +121,6 @@ const Homepage :  FC = () => {
     const getRandomJokes = () => {
         axios.get('https://api.spoonacular.com/food/trivia/random',{params:{apiKey: configValue} }).then((response) => {
             setJoke(response.data.text);
-            console.log(response.data.text);
         },).catch((error) => {
             console.log(error);
         });
@@ -143,6 +148,12 @@ const Homepage :  FC = () => {
             setNewIngredient(randomIngredients[random]);
         }
     }, [isPass]);
+
+    // useEffect(() => {
+    //     if(recipes2.length === 0){
+    //         setPass(true);
+    //     }
+    // }, [recipes2]);
 
     return (
 
