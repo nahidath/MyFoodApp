@@ -41,6 +41,7 @@ const Search : FC = () => {
     const myList = ingredientsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
     const [loading, setLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
 
     const getSearchResult = (s?: string) => {
         let query = s ? s : search.trim();
@@ -95,6 +96,33 @@ const Search : FC = () => {
     const theme = useTheme();
     const borderSpec=theme.dark ? "#fefefe" : "#505050";
 
+    const modalFilter = () => {
+        return (
+            <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
+                <View style={[styles.modalHeader, {backgroundColor: colors.notification}]}>
+                    <Text style={[styles.modalTitle, {color:colors.text}]}>Filter</Text>
+                    <Feather name={"x"} size={22} color={colors.text} onPress={() => setModalVisible(false)} />
+                </View>
+                <Separator />
+                <View style={styles.modalBody}>
+                    <Text style={[styles.modalText, {color:colors.text}]}>Sort by</Text>
+                    <View style={styles.modalFilter}>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Popularity</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Price</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Time</Text></Pressable>
+                    </View>
+                    <Separator />
+                    <Text style={[styles.modalText, {color:colors.text}]}>Diet</Text>
+                    <View style={styles.modalFilter}>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Gluten Free</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Ketogenic</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Vegetarian</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Lacto-Vegetarian</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Ovo-Vegetarian</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Vegan</Text></Pressable>
+                        <Pressable style={[styles.modalFilterButton, {backgroundColor: colors.notification, borderColor :borderSpec}]}><Text style={{color:colors.text}}>Pescetarian</Text></Pressable>
+    }
+
     return (
 
         <View style={[general.container, {backgroundColor: colors.background}]}>
@@ -134,6 +162,7 @@ const Search : FC = () => {
             {isSearch && results.length > 0 ? (
                 <View style={styles.resultsContainer}>
                     <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
+                    <Feather name={"filter"} size={22} color={colors.text} onPress={() => setModalVisible(true)} />
                     <Separator />
                     <ScrollView keyboardShouldPersistTaps='always'>
                         {results.map((result : any) => {
