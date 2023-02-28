@@ -162,9 +162,11 @@ export default StyleSheet.create({
     },
     cuisineBloc: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+
     },
 
     cuisineBlocItem: {

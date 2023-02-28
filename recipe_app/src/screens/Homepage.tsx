@@ -254,22 +254,20 @@ const Homepage :  FC = () => {
                     <View>
                         <Text style={[styles.cuisineTitle, {color: colors.text}]}>Cuisines</Text>
                         <View style={styles.cuisineBloc}>
-                            <FlatList
-                                numColumns={2}
-                                data={cuisinesList}
-                                showsVerticalScrollIndicator={false}
-                                renderItem={({item}) => (
-                                    <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Cuisine', {cuisine: item.name})}>
+                            {cuisinesList.map((cuisine: any) => {
+                                return (
+                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Cuisine', {cuisine: cuisine.name})}>
                                         <LinearGradient
                                             colors={['rgba(0,0,0,0.8)','transparent' ]}
                                             style={styles.cuisineGradient}
                                         >
-                                        <Text style={styles.cuisineBlocItemText}>{item.name}</Text>
+                                            <Text style={styles.cuisineBlocItemText}>{cuisine.name}</Text>
                                         </LinearGradient>
-                                        <ImageBackground source={{uri :item.image}} style={styles.cuisineBlocItemImage} imageStyle={{borderRadius: 10}} />
+                                        <ImageBackground source={{uri :cuisine.image}} style={styles.cuisineBlocItemImage} imageStyle={{borderRadius: 10}} />
                                     </TouchableOpacity>
-                                )}
-                            />
+                                )
+
+                            })}
                         </View>
                     </View>
                 </View>

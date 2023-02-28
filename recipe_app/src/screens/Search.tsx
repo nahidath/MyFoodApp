@@ -26,6 +26,8 @@ import {HomeStackList, SearchStackList} from "../types/types";
 import {useIsFocused, useNavigation, useTheme} from "@react-navigation/native";
 import ingredientsList from "../data/ingredientsList";
 import BouncyCheckboxGroup, {ICheckboxButton} from "react-native-bouncy-checkbox-group";
+import CheckBox from "@react-native-community/checkbox";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
@@ -106,7 +108,42 @@ const Search : FC = () => {
     function FilterModal() {
         // setModalVisible(true);
         const [checked, setChecked] = useState(false);
-        const sortList1 = [{id: 1, name: 'Popularity'}, {id: 2, name: 'Price'}, {id: 3, name: 'Time'}];
+
+        const sortList1: ICheckboxButton[] = [
+            {
+                id: 0,
+                text: 'Popularity',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 },
+            },
+            {
+                id: 1,
+                text: 'Price',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 },
+            },
+            {
+                id: 2,
+                text: 'Time',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 },
+            }
+        ];
         const sortList2 = [{id: 1, name: 'Gluten Free'}, {id: 2, name: 'Ketogenic'}, {id: 3, name: 'Vegetarian'}, {id: 4, name: 'Lacto-Vegetarian'}, {id: 5, name: 'Ovo-Vegetarian'}, {id: 6, name: 'Vegan'}, {id: 7, name: 'Pescetarian'}, {id: 8, name: 'Paleo'}, {id: 9, name: 'Primal'}, {id: 10, name: 'Whole30'}];
         const sortList3 = [{id: 1, name: 'Dairy'}, {id: 2, name: 'Egg'}, {id: 3, name: 'Gluten'}, {id: 4, name: 'Grain'}, {id: 5, name: 'Peanut'}, {id: 6, name: 'Seafood'}, {id: 7, name: 'Sesame'}, {id: 8, name: 'Shellfish'}, {id: 9, name: 'Soy'}, {id: 10, name: 'Sulfite'}, {id: 11, name: 'Tree Nut'}, {id: 12, name: 'Wheat'}];
         const sortList4 = [{id: 1, name: 'Very Easy'}, {id: 2, name: 'Easy'}, {id: 3, name: 'Medium'}, {id: 4, name: 'Hard'}, {id: 5, name: 'Very Hard'}];
@@ -115,55 +152,159 @@ const Search : FC = () => {
         const sortList7 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
         const [selectedSort, setSelectedSort] = useState(sortList1[0]);
         const [selectedDiet, setSelectedDiet] = useState([]);
+        const [toggleCheckBox, setToggleCheckBox] = useState(false);
+        const colorSpec = theme.dark ? '#252525' : '#041721';
+
         return (
-            <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
-                <View style={[styles.modalHeader, {backgroundColor: colors.notification}]}>
-                    <Text style={[styles.modalTitle, {color:colors.text}]}>Filter</Text>
-                    <Feather name={"x"} size={22} color={colors.text} onPress={() => setModalVisible(false)} />
-                </View>
-                <Separator />
-                <View style={styles.modalBody}>
-                    <Text style={[styles.modalText, {color:colors.text}]}>Sort by</Text>
-                    <View style={styles.modalFilter}>
-                        <BouncyCheckboxGroup
-                            data={sortList1}
-                            style={{ flexDirection: "column" }}
-                            // textStyle={{color:colors.text}}
-                            onChange={(selectedItem: ICheckboxButton) => {
-                                // @ts-ignore
-                                // setSelectedSort(JSON.stringify(selectedItem));
-                                console.log("SelectedItem: ", JSON.stringify(selectedItem));
-                            }}
-                        />
+            <View style={styles.sideView}>
+                <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
+                    <View style={styles.modalHeader}>
+                        <Text style={[styles.modalTitle, {color:colors.text}]}>Filters</Text>
+                        <TouchableOpacity onPress={() => setModalVisible(false)}>
+                            <Feather name={"x"} size={24} color={colors.text}/>
+                        </TouchableOpacity>
                     </View>
                     <Separator />
-                    <Text style={[styles.modalText, {color:colors.text}]}>Diet</Text>
-                    <View style={styles.modalFilter}>
-                        <BouncyCheckboxGroup
-                            data={sortList2}
-                            style={{ flexDirection: "column" }}
-                            onChange={(selectedItem: ICheckboxButton) => {
-                                // @ts-ignore
-                                //push to selected diet
-                                // setSelectedDiet(selectedDiet.push(selectedItem));
-                                // setSelectedSort(JSON.stringify(selectedItem));
-                                console.log("SelectedItem: ", JSON.stringify(selectedItem));
-                            }}
-                        />
-                    </View>
+                    <ScrollView>
+                        <View style={styles.modalBody}>
+                            <Text style={[styles.modalText, {color:colors.text}]}>Sort by</Text>
+                            <View style={styles.modalFilter}>
+                                <BouncyCheckboxGroup
+                                    data={sortList1}
+                                    style={{ flexDirection: "column" }}
+                                    onChange={(selectedItem: ICheckboxButton) => {
+                                        // @ts-ignore
+                                        // setSelectedSort(JSON.stringify(selectedItem));
+                                        console.log("SelectedItem: ", JSON.stringify(selectedItem));
+                                    }}
+                                />
+                            </View>
+                            <Separator />
+                            <Text style={[styles.modalText, {color:colors.text}]}>Diet</Text>
+                            <View style={styles.modalFilter}>
+                                {sortList2.map((item, index) => {
+                                    return (
+                                        <BouncyCheckbox
+                                            key={index}
+                                            style={{ margin: 5 }}
+                                            size={20}
+                                            fillColor={colors.text}
+                                            unfillColor={colors.background}
+                                            text={item.name}
+                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                        />
+                                    );
+                                })}
+                            </View>
+                            <Separator />
+                            <Text style={[styles.modalText, {color:colors.text}]}>Intolerances</Text>
+                            <View style={styles.modalFilter}>
+                                {sortList3.map((item, index) => {
+                                    return (
+                                        <BouncyCheckbox
+                                            key={index}
+                                            style={{ margin: 5 }}
+                                            size={20}
+                                            fillColor={colors.text}
+                                            unfillColor={colors.background}
+                                            text={item.name}
+                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                        />
+                                    );
+                                })}
+                            </View>
+                            <Separator />
+                            <Text style={[styles.modalText, {color:colors.text}]}>Preparation Time</Text>
+                            <View style={styles.modalFilter}>
+                                {sortList4.map((item, index) => {
+                                    return (
+                                        <BouncyCheckbox
+                                            key={index}
+                                            style={{ margin: 5 }}
+                                            size={20}
+                                            fillColor={colors.text}
+                                            unfillColor={colors.background}
+                                            text={item.name}
+                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                        />
+                                    );
+                                })}
+                            </View>
+                            <Separator />
+                            <Text style={[styles.modalText, {color:colors.text}]}>Cuisine</Text>
+                            <View style={styles.modalFilter}>
+                                {sortList5.map((item, index) => {
+                                    return (
+                                        <BouncyCheckbox
+                                            key={index}
+                                            style={{ margin: 5 }}
+                                            size={20}
+                                            fillColor={colors.text}
+                                            unfillColor={colors.background}
+                                            text={item.name}
+                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                        />
+                                    );
+                                })}
+                            </View>
+                            <Separator />
+                            <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
+                            <View style={styles.modalFilter}>
+                                {sortList6.map((item, index) => {
+                                    return (
+                                        <BouncyCheckbox
+                                            key={index}
+                                            style={{ margin: 5 }}
+                                            size={20}
+                                            fillColor={colors.text}
+                                            unfillColor={colors.background}
+                                            text={item.name}
+                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                        />
+                                    );
+                                })}
+                            </View>
+                            <Separator />
+                            <Text style={[styles.modalText, {color:colors.text}]}>Exclude Ingredients</Text>
+                            <View style={styles.modalFilter}>
+                                {sortList7.map((item, index) => {
+                                    return (
+                                        <BouncyCheckbox
+                                            key={index}
+                                            style={{ margin: 5 }}
+                                            size={20}
+                                            fillColor={colors.text}
+                                            unfillColor={colors.background}
+                                            text={item.name}
+                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                        />
+                                    );
+                                })}
+                            </View>
+                        </View>
+                    </ScrollView>
                     <Separator />
-                    <Text style={[styles.modalText, {color:colors.text}]}>Intolerances</Text>
-                    <View style={styles.modalFilter}>
-                        <BouncyCheckboxGroup
-                            data={sortList3}
-                            style={{ flexDirection: "column" }}
-                            onChange={(selectedItem: ICheckboxButton) => {
-                                // @ts-ignore
-                                // setSelectedSort(JSON.stringify(selectedItem));
-                                console.log("SelectedItem: ", JSON.stringify(selectedItem));
-                            }}
-                        />
-                    </View>
+                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} >
+                        <Text style={styles.modalButtonText}>Apply</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -209,7 +350,7 @@ const Search : FC = () => {
                 <View style={styles.resultsContainer}>
                     <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
                     <Modal
-                        animationType="fade"
+                        animationType={"none"}
                         transparent={true}
                         visible={modalVisible}
                         onRequestClose={() => {
@@ -217,9 +358,9 @@ const Search : FC = () => {
                         }}>
                         <FilterModal />
                     </Modal>
-                    <TouchableHighlight style={[styles.filterButton, {backgroundColor: colors.notification}]} onPress={() => setModalVisible(true)}>
+                    <TouchableOpacity  style={styles.filterButton} onPress={() => setModalVisible(true)}>
                         <Feather name={"filter"} size={22} color={colors.text} />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <Separator />
                     <ScrollView keyboardShouldPersistTaps='always'>
                         {results.map((result : any) => {
