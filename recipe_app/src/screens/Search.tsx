@@ -150,8 +150,13 @@ const Search : FC = () => {
         const sortList5 = [{id: 1, name: 'Breakfast'}, {id: 2, name: 'Lunch'}, {id: 3, name: 'Dinner'}, {id: 4, name: 'Snack'}, {id: 5, name: 'Teatime'}];
         const sortList6 = [{id: 1, name: 'Main Course'}, {id: 2, name: 'Side Dish'}, {id: 3, name: 'Dessert'}, {id: 4, name: 'Appetizer'}, {id: 5, name: 'Salad'}, {id: 6, name: 'Bread'}, {id: 7, name: 'Breakfast'}, {id: 8, name: 'Soup'}, {id: 9, name: 'Beverage'}, {id: 10, name: 'Sauce'}, {id: 11, name: 'Marinade'}, {id: 12, name: 'Fingerfood'}, {id: 13, name: 'Snack'}, {id: 14, name: 'Drink'}];
         const sortList7 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
-        const [selectedSort, setSelectedSort] = useState(sortList1[0]);
-        const [selectedDiet, setSelectedDiet] = useState([]);
+        const [selectedSort, setSelectedSort] = useState<string | undefined>('');
+        const [selectedDiet, setSelectedDiet] = useState<string[]>([]);
+        const [selectedIntolerance, setSelectedIntolerance] = useState([]);
+        const [selectedComplexity, setSelectedComplexity] = useState([]);
+        const [selectedMeal, setSelectedMeal] = useState([]);
+        const [selectedType, setSelectedType] = useState([]);
+        const [selectedCuisine, setSelectedCuisine] = useState([]);
         const [toggleCheckBox, setToggleCheckBox] = useState(false);
         const colorSpec = theme.dark ? '#252525' : '#041721';
 
@@ -173,9 +178,8 @@ const Search : FC = () => {
                                     data={sortList1}
                                     style={{ flexDirection: "column" }}
                                     onChange={(selectedItem: ICheckboxButton) => {
-                                        // @ts-ignore
-                                        // setSelectedSort(JSON.stringify(selectedItem));
-                                        console.log("SelectedItem: ", JSON.stringify(selectedItem));
+                                        setSelectedSort(selectedItem.text);
+                                        console.log("SelectedItem: ", selectedItem.text);
                                     }}
                                 />
                             </View>
@@ -194,7 +198,8 @@ const Search : FC = () => {
                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                            //push the selected diet to the array
+                                            onPress={(toggleCheckBox) => {setToggleCheckBox(!toggleCheckBox), setSelectedDiet([...selectedDiet, item.name])}}
                                         />
                                     );
                                 })}
@@ -350,7 +355,7 @@ const Search : FC = () => {
                 <View style={styles.resultsContainer}>
                     <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
                     <Modal
-                        animationType={"none"}
+                        animationType={"slide"}
                         transparent={true}
                         visible={modalVisible}
                         onRequestClose={() => {

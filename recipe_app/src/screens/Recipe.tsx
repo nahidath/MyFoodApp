@@ -69,9 +69,6 @@ const Recipe = ({route}: Props) => {
         if(isLoaded) {
             getLabels();
         }
-
-        LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed c\n' +
-        'ontainer instead.']);
     }, [isLoaded, name]);
 
     const getLabels = () => {
@@ -168,12 +165,16 @@ const Recipe = ({route}: Props) => {
                     <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/> Serves {recipe.servings} people</Text>
                     <View style={styles.ingredientList}>
                         <Text style={[styles.ingredientListTitle, {color:colors.text}]}>INGREDIENTS</Text>
-                        <FlatList data={ingredients} renderItem={ ({item}) => <Text style={[styles.items, {color:colors.text}]}>{item}</Text>  } />
+                        {ingredients.map((ingredient, index) => (
+                            <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient}</Text>
+                        ))}
 
                     </View>
                     <View style={styles.recipeDescription}>
                         <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
-                        <FlatList data={instructions} renderItem={ ({item}) => <Text style={[styles.items, {color:colors.text}]}>{item}</Text>  } />
+                        {instructions.map((instruction, index) => (
+                            <Text key={index} style={[styles.items, {color:colors.text}]}>{instruction}</Text>
+                        ))}
                     </View>
                 </View>
                 <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>

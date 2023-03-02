@@ -137,8 +137,6 @@ const Homepage :  FC = () => {
         getRandomRecipe();
         getRecipesByTags();
         // getRandomJokes();
-        LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed c\n' +
-        'ontainer instead.']);
     }, []);
 
     useEffect(() => {

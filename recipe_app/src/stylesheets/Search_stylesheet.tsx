@@ -85,13 +85,17 @@ export default StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        justifyContent: 'center',
-        // alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+         // alignItems: 'flex-end',
         backgroundColor: 'rgba(155,155,155,0.52)',
         ...StyleSheet.absoluteFillObject,
         zIndex: 100,
-        width: '90%',
+        width: '100%',
         paddingBottom: 10,
+        height: '90%',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
     },
     modalHeader: {
         flexDirection: 'row',
@@ -163,12 +167,12 @@ export default StyleSheet.create({
     },
     sideView: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        padding: 10,
+        flexDirection: 'column-reverse',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        // padding: 10,
         backgroundColor: 'rgba(0,0,0,0.5)',
-        transform: [{ translateX: 0 }],
+        // transform: [{ translateX: 0 }],
     }
 
 });
