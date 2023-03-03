@@ -199,7 +199,7 @@ const Search : FC = () => {
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
                                             //push the selected diet to the array
-                                            onPress={(toggleCheckBox) => {setToggleCheckBox(!toggleCheckBox), setSelectedDiet([...selectedDiet, item.name])}}
+                                            onPress={(toggleCheckBox) => {setToggleCheckBox(!toggleCheckBox), setSelectedDiet([...selectedDiet, item.name.toLowerCase()])}}
                                         />
                                     );
                                 })}
@@ -285,7 +285,7 @@ const Search : FC = () => {
                                 })}
                             </View>
                             <Separator />
-                            <Text style={[styles.modalText, {color:colors.text}]}>Exclude Ingredients</Text>
+                            <Text style={[styles.modalText, {color:colors.text}]}>Culinary speciality</Text>
                             <View style={styles.modalFilter}>
                                 {sortList7.map((item, index) => {
                                     return (
@@ -307,13 +307,28 @@ const Search : FC = () => {
                         </View>
                     </ScrollView>
                     <Separator />
-                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} >
+                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() =>filterResult(selectedDiet)} >
                         <Text style={styles.modalButtonText}>Apply</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         );
     }
+
+    const filterResult = (filtersArray : string[]) => {
+        //filter the recipes based on the selected filters and set the results to the results state
+        const filteredRecipes = results.filter((recipe : any[any]) => {
+            return filtersArray.every(
+                (f) => recipe[f] == true
+
+
+            );
+        });
+        setModalVisible(false);
+        console.log(filteredRecipes);
+        setResults(filteredRecipes);
+    };
+
 
     return (
 
