@@ -147,16 +147,9 @@ const Search : FC = () => {
         const sortList2 = [{id: 1, name: 'Gluten Free'}, {id: 2, name: 'Ketogenic'}, {id: 3, name: 'Vegetarian'}, {id: 4, name: 'Lacto-Vegetarian'}, {id: 5, name: 'Ovo-Vegetarian'}, {id: 6, name: 'Vegan'}, {id: 7, name: 'Pescetarian'}, {id: 8, name: 'Paleo'}, {id: 9, name: 'Primal'}, {id: 10, name: 'Whole30'}];
         const sortList3 = [{id: 1, name: 'Dairy'}, {id: 2, name: 'Egg'}, {id: 3, name: 'Gluten'}, {id: 4, name: 'Grain'}, {id: 5, name: 'Peanut'}, {id: 6, name: 'Seafood'}, {id: 7, name: 'Sesame'}, {id: 8, name: 'Shellfish'}, {id: 9, name: 'Soy'}, {id: 10, name: 'Sulfite'}, {id: 11, name: 'Tree Nut'}, {id: 12, name: 'Wheat'}];
         const sortList4 = [{id: 1, name: 'Very Easy'}, {id: 2, name: 'Easy'}, {id: 3, name: 'Medium'}, {id: 4, name: 'Hard'}, {id: 5, name: 'Very Hard'}];
-        const sortList5 = [{id: 1, name: 'Breakfast'}, {id: 2, name: 'Lunch'}, {id: 3, name: 'Dinner'}, {id: 4, name: 'Snack'}, {id: 5, name: 'Teatime'}];
-        const sortList6 = [{id: 1, name: 'Main Course'}, {id: 2, name: 'Side Dish'}, {id: 3, name: 'Dessert'}, {id: 4, name: 'Appetizer'}, {id: 5, name: 'Salad'}, {id: 6, name: 'Bread'}, {id: 7, name: 'Breakfast'}, {id: 8, name: 'Soup'}, {id: 9, name: 'Beverage'}, {id: 10, name: 'Sauce'}, {id: 11, name: 'Marinade'}, {id: 12, name: 'Fingerfood'}, {id: 13, name: 'Snack'}, {id: 14, name: 'Drink'}];
-        const sortList7 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
-        const [selectedSort, setSelectedSort] = useState<string | undefined>('');
-        const [selectedDiet, setSelectedDiet] = useState<string[]>([]);
-        const [selectedIntolerance, setSelectedIntolerance] = useState([]);
-        const [selectedComplexity, setSelectedComplexity] = useState([]);
-        const [selectedMeal, setSelectedMeal] = useState([]);
-        const [selectedType, setSelectedType] = useState([]);
-        const [selectedCuisine, setSelectedCuisine] = useState([]);
+        const sortList5 = [{id: 1, name: 'Breakfast'}, {id: 2, name: 'Lunch'}, {id: 3, name: 'Dinner'}, {id: 4, name: 'Snack'}, {id: 5, name: 'Teatime'},{id: 6, name: 'Sauce'},{id: 7, name: 'Drink'},{id: 8, name: 'Dessert'},{id: 9, name: 'Appetizer'},{id: 10, name: 'Salad'},{id: 11, name: 'Bread'},{id: 12, name: 'Soup'},{id: 13, name: 'Beverage'},{id: 14, name: 'Marinade'},{id: 15, name: 'Fingerfood'},{id: 16, name: 'Main Course'},{id: 17, name: 'Side Dish'}];
+        const sortList6 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
+        const [filters, setFilters] = useState<any>({ sort: '', diet: [], intolerance: [], complexity: [], meal: [], type: [], cuisine: [] });
         const [toggleCheckBox, setToggleCheckBox] = useState(false);
         const colorSpec = theme.dark ? '#252525' : '#041721';
 
@@ -178,8 +171,9 @@ const Search : FC = () => {
                                     data={sortList1}
                                     style={{ flexDirection: "column" }}
                                     onChange={(selectedItem: ICheckboxButton) => {
-                                        setSelectedSort(selectedItem.text);
-                                        console.log("SelectedItem: ", selectedItem.text);
+                                        setFilters({ ...filters, sort: selectedItem.text?.toLowerCase() });
+                                        // setSelectedSort(selectedItem.text);
+                                        // console.log("SelectedItem: ", selectedItem.text);
                                     }}
                                 />
                             </View>
@@ -199,7 +193,7 @@ const Search : FC = () => {
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
                                             //push the selected diet to the array
-                                            onPress={(toggleCheckBox) => {setToggleCheckBox(!toggleCheckBox), setSelectedDiet([...selectedDiet, item.name.toLowerCase()])}}
+                                            onPress={(toggleCheckBox) => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, diet: [...filters.diet, item.name.toLowerCase()] })}}
                                         />
                                     );
                                 })}
@@ -219,7 +213,7 @@ const Search : FC = () => {
                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, intolerance: [...filters.intolerance, item.name.toLowerCase()] })}}
                                         />
                                     );
                                 })}
@@ -239,13 +233,13 @@ const Search : FC = () => {
                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, complexity: [...filters.complexity, item.name.toLowerCase()] })}}
                                         />
                                     );
                                 })}
                             </View>
                             <Separator />
-                            <Text style={[styles.modalText, {color:colors.text}]}>Cuisine</Text>
+                            <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
                             <View style={styles.modalFilter}>
                                 {sortList5.map((item, index) => {
                                     return (
@@ -259,27 +253,7 @@ const Search : FC = () => {
                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
-                                        />
-                                    );
-                                })}
-                            </View>
-                            <Separator />
-                            <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
-                            <View style={styles.modalFilter}>
-                                {sortList6.map((item, index) => {
-                                    return (
-                                        <BouncyCheckbox
-                                            key={index}
-                                            style={{ margin: 5 }}
-                                            size={20}
-                                            fillColor={colors.text}
-                                            unfillColor={colors.background}
-                                            text={item.name}
-                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
-                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, type: [...filters.type, item.name.toLowerCase()] })}}
                                         />
                                     );
                                 })}
@@ -287,7 +261,7 @@ const Search : FC = () => {
                             <Separator />
                             <Text style={[styles.modalText, {color:colors.text}]}>Culinary speciality</Text>
                             <View style={styles.modalFilter}>
-                                {sortList7.map((item, index) => {
+                                {sortList6.map((item, index) => {
                                     return (
                                         <BouncyCheckbox
                                             key={index}
@@ -299,7 +273,7 @@ const Search : FC = () => {
                                             iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox)}}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, cuisine: [...filters.cuisine, item.name.toLowerCase()] })}}
                                         />
                                     );
                                 })}
@@ -307,7 +281,7 @@ const Search : FC = () => {
                         </View>
                     </ScrollView>
                     <Separator />
-                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() =>filterResult(selectedDiet)} >
+                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() =>filterResult(filters)} >
                         <Text style={styles.modalButtonText}>Apply</Text>
                     </TouchableOpacity>
                 </View>
@@ -315,18 +289,83 @@ const Search : FC = () => {
         );
     }
 
-    const filterResult = (filtersArray : string[]) => {
-        //filter the recipes based on the selected filters and set the results to the results state
-        const filteredRecipes = results.filter((recipe : any[any]) => {
-            return filtersArray.every(
-                (f) => recipe[f] == true
+    const filterResult = (filtersArray : any) => {
+        let filteredRecipesbyDiet = [];
+        let filteredRecipesbyIntolerance = [];
+        let filteredRecipesbyComplexity = [];
+        let filteredRecipesbyDishType = [];
+        let filteredRecipesbyCuisine = [];
+        let filteredRecipesbySort = [];
+        //filter the recipes by sort
+        const sortSelect : (compareFn?: (a: any, b: any) => number) => any[] = filtersArray.sort;
+        // @ts-ignore
+        if(sortSelect == "popularity"){
+            const resultsSort = results.sort((a:any, b: any) => (a.aggregateLikes > b.aggregateLikes) ? -1 : 1);
+        }else { // @ts-ignore
+            if(sortSelect == "time"){
+                        const resultsSort = results.sort((a:any, b: any) => (a.readyInMinutes > b.readyInMinutes) ? 1 : -1);
+                    }else { // @ts-ignore
+                if(sortSelect == "price"){
+                                        const resultsSort = results.sort((a:any, b: any) => (a.pricePerServing > b.pricePerServing) ? 1 : -1);
+                                    }
+            }
+        }
+        //filter the recipes by diet
+        if(filtersArray.diet.length == 0){
+            filteredRecipesbyDiet = results;
+        }else{
+            const dietSelect : string[] = filtersArray.diet;
+            filteredRecipesbyDiet = results.filter((recipe : any[any]) => {
+                return dietSelect.every(
+                    (f) => recipe.diets.includes(f) && recipe[f] == true
+                );
+            });
+        }
+
+        //filter the recipes by intolerance
+        if(filtersArray.intolerance.length == 0){
+            filteredRecipesbyIntolerance = results;
+        }else {
+            const intoleranceSelect : string[] = filtersArray.intolerance;
+            filteredRecipesbyIntolerance = results.filter((recipe : any[any]) => {
+                return intoleranceSelect.every(
+                    (f) => recipe[f] == true
+                );
+            });
+        }
+
+        //filter the recipes by dish type
+        if(filtersArray.type.length == 0){
+            filteredRecipesbyDishType = results;
+        }else {
+            const dishTypeSelect : string[] = filtersArray.type;
+            filteredRecipesbyDishType = results.filter((recipe : any[any]) => {
+                return dishTypeSelect.every(
+                    (f) => recipe.dishTypes.includes(f)
+                );
+            });
+        }
+
+        //filter the recipes by cuisine
+        if(filtersArray.cuisine.length == 0){
+            filteredRecipesbyCuisine = results;
+        }else{
+            const cuisineSelect : string[] = filtersArray.cuisine;
+            filteredRecipesbyCuisine = results.filter((recipe : any[any]) => {
+                return cuisineSelect.every(
+                    (f) => recipe.cuisines.includes(f)
+                );
+            });
+        }
 
 
-            );
-        });
+        // merge all the filters and remove duplicates
+        const filteredRecipes = filteredRecipesbyDiet.concat(filteredRecipesbyIntolerance, filteredRecipesbyDishType, filteredRecipesbyCuisine);
+        const filteredRecipesUnique = filteredRecipes.filter((v: { id: any; }, i: any, a: any[]) => a.findIndex(t => (t.id === v.id)) === i);
+
         setModalVisible(false);
-        console.log(filteredRecipes);
-        setResults(filteredRecipes);
+        setResults(filteredRecipesUnique);
+        setNbResults(filteredRecipesUnique.length);
     };
 
 
@@ -368,7 +407,7 @@ const Search : FC = () => {
 
             {isSearch && results.length > 0 ? (
                 <View style={styles.resultsContainer}>
-                    <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {results.length == 1 ? "Result founded" : "Results founded" } </Text>
+                    <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 1 ? "Result founded" : "Results founded" } </Text>
                     <Modal
                         animationType={"slide"}
                         transparent={true}
