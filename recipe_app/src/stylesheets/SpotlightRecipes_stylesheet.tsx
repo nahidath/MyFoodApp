@@ -9,6 +9,8 @@ export default StyleSheet.create({
     blocRecipe: {
         flexDirection: 'column',
         padding: 10,
+        borderRadius: 10,
+        margin: 7,
     },
     imgRecipe: {
         height: 200,
@@ -22,7 +24,7 @@ export default StyleSheet.create({
         paddingTop: 10,
         fontSize: 20,
         fontWeight: 'bold',
-        width: '70%',
+        textWrap: 'wrap',
     },
     blocRecipeLabel: {
         position: 'absolute',

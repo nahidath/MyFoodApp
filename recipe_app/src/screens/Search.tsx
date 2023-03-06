@@ -115,33 +115,36 @@ const Search : FC = () => {
                 text: 'Popularity',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+,
             },
             {
                 id: 1,
                 text: 'Price',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+,
             },
             {
                 id: 2,
                 text: 'Time',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+,
             }
         ];
         const sortList2 = [{id: 1, name: 'Gluten Free'}, {id: 2, name: 'Ketogenic'}, {id: 3, name: 'Vegetarian'}, {id: 4, name: 'Lacto-Vegetarian'}, {id: 5, name: 'Ovo-Vegetarian'}, {id: 6, name: 'Vegan'}, {id: 7, name: 'Pescetarian'}, {id: 8, name: 'Paleo'}, {id: 9, name: 'Primal'}, {id: 10, name: 'Whole30'}];
@@ -153,163 +156,180 @@ const Search : FC = () => {
                 text: 'Breakfast',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {
                 id: 2,
                 text: 'Lunch',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
 
             },
             {
                 id: 3, text: 'Dinner',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {
                 id: 4, text: 'Snack',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {
                 id: 5, text: 'Teatime',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {
                 id: 6, text: 'Sauce',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {
                 id: 7, text :'Drink',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 8, text: 'Dessert',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 9, text: 'Appetizer',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 10,text: 'Salad',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 11,text: 'Bread',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 12,text: 'Soup',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 13,text: 'Beverage',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 14,text: 'Marinade',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 15,text: 'Fingerfood',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 16,text: 'Main Course',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             },
             {id: 17,text: 'Side Dish',
                 style:{ margin: 5 },
                 size:20,
-                fillColor: colors.text,
+                fillColor:"#9fc131",
                 unfillColor: colors.background,
                 textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
                 iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
-                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
+
             }
         ];
         const sortList6 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
@@ -350,11 +370,11 @@ const Search : FC = () => {
                                             key={index}
                                             style={{ margin: 5 }}
                                             size={20}
-                                            fillColor={colors.text}
+                                            fillColor="#9fc131"
                                             unfillColor={colors.background}
                                             text={item.name}
                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
                                             //push the selected diet to the array
                                             onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, diet: [...filters.diet, item.name.toLowerCase()] })}}
@@ -371,11 +391,11 @@ const Search : FC = () => {
                                             key={index}
                                             style={{ margin: 5 }}
                                             size={20}
-                                            fillColor={colors.text}
+                                            fillColor="#9fc131"
                                             unfillColor={colors.background}
                                             text={item.name}
                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
                                             onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, intolerance: [...filters.intolerance, item.name.toLowerCase()] })}}
                                         />
@@ -391,11 +411,11 @@ const Search : FC = () => {
                             {/*                key={index}*/}
                             {/*                style={{ margin: 5 }}*/}
                             {/*                size={20}*/}
-                            {/*                fillColor={colors.text}*/}
+                            {/*                fillColor="#9fc131"*/}
                             {/*                unfillColor={colors.background}*/}
                             {/*                text={item.name}*/}
                             {/*               iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}*/}
-                            {/*                innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}*/}
+                            {/*                 innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}*/}
                             {/*                textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}*/}
                             {/*                onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, complexity: [...filters.complexity, item.name.toLowerCase()] })}}*/}
                             {/*            />*/}
@@ -422,11 +442,11 @@ const Search : FC = () => {
                                             key={index}
                                             style={{ margin: 5 }}
                                             size={20}
-                                            fillColor={colors.text}
+                                            fillColor="#9fc131"
                                             unfillColor={colors.background}
                                             text={item.name}
-                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
+                                            iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border}}
+                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
                                             onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, cuisine: [...filters.cuisine, item.name.toLowerCase()] })}}
                                         />
@@ -436,7 +456,7 @@ const Search : FC = () => {
                         </View>
                     </ScrollView>
                     <Separator />
-                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() =>filterResult(filters)} >
+                    <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() =>{filterResult(filters), setLoading(true)}} >
                         <Text style={styles.modalButtonText}>Apply</Text>
                     </TouchableOpacity>
                 </View>
@@ -454,7 +474,7 @@ const Search : FC = () => {
 
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100, addRecipeInformation:true, diet : dietFilters.toString(), intolerances:intoleranceFilters.toString(), type: dishTypeFilter, cuisine: cuisineFilters, sort: sortFilter } }).then((response1) => {
             setResults(response1.data.results);
-            setNbResults(response1.data.totalResults);
+            setNbResults(response1.data.results.length);
             setIsSearch(true);
             setLoading(false);
             if(response1.data.results.length == 0){
@@ -525,26 +545,26 @@ const Search : FC = () => {
                     <ScrollView keyboardShouldPersistTaps='always'>
                         {results.map((result : any) => {
                             return (
-                                <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
-                                <View style={recipeStyles.imgRecipe}>
-                                    {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
-                                </View>
-                                <View style={recipeStyles.blocRecipeBelow}>
-                                    <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
-                                    <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color="#041721"/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
-                                    <View style={recipeStyles.blocRecipeLikes}>
-                                        <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{result.aggregateLikes}</Text>
-                                        <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
+                                <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
+                                    <View style={recipeStyles.imgRecipe}>
+                                        {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
                                     </View>
-                                </View>
-                                <View style={recipeStyles.blocRecipeLabel}>
-                                    {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
-                                    {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
-                                    {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
-                                    {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
-                                    {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
-                                </View>
-                            </TouchableOpacity>
+                                    <View style={recipeStyles.blocRecipeBelow}>
+                                        <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
+                                        <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
+                                        <View style={recipeStyles.blocRecipeLikes}>
+                                            <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{result.aggregateLikes}</Text>
+                                            <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
+                                        </View>
+                                    </View>
+                                    <View style={recipeStyles.blocRecipeLabel}>
+                                        {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
+                                        {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
+                                        {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
+                                        {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
+                                        {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
+                                    </View>
+                                </TouchableOpacity>
                             )
                         })}
                     </ScrollView>
