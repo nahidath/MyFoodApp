@@ -147,9 +147,173 @@ const Search : FC = () => {
         const sortList2 = [{id: 1, name: 'Gluten Free'}, {id: 2, name: 'Ketogenic'}, {id: 3, name: 'Vegetarian'}, {id: 4, name: 'Lacto-Vegetarian'}, {id: 5, name: 'Ovo-Vegetarian'}, {id: 6, name: 'Vegan'}, {id: 7, name: 'Pescetarian'}, {id: 8, name: 'Paleo'}, {id: 9, name: 'Primal'}, {id: 10, name: 'Whole30'}];
         const sortList3 = [{id: 1, name: 'Dairy'}, {id: 2, name: 'Egg'}, {id: 3, name: 'Gluten'}, {id: 4, name: 'Grain'}, {id: 5, name: 'Peanut'}, {id: 6, name: 'Seafood'}, {id: 7, name: 'Sesame'}, {id: 8, name: 'Shellfish'}, {id: 9, name: 'Soy'}, {id: 10, name: 'Sulfite'}, {id: 11, name: 'Tree Nut'}, {id: 12, name: 'Wheat'}];
         const sortList4 = [{id: 1, name: 'Very Easy'}, {id: 2, name: 'Easy'}, {id: 3, name: 'Medium'}, {id: 4, name: 'Hard'}, {id: 5, name: 'Very Hard'}];
-        const sortList5 = [{id: 1, name: 'Breakfast'}, {id: 2, name: 'Lunch'}, {id: 3, name: 'Dinner'}, {id: 4, name: 'Snack'}, {id: 5, name: 'Teatime'},{id: 6, name: 'Sauce'},{id: 7, name: 'Drink'},{id: 8, name: 'Dessert'},{id: 9, name: 'Appetizer'},{id: 10, name: 'Salad'},{id: 11, name: 'Bread'},{id: 12, name: 'Soup'},{id: 13, name: 'Beverage'},{id: 14, name: 'Marinade'},{id: 15, name: 'Fingerfood'},{id: 16, name: 'Main Course'},{id: 17, name: 'Side Dish'}];
+        const sortList5 : ICheckboxButton[] = [
+            {
+                id: 1,
+                text: 'Breakfast',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {
+                id: 2,
+                text: 'Lunch',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+
+            },
+            {
+                id: 3, text: 'Dinner',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {
+                id: 4, text: 'Snack',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {
+                id: 5, text: 'Teatime',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {
+                id: 6, text: 'Sauce',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {
+                id: 7, text :'Drink',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 8, text: 'Dessert',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 9, text: 'Appetizer',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 10,text: 'Salad',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 11,text: 'Bread',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 12,text: 'Soup',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 13,text: 'Beverage',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 14,text: 'Marinade',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 15,text: 'Fingerfood',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 16,text: 'Main Course',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            },
+            {id: 17,text: 'Side Dish',
+                style:{ margin: 5 },
+                size:20,
+                fillColor: colors.text,
+                unfillColor: colors.background,
+                textStyle: { color: colors.text, fontSize: 15, textDecorationLine: "none" },
+                iconStyle:{ height: 20, width: 20,borderRadius: 5,borderColor: colors.border },
+                innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }
+            }
+        ];
         const sortList6 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
-        const [filters, setFilters] = useState<any>({ sort: '', diet: [], intolerance: [], complexity: [], meal: [], type: [], cuisine: [] });
+        const [filters, setFilters] = useState<any>({ sort: '', diet: [], intolerance: [], complexity: [], type: '', cuisine: [] });
         const [toggleCheckBox, setToggleCheckBox] = useState(false);
         const colorSpec = theme.dark ? '#252525' : '#041721';
 
@@ -193,7 +357,7 @@ const Search : FC = () => {
                                             innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
                                             textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
                                             //push the selected diet to the array
-                                            onPress={(toggleCheckBox) => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, diet: [...filters.diet, item.name.toLowerCase()] })}}
+                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, diet: [...filters.diet, item.name.toLowerCase()] })}}
                                         />
                                     );
                                 })}
@@ -218,45 +382,36 @@ const Search : FC = () => {
                                     );
                                 })}
                             </View>
-                            <Separator />
-                            <Text style={[styles.modalText, {color:colors.text}]}>Preparation Time</Text>
-                            <View style={styles.modalFilter}>
-                                {sortList4.map((item, index) => {
-                                    return (
-                                        <BouncyCheckbox
-                                            key={index}
-                                            style={{ margin: 5 }}
-                                            size={20}
-                                            fillColor={colors.text}
-                                            unfillColor={colors.background}
-                                            text={item.name}
-                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
-                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, complexity: [...filters.complexity, item.name.toLowerCase()] })}}
-                                        />
-                                    );
-                                })}
-                            </View>
+                            {/*<Separator />*/}
+                            {/*<Text style={[styles.modalText, {color:colors.text}]}>Preparation Time</Text>*/}
+                            {/*<View style={styles.modalFilter}>*/}
+                            {/*    {sortList4.map((item, index) => {*/}
+                            {/*        return (*/}
+                            {/*            <BouncyCheckbox*/}
+                            {/*                key={index}*/}
+                            {/*                style={{ margin: 5 }}*/}
+                            {/*                size={20}*/}
+                            {/*                fillColor={colors.text}*/}
+                            {/*                unfillColor={colors.background}*/}
+                            {/*                text={item.name}*/}
+                            {/*               iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}*/}
+                            {/*                innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}*/}
+                            {/*                textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}*/}
+                            {/*                onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, complexity: [...filters.complexity, item.name.toLowerCase()] })}}*/}
+                            {/*            />*/}
+                            {/*        );*/}
+                            {/*    })}*/}
+                            {/*</View>*/}
                             <Separator />
                             <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
                             <View style={styles.modalFilter}>
-                                {sortList5.map((item, index) => {
-                                    return (
-                                        <BouncyCheckbox
-                                            key={index}
-                                            style={{ margin: 5 }}
-                                            size={20}
-                                            fillColor={colors.text}
-                                            unfillColor={colors.background}
-                                            text={item.name}
-                                           iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                            innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20 }}
-                                            textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                            onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, type: [...filters.type, item.name.toLowerCase()] })}}
-                                        />
-                                    );
-                                })}
+                                <BouncyCheckboxGroup
+                                    data={sortList5}
+                                    style={{ flexDirection: "column" }}
+                                    onChange={(selectedItem: ICheckboxButton) => {
+                                        setFilters({ ...filters, type: selectedItem.text?.toLowerCase() });
+                                    }}
+                                />
                             </View>
                             <Separator />
                             <Text style={[styles.modalText, {color:colors.text}]}>Culinary speciality</Text>
@@ -290,82 +445,28 @@ const Search : FC = () => {
     }
 
     const filterResult = (filtersArray : any) => {
-        let filteredRecipesbyDiet = [];
-        let filteredRecipesbyIntolerance = [];
-        let filteredRecipesbyComplexity = [];
-        let filteredRecipesbyDishType = [];
-        let filteredRecipesbyCuisine = [];
-        let filteredRecipesbySort = [];
-        //filter the recipes by sort
-        const sortSelect : (compareFn?: (a: any, b: any) => number) => any[] = filtersArray.sort;
-        // @ts-ignore
-        if(sortSelect == "popularity"){
-            const resultsSort = results.sort((a:any, b: any) => (a.aggregateLikes > b.aggregateLikes) ? -1 : 1);
-        }else { // @ts-ignore
-            if(sortSelect == "time"){
-                        const resultsSort = results.sort((a:any, b: any) => (a.readyInMinutes > b.readyInMinutes) ? 1 : -1);
-                    }else { // @ts-ignore
-                if(sortSelect == "price"){
-                                        const resultsSort = results.sort((a:any, b: any) => (a.pricePerServing > b.pricePerServing) ? 1 : -1);
-                                    }
+        let dietFilters = filtersArray.diet;
+        let intoleranceFilters = filtersArray.intolerance;
+        // let filteredRecipesbyComplexity = filtersArray.complexity;
+        let dishTypeFilter = filtersArray.type;
+        let cuisineFilters = filtersArray.cuisine;
+        let sortFilter = filtersArray.sort;
+
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100, addRecipeInformation:true, diet : dietFilters.toString(), intolerances:intoleranceFilters.toString(), type: dishTypeFilter, cuisine: cuisineFilters, sort: sortFilter } }).then((response1) => {
+            setResults(response1.data.results);
+            setNbResults(response1.data.totalResults);
+            setIsSearch(true);
+            setLoading(false);
+            if(response1.data.results.length == 0){
+                setNoResults('No results found');
             }
-        }
-        //filter the recipes by diet
-        if(filtersArray.diet.length == 0){
-            filteredRecipesbyDiet = results;
-        }else{
-            const dietSelect : string[] = filtersArray.diet;
-            filteredRecipesbyDiet = results.filter((recipe : any[any]) => {
-                return dietSelect.every(
-                    (f) => recipe.diets.includes(f) && recipe[f] == true
-                );
-            });
-        }
-
-        //filter the recipes by intolerance
-        if(filtersArray.intolerance.length == 0){
-            filteredRecipesbyIntolerance = results;
-        }else {
-            const intoleranceSelect : string[] = filtersArray.intolerance;
-            filteredRecipesbyIntolerance = results.filter((recipe : any[any]) => {
-                return intoleranceSelect.every(
-                    (f) => recipe[f] == true
-                );
-            });
-        }
-
-        //filter the recipes by dish type
-        if(filtersArray.type.length == 0){
-            filteredRecipesbyDishType = results;
-        }else {
-            const dishTypeSelect : string[] = filtersArray.type;
-            filteredRecipesbyDishType = results.filter((recipe : any[any]) => {
-                return dishTypeSelect.every(
-                    (f) => recipe.dishTypes.includes(f)
-                );
-            });
-        }
-
-        //filter the recipes by cuisine
-        if(filtersArray.cuisine.length == 0){
-            filteredRecipesbyCuisine = results;
-        }else{
-            const cuisineSelect : string[] = filtersArray.cuisine;
-            filteredRecipesbyCuisine = results.filter((recipe : any[any]) => {
-                return cuisineSelect.every(
-                    (f) => recipe.cuisines.includes(f)
-                );
-            });
-        }
+        },).catch((error) => {
+            console.log(error);
+        });
 
 
-        // merge all the filters and remove duplicates
-        const filteredRecipes = filteredRecipesbyDiet.concat(filteredRecipesbyIntolerance, filteredRecipesbyDishType, filteredRecipesbyCuisine);
-        const filteredRecipesUnique = filteredRecipes.filter((v: { id: any; }, i: any, a: any[]) => a.findIndex(t => (t.id === v.id)) === i);
 
         setModalVisible(false);
-        setResults(filteredRecipesUnique);
-        setNbResults(filteredRecipesUnique.length);
     };
 
 
