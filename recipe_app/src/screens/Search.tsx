@@ -28,6 +28,7 @@ import ingredientsList from "../data/ingredientsList";
 import BouncyCheckboxGroup, {ICheckboxButton} from "react-native-bouncy-checkbox-group";
 import CheckBox from "@react-native-community/checkbox";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
@@ -106,9 +107,6 @@ const Search : FC = () => {
     // }, [modalVisible]);
 
     function FilterModal() {
-        // setModalVisible(true);
-        const [checked, setChecked] = useState(false);
-
         const sortList1: ICheckboxButton[] = [
             {
                 id: 0,
@@ -149,7 +147,6 @@ const Search : FC = () => {
         ];
         const sortList2 = [{id: 1, name: 'Gluten Free'}, {id: 2, name: 'Ketogenic'}, {id: 3, name: 'Vegetarian'}, {id: 4, name: 'Lacto-Vegetarian'}, {id: 5, name: 'Ovo-Vegetarian'}, {id: 6, name: 'Vegan'}, {id: 7, name: 'Pescetarian'}, {id: 8, name: 'Paleo'}, {id: 9, name: 'Primal'}, {id: 10, name: 'Whole30'}];
         const sortList3 = [{id: 1, name: 'Dairy'}, {id: 2, name: 'Egg'}, {id: 3, name: 'Gluten'}, {id: 4, name: 'Grain'}, {id: 5, name: 'Peanut'}, {id: 6, name: 'Seafood'}, {id: 7, name: 'Sesame'}, {id: 8, name: 'Shellfish'}, {id: 9, name: 'Soy'}, {id: 10, name: 'Sulfite'}, {id: 11, name: 'Tree Nut'}, {id: 12, name: 'Wheat'}];
-        const sortList4 = [{id: 1, name: 'Very Easy'}, {id: 2, name: 'Easy'}, {id: 3, name: 'Medium'}, {id: 4, name: 'Hard'}, {id: 5, name: 'Very Hard'}];
         const sortList5 : ICheckboxButton[] = [
             {
                 id: 1,
@@ -356,8 +353,6 @@ const Search : FC = () => {
                                     style={{ flexDirection: "column" }}
                                     onChange={(selectedItem: ICheckboxButton) => {
                                         setFilters({ ...filters, sort: selectedItem.text?.toLowerCase() });
-                                        // setSelectedSort(selectedItem.text);
-                                        // console.log("SelectedItem: ", selectedItem.text);
                                     }}
                                 />
                             </View>
@@ -402,26 +397,6 @@ const Search : FC = () => {
                                     );
                                 })}
                             </View>
-                            {/*<Separator />*/}
-                            {/*<Text style={[styles.modalText, {color:colors.text}]}>Preparation Time</Text>*/}
-                            {/*<View style={styles.modalFilter}>*/}
-                            {/*    {sortList4.map((item, index) => {*/}
-                            {/*        return (*/}
-                            {/*            <BouncyCheckbox*/}
-                            {/*                key={index}*/}
-                            {/*                style={{ margin: 5 }}*/}
-                            {/*                size={20}*/}
-                            {/*                fillColor="#9fc131"*/}
-                            {/*                unfillColor={colors.background}*/}
-                            {/*                text={item.name}*/}
-                            {/*               iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}*/}
-                            {/*                 innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}*/}
-                            {/*                textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}*/}
-                            {/*                onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, complexity: [...filters.complexity, item.name.toLowerCase()] })}}*/}
-                            {/*            />*/}
-                            {/*        );*/}
-                            {/*    })}*/}
-                            {/*</View>*/}
                             <Separator />
                             <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
                             <View style={styles.modalFilter}>
@@ -464,7 +439,7 @@ const Search : FC = () => {
         );
     }
 
-    const filterResult = (filtersArray : any) => {
+    function filterResult (filtersArray : any) {
         let dietFilters = filtersArray.diet;
         let intoleranceFilters = filtersArray.intolerance;
         // let filteredRecipesbyComplexity = filtersArray.complexity;
@@ -521,8 +496,11 @@ const Search : FC = () => {
                 </View>
             )}
             {loading && (
+                // <View style={styles.loading}>
+                //     <ActivityIndicator size="large" color="#9fc131" />
+                // </View>
                 <View style={styles.loading}>
-                    <ActivityIndicator size="large" color="#9fc131" />
+                    <SkeletonLoaderSearch />
                 </View>
             )}
 
@@ -549,13 +527,12 @@ const Search : FC = () => {
                                     <View style={recipeStyles.imgRecipe}>
                                         {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
                                     </View>
+                                    {/*<View style={recipeStyles.blocRecipeLikes}>*/}
+                                    {/*    <Text style={recipeStyles.recipeLikesText}>{result.aggregateLikes}<FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" /></Text>*/}
+                                    {/*</View>*/}
                                     <View style={recipeStyles.blocRecipeBelow}>
                                         <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
                                         <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
-                                        <View style={recipeStyles.blocRecipeLikes}>
-                                            <Text style={[recipeStyles.recipeLikesText, {color:colors.text}]}>{result.aggregateLikes}</Text>
-                                            <FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" />
-                                        </View>
                                     </View>
                                     <View style={recipeStyles.blocRecipeLabel}>
                                         {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}

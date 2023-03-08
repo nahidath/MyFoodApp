@@ -76,9 +76,11 @@ export default StyleSheet.create({
     },
     loading: {
         flex: 1,
-        justifyContent: 'center',
+        // flexDirection: 'column',
+        // justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(155,155,155,0.52)',
+        // backgroundColor: 'rgba(238,238,238,0.52)',
+        backgroundColor: '#FAF9F6',
         ...StyleSheet.absoluteFillObject,
         zIndex: 100,
 

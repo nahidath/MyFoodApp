@@ -8,9 +8,9 @@ export default StyleSheet.create({
     },
     blocRecipe: {
         flexDirection: 'column',
-        padding: 10,
+        padding: 15,
         borderRadius: 10,
-        margin: 7,
+        margin: 10,
     },
     imgRecipe: {
         height: 200,
@@ -25,11 +25,12 @@ export default StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         textWrap: 'wrap',
+        width: '90%'
     },
     blocRecipeLabel: {
         position: 'absolute',
-        top: 15,
-        marginLeft: 10,
+        top: 20,
+        marginLeft: 15,
         flexDirection: 'row',
     },
     blocRecipeLabelText : {
@@ -43,23 +44,36 @@ export default StyleSheet.create({
     blocRecipeLikes: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        position: 'relative',
-        bottom: 40,
+
     },
     recipeLikesText: {
         fontSize: 20,
-        padding: 5,
+        // padding: 5,
+        color: '#041721',
     },
     heart: {
         marginTop: 9,
     },
     blocRecipeBelow: {
-        height: 120,
+        // height: 120,
+        flex:1,
     },
     time:{
         fontSize: 15,
         fontStyle: 'italic',
         marginTop: 10,
     },
+    floatingButton: {
+        position: 'absolute',
+        width: 60,
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: 30,
+        backgroundColor: '#9fc131',
+        borderRadius: 100,
+    }
+
 
 });

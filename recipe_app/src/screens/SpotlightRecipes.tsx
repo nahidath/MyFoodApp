@@ -2,7 +2,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types/types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import React, {useEffect, useState} from "react";
-import {ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {useNavigation, useTheme} from "@react-navigation/native";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
@@ -13,6 +13,7 @@ import Feather from "react-native-vector-icons/Feather";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {colors} from "react-native-elements";
+import recipeStyles from "../stylesheets/SpotlightRecipes_stylesheet";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'SpotlightRecipes'>;
@@ -65,16 +66,15 @@ const SpotlightRecipes = ({route}: Props) => {
             <ScrollView>
                 {recipesR.map((recipe2: any) => {
                     return (
-                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.push('Recipe', {id :recipe2.id, name: recipe2.title})}>
+                        <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Recipe', {id :recipe2.id, name: recipe2.title})}>
                             <View style={[styles.imgRecipe]}>
-                                {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
+                                {recipe2.image ? <Image source={{uri: recipe2.image}} style={styles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} />}
                             </View>
                             <View style={styles.blocRecipeBelow}>
                                 <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe2.title}</Text>
                                 <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe2.readyInMinutes > 59 ? formatTime(recipe2.readyInMinutes) :recipe2.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes}</Text>
-                                    <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes} <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" /></Text>
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>

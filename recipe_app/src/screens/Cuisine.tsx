@@ -1,4 +1,4 @@
-import {ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import styles from "../stylesheets/SpotlightRecipes_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -51,19 +51,26 @@ const Cuisine = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={[styles.floatingButton, general.shadow]}
+                >
+                    <FontAwesome name="filter" size={30} color="#ffffff" />
+                </TouchableOpacity>
+
             <ScrollView>
                 {recipesC.map((recipe: any) => {
                     return (
-                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})}>
+                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})}>
                             <View style={[styles.imgRecipe]}>
-                                {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
+                                {recipe.image ? <Image source={{uri: recipe.image}} style={styles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} />}
                             </View>
                             <View style={styles.blocRecipeBelow}>
                                 <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe.title}</Text>
                                 <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe.aggregateLikes}</Text>
-                                    <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe.aggregateLikes} <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" /></Text>
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>

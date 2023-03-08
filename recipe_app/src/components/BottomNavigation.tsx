@@ -38,9 +38,7 @@ const BottomNavigation : FC = () => {
     return (
         <Tab.Navigator
             initialRouteName="Home"
-            // screenOptions:({navigation}) =>({
                 screenOptions= {{
-
                     headerStyle: {
                         backgroundColor: colors.notification,
                         ...general.shadow
@@ -58,34 +56,14 @@ const BottomNavigation : FC = () => {
                         alignItems: 'center',
                         zIndex: 0,
                         borderTopColor: "#9fc131",
-                        // borderTopRightRadius: 20,
-                        // position: 'absolute',
-                        // bottom: 25,
-                        // left: 20,
-                        // right: 20,
-                        // // elevation: 0,
-                        // borderRadius: 50,
-                        // ...styles.shadow,
-                        // display: displayTab === 'flex' ? 'flex' : 'none'
-                        // navigation
-                        // .state.routes[navigation.state.index].params.display === 'none' ? {display: 'none'} : {display: 'flex'}
                     },
                     tabBarActiveTintColor: colors.card,
                     tabBarInactiveTintColor: '#666',
                     tabBarLabelStyle: {
                         fontSize: 12,
                     },
-
-                // })}
             }}
         >
-            {/*<Tab.Screen name="Home" component={HomeStackScreen} options={({ route }) =>({*/}
-            {/*    tabBarVisible: getTabBarVisible(route),*/}
-            {/*    headerShown: false,*/}
-            {/*    tabBarIcon: ({color}) => (*/}
-            {/*        <Feather name={"home"} size={24} color={color} />*/}
-            {/*    ),*/}
-            {/*})} />*/}
             <Tab.Screen name="Home" component={HomeStackScreen} options={{
                 headerShown: false,
                 tabBarIcon: ({color}) => (
@@ -144,7 +122,7 @@ const styles = StyleSheet.create({
         padding: 5,
         height: 55,
         width: 55,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         textAlign: 'center',
         borderColor: '#9fc131',
         borderWidth: hairlineWidth,

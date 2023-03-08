@@ -28,6 +28,7 @@ import Feather from "react-native-vector-icons/Feather";
 import {LinearGradient} from "expo-linear-gradient";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
+import {SkeletonLoader} from "../components/SkeletonLoader";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -42,6 +43,7 @@ const Recipe = ({route}: Props) => {
     const [instructions, setInstructions] = useState<string[]>([]);
     const [labels, setLabels] = useState<string[]>([]);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const {id} = route.params;
     const {name} = route.params;
 
@@ -52,6 +54,7 @@ const Recipe = ({route}: Props) => {
             setIngredients(response.data.extendedIngredients.map((item: any) => item.original));
             dataInstruction = response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step))
             setInstructions(dataInstruction[0]);
+            setIsLoading(false);
             setIsLoaded(true);
         },).catch((error) => {
             console.log(error);
@@ -66,6 +69,7 @@ const Recipe = ({route}: Props) => {
             headerTitle: name,
         })
         getRecipe();
+        setIsLoading(true);
         if(isLoaded) {
             getLabels();
         }
@@ -124,6 +128,7 @@ const Recipe = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            {isLoading ? <SkeletonLoader/> :
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
                    {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
@@ -180,6 +185,7 @@ const Recipe = ({route}: Props) => {
                 <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
                 <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
             </ScrollView>
+            }
         </View>
     );
 }
