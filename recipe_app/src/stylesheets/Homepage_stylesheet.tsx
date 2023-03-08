@@ -142,6 +142,9 @@ export default StyleSheet.create({
     },
     searchButton: {
         padding: 10,
+        // position: 'absolute',
+        // right: 0,
+        // top: 0,
     },
     pp: {
         width: 35,
@@ -197,6 +200,11 @@ export default StyleSheet.create({
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         zIndex: 100,
+    },
+    searchText: {
+        padding: 15,
+        fontSize: 15,
+        color: '#fefefe',
     }
 
 

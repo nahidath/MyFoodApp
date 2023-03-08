@@ -18,7 +18,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 
 
 // @ts-ignore
-type ProfileProps = MyStackNavigationProp<ProfileStackList, 'Profile'>;
+type ProfileProps = MyStackNavigationProp<ProfileStackList, 'ProfilePage'>;
 
 const Profile : FC = () => {
 

@@ -1,12 +1,19 @@
 import ContentLoader, {Rect, Circle, List} from 'react-content-loader/native';
 import {FC} from "react";
 
-export  function SkeletonLoader ()  {
+interface SkeletonLoaderProps {
+    theme?: any;
+    color?: any;
+}
+
+export  function SkeletonLoader ({theme, color}: SkeletonLoaderProps)  {
+    const colorSpec = theme.dark ? '#353535' : '#ececec';
     return (
         <ContentLoader
             speed={2}
-            backgroundColor="#ececec"
+            backgroundColor={colorSpec}
             foregroundColor="#fafafa"
+            style={{backgroundColor: color.background}}
         >
             <Rect x="15" y="20" rx="20" ry="20" width="90%" height="200" />
             <Rect x="20" y="240" rx="5" ry="5" width="90%" height="20" />
@@ -27,12 +34,16 @@ export  function SkeletonLoader ()  {
     )
 }
 
-export function SkeletonLoaderSearch ()  {
+export function SkeletonLoaderSearch ({theme, color}: SkeletonLoaderProps)  {
+    const colorSpec = theme.dark ? '#353535' : '#ececec';
+
     return (
         <ContentLoader
             speed={2}
-            backgroundColor="#ececec"
+            backgroundColor={colorSpec}
             foregroundColor="#fafafa"
+            style={{backgroundColor: color.background}}
+
         >
             <Rect x="15" y="20" rx="20" ry="20" width="90%" height="200" />
             <Rect x="20" y="240" rx="5" ry="5" width="90%" height="20" />
@@ -42,5 +53,24 @@ export function SkeletonLoaderSearch ()  {
             <Rect x="20" y="590" rx="5" ry="5" width="82%" height="20" />
         </ContentLoader>
 
+    )
+}
+
+export function SkeletonLoaderHomePage ({theme, color}: SkeletonLoaderProps)  {
+    const colorSpec = theme.dark ? '#353535' : '#ececec';
+
+    return (
+        <ContentLoader
+            speed={2}
+            backgroundColor={colorSpec}
+            foregroundColor="#fafafa"
+            width={800}
+            height={400}
+            viewBox={"0 0 800 400"}
+            style={{marginBottom: -110, backgroundColor:color.background}}
+        >
+            <Rect x="20" y="0" rx="10" ry="10" width="150" height="260" />
+            <Rect x="180" y="0" rx="10" ry="10" width="170" height="260" />
+        </ContentLoader>
     )
 }

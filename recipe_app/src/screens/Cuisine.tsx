@@ -1,4 +1,4 @@
-import {Image, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, ImageBackground, Modal, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import styles from "../stylesheets/SpotlightRecipes_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -12,6 +12,9 @@ import {REACT_APP_API_KEY} from "@env";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {HomeStackList} from "../types/types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
+import {FilterModal} from "../components/Filters";
+import Separator from "../components/Separator";
+import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
@@ -22,10 +25,18 @@ const Cuisine = ({route}: Props) => {
     const [recipesC, setRecipesC ] = useState<any>([]);
     let cuisineFromHP  = route.params.cuisine;
     const navigation = useNavigation<CuisineScreenProps>();
+    const [results, setResults] = useState<any>([]);
+    const [noResults, setNoResults] = useState<string>('');
+    const [nbResults, setNbResults] = useState<number>(0);
+    const [isSearch, setIsSearch] = useState<boolean>(false);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     const getRecipesByCuisine = () => {
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP.toLowerCase()} }).then((response) => {
             setRecipesC(response.data.results);
+            setLoading(false);
         },).catch((error) => {
             console.log(error);
         });
@@ -35,6 +46,7 @@ const Cuisine = ({route}: Props) => {
         navigation.setOptions({
             headerTitle: cuisineFromHP,
         })
+        setLoading(true);
         getRecipesByCuisine();
     },[])
 
@@ -51,14 +63,31 @@ const Cuisine = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            {loading ? (
+                <View style={styles.loading}>
+                    <SkeletonLoaderSearch theme={theme} color={colors} />
+                </View>
+            ): (
+                <>
+                <Modal
+                    animationType={"slide"}
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <FilterModal search={''} setResults={setRecipesC} setNoResults={setNoResults} setNbResults={setNbResults} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} cuisine={cuisineFromHP}/>
+                </Modal>
 
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={[styles.floatingButton, general.shadow]}
+                    onPress={() => setModalVisible(true)}
                 >
                     <FontAwesome name="filter" size={30} color="#ffffff" />
                 </TouchableOpacity>
 
+            {isSearch && <View><Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 0 ? noResults : nbResults == 1 ? "Result founded" : "Results founded" } </Text><Separator /></View>}
             <ScrollView>
                 {recipesC.map((recipe: any) => {
                     return (
@@ -84,6 +113,8 @@ const Cuisine = ({route}: Props) => {
                     )
                 })}
             </ScrollView>
+                    </>
+            )}
         </View>
     )
 

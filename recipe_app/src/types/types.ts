@@ -17,6 +17,7 @@ export type HomeStackList = {
     Cuisine: {
         cuisine: string;
     }
+    SearchStackScreen: undefined;
 }
 
 export type MoreStackList = {
@@ -38,7 +39,7 @@ export type LoginStackList = {
 }
 
 export type ProfileStackList = {
-    Profile: undefined;
+    ProfilePage: undefined;
     EditProfile: undefined;
     FavoritesRecipesUser: undefined;
     LoginStackScreen: undefined;

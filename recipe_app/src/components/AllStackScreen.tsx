@@ -35,15 +35,15 @@ export function HomeStackScreen () {
     return (
         <HomeStack.Navigator >
             <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
-            <HomeStack.Screen name="Profile" component={Profile} options={{
-                headerStyle: {
-                    backgroundColor: colors.notification,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-            }} />
+            {/*<HomeStack.Screen name="Profile" component={Profile} options={{*/}
+            {/*    headerStyle: {*/}
+            {/*        backgroundColor: colors.notification,*/}
+            {/*    },*/}
+            {/*    headerTintColor: colors.text,*/}
+            {/*    headerTitleStyle: {*/}
+            {/*        fontWeight: 'bold',*/}
+            {/*    },*/}
+            {/*}} />*/}
             <HomeStack.Screen name="Recipe" component={Recipe}  options={{
                 headerStyle: {
                     backgroundColor: colors.notification,
@@ -63,7 +63,7 @@ export function HomeStackScreen () {
                 },
                 headerTitle: 'Spotlight Recipes',
             }} />
-            {/*<HomeStack.Screen name="Search" component={SearchStackScreen} options={{headerShown: false}} />*/}
+            <HomeStack.Screen name="SearchStackScreen" component={SearchStackScreen} options={{headerShown: false}} />
             <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false
             }} />
@@ -225,7 +225,7 @@ export function ProfileStackScreen () {
     const { colors } = useTheme();
     return (
         <ProfilStack.Navigator >
-            <ProfilStack.Screen name="Profile" component={Profile} options={{
+            <ProfilStack.Screen name="ProfilePage" component={Profile} options={{
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -233,6 +233,7 @@ export function ProfileStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
+                headerTitle: 'Profile',
             }} />
             <ProfilStack.Screen name="EditProfile" component={EditProfile} options={{
                 headerStyle: {
@@ -299,7 +300,12 @@ export function SearchStackScreen () {
     return (
         <SearchStack.Navigator >
             <SearchStack.Screen name="SearchPage" component={Search} options={{
-                headerShown: false,
+                // headerShown: false,
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+               //hide back button
+               headerBackVisible: false,
             }} />
             <SearchStack.Screen name="Recipe" component={Recipe} options={{
                 headerStyle: {

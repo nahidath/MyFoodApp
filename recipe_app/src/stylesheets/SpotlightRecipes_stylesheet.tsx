@@ -73,7 +73,22 @@ export default StyleSheet.create({
         bottom: 30,
         backgroundColor: '#9fc131',
         borderRadius: 100,
-    }
+        zIndex: 100,
+    },
+
+    resultsText: {
+        paddingLeft: 10,
+        fontSize: 20,
+        marginTop: 10,
+    },
+    loading: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#FAF9F6',
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 100,
+
+    },
 
 
 });

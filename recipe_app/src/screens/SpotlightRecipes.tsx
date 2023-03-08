@@ -14,6 +14,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {colors} from "react-native-elements";
 import recipeStyles from "../stylesheets/SpotlightRecipes_stylesheet";
+import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'SpotlightRecipes'>;
@@ -23,7 +24,7 @@ const SpotlightRecipes = ({route}: Props) => {
     const navigation = useNavigation<SpotlightScreenProps>();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipesR, setRecipesR] = useState<any>([]);
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
     let recipeFromHP  = route.params.recipesArray;
     // console.log(route.params.recipesArray);
@@ -41,12 +42,14 @@ const SpotlightRecipes = ({route}: Props) => {
                 return b.aggregateLikes - a.aggregateLikes;
             });
             setRecipesR(dataRecipesMerged);
+            setLoading(false);
         },).catch((error) => {
             console.log(error);
         });
     }
 
     useEffect(() => {
+        setLoading(true);
         getRecipes();
     },[])
 
@@ -63,6 +66,12 @@ const SpotlightRecipes = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            {loading && (
+                <View style={styles.loading}>
+                    <SkeletonLoaderSearch theme={theme} color={colors} />
+                </View>
+            )}
+
             <ScrollView>
                 {recipesR.map((recipe2: any) => {
                     return (
