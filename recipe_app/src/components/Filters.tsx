@@ -1,5 +1,5 @@
 import BouncyCheckboxGroup, {ICheckboxButton} from "react-native-bouncy-checkbox-group";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import styles from "../stylesheets/Search_stylesheet";
 import Feather from "react-native-vector-icons/Feather";
@@ -38,6 +38,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
     const [filters, setFilters] = useState<any>({ sort: '', diet: [], intolerance: [], complexity: [], type: '', cuisine: [] });
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    const [filtered, setFiltered] = useState<boolean>(false);
 
 
 
@@ -55,6 +56,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
             setNbResults(response1.data.results.length);
             setIsSearch(true);
             setLoading(false);
+            setFiltered(true);
             if(response1.data.results.length == 0){
                 setNoResults('No results found');
             }
@@ -66,6 +68,13 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         // useScrollToTop(scrollRef);
         setModalVisible(false);
     };
+
+    useEffect(() => {
+        if(scrollRef.current){
+            scrollRef.current.scrollTo({x: 0, y: 0});
+            // scrollRef.current.scrollToOffset({offset: 0});
+        }
+    }, [filtered]);
 
     return (
         <View style={styles.sideView}>

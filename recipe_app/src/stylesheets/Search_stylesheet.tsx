@@ -179,6 +179,18 @@ export default StyleSheet.create({
         // padding: 10,
         backgroundColor: 'rgba(0,0,0,0.5)',
         // transform: [{ translateX: 0 }],
-    }
+    },
+    floatingButton: {
+        position: 'absolute',
+        width: 60,
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: 30,
+        backgroundColor: '#9fc131',
+        borderRadius: 100,
+        zIndex: 100,
+    },
 
 });

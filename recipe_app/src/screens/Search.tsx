@@ -94,19 +94,13 @@ const Search : FC = () => {
     }, [search, isSearch, isFocused]);
 
     useEffect(() => {
-        if(isSearch){
-            useScrollToTop(ref);
-        }
-    }, [isSearch]);
-
-    useEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
 
                 <View style={styles.searchContainer}>
                     <TextInput
                         ref={inputRef}
-                        style={{color:colors.text, width: 290, marginRight: 10,  height: 40, borderRadius: 10, backgroundColor: textInputBckgr, paddingLeft: 10, paddingRight: 10, borderWidth: hairlineWidth, borderColor: borderSpec}}
+                        style={{color:colors.text, width: 290, marginRight: 10,  height: 40,  backgroundColor: textInputBckgr, paddingLeft: 10, paddingRight: 10, borderBottomWidth: hairlineWidth, borderBottomColor: borderSpec}}
                         placeholderTextColor={colors.text}
                         placeholder={'Search recipes, ingredients, etc.'}
                         value={search}
@@ -190,8 +184,15 @@ const Search : FC = () => {
                         }}>
                         <FilterModal search={search} setResults={setResults} setNoResults={setNoResults} setNbResults={setNbResults} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} screenName={'Search'} scrollRef={ref} />
                     </Modal>
-                    <TouchableOpacity  style={styles.filterButton} onPress={() => setModalVisible(true)}>
-                        <Feather name={"filter"} size={22} color={colors.text} />
+                    {/*<TouchableOpacity  style={styles.filterButton} onPress={() => setModalVisible(true)}>*/}
+                    {/*    <Feather name={"filter"} size={22} color={colors.text} />*/}
+                    {/*</TouchableOpacity>*/}
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        style={[styles.floatingButton, general.shadow]}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <FontAwesome name="filter" size={30} color="#ffffff" />
                     </TouchableOpacity>
                     <Separator />
                     <ScrollView keyboardShouldPersistTaps='always' ref={ref}>
