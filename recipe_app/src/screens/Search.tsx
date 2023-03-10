@@ -47,7 +47,7 @@ const Search : FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const ref = useRef(null);
+    // const ref = useRef(null);
     const borderSpec=theme.dark ? "#fefefe" : "#505050";
     const textInputBckgr = theme.dark ? '#272727' : '#f2f2f2';
 
@@ -182,7 +182,7 @@ const Search : FC = () => {
                         onRequestClose={() => {
                             setModalVisible(!modalVisible);
                         }}>
-                        <FilterModal search={search} setResults={setResults} setNoResults={setNoResults} setNbResults={setNbResults} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} screenName={'Search'} scrollRef={ref} />
+                        <FilterModal search={search} setResults={setResults} setNoResults={setNoResults} setNbResults={setNbResults} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} screenName={'Search'} />
                     </Modal>
                     {/*<TouchableOpacity  style={styles.filterButton} onPress={() => setModalVisible(true)}>*/}
                     {/*    <Feather name={"filter"} size={22} color={colors.text} />*/}
@@ -195,7 +195,7 @@ const Search : FC = () => {
                         <FontAwesome name="filter" size={30} color="#ffffff" />
                     </TouchableOpacity>
                     <Separator />
-                    <ScrollView keyboardShouldPersistTaps='always' ref={ref}>
+                    <ScrollView keyboardShouldPersistTaps='always' >
                         {results.map((result : any) => {
                             return (
                                 <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>

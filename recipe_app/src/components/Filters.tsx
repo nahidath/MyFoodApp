@@ -22,11 +22,11 @@ interface IFilterModalProps {
     setNoResults: Dispatch<SetStateAction<string>>;
     cuisine? : string;
     screenName? : string;
-    scrollRef?: any;
+    // scrollRef?: any;
 
 }
 
-export function FilterModal({search, setResults, setNbResults, setIsSearch, setLoading, setModalVisible, setNoResults, cuisine, screenName, scrollRef}: IFilterModalProps) {
+export function FilterModal({search, setResults, setNbResults, setIsSearch, setLoading, setModalVisible, setNoResults, cuisine, screenName}: IFilterModalProps) {
 
     const configValue : string | undefined = REACT_APP_API_KEY;
 
@@ -69,12 +69,12 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         setModalVisible(false);
     };
 
-    useEffect(() => {
-        if(scrollRef.current){
-            scrollRef.current.scrollTo({x: 0, y: 0});
-            // scrollRef.current.scrollToOffset({offset: 0});
-        }
-    }, [filtered]);
+    // useEffect(() => {
+    //     if(scrollRef.current){
+    //         scrollRef.current.scrollTo({x: 0, y: 0});
+    //         // scrollRef.current.scrollToOffset({offset: 0});
+    //     }
+    // }, [filtered]);
 
     return (
         <View style={styles.sideView}>
