@@ -25,6 +25,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import axios from "axios";
 import randomIngredients from "../data/randomIngredients";
 import cuisinesList from "../data/cuisinesList";
+import * as fsPromise from 'fs/promises';
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -77,7 +78,7 @@ const Homepage :  FC = () => {
                 }
 
             };
-            getNewInfos();
+            getNewInfos().then(r => r);
             return () => {
                 isActive = false;
             };
@@ -106,7 +107,12 @@ const Homepage :  FC = () => {
         },).catch((error) => {
             console.log(error);
         });
-
+        //write the results in a file in the mock folder
+        // fsPromise.writeFile('../mock/recipesRandom.json', JSON.stringify(dataRecipes), 'utf8').then(() => {
+        //     console.log('File written');
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
     }
 
     const getRecipesByTags = () => {
@@ -122,6 +128,13 @@ const Homepage :  FC = () => {
         },).catch((error) => {
             console.log(error);
         });
+        //write the results in a file in the mock folder
+        // fsPromise.writeFile('../mock/recipesByTags.json', JSON.stringify(recipes2), 'utf8').then(() => {
+        //     console.log('File written');
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+
     }
     const getRandomJokes = () => {
         axios.get('https://api.spoonacular.com/food/trivia/random',{params:{apiKey: configValue} }).then((response) => {
@@ -202,7 +215,7 @@ const Homepage :  FC = () => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.blocDisplay}>
-                            {loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :
+                            {/*{loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :*/}
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     {recipes.map((recipe: any) => {
                                         return (
@@ -226,7 +239,7 @@ const Homepage :  FC = () => {
                                         )
                                     })}
                                 </ScrollView>
-                            }
+                            {/*}*/}
                         </View>
                     </View>
                     <View>

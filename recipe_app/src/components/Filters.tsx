@@ -7,6 +7,7 @@ import Separator from "./Separator";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import {useScrollToTop, useTheme} from "@react-navigation/native";
 import axios from "axios";
+import * as fsPromise from 'fs/promises';
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 
@@ -64,9 +65,10 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
             console.log(error);
         });
 
-
         // useScrollToTop(scrollRef);
         setModalVisible(false);
+
+        //write the filters result in a file in the mock folder
     };
 
     // useEffect(() => {

@@ -15,6 +15,7 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {FilterModal} from "../components/Filters";
 import Separator from "../components/Separator";
 import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
+import * as fsPromise from 'fs/promises';
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
@@ -40,6 +41,15 @@ const Cuisine = ({route}: Props) => {
         },).catch((error) => {
             console.log(error);
         });
+
+        //write the results in a file in the mock directory
+        // fsPromise.writeFile('../mock/recipesByCuisine.json', JSON.stringify(recipesC), 'utf8').then(() => {
+        //     console.log('File written');
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+
+
     }
 
     useEffect(() => {
@@ -63,12 +73,12 @@ const Cuisine = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {loading ? (
-                <View style={styles.loading}>
-                    <SkeletonLoaderSearch theme={theme} color={colors} />
-                </View>
-            ): (
-                <>
+            {/*{loading ? (*/}
+            {/*    <View style={styles.loading}>*/}
+            {/*        <SkeletonLoaderSearch theme={theme} color={colors} />*/}
+            {/*    </View>*/}
+            {/*): (*/}
+            {/*    <>*/}
                 <Modal
                     animationType={"slide"}
                     transparent={true}
@@ -113,8 +123,8 @@ const Cuisine = ({route}: Props) => {
                     )
                 })}
             </ScrollView>
-                    </>
-            )}
+            {/*        </>*/}
+            {/*)}*/}
         </View>
     )
 

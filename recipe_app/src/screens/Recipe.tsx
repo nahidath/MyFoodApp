@@ -29,6 +29,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {SkeletonLoader} from "../components/SkeletonLoader";
+import fsPromise from "fs/promises";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -59,6 +60,13 @@ const Recipe = ({route}: Props) => {
         },).catch((error) => {
             console.log(error);
         });
+
+        // fsPromise.writeFile('../mock/recipeByID.json', JSON.stringify(recipe), 'utf8').then(() => {
+        //     console.log('File written');
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+
 
 
     }
@@ -128,7 +136,7 @@ const Recipe = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {isLoading ? <SkeletonLoader theme={theme} color={colors}/> :
+            {/*{isLoading ? <SkeletonLoader theme={theme} color={colors}/> :*/}
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
                    {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
@@ -185,7 +193,7 @@ const Recipe = ({route}: Props) => {
                 <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
                 <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
             </ScrollView>
-            }
+            {/*}*/}
         </View>
     );
 }

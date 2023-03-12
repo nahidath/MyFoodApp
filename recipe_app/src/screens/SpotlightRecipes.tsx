@@ -15,6 +15,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {colors} from "react-native-elements";
 import recipeStyles from "../stylesheets/SpotlightRecipes_stylesheet";
 import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
+import fsPromise from "fs/promises";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'SpotlightRecipes'>;
@@ -46,6 +47,14 @@ const SpotlightRecipes = ({route}: Props) => {
         },).catch((error) => {
             console.log(error);
         });
+
+        // fsPromise.writeFile('../mock/spotlightRecipes.json', JSON.stringify(recipesR), 'utf8').then(() => {
+        //     console.log('File written');
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+
+
     }
 
     useEffect(() => {

@@ -28,6 +28,7 @@ import ingredientsList from "../data/ingredientsList";
 import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 import {FilterModal} from "../components/Filters";
 import hairlineWidth = StyleSheet.hairlineWidth;
+import * as fsPromise from 'fs/promises';
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
@@ -64,6 +65,13 @@ const Search : FC = () => {
         },).catch((error) => {
             console.log(error);
         });
+        //write the search results in a file in the mock folder
+        // fsPromise.writeFile('../mock/searchResults.json', JSON.stringify(results), 'utf8').then(() => {
+        //     console.log('file created');
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+
 
     }
 
@@ -166,11 +174,11 @@ const Search : FC = () => {
                     />
                 </View>
             )}
-            {loading && (
-                <View style={styles.loading}>
-                    <SkeletonLoaderSearch theme={theme} color={colors}/>
-                </View>
-            )}
+            {/*{loading && (*/}
+            {/*    <View style={styles.loading}>*/}
+            {/*        <SkeletonLoaderSearch theme={theme} color={colors}/>*/}
+            {/*    </View>*/}
+            {/*)}*/}
 
             {isSearch && results.length > 0 ? (
                 <View style={styles.resultsContainer}>
