@@ -14,7 +14,7 @@ import {HomeStackList} from "../types/types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {FilterModal} from "../components/Filters";
 import Separator from "../components/Separator";
-import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
+// import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 import * as fsPromise from 'fs/promises';
 
 

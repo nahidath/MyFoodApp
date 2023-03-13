@@ -25,7 +25,7 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {HomeStackList, SearchStackList} from "../types/types";
 import {useIsFocused, useNavigation, useScrollToTop, useTheme} from "@react-navigation/native";
 import ingredientsList from "../data/ingredientsList";
-import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
+// import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 import {FilterModal} from "../components/Filters";
 import hairlineWidth = StyleSheet.hairlineWidth;
 import * as fsPromise from 'fs/promises';

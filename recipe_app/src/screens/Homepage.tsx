@@ -31,7 +31,7 @@ import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {auth} from "../firebase/config";
-import {SkeletonLoaderHomePage} from "../components/SkeletonLoader";
+// import {SkeletonLoaderHomePage} from "../components/SkeletonLoader";
 
 
 
@@ -250,7 +250,7 @@ const Homepage :  FC = () => {
                             {/*</TouchableOpacity>*/}
                         </View>
                         <View style={styles.blocDisplay}>
-                            {loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :
+                            {/*{loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :*/}
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     {recipes2.map((recipe2: any) => {
                                         return (
@@ -274,7 +274,7 @@ const Homepage :  FC = () => {
                                         )
                                     })}
                                 </ScrollView>
-                            }
+                            {/*}*/}
                         </View>
 
                     </View>

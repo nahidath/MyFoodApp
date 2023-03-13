@@ -14,7 +14,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {colors} from "react-native-elements";
 import recipeStyles from "../stylesheets/SpotlightRecipes_stylesheet";
-import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
+// import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 import fsPromise from "fs/promises";
 
 
@@ -75,11 +75,11 @@ const SpotlightRecipes = ({route}: Props) => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {loading && (
-                <View style={styles.loading}>
-                    <SkeletonLoaderSearch theme={theme} color={colors} />
-                </View>
-            )}
+            {/*{loading && (*/}
+            {/*    <View style={styles.loading}>*/}
+            {/*        <SkeletonLoaderSearch theme={theme} color={colors} />*/}
+            {/*    </View>*/}
+            {/*)}*/}
 
             <ScrollView>
                 {recipesR.map((recipe2: any) => {
