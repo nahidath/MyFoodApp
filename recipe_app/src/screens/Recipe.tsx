@@ -23,16 +23,11 @@ import { LogBox } from 'react-native';
 // import Share from "react-native-share";
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
-import {A} from "@expo/html-elements";
 import Feather from "react-native-vector-icons/Feather";
 import {LinearGradient} from "expo-linear-gradient";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {SkeletonLoader} from "../components/SkeletonLoader";
-// import fsPromise from "fs/promises";
-// import fsPromise from "fs/promises";
-// import { promises as fsPromises } from 'fs';
-import { writeFile } from 'fs';
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -63,22 +58,6 @@ const Recipe = ({route}: Props) => {
         },).catch((error) => {
             console.log(error);
         });
-
-        // fsPromise.writeFile('../mock/recipeByID.json', JSON.stringify(recipe), 'utf8').then(() => {
-        //     console.log('File written');
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
-
-        //write the recipe to a file in the mock folder
-        // writeFile('../mock/recipeByID.json', JSON.stringify(recipe), (error: Error | null) => {
-        //     if (error) {
-        //         console.error('Error writing to file:', error);
-        //     } else {
-        //         console.log('Successfully wrote to file!');
-        //     }
-        // });
-
 
 
     }

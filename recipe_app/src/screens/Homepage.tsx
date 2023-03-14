@@ -25,7 +25,6 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import axios from "axios";
 import randomIngredients from "../data/randomIngredients";
 import cuisinesList from "../data/cuisinesList";
-import * as fsPromise from 'fs/promises';
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -107,12 +106,6 @@ const Homepage :  FC = () => {
         },).catch((error) => {
             console.log(error);
         });
-        //write the results in a file in the mock folder
-        // fsPromise.writeFile('../mock/recipesRandom.json', JSON.stringify(dataRecipes), 'utf8').then(() => {
-        //     console.log('File written');
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
     }
 
     const getRecipesByTags = () => {
@@ -128,12 +121,6 @@ const Homepage :  FC = () => {
         },).catch((error) => {
             console.log(error);
         });
-        //write the results in a file in the mock folder
-        // fsPromise.writeFile('../mock/recipesByTags.json', JSON.stringify(recipes2), 'utf8').then(() => {
-        //     console.log('File written');
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
 
     }
     const getRandomJokes = () => {

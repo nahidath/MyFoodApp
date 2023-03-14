@@ -15,7 +15,7 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {FilterModal} from "../components/Filters";
 import Separator from "../components/Separator";
 // import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
-import * as fsPromise from 'fs/promises';
+
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
@@ -41,14 +41,6 @@ const Cuisine = ({route}: Props) => {
         },).catch((error) => {
             console.log(error);
         });
-
-        //write the results in a file in the mock directory
-        // fsPromise.writeFile('../mock/recipesByCuisine.json', JSON.stringify(recipesC), 'utf8').then(() => {
-        //     console.log('File written');
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
-
 
     }
 
