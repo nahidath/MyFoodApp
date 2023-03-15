@@ -19,6 +19,8 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         padding: 10,
+        // borderBottomLeftRadius: 30,
+        // borderBottomRightRadius: 30
     },
     headerRecipeImageText: {
         fontSize: 30,
@@ -135,5 +137,10 @@ export default StyleSheet.create({
         fontSize: 15,
         marginBottom: 10,
         fontStyle: 'italic',
+    },
+    heartBtn: {
+        position: 'absolute',
+        top: 10,
+        left: 270,
     }
 });

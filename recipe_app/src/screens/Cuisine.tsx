@@ -14,8 +14,8 @@ import {HomeStackList} from "../types/types";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {FilterModal} from "../components/Filters";
 import Separator from "../components/Separator";
-// import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
-
+import {SkeletonView} from "../components/SkeletonLoader";
+import recipeCuisine from "../mock/recipesAsianCuisine.json";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
@@ -38,7 +38,10 @@ const Cuisine = ({route}: Props) => {
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP.toLowerCase()} }).then((response) => {
             setRecipesC(response.data.results);
             setLoading(false);
-        },).catch((error) => {
+        },  (error) => {
+                setRecipesC(recipeCuisine.results);
+                setLoading(false);
+            }).catch((error) => {
             console.log(error);
         });
 
@@ -71,6 +74,8 @@ const Cuisine = ({route}: Props) => {
             {/*    </View>*/}
             {/*): (*/}
             {/*    <>*/}
+            {loading ? <SkeletonView theme={theme} color={colors}/> : (
+                <>
                 <Modal
                     animationType={"slide"}
                     transparent={true}
@@ -115,8 +120,8 @@ const Cuisine = ({route}: Props) => {
                     )
                 })}
             </ScrollView>
-            {/*        </>*/}
-            {/*)}*/}
+                    </>
+            )}
         </View>
     )
 

@@ -1,120 +1,69 @@
-import { Skeleton } from 'moti/skeleton';
-import {FC} from "react";
-import {StyleSheet, View} from "react-native";
-import {MotiView} from "moti";
-
+import {FC, useEffect, useRef} from "react";
+import {Animated, StyleSheet, View} from "react-native";
 interface SkeletonLoaderProps {
     theme?: any;
     color?: any;
+    width?: number | string;
+    height?: number;
+    borderRadius?: number;
 }
 
-export  function SkeletonLoader ({theme, color}: SkeletonLoaderProps)  {
-    const colorMode = theme.dark ? 'dark' : 'light';
-    const Spacer = ({ height = 16 }) => <View style={{ height }} />;
+export  function SkeletonLoader ({theme, color, height, width, borderRadius}: SkeletonLoaderProps)  {
+    const colorSpec = theme.dark ? '#353535' : '#CCCCCC';
+    const opacity = useRef(new Animated.Value(0.3));
+
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(opacity.current, {
+                    toValue: 0.5,
+                    duration: 500,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(opacity.current, {
+                    toValue: 0.3,
+                    duration: 500,
+                    useNativeDriver: true,
+                }),
+            ]),
+        ).start();
+    }, []);
+
     return (
-        // <ContentLoader
-        //     speed={2}
-        //     backgroundColor={colorSpec}
-        //     foregroundColor="#fafafa"
-        //     style={{backgroundColor: color.background}}
-        // >
-        //     <Rect x="15" y="20" rx="20" ry="20" width="90%" height="200" />
-        //     <Rect x="20" y="240" rx="5" ry="5" width="90%" height="20" />
-        //     <Rect x="20" y="270" rx="5" ry="5" width="82%" height="20" />
-        //     <Rect x="120" y="300" rx="5" ry="5" width="118" height="15" />
-        //     <Rect x="20" y="330" rx="3" ry="3" width="87%" height="10" />
-        //     <Rect x="20" y="360" rx="3" ry="3" width="80%" height="10" />
-        //     <Rect x="20" y="390" rx="3" ry="3" width="77%" height="10" />
-        //     <Rect x="120" y="420" rx="5" ry="5" width="118" height="15" />
-        //     <Rect x="20" y="450" rx="3" ry="3" width="87%" height="10" />
-        //     <Rect x="20" y="480" rx="3" ry="3" width="80%" height="10" />
-        //     <Rect x="20" y="510" rx="3" ry="3" width="77%" height="10" />
-        //     <Rect x="120" y="540" rx="5" ry="5" width="118" height="15" />
-        //     <Rect x="20" y="570" rx="3" ry="3" width="87%" height="10" />
-        //     <Rect x="20" y="600" rx="3" ry="3" width="80%" height="10" />
-        //     <Rect x="20" y="630" rx="3" ry="3" width="77%" height="10" />
-        // </ContentLoader>
-
-
-        <MotiView
-            transition={{
-                type: 'timing',
-            }}
-            style={[styles.container, styles.padded]}
-            animate={{ backgroundColor: theme.dark ? '#121212' : '#FAF9F6' }}
-        >
-            <Skeleton colorMode={colorMode}  height={200} width={'90%'} radius={20} />
-            <Spacer />
-            <Skeleton colorMode={colorMode} width={250} height={20} />
-            <Spacer height={8} />
-            <Skeleton colorMode={colorMode} width={'100%'}  />
-            <Spacer height={8} />
-            <Skeleton colorMode={colorMode} width={'100%'}  />
-
-        </MotiView>
+        <Animated.View
+            style={[
+                styles.skeleton,
+                {
+                    backgroundColor: colorSpec,
+                    opacity: opacity.current,
+                    height, width, borderRadius
+                }
+            ]}
+        />
 
 
     )
 }
 
-export function SkeletonLoaderSearch ({theme, color}: SkeletonLoaderProps)  {
-    const colorMode = theme.dark ? 'dark' : 'light';
-    const Spacer = ({ height = 16 }) => <View style={{ height }} />;
-    return (
-        <MotiView
-            transition={{
-                type: 'timing',
-            }}
-            style={[styles.container, styles.padded]}
-            animate={{ backgroundColor: color.background }}
-        >
-            <Skeleton colorMode={colorMode}  height={200} width={'90%'} radius={20} />
-            <Spacer />
-            <Skeleton colorMode={colorMode} width={'85%'} height={20} />
-            <Spacer height={8} />
-            <Skeleton colorMode={colorMode} width={'85%'} height={20} />
-            <Spacer height={8} />
-            <Skeleton colorMode={colorMode} width={'85%'} height={15} />
 
-        </MotiView>
 
+export function SkeletonView ({theme, color}: SkeletonLoaderProps)  {
+    return(
+        <View style={[styles.container, {backgroundColor : color.background}]}>
+            <SkeletonLoader theme={theme} height={200} width={'100%'} borderRadius={20}/>
+            <SkeletonLoader theme={theme} height={20} width={'90%'} borderRadius={8}/>
+            <SkeletonLoader theme={theme} height={20} width={'80%'} borderRadius={8}/>
+        </View>
     )
 }
 
 export function SkeletonLoaderHomePage ({theme, color}: SkeletonLoaderProps)  {
-    const colorSpec = theme.dark ? '#353535' : '#ececec';
-    const colorMode = theme.dark ? 'dark' : 'light';
-    const Spacer = ({ height = 16 }) => <View style={{ height }} />;
 
     return (
-        // <ContentLoader
-        //     speed={2}
-        //     backgroundColor={colorSpec}
-        //     foregroundColor="#fafafa"
-        //     width={800}
-        //     height={400}
-        //     viewBox={"0 0 800 400"}
-        //     style={{marginBottom: -110, backgroundColor:color.background}}
-        // >
-        //     <Rect x="20" y="0" rx="10" ry="10" width="150" height="260" />
-        //     <Rect x="180" y="0" rx="10" ry="10" width="170" height="260" />
-        // </ContentLoader>
-        <MotiView
-            transition={{
-                type: 'timing',
-            }}
-            style={[styles.container, styles.padded]}
-            animate={{ backgroundColor: color.background }}
-        >
-            <Skeleton colorMode={colorMode}  height={200} width={'90%'} radius={20} />
-            <Spacer />
-            <Skeleton colorMode={colorMode} width={'85%'} height={20} />
-            <Spacer height={8} />
-            <Skeleton colorMode={colorMode} width={'85%'} height={20} />
-            <Spacer height={8} />
-            <Skeleton colorMode={colorMode} width={'85%'} height={15} />
-
-        </MotiView>
+        <View style={[styles.container2, {backgroundColor : color.background}]}>
+            <SkeletonLoader theme={theme} height={260} width={150} borderRadius={10}/>
+            <SkeletonLoader theme={theme} height={260} width={150} borderRadius={10}/>
+        </View>
 
     )
 }
@@ -122,10 +71,19 @@ export function SkeletonLoaderHomePage ({theme, color}: SkeletonLoaderProps)  {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         ...StyleSheet.absoluteFillObject,
-        // justifyContent: 'center',
+        paddingRight: 17,
     },
-    padded: {
-        padding: 20,
+    container2: {
+        flex: 1,
+        flexDirection: 'row',
+        width: 800,
+        height: 400,
     },
+
+    skeleton: {
+        width: '100%',
+        margin:8,
+    }
 });

@@ -14,8 +14,8 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {colors} from "react-native-elements";
 import recipeStyles from "../stylesheets/SpotlightRecipes_stylesheet";
-// import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
-
+import {SkeletonView} from "../components/SkeletonLoader";
+import spotlightRecipes from "../mock/spotlightRecipes.json";
 
 type Props = NativeStackScreenProps<HomeStackList, 'SpotlightRecipes'>;
 // @ts-ignore
@@ -43,7 +43,18 @@ const SpotlightRecipes = ({route}: Props) => {
             });
             setRecipesR(dataRecipesMerged);
             setLoading(false);
-        },).catch((error) => {
+        },
+        (error) => {
+            dataRecipesMerged = [...spotlightRecipes.recipes, ...recipeFromHP];
+            dataRecipesMerged = dataRecipesMerged.filter((item: any, index: any) => {
+                return dataRecipesMerged.indexOf(item) === index;
+            });
+            dataRecipesMerged.sort((a: any, b: any) => {
+                return b.aggregateLikes - a.aggregateLikes;
+            });
+            setRecipesR(dataRecipesMerged);
+            setLoading(false);
+        }).catch((error) => {
             console.log(error);
         });
 
@@ -73,7 +84,7 @@ const SpotlightRecipes = ({route}: Props) => {
             {/*        <SkeletonLoaderSearch theme={theme} color={colors} />*/}
             {/*    </View>*/}
             {/*)}*/}
-
+            {loading ? <SkeletonView theme={theme} color={colors}/> :
             <ScrollView>
                 {recipesR.map((recipe2: any) => {
                     return (
@@ -99,6 +110,7 @@ const SpotlightRecipes = ({route}: Props) => {
                     )
                 })}
             </ScrollView>
+            }
         </View>
     )
 

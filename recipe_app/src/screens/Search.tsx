@@ -28,6 +28,8 @@ import ingredientsList from "../data/ingredientsList";
 // import {SkeletonLoaderSearch} from "../components/SkeletonLoader";
 import {FilterModal} from "../components/Filters";
 import hairlineWidth = StyleSheet.hairlineWidth;
+import {SkeletonView} from "../components/SkeletonLoader";
+import searchRecipes from "../mock/searchResultsBeef.json";
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
@@ -61,7 +63,13 @@ const Search : FC = () => {
             if(response1.data.results.length == 0){
                 setNoResults('No results found');
             }
-        },).catch((error) => {
+        },
+        (error) => {
+            setResults(searchRecipes.results);
+            setNbResults(searchRecipes.totalResults);
+            setIsSearch(true);
+            setLoading(false);
+        }).catch((error) => {
             console.log(error);
         });
 
@@ -167,11 +175,9 @@ const Search : FC = () => {
                     />
                 </View>
             )}
-            {/*{loading && (*/}
-            {/*    <View style={styles.loading}>*/}
-            {/*        <SkeletonLoaderSearch theme={theme} color={colors}/>*/}
-            {/*    </View>*/}
-            {/*)}*/}
+            {loading && (
+                 <SkeletonView theme={theme} color={colors}/>
+            )}
 
             {isSearch && results.length > 0 ? (
                 <View style={styles.resultsContainer}>

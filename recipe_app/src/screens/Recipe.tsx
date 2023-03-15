@@ -7,12 +7,12 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Share,
+    Share, TouchableWithoutFeedback, Image,Animated
 } from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useRef, useState} from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Free from "react-native-vector-icons/FontAwesome";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
@@ -27,7 +27,10 @@ import Feather from "react-native-vector-icons/Feather";
 import {LinearGradient} from "expo-linear-gradient";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {SkeletonLoader} from "../components/SkeletonLoader";
+import {SkeletonLoader, SkeletonView} from "../components/SkeletonLoader";
+import StarIconLike from "../components/StarIconLike";
+//import recipe649503.json from mock directory
+import recipeMock from "../mock/recipe649503.json";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -43,9 +46,14 @@ const Recipe = ({route}: Props) => {
     const [labels, setLabels] = useState<string[]>([]);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [saved, setSaved] = useState<boolean>(false);
+    let lastTap : any = null;
     const {id} = route.params;
     const {name} = route.params;
-
+    const {colors} = useTheme();
+    const theme = useTheme();
+    const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
+    const [animated, setAnimated] = useState<boolean>(false);
     const getRecipe = () => {
         let dataInstruction : string | any[] = [];
         axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/information',{params:{apiKey: configValue} }).then((response) => {
@@ -55,8 +63,17 @@ const Recipe = ({route}: Props) => {
             setInstructions(dataInstruction[0]);
             setIsLoading(false);
             setIsLoaded(true);
-        },).catch((error) => {
+        }, (error) => {
+            setRecipe(recipeMock);
+            setIngredients(recipeMock.extendedIngredients.map((item: any) => item.original));
+            dataInstruction = recipeMock.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step))
+            setInstructions(dataInstruction[0]);
+            setIsLoading(false);
+            setIsLoaded(true);
+            }).catch((error) => {
             console.log(error);
+
+
         });
 
 
@@ -119,49 +136,52 @@ const Recipe = ({route}: Props) => {
         }
     }
 
-    const {colors} = useTheme();
-    const theme = useTheme();
+   const handleDoubleTap = () => {
+        const now = Date.now();
+        const DOUBLE_PRESS_DELAY = 300;
+        if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+            setSaved(true);
+            setAnimated(true);
+            setTimeout(() => {
+                setAnimated(false)
+            }, 500);
+        } else {
+            lastTap = now;
+        }
+   }
 
-    const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {isLoading ? <SkeletonLoader theme={theme} color={colors}/> :
+            {isLoading ? <SkeletonView theme={theme} color={colors}/> :
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
-                   {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
-                      <TouchableOpacity style={styles.shareBtn} onPress={() => onShare()}>
-                        <Feather  name="share-2" size={32} color={"#fefefe"}  />
-                      </TouchableOpacity>
-                       <View style={styles.headerRecipeLabel}>
-                            {labels.map((label, index) => (
-                                <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
-                            ))}
+                    <TouchableWithoutFeedback onPress={() => handleDoubleTap()}>
+                        {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}} /> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}/>}
+                    </TouchableWithoutFeedback>
+                    {animated && <StarIconLike  scale={2} />}
+                  <TouchableOpacity style={styles.shareBtn} onPress={() => onShare()}>
+                    <Feather  name="share-2" size={32} color={"#fefefe"}  />
+                  </TouchableOpacity>
+                    <TouchableOpacity style={styles.heartBtn} onPress={() => setSaved(!saved)}>
+                        {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
+                    </TouchableOpacity>
+                   <View style={styles.headerRecipeLabel}>
+                        {labels.map((label, index) => (
+                            <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
+                        ))}
+                   </View>
+                   <LinearGradient
+                       colors={['transparent','rgba(0,0,0,0.8)' ]}
+                       style={styles.blocRecipeGradient}
+                   >
+                       <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
+                       <View style={styles.recipeLikes}>
+                           <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
+                           <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
                        </View>
-                       <LinearGradient
-                           colors={['transparent','rgba(0,0,0,0.8)' ]}
-                           style={styles.blocRecipeGradient}
-                       >
-                           <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
-                           <View style={styles.recipeLikes}>
-                               <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
-                               <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
-                           </View>
-                       </LinearGradient>
-                     </ImageBackground>
-
-                       : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}>
-                           <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
-                           <View style={styles.headerRecipeLabel}>
-                               <Text style={styles.headerRecipeLabelText}>Label</Text>
-                           </View>
-                           <View style={styles.recipeLikes}>
-                               <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
-                               <FontAwesome name="heart" size={20} color="#9fc131" />
-                           </View>
-                          </ImageBackground>
-                       }
+                   </LinearGradient>
                 </View>
 
                 <View style={styles.recipeInfos}>
