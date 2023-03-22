@@ -33,6 +33,7 @@ import {auth} from "../firebase/config";
 import {SkeletonLoaderHomePage} from "../components/SkeletonLoader";
 import recipeRandom from "../mock/recipeRandom.json";
 import recipeTags from "../mock/recipePotatoTags.json";
+import CardRecipe from "../components/CardRecipe";
 
 
 // @ts-ignore
@@ -61,9 +62,8 @@ const Homepage :  FC = () => {
     const [newIngredient, setNewIngredient] = useState<string>(randomIngredients[Math.floor(Math.random() * randomIngredients.length)]);
     const [loading, setLoading] = useState<boolean>(false);
     const [saved, setSaved] = useState<boolean>(false);
-    let lastTap : any = null;
-    const [favRecipes, setFavRecipes] = useState<string[] | any []>([]);
-    const [recipeState, setRecipeState] = useState<boolean[]>([]);
+    const [favRecipes, setFavRecipes] = useState<any[]>([]);
+
 
 
 
@@ -193,16 +193,18 @@ const Homepage :  FC = () => {
     //     const index = newFavRecipes.indexOf(recipeIndx);
     //     if (index > -1) {
     //         newFavRecipes.splice(index, 1);
+    //         console.log("removed");
     //         setSaved(!saved);
+    //
     //     } else {
     //         newFavRecipes.push(recipeIndx);
-    //         setSaved(false);
+    //         console.log("added");
+    //         setSaved(!saved);
     //     }
-    //     setFavRecipes(newFavRecipes);
     //
-    //     const newRecipeState = [...recipeState];
-    //     newRecipeState[recipeIndx] = !newRecipeState[recipeIndx];
-    //     setRecipeState(newRecipeState);
+    //     setFavRecipes(newFavRecipes);
+    //     console.log(favRecipes);
+    //
     //
     //
     // }
@@ -227,7 +229,7 @@ const Homepage :  FC = () => {
                         <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                     </View>
-                    <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.navigate('ProfileStackScreen')}}>
+                    <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.push('LoginStackScreen') : navigation.push('ProfileStackScreen')}}>
                         <View style={styles.profile}>
 
                             {pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
@@ -235,7 +237,7 @@ const Homepage :  FC = () => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.navigate('SearchStackScreen')}>
+                <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.push('SearchStackScreen')}>
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
                     <Text style={[styles.searchText, {color: colors.text}]}>Search recipes</Text>
                 </Pressable>
@@ -251,34 +253,16 @@ const Homepage :  FC = () => {
                     <View>
                         <View style={styles.blocTitle}>
                             <Text style={[styles.recipe1Title, {color: colors.text}]}>Spotlight Recipes</Text>
-                            <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.navigate('SpotlightRecipes', {recipesArray: recipes})}>
+                            <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.push('SpotlightRecipes', {recipesArray: recipes})}>
                                 <Feather name={'arrow-right'} size={24} color={colors.text} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.blocDisplay}>
                             {loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                    {recipes.map((recipe: any) => {
+                                    {recipes.map((recipe: any, index: number) => {
                                         return (
-                                            <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Recipe', {id :recipe.id, name: recipe.title})}>
-                                                    {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
-                                                        <LinearGradient
-                                                            colors={['transparent','rgba(0,0,0,0.8)' ]}
-                                                            style={styles.blocRecipeGradient}
-                                                        >
-                                                        <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
-                                                        </LinearGradient>
-                                                        <View style={styles.blocRecipeLabel}>
-                                                            {recipe.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
-                                                            {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
-                                                        </View>
-                                                        <TouchableOpacity key={recipe.id} style={styles.blocRecipeLike}
-                                                                          // onPress={() => handleFavorite(recipe.id)}
-                                                        >
-                                                            {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
-                                                        </TouchableOpacity>
-                                                    {/*</ImageBackground>*/}
-                                            </TouchableOpacity>
+                                            <CardRecipe key={index} recipe={recipe} navigation={navigation} />
                                         )
                                     })}
                                 </ScrollView>
@@ -288,34 +272,13 @@ const Homepage :  FC = () => {
                     <View>
                         <View style={styles.blocTitle}>
                             <Text style={[styles.recipe1Title, {color: colors.text}]}>Today's ingredient : {'\n'}{newIngredient.charAt(0).toUpperCase() + newIngredient.slice(1)}</Text>
-                            {/*<TouchableOpacity style={styles.recipe1Button} >*/}
-                            {/*    <Feather name={'arrow-right'} size={24} color={'#041721'} />*/}
-                            {/*</TouchableOpacity>*/}
                         </View>
                         <View style={styles.blocDisplay}>
                             {loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                    {recipes2.map((recipe2: any) => {
+                                    {recipes2.map((recipe2: any, index: number) => {
                                         return (
-                                            <TouchableOpacity key={recipe2.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Recipe', {id :recipe2.id, name: recipe2.title})}>
-                                                {recipe2.image ? <ImageBackground source={{uri: recipe2.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}} />}
-                                                <LinearGradient
-                                                    colors={['transparent','rgba(0,0,0,0.8)' ]}
-                                                    style={styles.blocRecipeGradient}
-                                                >
-                                                    <Text style={styles.blocRecipeImageText}>{recipe2.title}</Text>
-                                                </LinearGradient>
-                                                <View style={styles.blocRecipeLabel}>
-                                                    {recipe2.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
-                                                    {recipe2.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
-                                                </View>
-                                                <TouchableOpacity key={recipe2.id} style={styles.blocRecipeLike}
-                                                                  // onPress={() => handleFavorite(recipe2.id)}
-                                                >
-                                                    {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
-                                                </TouchableOpacity>
-                                                {/*</ImageBackground>*/}
-                                            </TouchableOpacity>
+                                            <CardRecipe key={index} recipe={recipe2} navigation={navigation} />
                                         )
                                     })}
                                 </ScrollView>
@@ -328,7 +291,7 @@ const Homepage :  FC = () => {
                         <View style={styles.cuisineBloc}>
                             {cuisinesList.map((cuisine: any) => {
                                 return (
-                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.navigate('Cuisine', {cuisine: cuisine.name})}>
+                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name})}>
                                         <LinearGradient
                                             colors={['rgba(0,0,0,0.8)','transparent' ]}
                                             style={styles.cuisineGradient}
