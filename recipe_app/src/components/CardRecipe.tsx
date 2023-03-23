@@ -31,6 +31,7 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
 
         //add recipeIndx to favorites array when star icon is pressed and remove it when pressed again and update the saved state
         const newFavRecipes = [...favRecipes];
+        // console.log("before fav", newFavRecipes);
         const index = newFavRecipes.indexOf(recipeIndx);
         if (index > -1) {
             newFavRecipes.splice(index, 1);
@@ -42,11 +43,13 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
             console.log("added");
             setSaved(!saved);
         }
+        console.log(newFavRecipes);
 
         setFavRecipes(newFavRecipes);
 
     }
-    console.log(favRecipes);
+    // console.log("after", favRecipes);
+    // console.log("length", favRecipes.length);
 
    return (
        <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})}>
