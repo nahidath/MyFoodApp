@@ -5,6 +5,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import React, {useState} from "react";
 import {useTheme} from "@react-navigation/native";
+import {auth} from "../firebase/config";
 
 
 interface CardRecipeProps {
@@ -18,8 +19,35 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
     const theme = useTheme();
     const [saved, setSaved] = useState<boolean>(false);
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
+    const user = auth.currentUser;
 
     const handleFavorite = (recipeIndx : any) => {
+        //alert to say that user should be logged in to save a recipe
+        if (!auth.currentUser) {
+            alert("You need to be logged in to save a recipe");
+            return;
+        }else{
+            //add recipeIndx to favorites array when star icon is pressed and remove it when pressed again and update the saved state
+            const newFavRecipes = [...favRecipes];
+            // console.log("before fav", newFavRecipes);
+            const index = newFavRecipes.indexOf(recipeIndx);
+            if (index > -1) {
+                // newFavRecipes.splice(index, 1);
+                const newArray = newFavRecipes.filter((item) => item !== recipeIndx);
+                setFavRecipes(newArray);
+                console.log("removed");
+                setSaved(!saved);
+
+            } else {
+                // newFavRecipes.push(recipeIndx);
+                setFavRecipes([...favRecipes, recipeIndx]);
+                console.log("added");
+                setSaved(!saved);
+            }
+        }
+
+
+
         // const db = firebase.firestore();
         // const user = auth.currentUser;
         // const uid = user?.uid;
@@ -30,22 +58,26 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
         // })
 
         //add recipeIndx to favorites array when star icon is pressed and remove it when pressed again and update the saved state
-        const newFavRecipes = [...favRecipes];
-        // console.log("before fav", newFavRecipes);
-        const index = newFavRecipes.indexOf(recipeIndx);
-        if (index > -1) {
-            newFavRecipes.splice(index, 1);
-            console.log("removed");
-            setSaved(!saved);
+        // const newFavRecipes = [...favRecipes];
+        // // console.log("before fav", newFavRecipes);
+        // const index = newFavRecipes.indexOf(recipeIndx);
+        // if (index > -1) {
+        //     // newFavRecipes.splice(index, 1);
+        //     const newArray = newFavRecipes.filter((item) => item !== recipeIndx);
+        //     setFavRecipes(newArray);
+        //     console.log("removed");
+        //     setSaved(!saved);
+        //
+        // } else {
+        //     // newFavRecipes.push(recipeIndx);
+        //     setFavRecipes([...favRecipes, recipeIndx]);
+        //     console.log("added");
+        //     setSaved(!saved);
+        // }
+        // console.log(newFavRecipes);
 
-        } else {
-            newFavRecipes.push(recipeIndx);
-            console.log("added");
-            setSaved(!saved);
-        }
-        console.log(newFavRecipes);
-
-        setFavRecipes(newFavRecipes);
+        // setFavRecipes(newFavRecipes);
+        // console.log("favRecipes", favRecipes);
 
     }
     // console.log("after", favRecipes);

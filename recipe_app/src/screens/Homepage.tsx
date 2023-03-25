@@ -130,7 +130,6 @@ const Homepage :  FC = () => {
                 randomIngredients.splice(randomIngredients.indexOf(newIngredient), 1);
                 ing=randomIngredients[Math.floor(Math.random() * randomIngredients.length)]
                 getRecipesByTags(ing);
-                console.log("empty array");
                 // setNewIngredient(randomIngredients[Math.floor(Math.random() * randomIngredients.length)]);
             }
             setNewIngredient(ing);

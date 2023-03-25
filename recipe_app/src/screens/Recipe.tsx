@@ -7,7 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Share, TouchableWithoutFeedback, Image,Animated
+    Share, TouchableWithoutFeedback, Image, Animated, Alert
 } from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -31,6 +31,7 @@ import {SkeletonLoader, SkeletonView} from "../components/SkeletonLoader";
 import StarIconLike from "../components/StarIconLike";
 //import recipe649503.json from mock directory
 import recipeMock from "../mock/recipe649503.json";
+import {auth, database} from "../firebase/config";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -149,6 +150,35 @@ const Recipe = ({route}: Props) => {
             lastTap = now;
         }
    }
+
+
+    const deleteRecipe = () => {
+        setSaved(false);
+    }
+   const confirmDelete = () => {
+        Alert.alert(
+            'Delete Recipe',
+            'Are you sure you want to delete this recipe?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'OK', onPress: () => deleteRecipe()},
+            ],
+            {cancelable: false},
+        );
+   }
+
+//save recipe into firebase database
+    const saveRecipe = () => {
+        const db = database;
+        const user = auth.currentUser;
+        const uid = user?.uid;
+        const recipeRef = db.ref('users/' + uid + '/recipes/' + recipe.id);
+
+    }
 
 
     return (
