@@ -125,7 +125,7 @@ const Profile : FC = () => {
             <Separator />
             <ScrollView>
                 <View style={styles.profileInfoContainer}>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('EditProfile')}>
+                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>
                         <Feather name={"edit-3"} size={24} color={colors.text} />
                         <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
                     </TouchableOpacity>
@@ -133,7 +133,7 @@ const Profile : FC = () => {
                     {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
                     {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
                     {/*</TouchableOpacity>*/}
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
+                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('FavoritesRecipesUser')}>
                         <FontAwesome name={"heart"} size={24} color={colors.text} />
                         <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>
                     </TouchableOpacity>

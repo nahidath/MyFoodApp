@@ -31,7 +31,9 @@ import {SkeletonLoader, SkeletonView} from "../components/SkeletonLoader";
 import StarIconLike from "../components/StarIconLike";
 //import recipe649503.json from mock directory
 import recipeMock from "../mock/recipe649503.json";
-import {auth, database} from "../firebase/config";
+import app, {auth, database} from "../firebase/config";
+import { ref, set, remove, child } from "firebase/database";
+
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -141,7 +143,13 @@ const Recipe = ({route}: Props) => {
         const now = Date.now();
         const DOUBLE_PRESS_DELAY = 300;
         if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+            if(!auth.currentUser) {
+                Alert.alert('Warning',
+                    'You need to be logged in to save a recipe');
+                return;
+            }
             setSaved(true);
+            saveRecipe();
             setAnimated(true);
             setTimeout(() => {
                 setAnimated(false)
@@ -151,33 +159,69 @@ const Recipe = ({route}: Props) => {
         }
    }
 
-
-    const deleteRecipe = () => {
-        setSaved(false);
-    }
-   const confirmDelete = () => {
+    const confirmDelete = () => {
         Alert.alert(
-            'Delete Recipe',
+            'Confirmation',
             'Are you sure you want to delete this recipe?',
             [
                 {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
+                    text: 'No',
+                    onPress: () => console.log('No Pressed'),
                     style: 'cancel',
                 },
-                {text: 'OK', onPress: () => deleteRecipe()},
+                {text: 'Yes', onPress: () => deleteRecipe()},
             ],
             {cancelable: false},
         );
-   }
+    }
+
+
+    const deleteRecipe = () => {
+        setSaved(false);
+        const db = ref(database);
+        const user = auth.currentUser;
+        const userId = user?.uid;
+        const recipeId = recipe.id;
+        const recipeRef = child(db, `users/${userId}/recipes/${recipeId}`);
+        remove(recipeRef).then(() => {
+            console.log('Recipe deleted successfully');
+        }).catch((error: any) => {
+            console.log(error);
+        });
+    }
 
 //save recipe into firebase database
     const saveRecipe = () => {
-        const db = database;
+        const db = ref(database);
         const user = auth.currentUser;
-        const uid = user?.uid;
-        const recipeRef = db.ref('users/' + uid + '/recipes/' + recipe.id);
+        const userID = user?.uid;
+        const recipeID = recipe.id;
+        const recipeData = {
+            recipeID: recipeID,
+            userID: userID,
+        };
+        set(child(db, `users/${userID}/recipes/${recipeID}`), true).then(r => {
+            console.log('Recipe saved successfully');
 
+        });
+
+    }
+
+    const handleSave = () => {
+        if(!auth.currentUser) {
+            Alert.alert('Warning','You need to be logged in to save a recipe');
+            return;
+        }
+        if(saved) {
+            confirmDelete();
+        } else {
+            setSaved(true);
+            saveRecipe();
+            setAnimated(true);
+            setTimeout(() => {
+                setAnimated(false)
+            }, 500);
+        }
     }
 
 
@@ -194,7 +238,7 @@ const Recipe = ({route}: Props) => {
                   <TouchableOpacity style={styles.shareBtn} onPress={() => onShare()}>
                     <Feather  name="share-2" size={32} color={"#fefefe"}  />
                   </TouchableOpacity>
-                    <TouchableOpacity style={styles.heartBtn} onPress={() => setSaved(!saved)}>
+                    <TouchableOpacity style={styles.heartBtn} onPress={() => handleSave()}>
                         {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
                     </TouchableOpacity>
                    <View style={styles.headerRecipeLabel}>

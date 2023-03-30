@@ -248,6 +248,9 @@ export function ProfileStackScreen () {
             <ProfilStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false,
             }}/>
+            <ProfilStack.Screen name="FavoritesRecipesUser" component={FavoriteStackScreen}  options={{
+                headerShown: false,
+            }} />
         </ProfilStack.Navigator>
     )
 }
@@ -259,11 +262,18 @@ export function FavoriteStackScreen () {
     return (
         <FavoriteStack.Navigator >
             <FavoriteStack.Screen name="Favs" component={Favorites} options={{
-                headerShown: false,
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                headerTitle: 'Favorites',
             }} />
-            <FavoriteStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
-                headerShown: false,
-            }}/>
+            {/*<FavoriteStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}}/>*/}
             <FavoriteStack.Screen name="Recipe" component={Recipe}  options={{
                 headerStyle: {
                     backgroundColor: colors.notification,
