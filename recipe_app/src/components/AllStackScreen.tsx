@@ -120,6 +120,9 @@ export function LoginStackScreen () {
             <LoginStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
                 headerShown: false,
             }} />
+            <LoginStack.Screen name={'HomeStackScreen'} component={HomeStackScreen} options={{
+                headerShown: false,
+            }} />
         </LoginStack.Navigator>
     )
 }
@@ -249,6 +252,9 @@ export function ProfileStackScreen () {
                 headerShown: false,
             }}/>
             <ProfilStack.Screen name="FavoritesRecipesUser" component={FavoriteStackScreen}  options={{
+                headerShown: false,
+            }} />
+            <ProfilStack.Screen name="HomeStackScreen" component={HomeStackScreen} options={{
                 headerShown: false,
             }} />
         </ProfilStack.Navigator>

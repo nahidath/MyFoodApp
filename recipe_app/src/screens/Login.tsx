@@ -97,7 +97,7 @@ export default function Login () {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
-            navigation.push('HomePage');
+            navigation.push('HomeStackScreen');
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {

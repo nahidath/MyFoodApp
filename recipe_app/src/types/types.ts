@@ -1,5 +1,6 @@
 import Register from "../screens/Register";
 import EditProfile from "../screens/EditProfile";
+import {HomeStackScreen} from "../components/AllStackScreen";
 
 export type HomeStackList = {
     HomePage: undefined;
@@ -36,6 +37,7 @@ export type LoginStackList = {
     Register: undefined;
     ResetPassword: undefined;
     ProfileStackScreen: undefined;
+    HomeStackScreen: undefined;
 }
 
 export type ProfileStackList = {
@@ -43,6 +45,8 @@ export type ProfileStackList = {
     EditProfile: undefined;
     FavoritesRecipesUser: undefined;
     LoginStackScreen: undefined;
+    HomeStackScreen: undefined;
+
 }
 
 export type FavoritesStackList = {

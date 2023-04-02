@@ -37,7 +37,7 @@ const BottomNavigation : FC = () => {
 
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="HomeStackScreen"
                 screenOptions= {{
                     headerStyle: {
                         backgroundColor: colors.notification,
@@ -64,8 +64,9 @@ const BottomNavigation : FC = () => {
                     },
             }}
         >
-            <Tab.Screen name="Home" component={HomeStackScreen} options={{
+            <Tab.Screen name="HomeStackScreen" component={HomeStackScreen} options={{
                 headerShown: false,
+                tabBarLabel: 'Home',
                 tabBarIcon: ({color}) => (
                     <Feather name={"home"} size={24} color={color} />
                 ),
@@ -90,8 +91,9 @@ const BottomNavigation : FC = () => {
             }
             } />
 
-            <Tab.Screen name="Profile" component={ProfileStackScreen} options={{
+            <Tab.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
                 headerShown: false,
+                tabBarLabel: 'Profile',
                 tabBarIcon: ({color}) => (
                     <Feather name={"user"} size={24} color={color} />
                 ),}

@@ -20,9 +20,13 @@ export default StyleSheet.create({
 
     },
     restricted: {
+        flex : 1,
+        flexDirection: 'column',
         backgroundColor: '#E19271',
         margin: 10,
         height: 84,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     restrictedText: {
         fontSize: 20,
@@ -42,6 +46,10 @@ export default StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 18,
+    },
+    favList: {
+        flexDirection: 'column',
+        padding: 20,
     }
 
 

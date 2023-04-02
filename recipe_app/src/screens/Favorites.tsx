@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {View, Text, TouchableOpacity, FlatList} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Notifications_stylesheet";
@@ -10,6 +10,10 @@ import {FavoritesStackList} from "../types/types";
 import Recipe from "./Recipe";
 import {child, ref, onValue} from "firebase/database";
 import axios from "axios";
+// @ts-ignore
+import {REACT_APP_API_KEY} from "@env";
+import CardRecipe from "../components/CardRecipe";
+
 
 // @ts-ignore
 type FavoriteProps = MyStackNavigationProp<FavoritesStackList, 'Favs'>;
@@ -21,32 +25,47 @@ const Favorites : FC = () => {
     // console.log(user);
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const navigation = useNavigation<FavoriteProps>();
-    const [favRecipes, setFavRecipes] = useState<string[]>([]);
+    const [favRecipes, setFavRecipes] = useState<any[]>([]);
+    const configValue : string | undefined = REACT_APP_API_KEY;
+
 
     const getFavRecipeUser = () => {
         const userID = user?.uid;
         const recipesRef = ref(database, `users/${userID}/recipes`);
+        let favRecipes : string[] = [];
 
         onValue(recipesRef, snapshot => {
             const recipes = snapshot.val(); // this will give you an object with all recipes for the user
-            setFavRecipes(recipes);
-            console.log(recipes);
+            for (const [key, value] of Object.entries(recipes)) {
+                if (typeof value === "string") {
+                    favRecipes.push(value);
+                }
+            }
+        });
+        axios.get('https://api.spoonacular.com/recipes/informationBulk', {params: {apiKey: configValue, ids: favRecipes.toString()} }).then((response) => {
+            setFavRecipes(response.data);
+        }).catch((error) => {
+            console.log(error);
         });
     }
 
-    const getFavRecipes = () => {
-        axios.get('https://api.spoonacular.com/recipes/informationBulk', {params: {
-                ids: favRecipes,
-            }
-        })
-    }
+
+    useEffect(() => {
+        getFavRecipeUser();
+    }, []);
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <Text>Favorites</Text>
             <View style={styles.favList}>
-                <FlatList data={} renderItem={}
+                {favRecipes.length === 0 ? <Text style={{color: colors.text, flex: 1, flexDirection: 'column'}}>You have no saved recipes</Text> :
+                <FlatList
+                    data={favRecipes}
+                    renderItem={({item}) => <CardRecipe recipe={item} navigation={navigation} />}
+                    keyExtractor={item => item.id}
+                    numColumns={2}
+                />
+                }
             </View>
         </View>
     );

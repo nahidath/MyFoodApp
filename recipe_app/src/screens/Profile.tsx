@@ -11,6 +11,7 @@ import {useFocusEffect, useNavigation, useTheme} from "@react-navigation/native"
 import {auth} from "../firebase/config";
 import {LoginStackList, ProfileStackList} from "../types/types";
 import {deleteUser, signOut} from "firebase/auth";
+import notifstyles from "../stylesheets/Notifications_stylesheet";
 // @ts-ignore
 import * as ImagePicker from 'expo-image-picker';
 import profile from "../stylesheets/Profile_stylesheet";
@@ -32,6 +33,8 @@ const Profile : FC = () => {
     const userPic = user == null ? "" : user.photoURL;
     const [image, setImage] = useState<string | null>(null);
     const [newName, setNewName] = useState<string | null>(null);
+    const colorSpec = theme.dark ? '#252525' : '#041721';
+
 
 
     useFocusEffect(
@@ -64,7 +67,7 @@ const Profile : FC = () => {
 
         signOut(auth).then(() => {
             console.log('User signed out!');
-            navigation.navigate('Login', {screen: 'Login'});
+            navigation.navigate('HomeStackScreen');
         }).catch((e) => {
             console.log(e);
         });
@@ -94,7 +97,7 @@ const Profile : FC = () => {
                     [
                         {
                             text: "Go back to login",
-                            onPress: () => navigation.navigate('Login', {screen: 'Login'})
+                            onPress: () => navigation.push('LoginStackScreen')
                         }
                     ]
                 );
@@ -118,37 +121,46 @@ const Profile : FC = () => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <View style={styles.profilePicContainer}>
-                {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
-                <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>
-            </View>
-            <Separator />
-            <ScrollView>
-                <View style={styles.profileInfoContainer}>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>
-                        <Feather name={"edit-3"} size={24} color={colors.text} />
-                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
+            {user == null ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
+                    <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
+                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.push('LoginStackScreen')}>
+                        <Text style={notifstyles.buttonText}>Login</Text>
                     </TouchableOpacity>
-                    {/*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*/}
-                    {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
-                    {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
-                    {/*</TouchableOpacity>*/}
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('FavoritesRecipesUser')}>
-                        <FontAwesome name={"heart"} size={24} color={colors.text} />
-                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={confirmation}>
-                        <Feather name={"trash-2"} size={24} color={colors.text} />
-                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Delete account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                    onPress={logOut}
-                    >
-                        <Feather name={"log-out"} size={24} color={colors.text} />
-                        <Text style={[styles.btnStyleText, {color:colors.text}]}>Log Out</Text>
-                    </TouchableOpacity>
+                </View> :
+                <>
+                <View style={styles.profilePicContainer}>
+                    {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                    <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>
                 </View>
-            </ScrollView>
+                <Separator />
+                <ScrollView>
+                    <View style={styles.profileInfoContainer}>
+                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>
+                            <Feather name={"edit-3"} size={24} color={colors.text} />
+                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
+                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*/}
+                        {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
+                        {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
+                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('FavoritesRecipesUser')}>
+                            <FontAwesome name={"heart"} size={24} color={colors.text} />
+                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={confirmation}>
+                            <Feather name={"trash-2"} size={24} color={colors.text} />
+                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Delete account</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                        onPress={logOut}
+                        >
+                            <Feather name={"log-out"} size={24} color={colors.text} />
+                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Log Out</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+                </>
+            }
         </View>
     );
 }
