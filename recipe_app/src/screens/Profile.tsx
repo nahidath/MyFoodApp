@@ -67,7 +67,7 @@ const Profile : FC = () => {
 
         signOut(auth).then(() => {
             console.log('User signed out!');
-            navigation.navigate('HomeStackScreen');
+            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         }).catch((e) => {
             console.log(e);
         });
