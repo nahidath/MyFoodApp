@@ -71,16 +71,16 @@ const BottomNavigation : FC = () => {
                     <Feather name={"home"} size={24} color={color} />
                 ),
             }} />
-            {/*<Tab.Screen name="Favorites" component={FavoriteStackScreen} options={{*/}
-            {/*    tabBarIcon: ({color}) => (*/}
-            {/*        <Feather name={"heart"} size={24} color={color} />*/}
-            {/*    ),}*/}
-            {/*} />*/}
-            <Tab.Screen name="Notifications" component={NotificationsStackScreen} options={{
+            <Tab.Screen name="Favorites" component={FavoriteStackScreen} options={{
                 tabBarIcon: ({color}) => (
-                    <Feather name={"bell"} size={24} color={color} />
+                    <Feather name={"heart"} size={24} color={color} />
                 ),}
-            }/>
+            } />
+            {/*<Tab.Screen name="Notifications" component={NotificationsStackScreen} options={{*/}
+            {/*    tabBarIcon: ({color}) => (*/}
+            {/*        <Feather name={"bell"} size={24} color={color} />*/}
+            {/*    ),}*/}
+            {/*}/>*/}
             <Tab.Screen name="Search" component={SearchStackScreen} options={{
                 headerShown: false,
                 tabBarLabel:'',

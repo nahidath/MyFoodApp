@@ -223,19 +223,24 @@ const Homepage :  FC = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                <View style={styles.headerBloc}>
-                    <View style={styles.headerBlocText}>
-                        <Text style={[styles.headerText, {color: colors.text}]}>Welcome !</Text>
-                        {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
-                    </View>
-                    <TouchableOpacity style={styles.headerNotification}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'})}}>
-                        <View style={styles.profile}>
+                {/*<View style={styles.headerBloc}>*/}
+                    <View style={styles.headerBloc}>
+                        <TouchableOpacity style={styles.headerProfile}  onPress={() => {user == null ? navigation.navigate('LoginStackScreen') : navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'})}}>
+                            <View style={styles.profile}>
 
-                            {pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
-                            {/*<Feather name={"user"} size={24} color={colors.text} />*/}
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                                {pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
+                                {/*<Feather name={"user"} size={24} color={colors.text} />*/}
+                            </View>
+                        </TouchableOpacity>
+                        <Text style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Welcome !' : 'Welcome, ' + user.displayName + ' !'}</Text>
+                        {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
+                        <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotifScreen') }>
+                            <Feather name={"bell"} size={24} color={colors.text} />
+                        </TouchableOpacity>
+                    </View>
+
+
+                {/*</View>*/}
                 <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.push('SearchStackScreen')}>
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
                     <Text style={[styles.searchText, {color: colors.text}]}>Search recipes</Text>

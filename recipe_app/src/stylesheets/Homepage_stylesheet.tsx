@@ -8,14 +8,17 @@ export default StyleSheet.create({
     },
     headerBloc: {
         width: '100%',
-        padding : 0,
+        padding : 15,
+        paddingTop: 20,
+        flexDirection: 'row',
 
     },
     headerText: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
-        padding: 20,
+        padding: 10,
         paddingTop: 10,
+        flex: 1,
     },
     subHeaderText: {
         fontSize: 20,
@@ -25,14 +28,17 @@ export default StyleSheet.create({
     },
     headerBlocText:{
         top: 20,
+        flexDirection: 'row',
 
     },
     headerNotification: {
-        top: -40,
-        right: 20,
-        flexDirection: 'row',
+        // top: 0,
+        // right: 20,
+        padding: 15,
+        paddingRight: 0,
+        // flexDirection: 'row',
         alignItems: 'flex-end',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
     },
     recipesDisplay: {
        top: -30,
@@ -205,6 +211,14 @@ export default StyleSheet.create({
         padding: 15,
         fontSize: 15,
         color: '#fefefe',
+    },
+    headerProfile: {
+        // flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        padding: 5,
+        paddingLeft: 0,
+
     }
 
 

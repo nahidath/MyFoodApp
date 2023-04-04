@@ -79,6 +79,16 @@ export function HomeStackScreen () {
                     fontWeight: 'bold',
                 },
             }} />
+            <HomeStack.Screen name="NotifScreen" component={NotificationsStackScreen} options={{
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTitle: 'Notifications',
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }} />
         </HomeStack.Navigator>
     )
 }

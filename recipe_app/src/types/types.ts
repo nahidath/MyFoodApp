@@ -1,6 +1,6 @@
 import Register from "../screens/Register";
 import EditProfile from "../screens/EditProfile";
-import {HomeStackScreen} from "../components/AllStackScreen";
+import {HomeStackScreen, NotificationsStackScreen} from "../components/AllStackScreen";
 
 export type HomeStackList = {
     HomePage: undefined;
@@ -19,6 +19,7 @@ export type HomeStackList = {
         cuisine: string;
     }
     SearchStackScreen: undefined;
+    NotifScreen: undefined;
 }
 
 export type MoreStackList = {
