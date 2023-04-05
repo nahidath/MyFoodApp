@@ -57,7 +57,13 @@ const Favorites : FC = () => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <View style={styles.favList}>
+            {user == null ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
+                    <Text style={[styles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
+                    <TouchableOpacity style={[styles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('Login')}>
+                        <Text style={styles.buttonText}>Login</Text>
+                    </TouchableOpacity>
+                </View> :
+                <View style={styles.favList}>
                 {favRecipes.length === 0 ? <Text style={{color: colors.text, flex: 1, flexDirection: 'column'}}>You have no saved recipes</Text> :
                 <FlatList
                     data={favRecipes}
@@ -67,6 +73,7 @@ const Favorites : FC = () => {
                 />
                 }
             </View>
+            }
         </View>
     );
 }

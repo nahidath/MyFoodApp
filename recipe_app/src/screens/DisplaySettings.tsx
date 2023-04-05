@@ -6,6 +6,9 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import {ThemeContext} from "../../App";
 import {useTheme} from "@react-navigation/native";
 
+interface DisplaySettingsProps {
+    themeContext: any;
+}
 
 const DisplaySettings = () => {
 

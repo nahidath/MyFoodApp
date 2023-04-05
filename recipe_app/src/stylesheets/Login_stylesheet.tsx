@@ -104,6 +104,14 @@ export default StyleSheet.create({
         right: 20,
         padding: 10,
         // top: 100,
+    },
+    activityIndicator: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 100,
+        elevation: 1000,
+        backgroundColor: '#FAF9F6',
     }
 
 

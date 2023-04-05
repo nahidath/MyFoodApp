@@ -31,12 +31,6 @@ const Notifications : FC = () => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {user == null ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
-                <Text style={[styles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
-                <TouchableOpacity style={[styles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-            </View> :
             <ScrollView>
             <View style={styles.notificationContainer}>
                 <View style={[styles.notification, general.shadow, {backgroundColor: colors.notification}]}>
@@ -44,7 +38,7 @@ const Notifications : FC = () => {
                 </View>
             </View>
         </ScrollView>
-            }
+
         {/*{notifications.map((notification) => (*/}
         {/*    <Text key={notification.id}>{notification.message}</Text>*/}
         {/*))}*/}

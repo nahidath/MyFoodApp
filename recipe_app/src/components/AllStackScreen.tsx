@@ -278,14 +278,15 @@ export function FavoriteStackScreen () {
     return (
         <FavoriteStack.Navigator >
             <FavoriteStack.Screen name="Favs" component={Favorites} options={{
-                headerStyle: {
-                    backgroundColor: colors.notification,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-                headerTitle: 'Favorites',
+                // headerStyle: {
+                //     backgroundColor: colors.notification,
+                // },
+                // headerTintColor: colors.text,
+                // headerTitleStyle: {
+                //     fontWeight: 'bold',
+                // },
+                // headerTitle: 'Favorites',
+                headerShown: false,
             }} />
             {/*<FavoriteStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{*/}
             {/*    headerShown: false,*/}

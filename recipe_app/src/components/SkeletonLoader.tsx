@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: 800,
-        height: 300,
+        height: 260,
     },
 
     skeleton: {

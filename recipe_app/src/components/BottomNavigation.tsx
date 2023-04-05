@@ -51,7 +51,7 @@ const BottomNavigation : FC = () => {
                     tabBarShowLabel: true,
                     tabBarStyle: {
                         backgroundColor: colors.primary,
-                        height: 60,
+                        height: 56,
                         justifyContent: 'center',
                         alignItems: 'center',
                         zIndex: 0,
@@ -85,7 +85,7 @@ const BottomNavigation : FC = () => {
                 headerShown: false,
                 tabBarLabel:'',
                 tabBarIcon: () => (
-                    <FontAwesome name={"search"} size={40} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor}}/>
+                    <FontAwesome name={"search"} size={30} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor, ...styles.shadow}}/>
 
                 ),
             }
@@ -122,12 +122,16 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     roundTabButton: {
-        borderRadius: 30,
+        borderRadius: 60,
         padding: 5,
-        height: 55,
-        width: 55,
+        height: 72,
+        width: 72,
         // backgroundColor: 'white',
         textAlign: 'center',
+        textAlignVertical: 'center',
+        bottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: '#9fc131',
         borderWidth: hairlineWidth,
 

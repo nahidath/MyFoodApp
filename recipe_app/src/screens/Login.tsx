@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Link, NavigationContainer, useNavigation, useTheme} from "@react-navigation/native";
-import {Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Link, NavigationContainer, useNavigation, useRoute, useTheme} from "@react-navigation/native";
+import {ActivityIndicator, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -83,6 +83,16 @@ export default function Login () {
     const theme = useTheme();
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [isVisible, setIsVisible] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [previousRoute, setPreviousRoute] = useState<string | null>(null);
+
+    useEffect(() => {
+        const removeListener = navigation.addListener('state', (event: { data: { state: { routes: { name: any; }[]; index: number; }; }; }) => {
+            const previousRouteName = event.data.state.routes[event.data.state.index - 1]?.name;
+            setPreviousRoute(previousRouteName);
+        });
+        return removeListener;
+    }, [navigation]);
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -97,7 +107,16 @@ export default function Login () {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
-            navigation.push('HomeStackScreen');
+            setLoading(true);
+            //go to favorites
+            // if (previousRoute === 'Favs') {
+            //     navigation.navigate('Favorites', {screen: 'FavoriteStackScreen/Favs'});
+            // } else if(previousRoute === 'ProfilePage') {
+            //     navigation.navigate('Profile', {screen: 'ProfileStackScreen/Profile'});
+            // } else {
+            //     navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+            // }
+            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
@@ -120,6 +139,7 @@ export default function Login () {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            {loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}
             <ScrollView keyboardShouldPersistTaps='always'>
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
