@@ -59,7 +59,7 @@ const Favorites : FC = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {user == null ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[styles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
-                    <TouchableOpacity style={[styles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('Login')}>
+                    <TouchableOpacity style={[styles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.push('LoginStackScreen')}>
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View> :

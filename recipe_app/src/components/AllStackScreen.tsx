@@ -267,6 +267,9 @@ export function ProfileStackScreen () {
             <ProfilStack.Screen name="HomeStackScreen" component={HomeStackScreen} options={{
                 headerShown: false,
             }} />
+            {/*<ProfilStack.Screen name="LoginPage" component={Login} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}} />*/}
         </ProfilStack.Navigator>
     )
 }

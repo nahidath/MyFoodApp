@@ -1,6 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Link, NavigationContainer, useNavigation, useRoute, useTheme} from "@react-navigation/native";
-import {ActivityIndicator, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    Link,
+    NavigationContainer,
+    useNavigation,
+    useNavigationState,
+    useRoute,
+    useTheme
+} from "@react-navigation/native";
+import {ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -9,66 +16,19 @@ import { onAuthStateChanged, signInWithEmailAndPassword,sendPasswordResetEmail }
 import Profile from "./Profile";
 import Register from "./Register";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {LoginStackList} from "../types/types";
+import {LoginStackList, ProfileStackList} from "../types/types";
 import Separator from "../components/Separator";
 import Feather from "react-native-vector-icons/Feather";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
+type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
 
 
 
 //Reset Password function
-export function ResetPassword (navigation : any) {
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
-    const [submitted, setSubmitted] = useState(false);
-    const {colors} = useTheme();
-    const theme = useTheme();
-    const colorSpec = theme.dark ? '#252525' : '#041721';
 
-    const handleSubmit = async () => {
-        try {
-            await sendPasswordResetEmail(auth, email);
-            setSubmitted(true);
-            setError('');
-        } catch (e) {
-            // @ts-ignore
-            if (e.code === 'auth/user-not-found') {
-                setError('User not found with this email');
-            } else {
-                setError('There was a problem with your request');
-            }
-        }
-    }
-
-    return (
-        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
-            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView keyboardShouldPersistTaps='always'>
-                {error && <Text style={styles.error}>{error}</Text>}
-                {submitted ? (
-                    <Text>Please check your email for a reset password link.</Text>
-                ) : (
-                    <View style={styles.form}>
-                        <Text style={styles.text}>Enter your email address below and we will send you a link to reset your password.</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Email"
-                            placeholderTextColor={colors.text}
-                            onChangeText={setEmail}
-                            value={email}
-                        />
-                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={handleSubmit} disabled={!email}>
-                            <Text style={styles.btnText}>Reset Password</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                )}
-            </ScrollView>
-        </View>
-    );
-}
 
 
 //Login function and principal screen
@@ -84,15 +44,11 @@ export default function Login () {
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [isVisible, setIsVisible] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [previousRoute, setPreviousRoute] = useState<string | null>(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
-    useEffect(() => {
-        const removeListener = navigation.addListener('state', (event: { data: { state: { routes: { name: any; }[]; index: number; }; }; }) => {
-            const previousRouteName = event.data.state.routes[event.data.state.index - 1]?.name;
-            setPreviousRoute(previousRouteName);
-        });
-        return removeListener;
-    }, [navigation]);
+    // const {from} = route.params;
+    // const prevScreen = from;
+    // console.log(route);
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -103,20 +59,14 @@ export default function Login () {
         }
     });
 
+
+
     const handleLogin = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
             setLoading(true);
-            //go to favorites
-            // if (previousRoute === 'Favs') {
-            //     navigation.navigate('Favorites', {screen: 'FavoriteStackScreen/Favs'});
-            // } else if(previousRoute === 'ProfilePage') {
-            //     navigation.navigate('Profile', {screen: 'ProfileStackScreen/Profile'});
-            // } else {
-            //     navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
-            // }
-            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+            // navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
@@ -165,6 +115,10 @@ export default function Login () {
                                       onPress={() => handleLogin()}
                     >
                         <Text style={styles.btnText}>Login</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <Text>Reset Password</Text>
                     </TouchableOpacity>
                     <Link to={{screen : 'ResetPassword'}} style={[styles.link, {color: colors.text}]}>I've forgotten my password</Link>
                     <Separator />

@@ -7,7 +7,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import general from "../stylesheets/General_stylesheet";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
-import {useFocusEffect, useNavigation, useTheme} from "@react-navigation/native";
+import {useFocusEffect, useNavigation, useNavigationState, useTheme} from "@react-navigation/native";
 import {auth} from "../firebase/config";
 import {LoginStackList, ProfileStackList} from "../types/types";
 import {deleteUser, signOut} from "firebase/auth";
@@ -34,6 +34,8 @@ const Profile : FC = () => {
     const [image, setImage] = useState<string | null>(null);
     const [newName, setNewName] = useState<string | null>(null);
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    // const route = useNavigationState(state => state.routes[state.index]);
+    // console.log(route.name);
 
 
 
@@ -67,8 +69,8 @@ const Profile : FC = () => {
 
         signOut(auth).then(() => {
             console.log('User signed out!');
-            // navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
-            navigation.push('HomeStackScreen');
+            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+            // navigation.push('HomeStackScreen');
         }).catch((e) => {
             console.log(e);
         });
@@ -124,7 +126,7 @@ const Profile : FC = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {user == null ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
-                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.push('LoginStackScreen')}>
+                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen', {screen: 'Login' , from: 'Profile'})}>
                         <Text style={notifstyles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View> :
