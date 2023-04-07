@@ -45,6 +45,9 @@ export default function Login () {
     const [isVisible, setIsVisible] = useState(true);
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [sent, setSent] = useState(false);
+
 
     // const {from} = route.params;
     // const prevScreen = from;
@@ -81,6 +84,22 @@ export default function Login () {
             // }
         }
     };
+
+    const resetPassword = async () => {
+        try {
+            await sendPasswordResetEmail(auth, email);
+            setSubmitted(true);
+            setError('');
+            setSent(true);
+        } catch (e) {
+            // @ts-ignore
+            if (e.code === 'auth/user-not-found') {
+                setError('User not found with this email');
+            } else {
+                setError('There was a problem with your request');
+            }
+        }
+    }
 
     const togglePassword = () => {
         setIsVisible(!isVisible);
@@ -120,6 +139,28 @@ export default function Login () {
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
                         <Text>Reset Password</Text>
                     </TouchableOpacity>
+                    <Modal visible={modalVisible} animationType='slide'>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            {sent && <Text style={styles.success}>An email has been sent to {email}</Text>}
+                            <Text>Reset Password</Text>
+                            <TextInput
+                                style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
+                                placeholder="Email"
+                                placeholderTextColor={colors.text}
+                                onChangeText={setEmail}
+                                value={email}
+                                autoCapitalize={'none'}
+                            />
+                            <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                                onPress={() => sendPasswordResetEmail(auth, email)}
+                            >
+                                <Text style={styles.btnText}>Reset Password</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                <Text>Close Modal</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
                     <Link to={{screen : 'ResetPassword'}} style={[styles.link, {color: colors.text}]}>I've forgotten my password</Link>
                     <Separator />
                     <Text style={[styles.text, {color: colors.text}]}>Don't have an account?

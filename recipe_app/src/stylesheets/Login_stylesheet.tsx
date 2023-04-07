@@ -112,6 +112,13 @@ export default StyleSheet.create({
         zIndex: 100,
         elevation: 1000,
         backgroundColor: '#FAF9F6',
+    },
+    success: {
+        color: 'green',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: 10,
     }
 
 
