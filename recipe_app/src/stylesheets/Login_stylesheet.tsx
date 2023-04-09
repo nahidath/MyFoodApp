@@ -22,18 +22,18 @@ export default StyleSheet.create({
     },
     form: {
         flex: 1,
-        flexDirection: 'column',
+        // flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 60,
+        // marginTop: 60,
     },
     input: {
         width: '80%',
         height: 56,
-        margin: 12,
+        marginBottom: 10,
         borderWidth: 1,
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 8,
     },
     loginBtn: {
         width: '80%',
@@ -41,14 +41,15 @@ export default StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 8,
         color: '#fff',
         alignItems: 'center',
     },
     btnText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 16,
+
     },
     text: {
         fontSize: 18,
@@ -119,6 +120,40 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        padding: 10,
+        borderRadius: 10,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalView: {
+        // margin: 20,
+        // backgroundColor: 'white',
+        borderRadius: 15,
+        // padding: 35,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '80%',
+
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 5,
+        // flex: 1,
+        fontWeight: 'normal',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start' ,
+        // textAlign: 'left',
+        flexDirection: 'row',
     }
 
 

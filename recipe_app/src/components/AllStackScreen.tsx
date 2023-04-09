@@ -14,7 +14,7 @@ import {
     NotificationsStackList,
     ProfileStackList, SearchStackList
 } from "../types/types";
-import Login, {ResetPassword} from "../screens/Login";
+import Login from "../screens/Login";
 import Register from "../screens/Register";
 import More from "../screens/More";
 import NotificationSettings from "../screens/NotificationSettings";
@@ -108,16 +108,16 @@ export function LoginStackScreen () {
                     fontWeight: 'bold',
                 },
             }} />
-            <LoginStack.Screen name="ResetPassword" component={ResetPassword} options={{
-                headerStyle: {
-                    backgroundColor: colors.notification,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-                headerTitle: 'Reset Password',
-            }} />
+            {/*<LoginStack.Screen name="ResetPassword" component={ResetPassword} options={{*/}
+            {/*    headerStyle: {*/}
+            {/*        backgroundColor: colors.notification,*/}
+            {/*    },*/}
+            {/*    headerTintColor: colors.text,*/}
+            {/*    headerTitleStyle: {*/}
+            {/*        fontWeight: 'bold',*/}
+            {/*    },*/}
+            {/*    headerTitle: 'Reset Password',*/}
+            {/*}} />*/}
             <LoginStack.Screen name="Register" component={Register} options={{
                 headerStyle: {
                     backgroundColor: colors.notification,

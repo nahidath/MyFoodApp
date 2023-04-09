@@ -112,59 +112,77 @@ export default function Login () {
             <ScrollView keyboardShouldPersistTaps='always'>
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
+                    <View style={styles.label}>
+                        <Text style={{color: colors.text}}>Email</Text>
+                    </View>
                     <TextInput
                         style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                        placeholder="Email"
-                        placeholderTextColor={colors.text}
+                        // placeholder="Email"
+                        // placeholderTextColor={colors.text}
                         onChangeText={setEmail}
                         value={email}
                         autoCapitalize={'none'}
                     />
+                    <View style={styles.label}>
+                        <Text style={{color: colors.text}}>Password</Text>
+                    </View>
                     <TextInput
                         style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                        placeholder="Password"
-                        placeholderTextColor={colors.text}
+                        // placeholder="Password"
+                        // placeholderTextColor={colors.text}
                         onChangeText={setPassword}
                         value={password}
                         secureTextEntry={isVisible}
                     />
                     {isVisible ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()}/>}
 
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <Text style={[styles.link, {color: colors.text}]}>Forgot password ?</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
                                       onPress={() => handleLogin()}
                     >
-                        <Text style={styles.btnText}>Login</Text>
+                        <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <Text>Reset Password</Text>
-                    </TouchableOpacity>
-                    <Modal visible={modalVisible} animationType='slide'>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            {sent && <Text style={styles.success}>An email has been sent to {email}</Text>}
-                            <Text>Reset Password</Text>
-                            <TextInput
-                                style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                                placeholder="Email"
-                                placeholderTextColor={colors.text}
-                                onChangeText={setEmail}
-                                value={email}
-                                autoCapitalize={'none'}
-                            />
-                            <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                                                onPress={() => sendPasswordResetEmail(auth, email)}
-                            >
-                                <Text style={styles.btnText}>Reset Password</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setModalVisible(false)}>
-                                <Text>Close Modal</Text>
-                            </TouchableOpacity>
+
+                    <Modal
+                        visible={modalVisible}
+                        animationType='fade'
+                        transparent={true}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <View style={styles.modalContainer}>
+                            <View style={[styles.modalView, general.shadow, {backgroundColor: colors.notification} ]}>
+                                <View style={styles.modalHeader}>
+                                    <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                        <Feather name={"x"} size={24} color={colors.text}/>
+                                    </TouchableOpacity>
+                                </View>
+                                {sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}
+                                <Text >Reset Password</Text>
+                                <TextInput
+                                    style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
+                                    placeholder="Email"
+                                    placeholderTextColor={colors.text}
+                                    onChangeText={setEmail}
+                                    value={email}
+                                    autoCapitalize={'none'}
+                                />
+                                <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                                    onPress={() => resetPassword()}
+                                >
+                                    <Text style={styles.btnText}>Reset Password</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </Modal>
-                    <Link to={{screen : 'ResetPassword'}} style={[styles.link, {color: colors.text}]}>I've forgotten my password</Link>
+                    {/*<Link to={{screen : 'ResetPassword'}} style={[styles.link, {color: colors.text}]}>I've forgotten my password</Link>*/}
                     <Separator />
-                    <Text style={[styles.text, {color: colors.text}]}>Don't have an account?
-                         <Link to={{screen : 'Register'}} style={[styles.link, {color: colors.text}]}>Sign up</Link></Text>
+                    {/*<Text style={[styles.text, {color: colors.text}]}>Don't have an account?*/}
+                    {/*     <Link to={{screen : 'Register'}} style={[styles.link, {color: colors.text}]}>Sign up</Link></Text>*/}
                 </View>
             </ScrollView>
         </View>
