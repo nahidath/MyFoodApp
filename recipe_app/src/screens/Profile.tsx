@@ -126,7 +126,7 @@ const Profile : FC = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {user == null ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
-                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen', {screen: 'Login' })}>
+                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen')}>
                         <Text style={notifstyles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View> :
@@ -146,7 +146,7 @@ const Profile : FC = () => {
                         {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
                         {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
                         {/*</TouchableOpacity>*/}
-                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('FavoritesRecipesUser')}>
+                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Favorites', {screen : 'FavoriteStackScreen/Favs'})}>
                             <FontAwesome name={"heart"} size={24} color={colors.text} />
                             <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>
                         </TouchableOpacity>

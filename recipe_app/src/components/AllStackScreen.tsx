@@ -261,7 +261,7 @@ export function ProfileStackScreen () {
             <ProfilStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false,
             }}/>
-            <ProfilStack.Screen name="FavoritesRecipesUser" component={FavoriteStackScreen}  options={{
+            <ProfilStack.Screen name="FavoriteStackScreen" component={FavoriteStackScreen}  options={{
                 headerShown: false,
             }} />
             <ProfilStack.Screen name="HomeStackScreen" component={HomeStackScreen} options={{

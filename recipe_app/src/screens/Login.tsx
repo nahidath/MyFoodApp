@@ -131,7 +131,7 @@ export default function Login () {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}
+            {/*{loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}*/}
             <ScrollView>
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>

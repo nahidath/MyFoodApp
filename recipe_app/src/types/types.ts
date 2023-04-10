@@ -44,12 +44,13 @@ export type LoginStackList = {
 export type ProfileStackList = {
     ProfilePage: undefined;
     EditProfile: undefined;
-    FavoritesRecipesUser: undefined;
+    // FavoritesRecipesUser: undefined;
     LoginStackScreen: {
         //add a parameter to the login screen
         from: string;
     }
     HomeStackScreen: undefined;
+    FavoriteStackScreen: undefined;
     // LoginPage : {
     //     from: string;
     // }
