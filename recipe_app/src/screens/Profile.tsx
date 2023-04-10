@@ -126,7 +126,7 @@ const Profile : FC = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {user == null ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
-                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen', {screen: 'Login' , from: 'Profile'})}>
+                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen', {screen: 'Login' })}>
                         <Text style={notifstyles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View> :

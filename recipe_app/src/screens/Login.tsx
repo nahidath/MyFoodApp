@@ -7,7 +7,17 @@ import {
     useRoute,
     useTheme
 } from "@react-navigation/native";
-import {ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    ActivityIndicator,
+    Alert,
+    Modal,
+    Pressable,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -65,11 +75,15 @@ export default function Login () {
 
 
     const handleLogin = async () => {
+        if(email === '' || password === '') {
+            setError('Please enter your email and password');
+            return;
+        }
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
             setLoading(true);
-            // navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
@@ -91,12 +105,21 @@ export default function Login () {
             setSubmitted(true);
             setError('');
             setSent(true);
+            Alert.alert('Email sent',
+                'Please check your email to reset your password',
+                [
+                    {
+                        text: "Ok",
+                        onPress: () => setModalVisible(false)
+                    }
+                ]
+            );
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/user-not-found') {
                 setError('User not found with this email');
             } else {
-                setError('There was a problem with your request');
+                setError('There was a problem with your request. Please try again later');
             }
         }
     }
@@ -109,46 +132,51 @@ export default function Login () {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}
-            <ScrollView keyboardShouldPersistTaps='always'>
+            <ScrollView>
                 {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
-                    <View style={styles.label}>
-                        <Text style={{color: colors.text}}>Email</Text>
+                    <Text style={[styles.label, {color: colors.text}]}>Email</Text>
+                    <View style={styles.inputZone}>
+                        <TextInput
+                            style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
+                            // placeholder="Email"
+                            // placeholderTextColor={colors.text}
+                            onChangeText={setEmail}
+                            value={email}
+                            autoCapitalize={'none'}
+                        />
                     </View>
-                    <TextInput
-                        style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                        // placeholder="Email"
-                        // placeholderTextColor={colors.text}
-                        onChangeText={setEmail}
-                        value={email}
-                        autoCapitalize={'none'}
-                    />
-                    <View style={styles.label}>
-                        <Text style={{color: colors.text}}>Password</Text>
+                    <Text style={[styles.label, {color: colors.text}]}>Password</Text>
+                    <View style={[styles.inputZone, {flexDirection: 'row'}]}>
+                        <TextInput
+                            style={[styles.input,  {borderColor: colors.border, color: colors.text, paddingRight: 45}]}
+                            // placeholder="Password"
+                            // placeholderTextColor={colors.text}
+                            onChangeText={setPassword}
+                            value={password}
+                            secureTextEntry={isVisible}
+                        />
+                        {isVisible ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton}  onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()}/>}
                     </View>
-                    <TextInput
-                        style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                        // placeholder="Password"
-                        // placeholderTextColor={colors.text}
-                        onChangeText={setPassword}
-                        value={password}
-                        secureTextEntry={isVisible}
-                    />
-                    {isVisible ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()}/>}
 
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
                         <Text style={[styles.link, {color: colors.text}]}>Forgot password ?</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                                      onPress={() => handleLogin()}
-                    >
-                        <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
-                    </TouchableOpacity>
+                    <View style={styles.inputZone}>
+                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                          onPress={() => handleLogin()} activeOpacity={0.5}
+                        >
+                            <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>
+                            <Text style={styles.btnText}>Create an account</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
                     <Modal
                         visible={modalVisible}
-                        animationType='fade'
+                        animationType='slide'
                         transparent={true}
                         onRequestClose={() => {
                             setModalVisible(!modalVisible);
@@ -157,32 +185,32 @@ export default function Login () {
                         <View style={styles.modalContainer}>
                             <View style={[styles.modalView, general.shadow, {backgroundColor: colors.notification} ]}>
                                 <View style={styles.modalHeader}>
-                                    <TouchableOpacity onPress={() => setModalVisible(false)}>
-                                        <Feather name={"x"} size={24} color={colors.text}/>
+                                    <TouchableOpacity style={{alignItems:'flex-end'}} onPress={() => setModalVisible(false)}>
+                                        <Feather name={"x"} size={24} color={'#9c9c9c'}/>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.modalTitle, {color: colors.text}]}>I forgot my password</Text>
+                                </View>
+                                {/*{sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}*/}
+                                    <Text style={[styles.modalText, {color: colors.text}]}>Please enter your email address below and you will receive a link to create a new password via email.</Text>
+                                {error && <Text style={styles.error}>{error}</Text>}
+                                <View style={styles.inputZone}>
+                                    <TextInput
+                                        style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
+                                        placeholder="Email"
+                                        placeholderTextColor={colors.text}
+                                        onChangeText={setEmail}
+                                        value={email}
+                                        autoCapitalize={'none'}
+                                    />
+                                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                                        onPress={() => resetPassword()}
+                                    >
+                                        <Text style={styles.btnText}>Submit <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
                                     </TouchableOpacity>
                                 </View>
-                                {sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}
-                                <Text >Reset Password</Text>
-                                <TextInput
-                                    style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                                    placeholder="Email"
-                                    placeholderTextColor={colors.text}
-                                    onChangeText={setEmail}
-                                    value={email}
-                                    autoCapitalize={'none'}
-                                />
-                                <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                                                    onPress={() => resetPassword()}
-                                >
-                                    <Text style={styles.btnText}>Reset Password</Text>
-                                </TouchableOpacity>
                             </View>
                         </View>
                     </Modal>
-                    {/*<Link to={{screen : 'ResetPassword'}} style={[styles.link, {color: colors.text}]}>I've forgotten my password</Link>*/}
-                    <Separator />
-                    {/*<Text style={[styles.text, {color: colors.text}]}>Don't have an account?*/}
-                    {/*     <Link to={{screen : 'Register'}} style={[styles.link, {color: colors.text}]}>Sign up</Link></Text>*/}
                 </View>
             </ScrollView>
         </View>

@@ -78,58 +78,64 @@ const Register = () => {
 
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView keyboardShouldPersistTaps='always'>
+            <ScrollView>
+                {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
-                    {error && <Text style={styles.error}>{error}</Text>}
-                    <View style={styles.inputContainer}>
+                    <Text style={[styles.label, {color: colors.text}]}>Username</Text>
+                    <View style={styles.inputZone}>
                         <TextInput
                             style={[styles.input, {color: colors.text}]}
-                            placeholder="Username"
-                            placeholderTextColor={colors.text}
+                            // placeholder="Username"
+                            // placeholderTextColor={colors.text}
                             value={username}
                             onChangeText={setUsername}
                         />
                     </View>
-                    <View style={styles.inputContainer}>
+                    <Text style={[styles.label, {color: colors.text}]}>Email</Text>
+                    <View style={styles.inputZone}>
                         <TextInput
                             style={[styles.input, {color: colors.text}]}
-                            placeholder="Email"
-                            placeholderTextColor={colors.text}
+                            // placeholder="Email"
+                            // placeholderTextColor={colors.text}
                             value={email}
                             onChangeText={setEmail}
                             autoCapitalize={'none'}
                         />
                     </View>
-                    <View style={styles.inputContainer}>
+                    <Text style={[styles.label, {color: colors.text}]}>Password</Text>
+                    <View style={styles.inputZone}>
                         <TextInput
                             style={[styles.input, {color: colors.text}]}
-                            placeholder="Password"
-                            placeholderTextColor={colors.text}
+                            // placeholder="Password"
+                            // placeholderTextColor={colors.text}
                             value={password}
                             onChangeText={setPassword}
                             secureTextEntry={isVisible.password}
                         />
-                        {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('password')}/>}
+                        {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('password')}/>}
                     </View>
-                    <View style={styles.inputContainer}>
+                    <Text style={[styles.label, {color: colors.text}]}>Confirm your password</Text>
+                    <View style={styles.inputZone}>
                         <TextInput
                             style={[styles.input, {color: colors.text}]}
-                            placeholder="Confirm Your Password"
-                            placeholderTextColor={colors.text}
+                            // placeholder="Confirm Your Password"
+                            // placeholderTextColor={colors.text}
                             value={confPassword}
                             onChangeText={setConfPassword}
                             secureTextEntry={isVisible.confPassword}
                         />
-                        {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showBtn} onPress={() => togglePassword('confPassword')}/>}
+                        {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('confPassword')}/>}
                     </View>
 
-                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                        onPress={handleSubmit}
-                        disabled={!email || !password || !confPassword || !username}
-                    >
-                        <Text style={styles.btnText}>Register</Text>
-                    </TouchableOpacity>
-                    <Text style={[styles.text, {color: colors.text}]}>Already have an account? <Link to={{screen : 'Login'}} style={[styles.link, {color: colors.text}]}>Login</Link></Text>
+                    <View style={styles.inputZone}>
+                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5}
+                            onPress={handleSubmit}
+                            disabled={!email || !password || !confPassword || !username}
+                        >
+                            <Text style={styles.btnText}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={[styles.text, {color: colors.text}]}>Already have an account ? <Link to={{screen : 'Login'}} style={[styles.link, {color: colors.text}]}>Login</Link></Text>
                 </View>
             </ScrollView>
         </View>
