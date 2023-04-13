@@ -84,7 +84,7 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
     // console.log("length", favRecipes.length);
 
    return (
-       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})}>
+       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})} activeOpacity={0.4}>
            {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
            <LinearGradient
                colors={['transparent','rgba(0,0,0,0.8)' ]}
@@ -98,6 +98,7 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
            </View>
            <TouchableOpacity style={styles.blocRecipeLike}
                              onPress={() => handleFavorite(recipe.id)}
+                             activeOpacity={0.4}
            >
                {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
            </TouchableOpacity>

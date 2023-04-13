@@ -34,10 +34,30 @@ const Profile : FC = () => {
     const [image, setImage] = useState<string | null>(null);
     const [newName, setNewName] = useState<string | null>(null);
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    const [loggedIn, setLoggedIn] = useState(false);
     // const route = useNavigationState(state => state.routes[state.index]);
     // console.log(route.name);
 
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setLoggedIn(true);
+            } else {
+                setLoggedIn(false);
+            }
+        });
 
+        return unsubscribe;
+    }, [auth]);
+
+    useEffect(() => {
+        if(loggedIn){
+            navigation.popToTop();
+        }else {
+            // navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
+            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+        }
+    }, [loggedIn]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -124,7 +144,7 @@ const Profile : FC = () => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {user == null ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
+            {!loggedIn ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
                     <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen')}>
                         <Text style={notifstyles.buttonText}>Login</Text>

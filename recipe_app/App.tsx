@@ -9,7 +9,7 @@ export default function App() {
 
     //refresh the whole app when the user is logged in or out
     const [loggedIn, setLoggedIn] = useState(false);
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -51,6 +51,7 @@ export default function App() {
         <ThemeContext.Provider value={themeData}>
             <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
                 {loggedIn ? <BottomNavigation /> : <BottomNavigation />}
+                {/*<BottomNavigation />*/}
             </NavigationContainer>
         </ThemeContext.Provider>
 

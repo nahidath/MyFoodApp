@@ -295,7 +295,7 @@ const Homepage :  FC = () => {
                         <View style={styles.cuisineBloc}>
                             {cuisinesList.map((cuisine: any) => {
                                 return (
-                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name})}>
+                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name})} activeOpacity={0.4}>
                                         <LinearGradient
                                             colors={['rgba(0,0,0,0.8)','transparent' ]}
                                             style={styles.cuisineGradient}
