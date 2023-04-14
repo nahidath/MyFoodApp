@@ -220,6 +220,11 @@ export default StyleSheet.create({
         padding: 5,
         paddingLeft: 0,
 
+    },
+    blocRecipeDelete: {
+        position: 'absolute',
+        top: 10,
+        right: 3,
     }
 
 

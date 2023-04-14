@@ -5,7 +5,10 @@ import {LinearGradient} from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import React, {useState} from "react";
 import {useTheme} from "@react-navigation/native";
-import {auth} from "../firebase/config";
+import {auth, database} from "../firebase/config";
+import Feather from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import {child, ref, remove} from "firebase/database";
 
 
 interface CardRecipeProps {
@@ -16,10 +19,12 @@ interface CardRecipeProps {
     fontSize?: number;
     star?: boolean;
     label?: boolean;
+    trash?: boolean;
+
 
 }
 
-const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, star=true, label=true}: CardRecipeProps) => {
+const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, star=true, label=true, trash=false}: CardRecipeProps) => {
     const { colors } = useTheme();
     const theme = useTheme();
     const [saved, setSaved] = useState<boolean>(false);
@@ -50,6 +55,7 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, st
                 setSaved(!saved);
             }
         }
+
 
 
 
@@ -87,6 +93,17 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, st
     }
     // console.log("after", favRecipes);
     // console.log("length", favRecipes.length);
+    const deleteFavorite = (recipeId: any) => {
+        const db = ref(database);
+        const user = auth.currentUser;
+        const userId = user?.uid;
+        const recipeRef = child(db, `users/${userId}/recipes/${recipeId}`);
+        remove(recipeRef).then(() => {
+            console.log("removed");
+        }).catch((error: any) => {
+            console.log(error);
+        });
+    }
 
    return (
        <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})} activeOpacity={0.4}>
@@ -108,6 +125,12 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, st
                              activeOpacity={0.4}
            >
                {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
+           </TouchableOpacity>}
+           {trash && <TouchableOpacity style={styles.blocRecipeDelete}
+                                       onPress={() => deleteFavorite(recipe.id)}
+                                       activeOpacity={0.4}
+           >
+               <Icon name={"delete"} size={24} color={"#b3d838"} />
            </TouchableOpacity>}
        </TouchableOpacity>
    )

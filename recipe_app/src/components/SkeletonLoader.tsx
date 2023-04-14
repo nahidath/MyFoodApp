@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef} from "react";
-import {Animated, StyleSheet, View} from "react-native";
+import {Animated, Dimensions, StyleSheet, View} from "react-native";
 interface SkeletonLoaderProps {
     theme?: any;
     color?: any;
@@ -68,6 +68,19 @@ export function SkeletonLoaderHomePage ({theme, color}: SkeletonLoaderProps)  {
     )
 }
 
+export function SkeletonLoaderFavoritesPage ({theme, color}: SkeletonLoaderProps)  {
+
+        return (
+            <View style={[styles.container3, {backgroundColor : color.background}]}>
+                <SkeletonLoader theme={theme} height={180} width={130} borderRadius={10}/>
+                <SkeletonLoader theme={theme} height={180} width={130} borderRadius={10}/>
+                <SkeletonLoader theme={theme} height={180} width={130} borderRadius={10}/>
+                <SkeletonLoader theme={theme} height={180} width={130} borderRadius={10}/>
+            </View>
+
+        )
+}
+const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -85,5 +98,14 @@ const styles = StyleSheet.create({
     skeleton: {
         width: '100%',
         margin:8,
+    },
+    container3: {
+        flex: 1,
+        flexDirection: 'row',
+        width: width,
+        height: 180,
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginHorizontal: 10,
     }
 });

@@ -50,13 +50,14 @@ const Profile : FC = () => {
         return unsubscribe;
     }, [auth]);
 
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
         if(loggedIn){
             navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
         }else {
             navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         }
-    }, [loggedIn]);
+    }, [loggedIn]));
 
     useFocusEffect(
         React.useCallback(() => {
