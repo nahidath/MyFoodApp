@@ -27,21 +27,46 @@ const Favorites : FC = () => {
     const navigation = useNavigation<FavoriteProps>();
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
+    const [loggedIn, setLoggedIn] = useState(false);
+
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setLoggedIn(true);
+            } else {
+                setLoggedIn(false);
+            }
+        });
+
+        return unsubscribe;
+    }, [auth]);
+
+    useEffect(() => {
+        if(loggedIn){
+            navigation.navigate('Favorites', {screen: 'FavoritesStackScreen/Favs'});
+        }else {
+            // navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
+            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+        }
+    }, [loggedIn]);
 
 
     const getFavRecipeUser = () => {
         const userID = user?.uid;
-        const recipesRef = ref(database, `users/${userID}/recipes`);
-        let favRecipes : string[] = [];
+        const recipesRef = ref(database, `users/${userID}/recipes/`);
+        let favRecipes : any[] = [];
 
+        //retrieve all recipes for the user from the database
         onValue(recipesRef, snapshot => {
             const recipes = snapshot.val(); // this will give you an object with all recipes for the user
-            for (const [key, value] of Object.entries(recipes)) {
-                if (typeof value === "string") {
-                    favRecipes.push(value);
+            if(recipes != null){
+                for (const [key, value] of Object.entries(recipes)) {
+                    favRecipes.push(key);
                 }
             }
         });
+
         axios.get('https://api.spoonacular.com/recipes/informationBulk', {params: {apiKey: configValue, ids: favRecipes.toString()} }).then((response) => {
             setFavRecipes(response.data);
         }).catch((error) => {
@@ -52,27 +77,28 @@ const Favorites : FC = () => {
 
     useEffect(() => {
         getFavRecipeUser();
-    }, []);
+    }, [favRecipes]);
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {user == null ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
+            {!loggedIn ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[styles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
                     <TouchableOpacity style={[styles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.push('LoginStackScreen')}>
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View> :
-                <View style={styles.favList}>
-                {favRecipes.length === 0 ? <Text style={{color: colors.text, flex: 1, flexDirection: 'column'}}>You have no saved recipes</Text> :
+                // <View style={styles.favList}>
+                    favRecipes.length === 0 ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{color: colors.text, fontSize: 15}}>No saved recipes</Text></View> :
                 <FlatList
                     data={favRecipes}
-                    renderItem={({item}) => <CardRecipe recipe={item} navigation={navigation} />}
+                    renderItem={({item}) => <CardRecipe fontSize={17} height={180} width={130} star={false} recipe={item} navigation={navigation} />}
                     keyExtractor={item => item.id}
                     numColumns={2}
+                    columnWrapperStyle={{justifyContent: 'space-between', alignItems: 'center', padding: 10}}
                 />
-                }
-            </View>
+
+            // </View>
             }
         </View>
     );

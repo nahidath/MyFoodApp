@@ -49,7 +49,7 @@ export default StyleSheet.create({
     },
     favList: {
         flexDirection: 'column',
-        padding: 20,
+        padding: 15,
     }
 
 

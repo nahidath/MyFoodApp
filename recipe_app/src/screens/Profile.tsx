@@ -52,9 +52,8 @@ const Profile : FC = () => {
 
     useEffect(() => {
         if(loggedIn){
-            navigation.popToTop();
+            navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
         }else {
-            // navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
             navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         }
     }, [loggedIn]);

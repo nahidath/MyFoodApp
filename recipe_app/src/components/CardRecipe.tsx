@@ -11,10 +11,15 @@ import {auth} from "../firebase/config";
 interface CardRecipeProps {
     recipe: any;
     navigation: any;
+    width?: number;
+    height?: number;
+    fontSize?: number;
+    star?: boolean;
+    label?: boolean;
 
 }
 
-const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
+const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, star=true, label=true}: CardRecipeProps) => {
     const { colors } = useTheme();
     const theme = useTheme();
     const [saved, setSaved] = useState<boolean>(false);
@@ -84,24 +89,26 @@ const CardRecipe = ({ recipe, navigation}: CardRecipeProps) => {
     // console.log("length", favRecipes.length);
 
    return (
-       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})} activeOpacity={0.4}>
+       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})} activeOpacity={0.4}>
            {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
            <LinearGradient
                colors={['transparent','rgba(0,0,0,0.8)' ]}
-               style={styles.blocRecipeGradient}
+               style={[styles.blocRecipeGradient, {width: width}]}
            >
-               <Text style={styles.blocRecipeImageText}>{recipe.title}</Text>
+               <Text style={[styles.blocRecipeImageText, {fontSize: fontSize}]}>{recipe.title}</Text>
            </LinearGradient>
+              {label &&
            <View style={styles.blocRecipeLabel}>
                {recipe.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
                {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
-           </View>
+           </View>}
+           {star &&
            <TouchableOpacity style={styles.blocRecipeLike}
                              onPress={() => handleFavorite(recipe.id)}
                              activeOpacity={0.4}
            >
                {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
-           </TouchableOpacity>
+           </TouchableOpacity>}
        </TouchableOpacity>
    )
 }
