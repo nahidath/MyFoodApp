@@ -23,7 +23,7 @@ import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import {auth} from "../firebase/config";
 import { onAuthStateChanged, signInWithEmailAndPassword,sendPasswordResetEmail } from 'firebase/auth';
-import Profile from "./Profile";
+import Account from "./Account";
 import Register from "./Register";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {LoginStackList, ProfileStackList} from "../types/types";
@@ -66,7 +66,7 @@ export default function Login () {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             setLoggedIn(true);
-            // navigation.push('Profile');
+            // navigation.push('Account');
         } else {
             setLoggedIn(false);
         }

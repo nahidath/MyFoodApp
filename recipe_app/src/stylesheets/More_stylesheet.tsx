@@ -64,6 +64,15 @@ export default StyleSheet.create({
     },
     languageBtnText: {
         color: '#666666',
+    },
+    logoutBtn: {
+        alignItems: 'center',
+        justifyContent:'center'
+    },
+    logoutTxt: {
+        color: '#fe2f3f',
+        fontWeight: 'bold',
+        fontSize: 18,
     }
 
 });

@@ -40,7 +40,7 @@ const Register = () => {
                 await createUserWithEmailAndPassword(auth, email, password);
                 if (auth.currentUser) {
                     updateProfile(auth.currentUser, {displayName: username}).then(() => {
-                        console.log('Profile updated');
+                        console.log('Account updated');
                     }).catch((error: any) => {
                         console.log(error);
                     });

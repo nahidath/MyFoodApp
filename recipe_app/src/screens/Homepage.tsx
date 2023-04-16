@@ -225,7 +225,7 @@ const Homepage :  FC = () => {
             >
                 {/*<View style={styles.headerBloc}>*/}
                     <View style={styles.headerBloc}>
-                        <TouchableOpacity style={styles.headerProfile}  onPress={() => {navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'})}}>
+                        <TouchableOpacity style={styles.headerProfile}  onPress={() => {navigation.navigate('Account', {screen: 'AccountStackScreen/ProfileStackScreen'})}}>
                             <View style={styles.profile}>
 
                                 {user != null ? <Image source={{uri: user.photoURL?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> :  pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}

@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Homepage from "../screens/Homepage";
 import Notifications from "../screens/Notifications";
 import Search from "../screens/Search";
-import Profile from "../screens/Profile";
+import Account from "../screens/Account";
 import Favorites from "../screens/Favorites";
 import Feather from "react-native-vector-icons/Feather";
 import More from "../screens/More";
@@ -16,10 +16,11 @@ import general from "../stylesheets/General_stylesheet";
 import {useNavigation} from "@react-navigation/native";
 import {useTheme} from '@react-navigation/native';
 import {
+    AccountStackScreen,
     FavoriteStackScreen,
     HomeStackScreen,
     MoreStackScreen,
-    NotificationsStackScreen, ProfileStackScreen,
+    NotificationsStackScreen,
     SearchStackScreen
 } from "./AllStackScreen";
 import hairlineWidth = StyleSheet.hairlineWidth;
@@ -92,9 +93,9 @@ const BottomNavigation : FC = () => {
             }
             } />
 
-            <Tab.Screen name="Profile" component={ProfileStackScreen} options={{
+            <Tab.Screen name="Account" component={AccountStackScreen} options={{
                 headerShown: false,
-                tabBarLabel: 'Profile',
+                tabBarLabel: 'Account',
                 tabBarIcon: ({color}) => (
                     <Feather name={"user"} size={24} color={color} />
                 ),}

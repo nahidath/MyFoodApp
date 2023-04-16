@@ -14,7 +14,7 @@ export type HomeStackList = {
     }
     // Search: undefined;
     LoginStackScreen: undefined;
-    ProfileStackScreen: undefined;
+    AccountStackScreen: undefined;
     Cuisine: {
         cuisine: string;
     }
@@ -37,13 +37,13 @@ export type LoginStackList = {
     Login: undefined;
     Register: undefined;
     ResetPassword: undefined;
-    ProfileStackScreen: undefined;
+    AccountStackScreen: undefined;
     HomeStackScreen: undefined;
 }
 
-export type ProfileStackList = {
-    ProfilePage: undefined;
-    EditProfile: undefined;
+export type AccountStackList = {
+    AccountPage: undefined;
+    Profile: undefined;
     // FavoritesRecipesUser: undefined;
     LoginStackScreen: {
         //add a parameter to the login screen
@@ -51,9 +51,14 @@ export type ProfileStackList = {
     }
     HomeStackScreen: undefined;
     FavoriteStackScreen: undefined;
-    // LoginPage : {
-    //     from: string;
-    // }
+    NotificationSettings : undefined;
+    DisplaySettings: undefined;
+    LanguageSettings : undefined;
+    Faq: undefined;
+    Contact: undefined;
+    PrivacyPolicy: undefined;
+    TermsOfUse: undefined;
+    ProfileStackScreen: undefined;
 
 }
 
@@ -77,4 +82,9 @@ export type SearchStackList = {
         id: string;
         name: string;
     }
+}
+
+export type ProfileStackList = {
+    ProfilePage: undefined;
+    EditProfile: undefined;
 }

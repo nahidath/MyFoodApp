@@ -1,6 +1,6 @@
 import {useTheme} from "@react-navigation/native";
 import Homepage from "../screens/Homepage";
-import Profile from "../screens/Profile";
+import Account from "../screens/Account";
 import Recipe from "../screens/Recipe";
 import SpotlightRecipes from "../screens/SpotlightRecipes";
 import Search from "../screens/Search";
@@ -12,7 +12,7 @@ import {
     LoginStackList,
     MoreStackList,
     NotificationsStackList,
-    ProfileStackList, SearchStackList
+    AccountStackList, SearchStackList, ProfileStackList
 } from "../types/types";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
@@ -27,6 +27,7 @@ import EditProfile from "../screens/EditProfile";
 import Favorites from "../screens/Favorites";
 import Notifications from "../screens/Notifications";
 import Cuisine from "../screens/Cuisine";
+import Profile from "../screens/Profile";
 
 
 export function HomeStackScreen () {
@@ -35,7 +36,7 @@ export function HomeStackScreen () {
     return (
         <HomeStack.Navigator >
             <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
-            {/*<HomeStack.Screen name="Profile" component={Profile} options={{*/}
+            {/*<HomeStack.Screen name="Account" component={Account} options={{*/}
             {/*    headerStyle: {*/}
             {/*        backgroundColor: colors.notification,*/}
             {/*    },*/}
@@ -67,7 +68,7 @@ export function HomeStackScreen () {
             <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false
             }} />
-            <HomeStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
+            <HomeStack.Screen name="AccountStackScreen" component={AccountStackScreen} options={{
                 headerShown: false
             }} />
             <HomeStack.Screen name="Cuisine" component={Cuisine} options={{
@@ -127,7 +128,7 @@ export function LoginStackScreen () {
                     fontWeight: 'bold',
                 },
             }} />
-            <LoginStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
+            <LoginStack.Screen name="AccountStackScreen" component={AccountStackScreen} options={{
                 headerShown: false,
             }} />
             <LoginStack.Screen name={'HomeStackScreen'} component={HomeStackScreen} options={{
@@ -232,13 +233,13 @@ export function MoreStackScreen () {
     )
 }
 
-export function ProfileStackScreen () {
-    const ProfilStack = createNativeStackNavigator<ProfileStackList>();
+export function AccountStackScreen () {
+    const AccountStack = createNativeStackNavigator<AccountStackList>();
 
     const { colors } = useTheme();
     return (
-        <ProfilStack.Navigator >
-            <ProfilStack.Screen name="ProfilePage" component={Profile} options={{
+        <AccountStack.Navigator >
+            <AccountStack.Screen name="AccountPage" component={Account} options={{
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -246,31 +247,85 @@ export function ProfileStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerTitle: 'Profile',
+                headerTitle: 'Account',
             }} />
-            <ProfilStack.Screen name="EditProfile" component={EditProfile} options={{
-                headerStyle: {
-                    backgroundColor: colors.notification,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-                headerTitle: 'Edit Profile',
+            <AccountStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
+                headerShown: false,
             }} />
-            <ProfilStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
+            <AccountStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false,
             }}/>
-            <ProfilStack.Screen name="FavoriteStackScreen" component={FavoriteStackScreen}  options={{
+            <AccountStack.Screen name="FavoriteStackScreen" component={FavoriteStackScreen}  options={{
                 headerShown: false,
             }} />
-            <ProfilStack.Screen name="HomeStackScreen" component={HomeStackScreen} options={{
+            <AccountStack.Screen name="HomeStackScreen" component={HomeStackScreen} options={{
                 headerShown: false,
             }} />
-            {/*<ProfilStack.Screen name="LoginPage" component={Login} options={{*/}
-            {/*    headerShown: false,*/}
-            {/*}} />*/}
-        </ProfilStack.Navigator>
+            <AccountStack.Screen name="NotificationSettings" component={NotificationSettings} options={{
+                headerTitle: 'Notifications Settings',
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                // headerShadowVisible: false,
+            }}  />
+            <AccountStack.Screen name="DisplaySettings" component={DisplaySettings} options={{
+                headerTitle: 'Display Settings',
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }} />
+
+            <AccountStack.Screen name="Faq" component={Faq} options={{
+                headerTitle: 'FAQ',
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+
+            }} />
+            <AccountStack.Screen name="Contact" component={Contact} options={{
+                headerTitle: 'Contact',
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+
+            }} />
+            <AccountStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{
+                headerTitle: 'Privacy Policy',
+                headerStyle: {
+                    backgroundColor:colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }} />
+            <AccountStack.Screen name="TermsOfUse" component={TermsOfUse} options={{
+                headerTitle: 'Terms of Use',
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }} />
+        </AccountStack.Navigator>
     )
 }
 export function FavoriteStackScreen () {
@@ -348,5 +403,35 @@ export function SearchStackScreen () {
             }} />
 
         </SearchStack.Navigator>
+    )
+}
+
+export function ProfileStackScreen () {
+    const ProfileStack = createNativeStackNavigator<ProfileStackList>();
+    const {colors} = useTheme();
+
+    return (
+        <ProfileStack.Navigator >
+            <ProfileStack.Screen name="ProfilePage" component={Profile} options={{
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                headerTitle: 'Profile',
+            }} />
+            <ProfileStack.Screen name="EditProfile" component={EditProfile} options={{
+                headerStyle: {
+                    backgroundColor: colors.notification,
+                },
+                headerTintColor: colors.text,
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+                headerTitle: 'Edit Profile',
+            }} />
+        </ProfileStack.Navigator>
     )
 }

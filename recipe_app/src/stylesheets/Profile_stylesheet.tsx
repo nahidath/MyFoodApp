@@ -95,6 +95,15 @@ export default StyleSheet.create({
         right: 10,
         top: 40,
 
+    },
+    logoutBtn: {
+        alignItems: 'center',
+        justifyContent:'center'
+    },
+    logoutTxt: {
+        color: '#fe2f3f',
+        fontWeight: 'bold',
+        fontSize: 18,
     }
 
 });
