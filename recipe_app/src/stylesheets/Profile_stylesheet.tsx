@@ -67,4 +67,34 @@ export default StyleSheet.create({
         paddingTop: 2,
         // fontFamily: 'sans-serif-medium',
     },
+    pp: {
+        width: 65,
+        height: 65,
+        borderRadius: 50,
+    },
+    profileBtn: {
+        flexDirection: 'row',
+        // justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 20,
+        height: 100,
+        marginTop: 10,
+        borderRadius: 10,
+        margin:5,
+    },
+    profileBtnText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        paddingLeft: 10,
+        alignContent: 'center',
+        justifyContent: 'center',
+        paddingTop: 2,
+    },
+    arrowGo: {
+        position: 'absolute',
+        right: 10,
+        top: 40,
+
+    }
+
 });

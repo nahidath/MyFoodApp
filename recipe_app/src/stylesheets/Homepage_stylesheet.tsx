@@ -78,7 +78,7 @@ export default StyleSheet.create({
         padding: 10,
     },
     blocRecipeImageText: {
-        fontSize: 20,
+        // fontSize: 20,
         fontWeight: 'bold',
         color: '#fefefe',
         padding: 10,

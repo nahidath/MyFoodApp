@@ -23,7 +23,7 @@ export default StyleSheet.create({
         // borderBottomRightRadius: 30
     },
     headerRecipeImageText: {
-        fontSize: 30,
+        // fontSize: 30,
         fontWeight: 'bold',
         color: '#fefefe',
         width: '80%',
@@ -142,5 +142,12 @@ export default StyleSheet.create({
         position: 'absolute',
         top: 10,
         left: 270,
+    },
+    headerRecipeImageTextSmall: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#fefefe',
+        width: '80%',
+        top: 40,
     }
 });

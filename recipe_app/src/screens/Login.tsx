@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
     Link,
-    NavigationContainer,
+    NavigationContainer, useFocusEffect,
     useNavigation,
     useNavigationState,
     useRoute,
@@ -71,6 +71,14 @@ export default function Login () {
             setLoggedIn(false);
         }
     });
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loggedIn) {
+                navigation.popToTop();
+            }
+        }, [loggedIn])
+    )
 
 
 

@@ -7,7 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Share, TouchableWithoutFeedback, Image, Animated, Alert
+    Share, TouchableWithoutFeedback, Image, Animated, Alert, LayoutChangeEvent
 } from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -57,6 +57,10 @@ const Recipe = ({route}: Props) => {
     const theme = useTheme();
     const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
     const [animated, setAnimated] = useState<boolean>(false);
+    const [titleLength, setTitleLength] = useState<number>(0);
+    const [fontSize, setFontSize] = useState<number>(30);
+    const titleRef = useRef<Text>(null);
+
     const getRecipe = () => {
         let dataInstruction : string | any[] = [];
         axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/information',{params:{apiKey: configValue} }).then((response) => {
@@ -65,6 +69,7 @@ const Recipe = ({route}: Props) => {
             dataInstruction = response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step))
             setInstructions(dataInstruction[0]);
             setIsLoading(false);
+            setTitleLength(response.data.title);
             setIsLoaded(true);
         }, (error) => {
             setRecipe(recipeMock);
@@ -224,6 +229,22 @@ const Recipe = ({route}: Props) => {
         }
     }
 
+    useEffect(() => {
+        if (titleRef.current) {
+            titleRef.current.measure((x: any, y: any, width: number, height: any, pageX: any, pageY: any) => {
+                if (height > 80) {
+                    setFontSize(fontSize - 2);
+                }
+            });
+        }
+    }, [fontSize]);
+    const handleTextLayout = (event: LayoutChangeEvent) => {
+        const { height } = event.nativeEvent.layout;
+        console.log(height);
+        if (height > 80 && fontSize > 20) {
+            setFontSize(fontSize - 2);
+        }
+    };
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
@@ -231,7 +252,7 @@ const Recipe = ({route}: Props) => {
             {isLoading ? <SkeletonView theme={theme} color={colors}/> :
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
-                    <TouchableWithoutFeedback onPress={() => handleDoubleTap()}>
+                    <TouchableWithoutFeedback style={{zIndex: 100}} onPress={() => handleDoubleTap()}>
                         {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}} /> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}/>}
                     </TouchableWithoutFeedback>
                     {animated && <StarIconLike  scale={2} />}
@@ -250,7 +271,9 @@ const Recipe = ({route}: Props) => {
                        colors={['transparent','rgba(0,0,0,0.8)' ]}
                        style={styles.blocRecipeGradient}
                    >
-                       <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>
+                       {/*{recipe.title.length > 30 ? <Text style={styles.headerRecipeImageTextSmall}>{recipe.title}</Text> : <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>}*/}
+                          <Text ref={titleRef} style={[styles.headerRecipeImageText, {fontSize: fontSize}]} onLayout={handleTextLayout}>{recipe.title}</Text>
+                       {/*<Text style={styles.headerRecipeImageText}>{recipe.title}</Text>*/}
                        <View style={styles.recipeLikes}>
                            <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
                            <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />

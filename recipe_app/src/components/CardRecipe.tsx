@@ -1,9 +1,9 @@
 import styles from "../stylesheets/Homepage_stylesheet";
 import general from "../stylesheets/General_stylesheet";
-import {ImageBackground, Text, TouchableOpacity, View} from "react-native";
+import {ImageBackground, LayoutChangeEvent, Text, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useTheme} from "@react-navigation/native";
 import {auth, database} from "../firebase/config";
 import Feather from "react-native-vector-icons/Feather";
@@ -16,7 +16,7 @@ interface CardRecipeProps {
     navigation: any;
     width?: number;
     height?: number;
-    fontSize?: number;
+
     star?: boolean;
     label?: boolean;
     trash?: boolean;
@@ -24,12 +24,15 @@ interface CardRecipeProps {
 
 }
 
-const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, star=true, label=true, trash=false}: CardRecipeProps) => {
+const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, label=true, trash=false}: CardRecipeProps) => {
     const { colors } = useTheme();
     const theme = useTheme();
     const [saved, setSaved] = useState<boolean>(false);
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
     const user = auth.currentUser;
+    const titleRef = useRef<Text>(null);
+    const [fontSize, setFontSize] = useState<number>(20);
+
 
     const handleFavorite = (recipeIndx : any) => {
         //alert to say that user should be logged in to save a recipe
@@ -104,15 +107,31 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, fontSize=20, st
             console.log(error);
         });
     }
+    useEffect(() => {
+        if (titleRef.current) {
+            titleRef.current.measure((x, y, width, height, pageX, pageY) => {
+                if (height > 100) {
+                    setFontSize(fontSize - 2);
+                }
+            });
+        }
+    }, [fontSize]);
+    const handleTextLayout = (event: LayoutChangeEvent) => {
+        const { height } = event.nativeEvent.layout;
+        if (height > 100 && fontSize > 15) {
+            setFontSize(fontSize - 2);
+        }
+    };
 
-   return (
+
+    return (
        <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})} activeOpacity={0.4}>
            {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
            <LinearGradient
                colors={['transparent','rgba(0,0,0,0.8)' ]}
                style={[styles.blocRecipeGradient, {width: width}]}
            >
-               <Text style={[styles.blocRecipeImageText, {fontSize: fontSize}]}>{recipe.title}</Text>
+               <Text ref={titleRef} style={[styles.blocRecipeImageText, {fontSize: fontSize}]} onLayout={handleTextLayout}>{recipe.title}</Text>
            </LinearGradient>
               {label &&
            <View style={styles.blocRecipeLabel}>

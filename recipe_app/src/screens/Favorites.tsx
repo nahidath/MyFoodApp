@@ -26,33 +26,23 @@ const Favorites : FC = () => {
     // console.log(user);
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const navigation = useNavigation<FavoriteProps>();
-    const [favRecipes, setFavRecipes] = useState<any[]>([]);
+    const [favRecipesUser, setFavRecipesUser] = useState<any[]>([]);
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [loggedIn, setLoggedIn] = useState(false);
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setLoggedIn(true);
-            } else {
-                setLoggedIn(false);
-            }
-        });
-
-        return unsubscribe;
-    }, [auth]);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            if(loggedIn){
-                navigation.navigate('Favorites', {screen: 'FavoritesStackScreen/Favs'});
-            }else {
-                navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
-            }
-        }, [loggedIn]));
-
+    // useEffect(() => {
+    //     const unsubscribe = auth.onAuthStateChanged((user) => {
+    //         if (user) {
+    //             setLoggedIn(true);
+    //         } else {
+    //             setLoggedIn(false);
+    //         }
+    //     });
+    //
+    //     return unsubscribe;
+    // }, [auth]);
 
     const getFavRecipeUser = () => {
         const userID = user?.uid;
@@ -69,43 +59,65 @@ const Favorites : FC = () => {
                 }
             }
         });
+        console.log(favRecipes);
 
         axios.get('https://api.spoonacular.com/recipes/informationBulk', {params: {apiKey: configValue, ids: favRecipes.toString()} }).then((response) => {
-            setFavRecipes(response.data);
+            //compare two arrays and remove the recipes that are not in the database anymore
+            setFavRecipesUser(response.data);
             setRefreshing(false);
         }).catch((error) => {
             console.log(error);
         });
     }
 
+    useFocusEffect(
+        //get the recipes for the user when the page is focused
+        React.useCallback(() => {
+            if (user) {
+                setRefreshing(true);
+                getFavRecipeUser();
+                console.log("user is connected");
+            }
+        }, [user])
+    )
+
+
+
+
 
 
     // useEffect(() => {
-    //     getFavRecipeUser();
-    // }, [favRecipes]);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            setRefreshing(true);
-            getFavRecipeUser();
-        }, [])
-    )
+    //     if(user){
+    //         setRefreshing(true);
+    //         getFavRecipeUser();
+    //         // console.log(favRecipes);
+    //     }
+    //
+    // }, [user]);
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         if (user) {
+    //             setRefreshing(true);
+    //             getFavRecipeUser();
+    //         }
+    //     }, [user])
+    // )
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {!loggedIn ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
+            {user == null ? <View style={[styles.restricted, {backgroundColor: colors.background}]}>
                     <Text style={[styles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
                     <TouchableOpacity style={[styles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.push('LoginStackScreen')}>
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View> :
                 // <View style={styles.favList}>
-                    favRecipes.length === 0 ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{color: colors.text, fontSize: 15}}>No saved recipes</Text></View> :
+                    favRecipesUser.length === 0 ? <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 15}}><Text style={{color: 'grey', fontSize: 15, fontStyle: 'italic'}}>No saved recipes</Text></View> :
                         refreshing ? <SkeletonLoaderFavoritesPage theme={theme} color={colors} /> :
                 <FlatList
-                    data={favRecipes}
-                    renderItem={({item}) => <CardRecipe trash={true} label={false} fontSize={17} height={180} width={130} star={false} recipe={item} navigation={navigation} />}
+                    data={favRecipesUser}
+                    renderItem={({item}) => <CardRecipe trash={true} label={false}  height={180} width={130} star={false} recipe={item} navigation={navigation} />}
                     keyExtractor={item => item.id}
                     numColumns={2}
                     columnWrapperStyle={{justifyContent: 'space-between', alignItems: 'center', padding: 10}}

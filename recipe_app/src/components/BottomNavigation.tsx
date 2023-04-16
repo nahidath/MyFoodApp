@@ -82,10 +82,11 @@ const BottomNavigation : FC = () => {
             {/*    ),}*/}
             {/*}/>*/}
             <Tab.Screen name="Search" component={SearchStackScreen} options={{
-                headerShown: false,
-                tabBarLabel:'',
-                tabBarIcon: () => (
-                    <FontAwesome name={"search"} size={30} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor, ...styles.shadow}}/>
+                // headerShown: false,
+                // tabBarLabel:'',
+                tabBarIcon: ({color}) => (
+                    // <FontAwesome name={"search"} size={30} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor, ...styles.shadow}}/>
+                    <Feather name={"search"} size={24} color={color} />
 
                 ),
             }
@@ -99,12 +100,12 @@ const BottomNavigation : FC = () => {
                 ),}
             }/>
 
-            <Tab.Screen name="More" component={MoreStackScreen} options={{
-                headerShown: false,
-                tabBarIcon: ({color}) => (
-                    <Feather name={"more-horizontal"} size={24} color={color} />
-                ),}
-            }/>
+            {/*<Tab.Screen name="More" component={MoreStackScreen} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*    tabBarIcon: ({color}) => (*/}
+            {/*        <Feather name={"more-horizontal"} size={24} color={color} />*/}
+            {/*    ),}*/}
+            {/*}/>*/}
         </Tab.Navigator>
 
     );

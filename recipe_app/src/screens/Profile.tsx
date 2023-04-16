@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from "react";
-import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground, Image} from "react-native";
+import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground, Image, Modal} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import styles from "../stylesheets/Profile_stylesheet";
@@ -11,7 +11,7 @@ import {useFocusEffect, useNavigation, useNavigationState, useTheme} from "@reac
 import {auth} from "../firebase/config";
 import {LoginStackList, ProfileStackList} from "../types/types";
 import {deleteUser, signOut} from "firebase/auth";
-import notifstyles from "../stylesheets/Notifications_stylesheet";
+import stylesMore from "../stylesheets/More_stylesheet";
 // @ts-ignore
 import * as ImagePicker from 'expo-image-picker';
 import profile from "../stylesheets/Profile_stylesheet";
@@ -35,6 +35,8 @@ const Profile : FC = () => {
     const [newName, setNewName] = useState<string | null>(null);
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [loggedIn, setLoggedIn] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+
     // const route = useNavigationState(state => state.routes[state.index]);
     // console.log(route.name);
 
@@ -54,9 +56,10 @@ const Profile : FC = () => {
         React.useCallback(() => {
         if(loggedIn){
             navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
-        }else {
-            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
         }
+        // else {
+        //     navigation.navigate('Profile', {screen: 'ProfileStackScreen/ProfilePage'});
+        // }
     }, [loggedIn]));
 
     useFocusEffect(
@@ -144,46 +147,137 @@ const Profile : FC = () => {
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            {!loggedIn ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>
-                    <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>
-                    <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen')}>
-                        <Text style={notifstyles.buttonText}>Login</Text>
+            <ScrollView>
+                <View style={{margin:10}}>
+                    <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>
+                        {user != null ? <Image source={{uri: user.photoURL?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
+                        <Text style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
+                        <TouchableOpacity style={styles.arrowGo} onPress={() => navigation.push('EditProfile')} activeOpacity={0.5}>
+                        <Feather name={"arrow-right"} size={24} color={colors.text} />
+                        </TouchableOpacity>
                     </TouchableOpacity>
-                </View> :
-                <>
-                <View style={styles.profilePicContainer}>
-                    {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
-                    <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>
-                </View>
-                <Separator />
-                <ScrollView>
-                    <View style={styles.profileInfoContainer}>
-                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>
-                            <Feather name={"edit-3"} size={24} color={colors.text} />
-                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
+
+                    <Text style={[stylesMore.textTitle, {color: colors.text}]}>Settings</Text>
+                    <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('NotificationSettings')}>
+                        <Feather name={"bell"} size={22} color={colors.text} />
+                        {/*<Text style={[styles.btnStyleText, {fontFamily: 'Poppins'}]}>Notifications</Text>*/}
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Notifications</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('DisplaySettings')}>
+                        <Feather name={"monitor"} size={22} color={colors.text} />
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Display Settings</Text>
+                    </TouchableOpacity>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <View style={stylesMore.centeredView}>
+                            <View style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification} ]}>
+                                <Text style={[stylesMore.modalText, {color: colors.text}]}>Choose your language</Text>
+                                <Separator />
+                                <TouchableOpacity style={stylesMore.languageBtn}>
+                                    <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>English</Text>
+                                </TouchableOpacity>
+                                <Separator />
+                                <TouchableOpacity style={stylesMore.languageBtn}>
+                                    <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>French</Text>
+                                </TouchableOpacity>
+
+                                {/*<TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => setModalVisible(!modalVisible)}>*/}
+                                {/*    <Feather name={"x"} size={22} color={"#666666"} />*/}
+                                {/*    <Text style={styles.btnStyleText}>Close</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                                {/*<Pressable*/}
+                                {/*    style={[styles.button, styles.buttonClose]}*/}
+                                {/*    onPress={() => setModalVisible(!modalVisible)}>*/}
+                                {/*    <Text style={styles.textStyle}>Hide Modal</Text>*/}
+                                {/*</Pressable>*/}
+                            </View>
+                        </View>
+                    </Modal>
+                    <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setModalVisible(true)}>
+                        <Feather name={"globe"} size={22} color={colors.text} />
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Languages</Text>
+                    </TouchableOpacity>
+
+                    <View >
+                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>Help</Text>
+                        <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Faq')}>
+                            <Feather name={"help-circle"} size={22} color={colors.text} />
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>FAQ</Text>
                         </TouchableOpacity>
-                        {/*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*/}
-                        {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
-                        {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
-                        {/*</TouchableOpacity>*/}
-                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Favorites', {screen : 'FavoriteStackScreen/Favs'})}>
-                            <FontAwesome name={"heart"} size={24} color={colors.text} />
-                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={confirmation}>
-                            <Feather name={"trash-2"} size={24} color={colors.text} />
-                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Delete account</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                        onPress={logOut}
-                        >
-                            <Feather name={"log-out"} size={24} color={colors.text} />
-                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Log Out</Text>
+                        <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Contact')}>
+                            <Feather name={"mail"} size={22} color={colors.text} />
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Contact</Text>
                         </TouchableOpacity>
                     </View>
-                </ScrollView>
-                </>
-            }
+                    <View>
+                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>Loving MyRecipeApp ?</Text>
+                        <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} >
+                            <FontAwesome name={"star"} size={22} color={colors.text} />
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Rate us</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
+                            <FontAwesome name={"share"} size={22} color={colors.text} />
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Share the application</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style={[stylesMore.textTitle, {color:colors.text}]}>About</Text>
+                        <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('PrivacyPolicy')}>
+                            <Feather name={"shield"} size={22} color={colors.text} />
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Privacy Policy</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('TermsOfUse')}>
+                            <FontAwesome name={"file"} size={22} color={colors.text} />
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Terms of use</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ScrollView>
+            {/*{!loggedIn ? <View style={[notifstyles.restricted, {backgroundColor: colors.background}]}>*/}
+            {/*        <Text style={[notifstyles.restrictedText, {color: colors.text}]}>You must be logged in to view this page.</Text>*/}
+            {/*        <TouchableOpacity style={[notifstyles.button,  {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => navigation.navigate('LoginStackScreen')}>*/}
+            {/*            <Text style={notifstyles.buttonText}>Login</Text>*/}
+            {/*        </TouchableOpacity>*/}
+            {/*    </View> :*/}
+            {/*    <>*/}
+            {/*    <View style={styles.profilePicContainer}>*/}
+            {/*        {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}*/}
+            {/*        <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>*/}
+            {/*    </View>*/}
+            {/*    <Separator />*/}
+            {/*    <ScrollView>*/}
+            {/*        <View style={styles.profileInfoContainer}>*/}
+            {/*            <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>*/}
+            {/*                <Feather name={"edit-3"} size={24} color={colors.text} />*/}
+            {/*                <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>*/}
+            {/*            </TouchableOpacity>*/}
+            {/*            /!*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*!/*/}
+            {/*            /!*    <FontAwesome name={"key"} size={24} color={colors.text} />*!/*/}
+            {/*            /!*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*!/*/}
+            {/*            /!*</TouchableOpacity>*!/*/}
+            {/*            <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Favorites', {screen : 'FavoriteStackScreen/Favs'})}>*/}
+            {/*                <FontAwesome name={"heart"} size={24} color={colors.text} />*/}
+            {/*                <Text style={[styles.btnStyleText, {color:colors.text}]}>Favorite recipes</Text>*/}
+            {/*            </TouchableOpacity>*/}
+            {/*            <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={confirmation}>*/}
+            {/*                <Feather name={"trash-2"} size={24} color={colors.text} />*/}
+            {/*                <Text style={[styles.btnStyleText, {color:colors.text}]}>Delete account</Text>*/}
+            {/*            </TouchableOpacity>*/}
+            {/*            <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}*/}
+            {/*            onPress={logOut}*/}
+            {/*            >*/}
+            {/*                <Feather name={"log-out"} size={24} color={colors.text} />*/}
+            {/*                <Text style={[styles.btnStyleText, {color:colors.text}]}>Log Out</Text>*/}
+            {/*            </TouchableOpacity>*/}
+            {/*        </View>*/}
+            {/*    </ScrollView>*/}
+            {/*    </>*/}
+            {/*}*/}
         </View>
     );
 }

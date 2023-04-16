@@ -33,8 +33,8 @@ export default StyleSheet.create({
         padding: 10,
     },
     button: {
-        width: '80%',
-        // height: 40,
+        width: 100,
+        height: 50,
         margin: 12,
         borderWidth: 1,
         padding: 10,
