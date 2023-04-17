@@ -26,7 +26,7 @@ export default StyleSheet.create({
     },
     editProfileBtn: {
         position: 'absolute',
-        top: 130,
+        top: 120,
         right: 100,
         backgroundColor: '#9fc131',
         borderRadius: 50,
@@ -34,5 +34,43 @@ export default StyleSheet.create({
         width: 45,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    profilePicContainer: {
+        marginTop: 20,
+        height: 160,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    form: {
+        // flexDirection: 'column',
+        marginTop: 30,
+        justifyContent: 'center',
+        width: '100%',
+    },
+    inputContainer: {
+        // flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    input: {
+        width: '80%',
+        height: 52,
+        marginBottom: 10,
+        borderWidth: 1,
+        padding: 16,
+        borderRadius: 8,
+    },
+    editButton: {
+        position: 'absolute',
+        right: 30,
+        padding: 18,
+        textAlignVertical: 'center',
+        textAlign:'right',
+        bottom: 8,
     }
 });

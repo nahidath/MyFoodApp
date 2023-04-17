@@ -20,7 +20,7 @@ const Faq = () => {
         },
         {
             title : "How can I save a recipe as favorites ?",
-            answer : "You can save a recipe as favorites by clicking the heart button in the top right corner."
+            answer : "You can save a recipe as favorites by clicking the heart button in the top right corner or double tap on the recipe image."
         },
         {
             title : "Which recipe can I find in this app ?",

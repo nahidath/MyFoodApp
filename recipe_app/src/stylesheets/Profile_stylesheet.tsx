@@ -9,7 +9,7 @@ export default StyleSheet.create({
     },
     profilePicContainer: {
         marginTop: 20,
-        height: 200,
+        height: 250,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -57,13 +57,14 @@ export default StyleSheet.create({
         height: 50,
         margin: 5,
         flexDirection: 'row',
+        justifyContent: 'center',
+
     },
     btnStyleText: {
         fontSize: 15,
         // fontWeight: 'bold',
         paddingLeft: 10,
         alignContent: 'center',
-        justifyContent: 'center',
         paddingTop: 2,
         // fontFamily: 'sans-serif-medium',
     },

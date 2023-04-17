@@ -28,6 +28,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import axios from "axios";
 import stylesEdit from "../stylesheets/EditProfile_Stylesheet";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Tooltip from "../components/Tooltip";
+
 
 
 const EditProfile = () => {
@@ -59,6 +61,7 @@ const EditProfile = () => {
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [loading, setLoading] = useState<boolean>(false);
     const loadingColor = theme.dark ? '#E5E2E3' : '#929090';
+    const inputColor = theme.dark && isEditable.email ? '#121212' : '#F0F0F0';
 
 
 
@@ -224,78 +227,86 @@ const EditProfile = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView keyboardShouldPersistTaps='always'>
                 {error && <Text style={styles.error}>{error}</Text>}
-                <View style={profile.profilePicContainer}>
-                    {loading ? (
-                            <ActivityIndicator size="large" color={loadingColor} style={stylesEdit.profilePic} />
-                        ):
-                    userPicture ? <Image source={{uri: userPicture}} style={stylesEdit.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                <View style={{margin:10}}>
+                    <View style={stylesEdit.profilePicContainer}>
+                        {loading ? (
+                                <ActivityIndicator size="large" color={loadingColor} style={stylesEdit.profilePic} />
+                            ):
+                        userPicture ? <Image source={{uri: userPicture}} style={stylesEdit.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
 
-                    <TouchableOpacity style={stylesEdit.editProfileBtn} onPress={() => pickImage()}>
-                        <FontAwesome name={"camera"} size={18} color={"#ffffff"} />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.form}>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={[styles.input,  {borderColor: isEditable.email ? 'red' : colors.border, borderWidth: isEditable.email ? 2 : 1, color: colors.text, backgroundColor: isEditable.email ?
-                                    'white' : '#F0F0F0',}]}
-                            placeholder="Email"
-                            placeholderTextColor={colors.text}
-                            onChangeText={setEmail}
-                            value={email}
-                            autoCapitalize={'none'}
-                            editable={isEditable.email}
-                        />
-                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable('email')}/>
+                        <TouchableOpacity style={stylesEdit.editProfileBtn} onPress={() => pickImage()}>
+                            <FontAwesome name={"camera"} size={18} color={"#ffffff"} />
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={[styles.input,  {borderColor: isEditable.username ? 'red' : colors.border, borderWidth: isEditable.username ? 2 : 1, color: colors.text, backgroundColor: isEditable.username ?
-                                    'white' : '#F0F0F0',}]}
-                            placeholder="Username"
-                            placeholderTextColor={colors.text}
-                            onChangeText={setUsername}
-                            value={username}
-                            editable={isEditable.username}
-                        />
-                        <Feather name={'edit-3'} size={20} color={colors.text} style={styles.editButton} onPress={() => inputEditable('username')}/>
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={[styles.input,  {borderColor: isFocused.password ? 'red' : colors.border, borderWidth: isFocused.password ? 2 : 1, color: colors.text, backgroundColor: isFocused.password ?
-                                    'white' : '#F0F0F0',}]}
-                            placeholder="New password"
-                            placeholderTextColor={colors.text}
-                            onChangeText={setPassword}
-                            value={password}
-                            secureTextEntry={isVisible.password }
-                            editable={true}
-                            onFocus={() => handleFocus('password')}
-                            onBlur={() => {!isFocused.password }}
-                        />
-                        {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('password')}/>}
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={[styles.input,  {borderColor: isFocused.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isFocused.confPassword ? 2 : 1, backgroundColor: isFocused.confPassword ?
-                                    'white' : '#F0F0F0',}]}
-                            placeholder="Confirm your new password"
-                            placeholderTextColor={colors.text}
-                            onChangeText={setConfPassword}
-                            value={confPassword}
-                            secureTextEntry={isVisible.confPassword}
-                            editable={true}
-                            onFocus={() => handleFocus('confPassword')}
-                            onBlur={() => {!isFocused.confPassword}}
-                        />
-                        {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.editButton} onPress={() => togglePassword('confPassword')}/>}
-                    </View>
+                    <View style={stylesEdit.form}>
+                        <Text style={[styles.label, {color: colors.text}]}>Email</Text>
+                        <View style={stylesEdit.inputContainer}>
+                            <TextInput
+                                style={[stylesEdit.input,  {borderColor: isEditable.email ? 'red' : colors.border, borderWidth: isEditable.email ? 2 : 1, color: colors.text, backgroundColor: isEditable.email ? '#121212' : '#F0F0F0'}]}
+                                placeholderTextColor={colors.text}
+                                onChangeText={setEmail}
+                                value={email}
+                                autoCapitalize={'none'}
+                                editable={isEditable.email}
+                            />
+                            <Feather name={'edit-3'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => inputEditable('email')}/>
+                        </View>
+                        <Text style={[styles.label, {color: colors.text}]}>Name</Text>
+                        <View style={stylesEdit.inputContainer}>
+                            <TextInput
+                                style={[stylesEdit.input,  {borderColor: isEditable.username ? 'red' : colors.border, borderWidth: isEditable.username ? 2 : 1, color: colors.text, backgroundColor: isEditable.username ?
+                                        'white' : '#F0F0F0',}]}
+                                placeholderTextColor={colors.text}
+                                onChangeText={setUsername}
+                                value={username}
+                                editable={isEditable.username}
+                            />
+                            <Feather name={'edit-3'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => inputEditable('username')}/>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={[styles.label, {color: colors.text}]}>New Password</Text>
+                            <Tooltip content={"Password must be at least 8 characters long, 1 uppercase letter and 1 number"} >
+                                <Feather name={'info'} size={18} color={colors.text} style={{marginLeft: 5, marginTop:2}} />
+                            </Tooltip>
+                        </View>
+                        <View style={stylesEdit.inputContainer}>
+                            <TextInput
+                                style={[stylesEdit.input,  {borderColor: isFocused.password ? 'red' : colors.border, borderWidth: isFocused.password ? 2 : 1, color: colors.text, backgroundColor: isFocused.password ?
+                                        'white' : '#F0F0F0',}]}
+                                placeholderTextColor={colors.text}
+                                onChangeText={setPassword}
+                                value={password}
+                                secureTextEntry={isVisible.password }
+                                editable={true}
+                                onFocus={() => handleFocus('password')}
+                                onBlur={() => {!isFocused.password }}
+                            />
+                            {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => togglePassword('password')}/>}
+                        </View>
+                        <Text style={[styles.label, {color: colors.text}]}>Confirm New Password</Text>
+                        <View style={stylesEdit.inputContainer}>
+                            <TextInput
+                                style={[stylesEdit.input,  {borderColor: isFocused.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isFocused.confPassword ? 2 : 1, backgroundColor: isFocused.confPassword ?
+                                        'white' : '#F0F0F0',}]}
+                                placeholderTextColor={colors.text}
+                                onChangeText={setConfPassword}
+                                value={confPassword}
+                                secureTextEntry={isVisible.confPassword}
+                                editable={true}
+                                onFocus={() => handleFocus('confPassword')}
+                                onBlur={() => {!isFocused.confPassword}}
+                            />
+                            {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => togglePassword('confPassword')}/>}
+                        </View>
 
-                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                                      onPress={() => updateInfos()}
-                    >
-                        <Text style={styles.btnText}>Update</Text>
-                    </TouchableOpacity>
+                        <View style={stylesEdit.inputContainer}>
+                            <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                              onPress={() => updateInfos()} activeOpacity={0.5}
+                            >
+                                <Text style={styles.btnText}>Update</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
 

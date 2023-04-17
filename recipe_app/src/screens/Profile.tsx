@@ -150,14 +150,15 @@ const Profile : FC = () => {
                 <View style={styles.profilePicContainer}>
                     {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
                     <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>
+                    <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colorSpec, width: 130, height: 45}]} onPress={() => navigation.push('EditProfile')}>
+                        <Feather name={"edit-3"} size={24} color={'#f2f2f2'} />
+                        <Text style={[styles.btnStyleText, {color:'#f2f2f2', fontWeight:'bold'}]}>Edit profile</Text>
+                    </TouchableOpacity>
                 </View>
                 <Separator />
                 <ScrollView>
                     <View style={styles.profileInfoContainer}>
-                        <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('EditProfile')}>
-                            <Feather name={"edit-3"} size={24} color={colors.text} />
-                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Edit your profile</Text>
-                        </TouchableOpacity>
+
                         {/*<TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>*/}
                         {/*    <FontAwesome name={"key"} size={24} color={colors.text} />*/}
                         {/*    <Text style={[styles.btnStyleText, {color:colors.text}]}>Change your password</Text>*/}
@@ -168,13 +169,13 @@ const Profile : FC = () => {
                         {/*</TouchableOpacity>*/}
                         <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={confirmation}>
                             <Feather name={"trash-2"} size={24} color={colors.text} />
-                            <Text style={[styles.btnStyleText, {color:colors.text}]}>Delete account</Text>
+                            <Text style={[styles.btnStyleText, {color:colors.text}]}>DELETE ACCOUNT</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.btnStyle, general.shadow, styles.logoutBtn, {backgroundColor: colors.notification}]}
                         onPress={logOut}
                         >
                             <Feather name={"log-out"} size={24} color={'#fe2f3f'} />
-                            <Text style={[styles.btnStyleText,styles.logoutTxt]}>Log Out</Text>
+                            <Text style={[styles.btnStyleText,styles.logoutTxt]}>LOG OUT</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

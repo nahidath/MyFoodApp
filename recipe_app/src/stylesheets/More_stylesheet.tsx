@@ -10,7 +10,7 @@ export default StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         margin: 10,
-        marginTop: 15,
+        marginTop: 10,
     },
     btnStyle: {
         padding: 10,

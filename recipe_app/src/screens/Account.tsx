@@ -110,7 +110,7 @@ const Account : FC = () => {
                         <Text style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
                         <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text} />
                     </TouchableOpacity>
-
+                    <Separator />
                     <Text style={[stylesMore.textTitle, {color: colors.text}]}>Settings</Text>
                     <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('NotificationSettings')}>
                         <Feather name={"bell"} size={22} color={colors.text} />
@@ -194,7 +194,7 @@ const Account : FC = () => {
                     <View>
                         <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, stylesMore.logoutBtn, {backgroundColor: colors.notification}]} onPress={() => logOut()}>
                             <Feather name={"log-out"} size={24} color={'#fe2f3f'} />
-                            <Text style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>Logout</Text>
+                            <Text style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>LOGOUT</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 15}}>

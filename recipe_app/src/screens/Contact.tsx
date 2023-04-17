@@ -91,7 +91,7 @@ const Contact = () => {
                         onChangeText={value => setMessage(value)}
                         value={message}
                     />
-                    <TouchableOpacity style={[styles.sendBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => sendMail()}>
+                    <TouchableOpacity style={[styles.sendBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() => sendMail()} activeOpacity={0.5}>
                        <Text style={styles.btnText}>Send</Text>
                     </TouchableOpacity>
                 </View>
