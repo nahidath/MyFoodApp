@@ -39,7 +39,7 @@ export default StyleSheet.create({
     titleContainer: {
         flexDirection: 'column',
         justifyContent: 'space-between',
-
+        marginLeft: 10,
     }
 
 

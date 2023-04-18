@@ -170,7 +170,7 @@ const Search : FC = () => {
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps='always'
                         renderItem={({item}) => (
-                            <TouchableOpacity style={[styles.ingreBox, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() =>  handleIngredient(item.name.trim())}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.ingreBox, general.shadow, {backgroundColor: colors.notification, borderColor :borderSpec}]} onPress={() =>  handleIngredient(item.name.trim())}><Text style={{color:colors.text, textAlign:'center'}}>{item.name}{item.icon}</Text></TouchableOpacity>
                         )}
                     />
                 </View>

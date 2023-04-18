@@ -222,6 +222,18 @@ const EditProfile = () => {
 
     };
 
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    const handlePasswordChange = (value: string) => {
+        setPassword(value);
+        if (!passwordRegex.test(value)) {
+            setError('Password must be at least 8 characters long, 1 uppercase letter and 1 number.');
+        } else {
+            setError('');
+        }
+    };
+
+
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
@@ -275,7 +287,7 @@ const EditProfile = () => {
                                 style={[stylesEdit.input,  {borderColor: isFocused.password ? 'red' : colors.border, borderWidth: isFocused.password ? 2 : 1, color: colors.text, backgroundColor: isFocused.password ?
                                         inputColor2 : inputColor}]}
                                 placeholderTextColor={colors.text}
-                                onChangeText={setPassword}
+                                onChangeText={handlePasswordChange}
                                 value={password}
                                 secureTextEntry={isVisible.password }
                                 editable={true}

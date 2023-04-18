@@ -33,7 +33,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
-type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
+// type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
 
 
 

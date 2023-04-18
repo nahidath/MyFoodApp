@@ -79,7 +79,7 @@ const BottomNavigation : FC = () => {
             {/*    ),}*/}
             {/*}/>*/}
             <Tab.Screen name="Search" component={SearchStackScreen} options={{
-                // headerShown: false,
+                headerShown: false,
                 // tabBarLabel:'',
                 tabBarIcon: ({color}) => (
                     // <FontAwesome name={"search"} size={30} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor, ...styles.shadow}}/>

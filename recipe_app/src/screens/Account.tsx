@@ -105,11 +105,17 @@ const Account : FC = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
                 <View style={{margin:10}}>
-                    <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('ProfileStackScreen')}>
-                        {image ? <Image source={{uri: image}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
-                        <Text style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
+                    {!loggedIn ? <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('LoginStackScreen')}>
+                        <Feather name={"user"} size={24} color={colors.text} />
+                        <Text style={[styles.profileBtnText, {color: colors.text}]}>Login</Text>
                         <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> :
+                        <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('ProfileStackScreen')}>
+                            {image ? <Image source={{uri: image}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
+                            <Text style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
+                            <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text} />
+                        </TouchableOpacity>
+                    }
                     <Separator />
                     <Text style={[stylesMore.textTitle, {color: colors.text}]}>Settings</Text>
                     <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('NotificationSettings')}>
