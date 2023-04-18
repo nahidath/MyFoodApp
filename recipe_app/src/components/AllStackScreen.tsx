@@ -273,7 +273,7 @@ export function AccountStackScreen () {
                 // headerShadowVisible: false,
             }}  />
             <AccountStack.Screen name="DisplaySettings" component={DisplaySettings} options={{
-                headerTitle: 'Display Settings',
+                headerTitle: 'Appearance',
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },

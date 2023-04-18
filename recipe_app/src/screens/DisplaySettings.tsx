@@ -36,16 +36,22 @@ const DisplaySettings = () => {
     return (
         <View style={[styles.container, general.container, {backgroundColor:colors.background}] }>
             {theme2.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <View style={styles.switchContainer}>
-                <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
-                    <Text style={[styles.textTitle, {color: colors.text}]}>Switch to Dark Mode</Text>
-                    <Switch
-                        trackColor={{false: '#767577', true: '#b1dad6'}}
-                        thumbColor={isEnabled ? '#008375' : '#f4f3f4'}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleSwitchDarkMode}
-                        value={isEnabled}
-                    />
+            <View style={{margin: 10}}>
+                <View style={styles.titleContainer}>
+                    <Text style={[styles.title, {color: colors.text}]}>Application theme</Text>
+                    <Text style={styles.subTitle}>Selecting a particular option will change the appearance (coloring) of the application according to your preferences.</Text>
+                </View>
+                <View style={styles.switchContainer}>
+                    <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
+                        <Text style={[styles.textTitle, {color: colors.text}]}>Switch to Dark Mode</Text>
+                        <Switch
+                            trackColor={{false: '#767577', true: '#b1dad6'}}
+                            thumbColor={isEnabled ? '#008375' : '#f4f3f4'}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={toggleSwitchDarkMode}
+                            value={isEnabled}
+                        />
+                    </View>
                 </View>
             </View>
         </View>

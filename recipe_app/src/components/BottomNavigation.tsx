@@ -72,11 +72,7 @@ const BottomNavigation : FC = () => {
                     <Feather name={"home"} size={24} color={color} />
                 ),
             }} />
-            <Tab.Screen name="Favorites" component={FavoriteStackScreen} options={{
-                tabBarIcon: ({color}) => (
-                    <Feather name={"heart"} size={24} color={color} />
-                ),}
-            } />
+
             {/*<Tab.Screen name="Notifications" component={NotificationsStackScreen} options={{*/}
             {/*    tabBarIcon: ({color}) => (*/}
             {/*        <Feather name={"bell"} size={24} color={color} />*/}
@@ -91,6 +87,11 @@ const BottomNavigation : FC = () => {
 
                 ),
             }
+            } />
+            <Tab.Screen name="Favorites" component={FavoriteStackScreen} options={{
+                tabBarIcon: ({color}) => (
+                    <Feather name={"heart"} size={24} color={color} />
+                ),}
             } />
 
             <Tab.Screen name="Account" component={AccountStackScreen} options={{

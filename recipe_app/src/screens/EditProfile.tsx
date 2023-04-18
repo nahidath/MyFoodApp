@@ -61,7 +61,8 @@ const EditProfile = () => {
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [loading, setLoading] = useState<boolean>(false);
     const loadingColor = theme.dark ? '#E5E2E3' : '#929090';
-    const inputColor = theme.dark && isEditable.email ? '#121212' : '#F0F0F0';
+    const inputColor = theme.dark ? 'rgba(155,155,155,0.52)' : '#F0F0F0';
+    const inputColor2 = theme.dark ? '#252525': '#121212' ;
 
 
 
@@ -242,7 +243,7 @@ const EditProfile = () => {
                         <Text style={[styles.label, {color: colors.text}]}>Email</Text>
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
-                                style={[stylesEdit.input,  {borderColor: isEditable.email ? 'red' : colors.border, borderWidth: isEditable.email ? 2 : 1, color: colors.text, backgroundColor: isEditable.email ? '#121212' : '#F0F0F0'}]}
+                                style={[stylesEdit.input,  {borderColor: isEditable.email ? 'red' : colors.border, borderWidth: isEditable.email ? 2 : 1, color: colors.text, backgroundColor: isEditable.email ? inputColor2 : inputColor}]}
                                 placeholderTextColor={colors.text}
                                 onChangeText={setEmail}
                                 value={email}
@@ -255,7 +256,7 @@ const EditProfile = () => {
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
                                 style={[stylesEdit.input,  {borderColor: isEditable.username ? 'red' : colors.border, borderWidth: isEditable.username ? 2 : 1, color: colors.text, backgroundColor: isEditable.username ?
-                                        'white' : '#F0F0F0',}]}
+                                        inputColor2 : inputColor}]}
                                 placeholderTextColor={colors.text}
                                 onChangeText={setUsername}
                                 value={username}
@@ -272,7 +273,7 @@ const EditProfile = () => {
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
                                 style={[stylesEdit.input,  {borderColor: isFocused.password ? 'red' : colors.border, borderWidth: isFocused.password ? 2 : 1, color: colors.text, backgroundColor: isFocused.password ?
-                                        'white' : '#F0F0F0',}]}
+                                        inputColor2 : inputColor}]}
                                 placeholderTextColor={colors.text}
                                 onChangeText={setPassword}
                                 value={password}
@@ -287,7 +288,7 @@ const EditProfile = () => {
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
                                 style={[stylesEdit.input,  {borderColor: isFocused.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isFocused.confPassword ? 2 : 1, backgroundColor: isFocused.confPassword ?
-                                        'white' : '#F0F0F0',}]}
+                                        inputColor2 : inputColor}]}
                                 placeholderTextColor={colors.text}
                                 onChangeText={setConfPassword}
                                 value={confPassword}

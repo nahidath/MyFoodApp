@@ -23,5 +23,21 @@ export default StyleSheet.create({
     },
     switchContainer: {
         marginTop: 15,
+    },
+    subTitle: {
+        fontSize: 15,
+        color: '#666666',
+        flexWrap: 'wrap',
+        padding: 5,
+    },
+    title: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        padding: 5,
+    },
+    titleContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+
     }
 });

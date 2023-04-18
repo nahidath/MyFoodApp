@@ -118,8 +118,8 @@ const Account : FC = () => {
                         <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Notifications</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('DisplaySettings')}>
-                        <Feather name={"monitor"} size={22} color={colors.text} />
-                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Display Settings</Text>
+                        <Feather name={"settings"} size={22} color={colors.text} />
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Appearance</Text>
                     </TouchableOpacity>
                     <Modal
                         animationType="fade"
@@ -158,7 +158,7 @@ const Account : FC = () => {
                     </TouchableOpacity>
 
                     <View >
-                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>Help</Text>
+                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>Support</Text>
                         <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Faq')}>
                             <Feather name={"help-circle"} size={22} color={colors.text} />
                             <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>FAQ</Text>
