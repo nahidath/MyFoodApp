@@ -1,15 +1,17 @@
 import {NavigationContainer, DarkTheme, DefaultTheme, useFocusEffect, useNavigation} from "@react-navigation/native";
 import BottomNavigation from "./src/components/BottomNavigation";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { auth } from "./src/firebase/config";
-
 // @ts-ignore
 export const ThemeContext = React.createContext();
+
+
 export default function App() {
 
     //refresh the whole app when the user is logged in or out
     const [loggedIn, setLoggedIn] = useState(false);
     // const navigation = useNavigation();
+
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {

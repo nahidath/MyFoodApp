@@ -1,7 +1,7 @@
 import {FC, useEffect, useState} from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Homepage from "../screens/Homepage";
-import Notifications from "../screens/Notifications";
+import Notifs from "../screens/Notifs";
 import Search from "../screens/Search";
 import Account from "../screens/Account";
 import Favorites from "../screens/Favorites";
@@ -73,7 +73,7 @@ const BottomNavigation : FC = () => {
                 ),
             }} />
 
-            {/*<Tab.Screen name="Notifications" component={NotificationsStackScreen} options={{*/}
+            {/*<Tab.Screen name="Notifs" component={NotificationsStackScreen} options={{*/}
             {/*    tabBarIcon: ({color}) => (*/}
             {/*        <Feather name={"bell"} size={24} color={color} />*/}
             {/*    ),}*/}

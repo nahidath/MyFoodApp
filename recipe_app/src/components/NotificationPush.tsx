@@ -1,5 +1,5 @@
 // import * as Device from 'expo-device';
-// import * as Notifications from 'expo-notifications';
+// import * as Notifs from 'expo-notifications';
 // import {FC, useEffect, useRef, useState} from "react";
 // import {Button, Platform, View, Text} from "react-native";
 //
@@ -14,7 +14,7 @@
 //     const notificationListener = useRef<any>();
 //     const responseListener = useRef<any>();
 //
-//     Notifications.setNotificationHandler({
+//     Notifs.setNotificationHandler({
 //         handleNotification: async () => ({
 //             shouldShowAlert: true,
 //             shouldPlaySound: false,
@@ -48,26 +48,26 @@
 //     const registerForPushNotificationsAsync = async () => {
 //         let token;
 //         if (Device.isDevice) {
-//             const {status: existingStatus} = await Notifications.getPermissionsAsync();
+//             const {status: existingStatus} = await Notifs.getPermissionsAsync();
 //             let finalStatus = existingStatus;
 //             if (existingStatus !== 'granted') {
-//                 const {status} = await Notifications.requestPermissionsAsync();
+//                 const {status} = await Notifs.requestPermissionsAsync();
 //                 finalStatus = status;
 //             }
 //             if (finalStatus !== 'granted') {
 //                 alert('Failed to get push token for push notification!');
 //                 return;
 //             }
-//             token = (await Notifications.getExpoPushTokenAsync()).data;
+//             token = (await Notifs.getExpoPushTokenAsync()).data;
 //             console.log(token);
 //         } else {
-//             alert('Must use physical device for Push Notifications');
+//             alert('Must use physical device for Push Notifs');
 //         }
 //
 //         if (Platform.OS === 'android') {
-//             Notifications.setNotificationChannelAsync('default', {
+//             Notifs.setNotificationChannelAsync('default', {
 //                 name: 'default',
-//                 importance: Notifications.AndroidImportance.MAX,
+//                 importance: Notifs.AndroidImportance.MAX,
 //                 vibrationPattern: [0, 250, 250, 250],
 //                 lightColor: '#FF231F7C',
 //             });
@@ -81,19 +81,19 @@
 //         if (enabled) {
 //             registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 //
-//             notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+//             notificationListener.current = Notifs.addNotificationReceivedListener(notification => {
 //                 // @ts-ignore
 //                 setNotification(notification);
 //             });
 //
-//             responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+//             responseListener.current = Notifs.addNotificationResponseReceivedListener(response => {
 //                 // @ts-ignore
 //                 setNotification(response.notification);
 //             });
 //
 //             return () => {
-//                 Notifications.removeNotificationSubscription(notificationListener.current);
-//                 Notifications.removeNotificationSubscription(responseListener.current);
+//                 Notifs.removeNotificationSubscription(notificationListener.current);
+//                 Notifs.removeNotificationSubscription(responseListener.current);
 //             };
 //         }
 //     }, [enabled]);

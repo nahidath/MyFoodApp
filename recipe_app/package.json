@@ -20,6 +20,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",
+    "eas-cli": "^3.9.2",
     "expo": "~47.0.9",
     "expo-app-loading": "~2.1.1",
     "expo-device": "~5.0.0",

@@ -120,7 +120,7 @@ const Account : FC = () => {
                     <Text style={[stylesMore.textTitle, {color: colors.text}]}>Settings</Text>
                     <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('NotificationSettings')}>
                         <Feather name={"bell"} size={22} color={colors.text} />
-                        {/*<Text style={[styles.btnStyleText, {fontFamily: 'Poppins'}]}>Notifications</Text>*/}
+                        {/*<Text style={[styles.btnStyleText, {fontFamily: 'Poppins'}]}>Notifs</Text>*/}
                         <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Notifications</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('DisplaySettings')}>

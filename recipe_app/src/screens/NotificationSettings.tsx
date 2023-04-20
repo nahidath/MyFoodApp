@@ -1,4 +1,4 @@
-import {View, Text, Switch, Platform} from "react-native";
+import {View, Text, Switch, Platform, Button} from "react-native";
 import styles from "../stylesheets/NS_stylesheet";
 import React, {useEffect, useRef, useState} from "react";
 import general from "../stylesheets/General_stylesheet";
@@ -7,136 +7,132 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import {useTheme} from "@react-navigation/native";
 
+
+
 const NotificationSettings = () => {
     const [isEnabledPush, setIsEnabledPush] = useState(false);
     const [isEnabledEmail, setIsEnabledEmail] = useState(false);
 
-    const toggleSwitchPush = () => setIsEnabledPush(previousStatePush => !previousStatePush);
     const toggleSwitchEmail = () => setIsEnabledEmail(previousStateEmail => !previousStateEmail);
 
 
-    //Push Notifications
-    const [expoPushToken, setExpoPushToken] = useState<string|undefined>('');
-    const [notification, setNotification] = useState<boolean>(false);
-    const notificationListener = useRef<any>();
-    const responseListener = useRef<any>();
+    //Push Notifs
     const [data, setData] = useState<any>({});
-
-    // Notifications.setNotificationHandler({
-    //     handleNotification: async () => ({
-    //         shouldShowAlert: true,
-    //         shouldPlaySound: false,
-    //         shouldSetBadge: false,
-    //     }),
-    // });
-    //
-    // Notifications.scheduleNotificationAsync({
-    //     content: {
-    //         title: data.title,
-    //         body: data.body,
-    //     },
-    //     trigger: {
-    //         seconds: 5,
-    //     }
-    // }).then(r => console.log(r));
-    //
-    // const sendPushNotification = async (expoPushToken: string | undefined) => {
-    //     const message = {
-    //         to: expoPushToken,
-    //         sound: 'default',
-    //         title: 'Original Title',
-    //         body: 'And here is the body!',
-    //         data: {data: 'goes here'},
-    //         _displayInForeground: true,
-    //     };
-    //
-    //     const response = await fetch('https://exp.host/--/api/v2/push/send', {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Accept-encoding': 'gzip, deflate',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(message),
-    //     });
-    //     // const data = await response.json();
-    //     // console.log(data);
-    //     setData(response.json());
-    // }
-    //
-    // const registerForPushNotificationsAsync = async () => {
-    //     let token;
-    //     if (Device.isDevice) {
-    //         const {status: existingStatus} = await Notifications.getPermissionsAsync();
-    //         let finalStatus = existingStatus;
-    //         if (existingStatus !== 'granted') {
-    //             const {status} = await Notifications.requestPermissionsAsync();
-    //             finalStatus = status;
-    //         }
-    //         if (finalStatus !== 'granted') {
-    //             alert('Failed to get push token for push notification!');
-    //             return;
-    //         }
-    //         token = (await Notifications.getExpoPushTokenAsync()).data;
-    //         console.log("token",token);
-    //     } else {
-    //         alert('Must use physical device for Push Notifications');
-    //     }
-    //
-    //     if (Platform.OS === 'android') {
-    //         Notifications.setNotificationChannelAsync('default', {
-    //             name: 'default',
-    //             importance: Notifications.AndroidImportance.MAX,
-    //             vibrationPattern: [0, 250, 250, 250],
-    //             lightColor: '#FF231F7C',
-    //         });
-    //     }
-    //
-    //     return token;
-    // }
-    //
-    //
-    // useEffect(() => {
-    //     if (isEnabledPush) {
-    //         console.log("Push notifications enabled");
-    //         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-    //
-    //         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    //             // @ts-ignore
-    //             setNotification(notification);
-    //         });
-    //
-    //         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    //             // @ts-ignore
-    //             setNotification(response.notification);
-    //         });
-    //
-    //         return () => {
-    //             Notifications.removeNotificationSubscription(notificationListener.current);
-    //             Notifications.removeNotificationSubscription(responseListener.current);
-    //         };
-    //
-    //         sendPushNotification(expoPushToken).then(r => console.log(r));
-    //     }
-    // }, [isEnabledPush]);
-
     const {colors} = useTheme();
     const theme = useTheme();
 
+    const [expoPushToken, setExpoPushToken] = useState("");
+    const [notification, setNotification] = useState<any>(false);
+
+    const notificationListener = useRef<any>();
+    const responseListener = useRef<any>();
+
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        }),
+    });
+
+    async function sendPushNotification(expoPushToken: any) {
+        console.log("from function send push notification:",expoPushToken);
+        const message = {
+            to: expoPushToken,
+            sound: 'default',
+            title: 'Original Title',
+            body: 'And here is the body!',
+            data: { someData: 'goes here' },
+        };
+        console.log("message:",message);
+        const response = await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
+        console.log('Response status code:', response.status);
+
+        const responseJson = await response.json();
+
+        console.log('Response JSON:', responseJson);
+
+    }
+    async function registerForPushNotificationsAsync() {
+        let token;
+        if (Device.isDevice) {
+            const { status: existingStatus } = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            token = (await Notifications.getExpoPushTokenAsync()).data;
+            console.log("token:",token);
+        } else {
+            alert('Must use physical device for Push Notifs');
+        }
+
+        if (Platform.OS === 'android') {
+            await Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+
+        return token;
+    }
+
+    useEffect(() => {
+        console.log("useEffect");
+        // @ts-ignore
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+        // console.log("notificationListener.current:",notificationListener.current);
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log("response",response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
+
+    const toggleSwitchPush = () => {
+        setIsEnabledPush(previousStatePush => !previousStatePush);
+        if (!isEnabledPush) {
+            sendPushNotification(expoPushToken)
+                .then(() => {
+                    console.log('Notification sent successfully');
+                })
+                .catch(error => {
+                    console.log('Error sending notification:', error);
+                });
+        }
+    }
+
     // useEffect(() => {
-    //     // Notifications.getPermissionsAsync().then(r => setIsEnabledPush(r.granted));
     //     if (isEnabledPush) {
-    //         setIsEnabledPush(true);
-    //     } else {
-    //         setIsEnabledPush(false);
+    //         sendPushNotification(expoPushToken).then(r => console.log("spn:",r));
+    //         console.log("Push Notifications Enabled");
+    //         console.log("expoPushToken:",expoPushToken);
     //     }
-    //     //
-    //     // if (isEnabledEmail) {
-    //     //     setIsEnabledEmail(true);
-    //     // } else {
-    //     //     setIsEnabledEmail(false);
-    //     // }
     // }, [isEnabledPush]);
+
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
@@ -167,6 +163,17 @@ const NotificationSettings = () => {
                             value={isEnabledEmail}
                         />
                     </View>
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <Text>Title: {notification && notification.request.content.title} </Text>
+                        <Text>Body: {notification && notification.request.content.body}</Text>
+                        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+                    </View>
+                    {/*<Button*/}
+                    {/*    title="Press to Send Notification"*/}
+                    {/*    onPress={async () => {*/}
+                    {/*        await sendPushNotification(expoPushToken);*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                 </View>
             </View>
         </View>

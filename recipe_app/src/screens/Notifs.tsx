@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {FC} from "react";
 import styles from "../stylesheets/Notifications_stylesheet";
@@ -10,9 +10,14 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {NotificationsStackList} from "../types/types";
 
 
+
 // @ts-ignore
 type NotificationsProps = MyStackNavigationProp<NotificationsStackList, 'Notifs'>;
-const Notifications : FC = () => {
+
+
+
+
+const Notifs = () => {
     // const [notifications, setNotifications] = useState<Notification[]>([]);
     //
     // useEffect(() => {
@@ -47,4 +52,4 @@ const Notifications : FC = () => {
 };
 
 
-export default Notifications;
+export default Notifs;

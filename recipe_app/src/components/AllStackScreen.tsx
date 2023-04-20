@@ -25,7 +25,7 @@ import PrivacyPolicy from "../screens/PrivacyPolicy";
 import TermsOfUse from "../screens/TermsOfUse";
 import EditProfile from "../screens/EditProfile";
 import Favorites from "../screens/Favorites";
-import Notifications from "../screens/Notifications";
+import Notifs from "../screens/Notifs";
 import Cuisine from "../screens/Cuisine";
 import Profile from "../screens/Profile";
 
@@ -368,7 +368,7 @@ export function NotificationsStackScreen () {
 
     return (
         <NotificationsStack.Navigator >
-            <NotificationsStack.Screen name="Notifs" component={Notifications} options={{
+            <NotificationsStack.Screen name="Notifs" component={Notifs} options={{
                 headerShown: false,
             }} />
             <NotificationsStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
