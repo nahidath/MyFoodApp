@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "243345150702",
+    "firebase_url": "https://my-recipe-app-72535-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "my-recipe-app-72535",
+    "storage_bucket": "my-recipe-app-72535.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243345150702:android:0669ecbbb2dd01214d59ff",
+        "android_client_info": {
+          "package_name": "com.naben.MyRecipeApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243345150702-2mbqcsf8i6s8rpa08gv7efrnfstng20p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLRYxgaLc6e4y8DBCrvxLE6W8HKLB12KM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243345150702-2mbqcsf8i6s8rpa08gv7efrnfstng20p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
