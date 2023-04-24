@@ -16,25 +16,70 @@ export const NotificationContext = createContext<{notification:boolean, setNotif
 
 export default function App() {
 
+    const admin = require('firebase-admin');
     //refresh the whole app when the user is logged in or out
     const [loggedIn, setLoggedIn] = useState(false);
     // const navigation = useNavigation();
     const [enabled, setEnabled] = useState(false);
     const [notification, setNotification] = useState<boolean>(true);
+    const [registrationToken, setRegistrationToken] = useState<string[]>([]);
+    const userId = auth.currentUser?.uid;
+
+    const saveTokenToDatabase = async (token: string) => {
+        // Assume user is already signed in
+        // Add the token to the users datastore
+        await admin.firestore().collection('users').doc(userId).set({
+            tokens: admin.firestore.FieldValue.arrayUnion(token),
+        }, {merge: true});
+    }
 
     const requestUserPermission =  () => {
         console.log('Requesting user permission');
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => setEnabled(r === PermissionsAndroid.RESULTS.GRANTED));
-        messaging().getToken().then(token => {
-            console.log('Token: ', token);
-            //subscribe to a topic
-            messaging().subscribeToTopic(token).then(() => console.log('Subscribed to topic!')).catch((error) => console.log(error));
-        });
+        if(enabled){
+            return true;
+        }else{
+            return false;
+        }
+
     }
+
+    const sendNotification = async () => {
+        const userToken = admin.firestore().collection('users').doc(userId).get().then((doc: { exists: any; data: () => any; }) => {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                return doc.data();
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error: any) => {
+            console.log("Error getting document:", error);
+        });
+
+        await admin.messaging().sendToDevice(userToken.tokens, {
+            notification: {
+                title: 'New recipe',
+                body: 'Hey come check out this new recipe!',
+            },
+            contentAvailable: true,
+            priority: 'high',
+        });
+
+    }
+
+
+
 
     useEffect(() => {
         if(notification){
-            requestUserPermission();
+            if (requestUserPermission()){
+                messaging().getToken().then(token => {
+                    console.log('Token: ', token);
+                    return saveTokenToDatabase(token);
+                });
+            }
+            sendNotification().then(r => console.log('Notification sent successfully: ', r)).catch(e => console.log('Error sending notification: ', e));
 
             messaging()
                 .getInitialNotification()
@@ -57,21 +102,21 @@ export default function App() {
                 console.log('Message handled in the background!', remoteMessage);
             });
 
-            const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+            messaging().onMessage(async (remoteMessage) => {
 
-                Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+                // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
                 console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
 
-                let notifPush = <NotificationPush title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
-                return notifPush;
+                return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
             });
 
-            return unsubscribe;
+            messaging().onTokenRefresh(token => {
+                saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
+            });
         }else {
-            //unsubscribe from the topic
-            messaging().unsubscribeFromTopic('token').then(() => console.log('Unsubscribed from topic!'));
+            //delete the token from the database
+            messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
         }
-
 
     }, [notification]);
 

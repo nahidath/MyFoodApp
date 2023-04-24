@@ -13,32 +13,33 @@ import NotificationPush from "../components/NotificationPush";
 type NotificationsProps = MyStackNavigationProp<NotificationsStackList, 'Notifs'>;
 
 interface NotifsProps {
-    notification : JSX.Element;
+    title: string | undefined;
+    body: string | undefined;
 }
 
 
 
-const Notifs = ({notification}:NotifsProps) => {
-    // const [notifications, setNotifications] = useState<Notification[]>([]);
-    //
-    // useEffect(() => {
-    //     const unsubscribe = NotificationsService.subscribe((notifications) => {
-    //     setNotifications(notifications);
-    //     });
-    //
-    //     return () => unsubscribe();
-    // }, []);
+const Notifs = ({title, body}:NotifsProps) => {
+
     const {colors} = useTheme();
     const theme = useTheme();
     const user = auth.currentUser;
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const navigation = useNavigation<NotificationsProps>();
+    const [notifications, setNotifications] = useState<any>([]);
+
+    useEffect(() => {
+        if(title && body) {
+            setNotifications([...notifications, {id: notifications.length + 1, title, body}]);
+        }
+    }, [title, body]);
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
             <View style={styles.notificationContainer}>
+                <NotificationPush title={title} body={body}/>
             </View>
         </ScrollView>
 
