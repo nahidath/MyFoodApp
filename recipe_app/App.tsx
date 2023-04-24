@@ -4,6 +4,8 @@ import React, {createContext, useEffect, useRef, useState} from "react";
 import { auth } from "./src/firebase/config";
 import messaging from '@react-native-firebase/messaging';
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
+import NotificationPush from "./src/components/NotificationPush";
+import Notifs from "./src/screens/Notifs";
 // @ts-ignore
 export const ThemeContext = React.createContext();
 export const NotificationContext = createContext<{notification:boolean, setNotification : (value:boolean) => void}>({
@@ -25,6 +27,8 @@ export default function App() {
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => setEnabled(r === PermissionsAndroid.RESULTS.GRANTED));
         messaging().getToken().then(token => {
             console.log('Token: ', token);
+            //subscribe to a topic
+            messaging().subscribeToTopic(token).then(() => console.log('Subscribed to topic!')).catch((error) => console.log(error));
         });
     }
 
@@ -54,10 +58,18 @@ export default function App() {
             });
 
             const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+
                 Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+                console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+
+                let notifPush = <NotificationPush title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
+                return notifPush;
             });
 
             return unsubscribe;
+        }else {
+            //unsubscribe from the topic
+            messaging().unsubscribeFromTopic('token').then(() => console.log('Unsubscribed from topic!'));
         }
 
 
@@ -103,7 +115,7 @@ export default function App() {
         <ThemeContext.Provider value={themeData}>
             <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
                 <NotificationContext.Provider value={{notification, setNotification}}>
-                    {loggedIn ? <BottomNavigation /> : <BottomNavigation />}
+                    {loggedIn ? <BottomNavigation />  : <BottomNavigation />}
                     {/*<BottomNavigation />*/}
                 </NotificationContext.Provider>
             </NavigationContainer>

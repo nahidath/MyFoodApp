@@ -293,7 +293,7 @@ const Recipe = ({route}: Props) => {
                     </View>
                     <View style={styles.recipeDescription}>
                         <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
-                        {instructions.map((instruction, index) => (
+                        {instructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No instructions available</Text>  : instructions.map((instruction, index) => (
                             <Text key={index} style={[styles.items, {color:colors.text}]}>{instruction}</Text>
                         ))}
                     </View>

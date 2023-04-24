@@ -8,16 +8,17 @@ import {useNavigation, useTheme} from "@react-navigation/native";
 import {auth} from "../firebase/config";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {NotificationsStackList} from "../types/types";
-
-
-
+import NotificationPush from "../components/NotificationPush";
 // @ts-ignore
 type NotificationsProps = MyStackNavigationProp<NotificationsStackList, 'Notifs'>;
 
+interface NotifsProps {
+    notification : JSX.Element;
+}
 
 
 
-const Notifs = () => {
+const Notifs = ({notification}:NotifsProps) => {
     // const [notifications, setNotifications] = useState<Notification[]>([]);
     //
     // useEffect(() => {
@@ -38,9 +39,6 @@ const Notifs = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
             <View style={styles.notificationContainer}>
-                <View style={[styles.notification, general.shadow, {backgroundColor: colors.notification}]}>
-                    <Text style={[styles.notificationText, {color: colors.text}]}>Notification 1</Text>
-                </View>
             </View>
         </ScrollView>
 

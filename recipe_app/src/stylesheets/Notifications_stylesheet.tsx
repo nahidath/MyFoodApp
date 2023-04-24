@@ -8,6 +8,7 @@ export default StyleSheet.create({
     },
     notificationContainer: {
         flexDirection: 'column',
+        margin: 10,
     },
     notification: {
         backgroundColor: '#fff',
@@ -50,6 +51,15 @@ export default StyleSheet.create({
     favList: {
         flexDirection: 'column',
         padding: 15,
+    },
+    notificationTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        padding: 5,
+    },
+    notificationBody: {
+        fontSize: 15,
+        padding: 5,
     }
 
 
