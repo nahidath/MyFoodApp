@@ -1,10 +1,12 @@
 import {NavigationContainer, DarkTheme, DefaultTheme, useFocusEffect, useNavigation} from "@react-navigation/native";
 import BottomNavigation from "./src/components/BottomNavigation";
 import React, {createContext, useEffect, useRef, useState} from "react";
-import { auth } from "./src/firebase/config";
+import { auth, cloudFS } from "./src/firebase/config";
 import messaging from '@react-native-firebase/messaging';
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import NotificationPush from "./src/components/NotificationPush";
+import admin from "firebase-admin";
+import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import Notifs from "./src/screens/Notifs";
 // @ts-ignore
 export const ThemeContext = React.createContext();
@@ -16,7 +18,7 @@ export const NotificationContext = createContext<{notification:boolean, setNotif
 
 export default function App() {
 
-    const admin = require('firebase-admin');
+    // const admin = require('firebase-admin');
     //refresh the whole app when the user is logged in or out
     const [loggedIn, setLoggedIn] = useState(false);
     // const navigation = useNavigation();
@@ -28,34 +30,45 @@ export default function App() {
     const saveTokenToDatabase = async (token: string) => {
         // Assume user is already signed in
         // Add the token to the users datastore
-        await admin.firestore().collection('users').doc(userId).set({
-            tokens: admin.firestore.FieldValue.arrayUnion(token),
+        await setDoc(doc(cloudFS, "users"), {
+            tokens: arrayUnion(token),
         }, {merge: true});
+        // await admin.firestore().collection('users').doc(userId).set({
+        //     tokens: admin.firestore.FieldValue.arrayUnion(token),
+        // }, {merge: true});
     }
 
     const requestUserPermission =  () => {
-        console.log('Requesting user permission');
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => setEnabled(r === PermissionsAndroid.RESULTS.GRANTED));
-        if(enabled){
-            return true;
-        }else{
-            return false;
-        }
-
+        // console.log('Requesting user permission');
+        // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => setEnabled(r === PermissionsAndroid.RESULTS.GRANTED));
+        // if(enabled){
+        //     return true;
+        // }else{
+        //     return false;
+        // }
+        let enabled = false;
+        console.log('Requesting permission...');
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                enabled = true;
+            } else {
+                console.log('Unable to get permission to notify.');
+                setEnabled(false);
+            }
+        });
     }
 
     const sendNotification = async () => {
-        const userToken = admin.firestore().collection('users').doc(userId).get().then((doc: { exists: any; data: () => any; }) => {
-            if (doc.exists) {
-                console.log("Document data:", doc.data());
-                return doc.data();
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error: any) => {
-            console.log("Error getting document:", error);
-        });
+        // Get the token from the users datastore
+        const userToken = await getDoc(doc(cloudFS, "users"));
+        if (userToken.exists()) {
+            console.log("Document data:", userToken.data());
+            return userToken.data();
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
 
         await admin.messaging().sendToDevice(userToken.tokens, {
             notification: {
