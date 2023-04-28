@@ -25,5 +25,6 @@ export const storage = getStorage(app);
 export const database = getDatabase(app);
 export const cloudFS = getFirestore(app);
 export const messaging = getMessaging(app);
+
 // const analytics = getAnalytics(app);
 export default app;

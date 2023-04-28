@@ -5,9 +5,18 @@ import { auth, cloudFS } from "./src/firebase/config";
 import messaging from '@react-native-firebase/messaging';
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import NotificationPush from "./src/components/NotificationPush";
-import admin from "firebase-admin";
+// import admin, {firestore} from "firebase-admin";
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
+import {getToken, onMessage} from "firebase/messaging";
+import { getMessaging } from "firebase/messaging/sw";
+import { onBackgroundMessage } from "firebase/messaging/sw";
 import Notifs from "./src/screens/Notifs";
+// @ts-ignore
+import {REACT_APP_VAPIKEY} from "@env";
+// import DocumentData = firestore.DocumentData;
+import axios from "axios";
+import firebase from "firebase/compat";
+import DocumentData = firebase.firestore.DocumentData;
 // @ts-ignore
 export const ThemeContext = React.createContext();
 export const NotificationContext = createContext<{notification:boolean, setNotification : (value:boolean) => void}>({
@@ -22,10 +31,12 @@ export default function App() {
     //refresh the whole app when the user is logged in or out
     const [loggedIn, setLoggedIn] = useState(false);
     // const navigation = useNavigation();
-    const [enabled, setEnabled] = useState(false);
+    // const [enabled, setEnabled] = useState(false);
     const [notification, setNotification] = useState<boolean>(true);
-    const [registrationToken, setRegistrationToken] = useState<string[]>([]);
+    // const [registrationToken, setRegistrationToken] = useState<string[]>([]);
     const userId = auth.currentUser?.uid;
+    const vapidkey : string | undefined = REACT_APP_VAPIKEY;
+    let messagingSW = getMessaging();
 
     const saveTokenToDatabase = async (token: string) => {
         // Assume user is already signed in
@@ -48,36 +59,71 @@ export default function App() {
         // }
         let enabled = false;
         console.log('Requesting permission...');
-        Notification.requestPermission().then((permission) => {
-            if (permission === 'granted') {
-                console.log('Notification permission granted.');
-                enabled = true;
-            } else {
-                console.log('Unable to get permission to notify.');
-                setEnabled(false);
-            }
-        });
+        // Notification.requestPermission().then((permission) => {
+        //     if (permission === 'granted') {
+        //         console.log('Notification permission granted.');
+        //         enabled = true;
+        //     } else {
+        //         console.log('Unable to get permission to notify.');
+        //         enabled = false;
+        //     }
+        // });
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => enabled = (r === PermissionsAndroid.RESULTS.GRANTED));
+        if (enabled){
+            return true;
+        }
+        return false;
     }
 
     const sendNotification = async () => {
+        let tokenU : DocumentData | undefined;
         // Get the token from the users datastore
         const userToken = await getDoc(doc(cloudFS, "users"));
         if (userToken.exists()) {
             console.log("Document data:", userToken.data());
-            return userToken.data();
+            tokenU = userToken.data();
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
+        // const message = {
+        //     notification: {
+        //         title: 'New recipe',
+        //         body: 'Hey come check out this new recipe!',
+        //     },
+        //     token: tokenU,
+        // };
 
-        await admin.messaging().sendToDevice(userToken.tokens, {
-            notification: {
-                title: 'New recipe',
-                body: 'Hey come check out this new recipe!',
-            },
-            contentAvailable: true,
-            priority: 'high',
-        });
+
+        // await messaging().sendToDevice(tokenU, {
+        //     notification: {
+        //         title: 'New recipe',
+        //         body: 'Hey come check out this new recipe!',
+        //     },
+        //     contentAvailable: true,
+        //     priority: 'high',
+        // });
+
+        if(!tokenU) {
+            await axios.post('https://fcm.googleapis.com/v1/projects/my-recipe-app-72535/messages:send HTTP/1.1', {
+                headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + vapidkey},
+                data: {
+                    message: {
+                        token: tokenU,
+                        notification: {
+                            title: 'New recipe',
+                            body: 'Hey come check out this new recipe!'
+                        }
+                    }
+                }
+            }).then(r =>
+                console.log('Notification sent successfully: ', r)
+            ).catch(e =>
+                console.log('Error sending notification: ', e)
+            );
+        }else{
+            console.log('No token available');
+        }
 
     }
 
@@ -91,6 +137,20 @@ export default function App() {
                     console.log('Token: ', token);
                     return saveTokenToDatabase(token);
                 });
+                // getToken(messaging, {vapidKey: vapidkey}).then((currentToken) => {
+                //     if (currentToken) {
+                //         // Send the token to your server and update the UI if necessary
+                //         console.log('Token: ', currentToken);
+                //         return saveTokenToDatabase(currentToken);
+                //     } else {
+                //         // Show permission request UI
+                //         console.log('No registration token available. Request permission to generate one.');
+                //         Alert.alert('You need to grant permission to the app to receive notifications');
+                //         return;
+                //     }
+                // }).catch((err) => {
+                //     console.log('An error occurred while retrieving token. ', err);
+                // });
             }
             sendNotification().then(r => console.log('Notification sent successfully: ', r)).catch(e => console.log('Error sending notification: ', e));
 
@@ -111,10 +171,11 @@ export default function App() {
                     remoteMessage.notification,
                 );
             });
-            messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+            //incoming message when the app is in the background
+            messaging().setBackgroundMessageHandler(async remoteMessage => {
                 console.log('Message handled in the background!', remoteMessage);
             });
-
+            //incoming message when the app is in the foreground
             messaging().onMessage(async (remoteMessage) => {
 
                 // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
