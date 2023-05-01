@@ -120,13 +120,13 @@ export default function App() {
     //
     // }
 
-    useEffect(() => {
-        request( PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
-            result === 'granted' ? setNotification(true) : setNotification(false)
-            // setPermissionResult(result)
-            console.log(result)
-        });
-    }, []);
+    // useEffect(() => {
+    //     request( PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
+    //         result === 'granted' ? setNotification(true) : setNotification(false)
+    //         // setPermissionResult(result)
+    //         console.log(result)
+    //     });
+    // }, []);
 
 
 
@@ -136,15 +136,16 @@ export default function App() {
         if(notification){
             // if (requestUserPermission()) {
             //     console.log('User has authorised notifications');
-            //     messaging().getToken().then(token => {
-            //         console.log('Token: ', token);
-            //         return saveTokenToDatabase(token);
-            //     });
+
             // }else {
             //     return;
             // }
             // sendNotification().then(r => console.log('Notification sent successfully: ', r)).catch(e => console.log('Error sending notification: ', e));
 
+            messaging().getToken().then(token => {
+                console.log('Token: ', token);
+                return saveTokenToDatabase(token);
+            });
             messaging()
                 .getInitialNotification()
                 .then(async (remoteMessage) => {
