@@ -17,6 +17,9 @@ import {REACT_APP_VAPIDKEY, REACT_APP_CLOUD_MESSAGING} from "@env";
 import axios from "axios";
 // import firebase from "firebase/compat";
 // import DocumentData = firebase.firestore.DocumentData;
+import * as permissions from 'react-native-permissions';
+// you may also import just the functions or constants that you will use from this library
+import {request, PERMISSIONS} from 'react-native-permissions';
 // @ts-ignore
 export const ThemeContext = React.createContext();
 export const NotificationContext = createContext<{notification:boolean, setNotification : (value:boolean) => void}>({
@@ -38,18 +41,20 @@ export default function App() {
     // const vapidkey : string | undefined = REACT_APP_VAPIDKEY;
     // const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
     // let messagingSW = getMessaging();
+    const [permissionResult, setPermissionResult] = useState<boolean>(false);
 
     const requestUserPermission =  () => {
         console.log('Requesting user permission');
         let enabled = false;
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => enabled = (r === PermissionsAndroid.RESULTS.GRANTED));
-        if(enabled){
-            console.log('User has authorised notifications');
-            return true;
-        }else{
-            console.log('User has not authorised notifications');
-            return false;
-        }
+        console.log('User permission granted:', enabled);
+        // if(enabled){
+        //     console.log('User has authorised notifications');
+        //     return true;
+        // }else{
+        //     console.log('User has not authorised notifications');
+        //     return false;
+        // }
         // const authStatus = await messaging().requestPermission();
         // const enabled =
         //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -62,6 +67,7 @@ export default function App() {
         //     console.log('Authorization status not enabled:', authStatus);
         //     return false;
         // }
+        return enabled;
 
     }
 
@@ -114,20 +120,29 @@ export default function App() {
     //
     // }
 
+    useEffect(() => {
+        request( PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
+            result === 'granted' ? setNotification(true) : setNotification(false)
+            // setPermissionResult(result)
+            console.log(result)
+        });
+    }, []);
+
+
 
 
 
     useEffect(() => {
         if(notification){
-            if (requestUserPermission()) {
-                console.log('User has authorised notifications');
-                messaging().getToken().then(token => {
-                    console.log('Token: ', token);
-                    return saveTokenToDatabase(token);
-                });
-            }else {
-                return;
-            }
+            // if (requestUserPermission()) {
+            //     console.log('User has authorised notifications');
+            //     messaging().getToken().then(token => {
+            //         console.log('Token: ', token);
+            //         return saveTokenToDatabase(token);
+            //     });
+            // }else {
+            //     return;
+            // }
             // sendNotification().then(r => console.log('Notification sent successfully: ', r)).catch(e => console.log('Error sending notification: ', e));
 
             messaging()
