@@ -22,10 +22,14 @@ import * as permissions from 'react-native-permissions';
 import {request, PERMISSIONS} from 'react-native-permissions';
 // @ts-ignore
 export const ThemeContext = React.createContext();
-export const NotificationContext = createContext<{notification:boolean, setNotification : (value:boolean) => void}>({
-    notification: true,
-    setNotification: () => {},
-});
+// @ts-ignore
+export const NotificationContext = React.createContext();
+// export const NotificationContext = createContext<{notification:boolean, setNotification : (value:boolean) => void}>({
+//     notification: true,
+//     setNotification: () => {
+//
+//     },
+// });
 
 
 export default function App() {
@@ -35,7 +39,9 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     // const navigation = useNavigation();
     // const [enabled, setEnabled] = useState(false);
-    const [notification, setNotification] = useState<boolean>(true);
+    const [notification, setNotification] = useState<boolean>(false);
+    const notifEnabled = { notification, setNotification };
+
     // const [registrationToken, setRegistrationToken] = useState<string[]>([]);
     // const userId = auth.currentUser?.uid;
     // const vapidkey : string | undefined = REACT_APP_VAPIDKEY;
@@ -43,31 +49,54 @@ export default function App() {
     // let messagingSW = getMessaging();
     const [permissionResult, setPermissionResult] = useState<boolean>(false);
 
-    const requestUserPermission =  () => {
-        console.log('Requesting user permission');
-        let enabled = false;
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => enabled = (r === PermissionsAndroid.RESULTS.GRANTED));
-        console.log('User permission granted:', enabled);
-        // if(enabled){
-        //     console.log('User has authorised notifications');
-        //     return true;
-        // }else{
-        //     console.log('User has not authorised notifications');
-        //     return false;
-        // }
-        // const authStatus = await messaging().requestPermission();
-        // const enabled =
-        //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-        //
-        // if (enabled) {
-        //     console.log('Authorization status enabled:', authStatus);
-        //     return true;
-        // }else{
-        //     console.log('Authorization status not enabled:', authStatus);
-        //     return false;
-        // }
-        return enabled;
+    const requestUserPermission =  async () => {
+        // console.log('Requesting user permission');
+        // let enabled = false;
+        // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => enabled = (r === PermissionsAndroid.RESULTS.GRANTED));
+        // console.log('User permission granted:', enabled);
+        // // if(enabled){
+        // //     console.log('User has authorised notifications');
+        // //     return true;
+        // // }else{
+        // //     console.log('User has not authorised notifications');
+        // //     return false;
+        // // }
+        // // const authStatus = await messaging().requestPermission();
+        // // const enabled =
+        // //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        // //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        // //
+        // // if (enabled) {
+        // //     console.log('Authorization status enabled:', authStatus);
+        // //     return true;
+        // // }else{
+        // //     console.log('Authorization status not enabled:', authStatus);
+        // //     return false;
+        // // }
+        // return enabled;
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+                {
+                    title: 'My Recipe App Notification Permission',
+                    message:
+                        'My Recipe App needs access to your notifications ' +
+                        'so you can receive notifications.',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can send notifications');
+                return true;
+            } else {
+                console.log('Notifications permission denied');
+                return false;
+            }
+        } catch (err) {
+            console.warn(err);
+        }
 
     }
 
@@ -76,7 +105,7 @@ export default function App() {
         // Assume user is already signed in
         // Add the token to the users datastore
         await setDoc(doc(cloudFS, "users"), {
-            tokens: arrayUnion(token),
+            tokens: token,
         }, {merge: true});
     }
 
@@ -128,6 +157,10 @@ export default function App() {
     //     });
     // }, []);
 
+    useEffect(() => {
+        console.log('Requesting user permission');
+        requestUserPermission().then(r => console.log('User has authorised notifications: ', r)).catch(e => console.log('Error requesting user permission: ', e));
+    }, []);
 
 
 
@@ -144,7 +177,7 @@ export default function App() {
 
             messaging().getToken().then(token => {
                 console.log('Token: ', token);
-                return saveTokenToDatabase(token);
+                // return saveTokenToDatabase(token);
             });
             messaging()
                 .getInitialNotification()
@@ -176,9 +209,9 @@ export default function App() {
                 // return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
             });
 
-            messaging().onTokenRefresh(token => {
-                saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
-            });
+            // messaging().onTokenRefresh(token => {
+            //     saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
+            // });
         }else {
             //delete the token from the database
             messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
@@ -225,7 +258,7 @@ export default function App() {
     return (
         <ThemeContext.Provider value={themeData}>
             <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                <NotificationContext.Provider value={{notification, setNotification}}>
+                <NotificationContext.Provider value={notifEnabled}>
                     {loggedIn ? <BottomNavigation />  : <BottomNavigation />}
                     {/*<BottomNavigation />*/}
                 </NotificationContext.Provider>

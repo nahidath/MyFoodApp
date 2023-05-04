@@ -14,6 +14,7 @@ const NotificationSettings = () => {
     // const [isEnabledPush, setIsEnabledPush] = useState(false);
     const [isEnabledEmail, setIsEnabledEmail] = useState(false);
 
+    // @ts-ignore
     const { setNotification,notification} = useContext(NotificationContext);
 
     const toggleSwitchEmail = () => setIsEnabledEmail(previousStateEmail => !previousStateEmail);
