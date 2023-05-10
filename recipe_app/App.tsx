@@ -39,7 +39,7 @@ export default function App() {
     // const navigation = useNavigation();
     const [enabled, setEnabled] = useState(false);
     const NOTIF_SWITCH_KEY = 'notifSwitch';
-    const [notifEnabled, setNotifEnabled] = useState(true);
+    const [notifEnabled, setNotifEnabled] = useState(false);
     // const notifEnabled = { notification, setNotification };
 
 
@@ -75,18 +75,18 @@ export default function App() {
         //     console.log('User has not authorised notifications');
         //     return false;
         // }
-        // // const authStatus = await messaging().requestPermission();
-        // // const enabled =
-        // //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        // //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-        // //
-        // // if (enabled) {
-        // //     console.log('Authorization status enabled:', authStatus);
-        // //     return true;
-        // // }else{
-        // //     console.log('Authorization status not enabled:', authStatus);
-        // //     return false;
-        // // }
+        const authStatus = await messaging().requestPermission();
+        const enabled =
+            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+        if (enabled) {
+            console.log('Authorization status enabled:', authStatus);
+            return true;
+        }else{
+            console.log('Authorization status not enabled:', authStatus);
+            return false;
+        }
         // return enabled;
         // try {
         //     const granted = await PermissionsAndroid.request(
@@ -116,39 +116,52 @@ export default function App() {
         // messaging().getToken().then(token => {
         //     console.log('Token: ', token);
         // });
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-                {
-                    title: 'Notification Permission',
-                    message: 'App needs access to your notifications',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                },
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('User has authorised notifications');
-                return true;
-            } else {
-                console.log('User has not authorised notifications');
-                return false;
+        // try {
+        //     const granted = await PermissionsAndroid.request(
+        //         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        //         {
+        //             title: 'Notification Permission',
+        //             message: 'App needs access to your notifications',
+        //             buttonNeutral: 'Ask Me Later',
+        //             buttonNegative: 'Cancel',
+        //             buttonPositive: 'OK',
+        //         },
+        //     );
+        //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        //         console.log('User has authorised notifications');
+        //         return true;
+        //     } else {
+        //         console.log('User has not authorised notifications');
+        //         return false;
+        //     }
+        // } catch (err) {
+        //     console.warn(err);
+        //     return false;
+        // }
+
+    }
+
+    const saveTokenToDatabase = async () => {
+        // console.log('Saving token to database')
+        // // Assume user is already signed in
+        // // Add the token to the users datastore
+        // await setDoc(doc(cloudFS, "users"), {
+        //     tokens: token,
+        // }, {merge: true});
+        let fcmToken = await AsyncStorage.getItem('fcmToken');
+        if (!fcmToken) {
+            try{
+                const token = await messaging().getToken();
+                if (token) {
+                    console.log('Token: ', token);
+                    await AsyncStorage.setItem('fcmToken', token);
+                }
+            }catch (e) {
+                console.log('Error getting token: ', e);
             }
-        } catch (err) {
-            console.warn(err);
-            return false;
         }
-
     }
 
-    const saveTokenToDatabase = async (token: string) => {
-        console.log('Saving token to database')
-        // Assume user is already signed in
-        // Add the token to the users datastore
-        await setDoc(doc(cloudFS, "users"), {
-            tokens: token,
-        }, {merge: true});
-    }
 
 
 
@@ -198,47 +211,39 @@ export default function App() {
     //     });
     // }, []);
 
+    // useEffect(() => {
+    //     console.log('Checking permission');
+    //     async function checkPermission() {
+    //         const granted = await requestUserPermission();
+    //         return granted;
+    //     }
+    //     checkPermission().then((granted) =>{
+    //         granted ? setPermissionResult(true) : setPermissionResult(false);
+    //     });
+    //     console.log('Permission result: ', permissionResult);
+    // }, [notifEnabled]);
+
     useEffect(() => {
-        console.log('Checking permission');
-        async function checkPermission() {
-            const granted = await requestUserPermission();
-            return granted;
+        if(notifEnabled){
+            console.log('Requesting user permission');
+            requestUserPermission().then((granted) =>{
+                if(granted){
+                   setPermissionResult(true);
+                    saveTokenToDatabase().then(r => console.log('Token saved to database: ', r)).catch(e => console.log('Error saving token to database: ', e));
+                }
+               setPermissionResult(false)
+            });
+            console.log('Permission result: ', permissionResult);
+        }else{
+            console.log('Notifications not enabled');
         }
-        checkPermission().then((granted) =>{
-            granted ? setPermissionResult(true) : setPermissionResult(false);
-        });
-        console.log('Permission result: ', permissionResult);
     }, [notifEnabled]);
 
 
 
 
     useEffect(() => {
-        if(notifEnabled){
-            // if (requestUserPermission()) {
-            //     console.log('User has authorised notifications');
-
-            // }else {
-            //     return;
-            // }
-            // sendNotification().then(r => console.log('Notification sent successfully: ', r)).catch(e => console.log('Error sending notification: ', e));
-
-            // messaging().getToken().then(token => {
-            //     console.log('Token: ', token);
-            //     // return saveTokenToDatabase(token);
-            // });
-            console.log('Requesting user permission');
-            if(permissionResult){
-                console.log('User has authorised notifications');
-                messaging().getToken().then(token => {
-                    console.log('Token: ', token);
-                    // saveTokenToDatabase(token);
-                });
-            }
-            // console.log('user permission granted: ', enabled);
-            // messaging().getToken().then(token => {
-            //     console.log('Token: ', token);
-            // });
+        if(permissionResult){
             messaging()
                 .getInitialNotification()
                 .then(async (remoteMessage) => {
@@ -273,17 +278,16 @@ export default function App() {
             });
 
             return unsubscribe;
-
-            // messaging().onTokenRefresh(token => {
-            //     saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
-            // });
         }
+        // messaging().onTokenRefresh(token => {
+        //     saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
+        // });
         // else {
         //     //delete the token from the database
         //     messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
         // }
 
-    }, [notifEnabled]);
+    }, [permissionResult]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {

@@ -16,6 +16,7 @@ const NotificationSettings = () => {
 
     // @ts-ignore
     const { notifEnabled, setNotifEnabled} = React.useContext(NotificationContext);
+    console.log(notifEnabled);
 
     const toggleSwitchEmail = () => setIsEnabledEmail(previousStateEmail => !previousStateEmail);
     // const toggleSwitchPush = () => {
