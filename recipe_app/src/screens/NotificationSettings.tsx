@@ -11,22 +11,31 @@ import {NotificationContext} from "../../App";
 
 
 const NotificationSettings = () => {
-    // const [isEnabledPush, setIsEnabledPush] = useState(false);
+    const [isEnabledPush, setIsEnabledPush] = useState(false);
     const [isEnabledEmail, setIsEnabledEmail] = useState(false);
 
     // @ts-ignore
-    const { setNotification,notification} = useContext(NotificationContext);
+    const { notifEnabled, setNotifEnabled} = React.useContext(NotificationContext);
 
     const toggleSwitchEmail = () => setIsEnabledEmail(previousStateEmail => !previousStateEmail);
-    const toggleSwitchPush = () => {
-        // setIsEnabledPush(previousStatePush => !previousStatePush);
-        setNotification(!notification);
-    }
+    // const toggleSwitchPush = () => {
+    //     setIsEnabledPush(previousStatePush => !previousStatePush);
+    //     setNotification(notification === 'On' ? 'Off' : 'On');
+    // }
 
     //Push Notifs
     const [data, setData] = useState<any>({});
     const {colors} = useTheme();
     const theme = useTheme();
+
+    //
+    // useEffect(() => {
+    //     if (isEnabledPush) {
+    //         setNotification(true);
+    //     } else {
+    //         setNotification(false);
+    //     }
+    // }, [isEnabledPush]);
 
 
 
@@ -44,10 +53,10 @@ const NotificationSettings = () => {
                         <Text style={[styles.textTitle, {color:colors.text}]}>Notification Push</Text>
                         <Switch
                             trackColor={{false: '#767577', true: '#b1dad6'}}
-                            thumbColor={notification ? '#008375' : '#f4f3f4'}
+                            thumbColor={notifEnabled ? '#008375' : '#f4f3f4'}
                             ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitchPush}
-                            value={notification}
+                            onValueChange={(value) => setNotifEnabled(value)}
+                            value={notifEnabled}
                         />
                     </View>
                     <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
