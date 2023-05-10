@@ -39,7 +39,7 @@ export default function App() {
     // const navigation = useNavigation();
     const [enabled, setEnabled] = useState(false);
     const NOTIF_SWITCH_KEY = 'notifSwitch';
-    const [notifEnabled, setNotifEnabled] = useState(false);
+    const [notifEnabled, setNotifEnabled] = useState(true);
     // const notifEnabled = { notification, setNotification };
 
 
@@ -223,27 +223,66 @@ export default function App() {
     //     console.log('Permission result: ', permissionResult);
     // }, [notifEnabled]);
 
+    // useEffect(() => {
+    //     if(notifEnabled){
+    //         console.log('Requesting user permission');
+    //         requestUserPermission().then((granted) =>{
+    //             if(granted){
+    //                setPermissionResult(true);
+    //                 saveTokenToDatabase().then(r => console.log('Token saved to database: ', r)).catch(e => console.log('Error saving token to database: ', e));
+    //             }
+    //            setPermissionResult(false)
+    //         });
+    //         console.log('Permission result: ', permissionResult);
+    //     }else{
+    //         console.log('Notifications not enabled');
+    //     }
+    // }, [notifEnabled]);
+
+    // useEffect(() => {
+    //     if(notifEnabled) {
+    //         console.log('Requesting user permission');
+    //         const requestNotificationPermission = async () => {
+    //             try {
+    //                 const granted = await PermissionsAndroid.request(
+    //                     PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    //                     {
+    //                         title: 'Notification Permission',
+    //                         message: 'This app requires notification permission to send you alerts.',
+    //                         buttonNeutral: 'Ask Me Later',
+    //                         buttonNegative: 'Cancel',
+    //                         buttonPositive: 'OK',
+    //                     },
+    //                 );
+    //                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //                     setPermissionResult(true);
+    //                     console.log('Notification permission granted');
+    //                 } else {
+    //                     setPermissionResult(false);
+    //                     console.log('Notification permission denied');
+    //                 }
+    //             } catch (err) {
+    //                 console.warn(err);
+    //             }
+    //         };
+    //         requestNotificationPermission();
+    //     }
+    // }, [notifEnabled]);
+
+
+
     useEffect(() => {
-        if(notifEnabled){
-            console.log('Requesting user permission');
-            requestUserPermission().then((granted) =>{
-                if(granted){
-                   setPermissionResult(true);
-                    saveTokenToDatabase().then(r => console.log('Token saved to database: ', r)).catch(e => console.log('Error saving token to database: ', e));
-                }
-               setPermissionResult(false)
-            });
-            console.log('Permission result: ', permissionResult);
-        }else{
-            console.log('Notifications not enabled');
-        }
-    }, [notifEnabled]);
-
-
-
-
-    useEffect(() => {
-        if(permissionResult){
+        // if(notifEnabled) {
+        //     requestNotificationPermission().then((granted) => {
+        //         if (granted) {
+        //             setPermissionResult(true);
+        //         }
+        //         setPermissionResult(false)
+        //     });
+        // }
+        if(notifEnabled) {
+            // console.log(permissionResult);
+            saveTokenToDatabase().then(r => console.log('Token saved to database: ', r)).catch(e => console.log('Error saving token to database: ', e));
             messaging()
                 .getInitialNotification()
                 .then(async (remoteMessage) => {
@@ -279,6 +318,7 @@ export default function App() {
 
             return unsubscribe;
         }
+
         // messaging().onTokenRefresh(token => {
         //     saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
         // });
@@ -287,7 +327,7 @@ export default function App() {
         //     messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
         // }
 
-    }, [permissionResult]);
+    }, [notifEnabled]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
