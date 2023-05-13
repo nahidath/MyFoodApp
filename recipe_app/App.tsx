@@ -3,7 +3,8 @@ import BottomNavigation from "./src/components/BottomNavigation";
 import React, {createContext, useEffect, useRef, useState} from "react";
 import { auth, cloudFS } from "./src/firebase/config";
 import messaging from '@react-native-firebase/messaging';
-import {Alert, PermissionsAndroid, Platform} from 'react-native';
+import {Alert, AppState, AppStateStatus, Linking, PermissionsAndroid, Platform} from 'react-native';
+import * as Permissions from 'expo-permissions';
 import NotificationPush from "./src/components/NotificationPush";
 // import admin, {firestore} from "firebase-admin";
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
@@ -19,7 +20,7 @@ import axios from "axios";
 // import DocumentData = firebase.firestore.DocumentData;
 import * as permissions from 'react-native-permissions';
 // you may also import just the functions or constants that you will use from this library
-import {request, PERMISSIONS} from 'react-native-permissions';
+import {request, PERMISSIONS, RESULTS, checkNotifications} from 'react-native-permissions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // @ts-ignore
 export const ThemeContext = React.createContext();
@@ -39,22 +40,22 @@ export default function App() {
     // const navigation = useNavigation();
     const [enabled, setEnabled] = useState(false);
     const NOTIF_SWITCH_KEY = 'notifSwitch';
-    const [notifEnabled, setNotifEnabled] = useState(true);
+    // const [notifEnabled, setNotifEnabled] = useState(true);
     // const notifEnabled = { notification, setNotification };
 
-
-    useEffect(() => {
-        async function loadNotifEnabled() {
-            const value = await AsyncStorage.getItem(NOTIF_SWITCH_KEY);
-            if (value !== null) {
-                setNotifEnabled(value === 'true');
-            }
-        }
-        loadNotifEnabled().then(r => console.log('Notif enabled: ', notifEnabled));
-    }, []);
-    useEffect(() => {
-        AsyncStorage.setItem(NOTIF_SWITCH_KEY, notifEnabled.toString()).then(r => console.log('Notif enabled: ', notifEnabled));
-    }, [notifEnabled]);
+    //
+    // useEffect(() => {
+    //     async function loadNotifEnabled() {
+    //         const value = await AsyncStorage.getItem(NOTIF_SWITCH_KEY);
+    //         if (value !== null) {
+    //             setNotifEnabled(value === 'true');
+    //         }
+    //     }
+    //     loadNotifEnabled().then(r => console.log('Notif enabled: ', notifEnabled));
+    // }, []);
+    // useEffect(() => {
+    //     AsyncStorage.setItem(NOTIF_SWITCH_KEY, notifEnabled.toString()).then(r => console.log('Notif enabled: ', notifEnabled));
+    // }, [notifEnabled]);
 
     // const [registrationToken, setRegistrationToken] = useState<string[]>([]);
     // const userId = auth.currentUser?.uid;
@@ -63,83 +64,10 @@ export default function App() {
     // let messagingSW = getMessaging();
     const [permissionResult, setPermissionResult] = useState<boolean>(false);
 
-    const requestUserPermission = async () => {
-        // console.log('Requesting user permission');
-        // let enabled = false;
-        // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => enabled = (r === PermissionsAndroid.RESULTS.GRANTED));
-        // console.log('User permission granted:', enabled);
-        // if(enabled){
-        //     console.log('User has authorised notifications');
-        //     return true;
-        // }else{
-        //     console.log('User has not authorised notifications');
-        //     return false;
-        // }
-        const authStatus = await messaging().requestPermission();
-        const enabled =
-            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-        if (enabled) {
-            console.log('Authorization status enabled:', authStatus);
-            return true;
-        }else{
-            console.log('Authorization status not enabled:', authStatus);
-            return false;
-        }
-        // return enabled;
-        // try {
-        //     const granted = await PermissionsAndroid.request(
-        //         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-        //         {
-        //             title: 'My Recipe App Notification Permission',
-        //             message:
-        //                 'My Recipe App needs access to your notifications ' +
-        //                 'so you can receive notifications.',
-        //             buttonNeutral: 'Ask Me Later',
-        //             buttonNegative: 'Cancel',
-        //             buttonPositive: 'OK',
-        //         },
-        //     );
-        //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        //         console.log('You can send notifications');
-        //         return true;
-        //     } else {
-        //         console.log('Notifications permission denied');
-        //         return false;
-        //     }
-        // } catch (err) {
-        //     console.warn(err);
-        // }
-        // console.log('Requesting user permission');
-        // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then(r => setEnabled(r === PermissionsAndroid.RESULTS.GRANTED));
-        // messaging().getToken().then(token => {
-        //     console.log('Token: ', token);
-        // });
-        // try {
-        //     const granted = await PermissionsAndroid.request(
-        //         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-        //         {
-        //             title: 'Notification Permission',
-        //             message: 'App needs access to your notifications',
-        //             buttonNeutral: 'Ask Me Later',
-        //             buttonNegative: 'Cancel',
-        //             buttonPositive: 'OK',
-        //         },
-        //     );
-        //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        //         console.log('User has authorised notifications');
-        //         return true;
-        //     } else {
-        //         console.log('User has not authorised notifications');
-        //         return false;
-        //     }
-        // } catch (err) {
-        //     console.warn(err);
-        //     return false;
-        // }
-
-    }
+    // const requestUserPermission = async () => {
+    //
+    //
+    // }
 
     const saveTokenToDatabase = async () => {
         // console.log('Saving token to database')
@@ -238,96 +166,239 @@ export default function App() {
     //         console.log('Notifications not enabled');
     //     }
     // }, [notifEnabled]);
+    const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
+    const [isMounted, setIsMounted] = useState(true);
 
-    // useEffect(() => {
-    //     if(notifEnabled) {
-    //         console.log('Requesting user permission');
-    //         const requestNotificationPermission = async () => {
-    //             try {
-    //                 const granted = await PermissionsAndroid.request(
-    //                     PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-    //                     {
-    //                         title: 'Notification Permission',
-    //                         message: 'This app requires notification permission to send you alerts.',
-    //                         buttonNeutral: 'Ask Me Later',
-    //                         buttonNegative: 'Cancel',
-    //                         buttonPositive: 'OK',
-    //                     },
-    //                 );
-    //                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //                     setPermissionResult(true);
-    //                     console.log('Notification permission granted');
-    //                 } else {
-    //                     setPermissionResult(false);
-    //                     console.log('Notification permission denied');
-    //                 }
-    //             } catch (err) {
-    //                 console.warn(err);
-    //             }
-    //         };
-    //         requestNotificationPermission();
-    //     }
-    // }, [notifEnabled]);
+    useEffect(() => {
+        // Subscribe to app state changes
+        AppState.addEventListener('change', handleAppStateChange);
 
+        // Check initial notification permission status
+        checkNotificationPermission();
+
+        return () => {
+            // Unsubscribe from app state changes when the component unmounts
+            setIsMounted(false);
+        };
+    }, []);
+
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+        setAppState(nextAppState);
+        if (nextAppState === 'active') {
+            checkNotificationPermission();
+        }
+    };
+    const checkNotificationPermission = async () => {
+        try {
+            const status = await checkNotifications();
+            if (status.status === RESULTS.UNAVAILABLE) {
+                console.log('Notification permission is not available on this device');
+            } else if (status.status === RESULTS.DENIED || status.status === RESULTS.BLOCKED) {
+                // Alert is denied or blocked, show the alert dialog
+                Alert.alert(
+                    'Notification Permission Required',
+                    'Please grant permission for notifications in your device settings to receive updates.',
+                    [
+                        { text: 'Cancel', style: 'cancel' },
+                        {
+                            text: 'Open Settings',
+                            onPress: () => {
+                                Linking.openSettings();
+                            },
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            } else {
+                // Request permission if it hasn't been requested before
+                requestNotificationPermission();
+            }
+        } catch (error) {
+            console.log('Error checking notification permission: ', error);
+        }
+    };
+
+    const requestNotificationPermission = async () => {
+        try {
+            const status = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+            if (status === RESULTS.GRANTED) {
+                const token = await messaging().getToken();
+                console.log('Device token:', token);
+            }
+        } catch (error) {
+            console.log('Error requesting notification permission: ', error);
+        }
+    };
 
 
     useEffect(() => {
-        // if(notifEnabled) {
-        //     requestNotificationPermission().then((granted) => {
-        //         if (granted) {
-        //             setPermissionResult(true);
-        //         }
-        //         setPermissionResult(false)
-        //     });
-        // }
-        if(notifEnabled) {
-            // console.log(permissionResult);
-            saveTokenToDatabase().then(r => console.log('Token saved to database: ', r)).catch(e => console.log('Error saving token to database: ', e));
-            messaging()
-                .getInitialNotification()
-                .then(async (remoteMessage) => {
-                    if (remoteMessage) {
-                        console.log(
-                            'Notification caused app to open from quit state:',
-                            remoteMessage.notification,
-                        );
-                    }
-                });
-            messaging().onNotificationOpenedApp(async (remoteMessage) => {
-                //add a navigation to the recipe page
-                console.log(
-                    'Notification caused app to open from background state:',
-                    remoteMessage.notification,
-                );
-            });
-            //incoming message when the app is in the background
-            messaging().setBackgroundMessageHandler(async remoteMessage => {
-                console.log('Message handled in the background!', remoteMessage);
-            });
-            //incoming message when the app is in the foreground
-            // messaging().onMessage(async (remoteMessage) => {
+            console.log('Requesting user permission');
+            // async function registerForPushNotificationsAsync() {
+            //     // const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            //     // let finalStatus = existingStatus;
+            //     //
+            //     // if (existingStatus !== 'granted') {
+            //     //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            //     //     finalStatus = status;
+            //     //     console.log(finalStatus);
+            //     // }
+            //     //
+            //     // if (finalStatus !== 'granted') {
+            //     //     Alert.alert(
+            //     //         'Notification Permission Required',
+            //     //         'Please grant permission for notifications in your device settings to receive updates.',
+            //     //         [
+            //     //             { text: 'Cancel', style: 'cancel' },
+            //     //             {
+            //     //                 text: 'Open Settings',
+            //     //                 onPress: () => {
+            //     //                     Linking.openSettings();
+            //     //
+            //     //                 },
+            //     //             },
+            //     //         ],
+            //     //         { cancelable: false }
+            //     //     );
+            //     //     return;
+            //     // }
+            //     //
+            //     // const token = await messaging().getToken();
+            //     // console.log('Device token:', token);
+            //     // if (Platform.OS === 'android') {
+            //     //     try {
+            //     //         console.log('Requesting permission');
+            //     //         const granted = await PermissionsAndroid.request(
+            //     //             PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+            //     //             {
+            //     //                 title: 'Notification Permission',
+            //     //                 message: 'Allow this app to receive notifications?',
+            //     //                 buttonPositive: 'OK',
+            //     //                 buttonNegative: 'Cancel',
+            //     //             }
+            //     //         );
+            //     //
+            //     //         if (granted === PermissionsAndroid.RESULTS.DENIED || granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+            //     //             console.log('Permission denied');
+            //     //             Alert.alert(
+            //     //                 'Notification Permission Required',
+            //     //                 'Please grant permission for notifications in your device settings to receive updates.',
+            //     //                 [
+            //     //                     { text: 'Cancel', style: 'cancel' },
+            //     //                     {
+            //     //                         text: 'Open Settings',
+            //     //                         onPress: () => {
+            //     //                             Linking.openSettings();
+            //     //
+            //     //                         },
+            //     //                     },
+            //     //                 ],
+            //     //                 { cancelable: false }
+            //     //             );
+            //     //
+            //     //         } else if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            //     //             const token = await messaging().getToken();
+            //     //             console.log('Device token:', token);
+            //     //         }
+            //     //     } catch (err) {
+            //     //         console.log(err);
+            //     //     }
+            //     // }
+            //     try {
+            //         const status = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+            //         console.log(status);
             //
-            //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-            //     console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+            //         if (status === RESULTS.DENIED || status === RESULTS.BLOCKED ) {
+            //             Alert.alert(
+            //                 'Notification Permission Required',
+            //                 'Please grant permission for notifications in your device settings to receive updates.',
+            //                 [
+            //                     { text: 'Cancel', style: 'cancel' },
+            //                     {
+            //                         text: 'Open Settings',
+            //                         onPress: () => {
+            //                             Linking.openSettings();
             //
-            //     // return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
-            // });
-            const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-                Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-            });
+            //                         },
+            //                     },
+            //                 ],
+            //                 { cancelable: false }
+            //             );
+            //
+            //         } else if (status === RESULTS.GRANTED) {
+            //             const token = await messaging().getToken();
+            //             console.log('Device token:', token);
+            //         }
+            //
+            //         console.log(await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS));
+            //     } catch (error) {
+            //         console.log('Error requesting notification permission: ', error);
+            //     }
+            // }
+            //
+            // registerForPushNotificationsAsync();
+        checkNotificationPermission();
 
-            return unsubscribe;
-        }
+    }, []);
 
-        // messaging().onTokenRefresh(token => {
-        //     saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
-        // });
-        // else {
-        //     //delete the token from the database
-        //     messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
-        // }
 
-    }, [notifEnabled]);
+
+    // useEffect(() => {
+    //     // if(notifEnabled) {
+    //     //     requestNotificationPermission().then((granted) => {
+    //     //         if (granted) {
+    //     //             setPermissionResult(true);
+    //     //         }
+    //     //         setPermissionResult(false)
+    //     //     });
+    //     // }
+    //     if(notifEnabled) {
+    //         // console.log(permissionResult);
+    //         saveTokenToDatabase().then(r => console.log('Token saved to database: ', r)).catch(e => console.log('Error saving token to database: ', e));
+    //         messaging()
+    //             .getInitialNotification()
+    //             .then(async (remoteMessage) => {
+    //                 if (remoteMessage) {
+    //                     console.log(
+    //                         'Notification caused app to open from quit state:',
+    //                         remoteMessage.notification,
+    //                     );
+    //                 }
+    //             });
+    //         messaging().onNotificationOpenedApp(async (remoteMessage) => {
+    //             //add a navigation to the recipe page
+    //             console.log(
+    //                 'Notification caused app to open from background state:',
+    //                 remoteMessage.notification,
+    //             );
+    //         });
+    //         //incoming message when the app is in the background
+    //         messaging().setBackgroundMessageHandler(async remoteMessage => {
+    //             console.log('Message handled in the background!', remoteMessage);
+    //         });
+    //         //incoming message when the app is in the foreground
+    //         // messaging().onMessage(async (remoteMessage) => {
+    //         //
+    //         //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //         //     console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //         //
+    //         //     // return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
+    //         // });
+    //         const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+    //             Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //         });
+    //
+    //         return unsubscribe;
+    //     }
+    //
+    //     // messaging().onTokenRefresh(token => {
+    //     //     saveTokenToDatabase(token).then(r => console.log('Token refreshed successfully: ', r)).catch(e => console.log('Error refreshing token: ', e));
+    //     // });
+    //     // else {
+    //     //     //delete the token from the database
+    //     //     messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
+    //     // }
+    //
+    // }, [notifEnabled]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -365,16 +436,19 @@ export default function App() {
             notification: '#fefefe',
         }
     }
-    console.log("notification :", notifEnabled);
+    if (!isMounted) {
+        return null; // Or render a placeholder component if needed
+    }
+    // console.log("notification :", notifEnabled);
     return (
-        <ThemeContext.Provider value={themeData}>
-            <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
+        // <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
+            <ThemeContext.Provider value={themeData}>
                 <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
                     {loggedIn ? <BottomNavigation />  : <BottomNavigation />}
                     {/*<BottomNavigation />*/}
                 </NavigationContainer>
-            </NotificationContext.Provider>
-        </ThemeContext.Provider>
+            </ThemeContext.Provider>
+        // </NotificationContext.Provider>
 
   );
 }
