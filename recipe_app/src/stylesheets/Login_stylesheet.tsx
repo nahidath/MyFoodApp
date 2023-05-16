@@ -3,15 +3,16 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        // flexDirection: 'column',
+        backgroundColor: '#9fc131',
+        // margin:10,
     },
     header: {
-        // flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        padding: 30,
+        flexDirection : 'column',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 50,
+        marginTop: 20,
 
     },
     headerText: {
@@ -23,29 +24,34 @@ export default StyleSheet.create({
     form: {
         flex: 1,
         flexDirection: 'column',
-        marginTop: 50,
+        justifyContent: 'center',
+        // marginTop: -50,
         // padding: 10,
     },
     input: {
         width: '80%',
         height: 52,
         marginBottom: 10,
-        borderWidth: 1,
-        padding: 16,
-        borderRadius: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f2f2f2',
+        // backgroundColor: '#e2e2e2',
+        // borderRadius: 8,
+        paddingLeft: 30,
     },
     loginBtn: {
         width: '80%',
-        // height: 40,
+        height: 52,
         margin: 12,
         borderWidth: 1,
         padding: 10,
         borderRadius: 8,
-        color: '#fff',
+        backgroundColor: '#f2f2f2',
+        borderColor: '#f2f2f2',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     btnText: {
-        color: '#fff',
+        color: '#9fc131',
         fontWeight: 'bold',
         fontSize: 16,
 
@@ -70,11 +76,11 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     link: {
-        color: '#003f5c',
-        fontSize: 16,
+        color: '#f2f2f2',
+        fontSize: 14,
         // fontWeight: 'bold',
-        // textAlign: 'center',
-        marginLeft: 40,
+        textAlign: 'right',
+        marginRight: 40,
         marginTop:8,
         marginBottom:24,
         textDecorationLine: 'underline',
@@ -151,14 +157,9 @@ export default StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 5,
-        // flex: 1,
-        fontWeight: 'normal',
-        // justifyContent: 'flex-start',
-        // alignItems: 'flex-start' ,
-        // textAlign: 'left',
+        fontWeight: '500',
         marginLeft: 40,
-        // margin: 10,
-        // flexDirection: 'column',
+        color: "#f2f2f2",
     },
     inputZone: {
         justifyContent: 'center',
@@ -177,6 +178,82 @@ export default StyleSheet.create({
         textAlign: 'center',
         margin: 10,
         alignItems: 'center',
+
+    },
+    icon: {
+        position: 'absolute',
+        left: 25,
+        padding: 10,
+        top: 6,
+    },
+    subtitle: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        justifyContent: 'flex-start',
+        color: '#f2f2f2',
+    },
+    logo: {
+        width: 130,
+        height: 130,
+
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: '600',
+        textAlign: 'left',
+        color: '#f2f2f2',
+    },
+    btnText2: {
+        color: '#f2f2f2',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    registerButton: {
+        color: '#f2f2f2',
+        fontWeight: 'bold',
+    },
+    registerAsk: {
+        flexDirection:'column-reverse',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 1
+    },
+    socialLogin: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    socialBtn: {
+        width: 50,
+        height: 50,
+        margin: 10,
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: '#f2f2f2',
+        borderColor: '#f2f2f2',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    divider: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        padding: 18,
+
+    },
+    line: {
+        borderBottomColor: '#f2f2f2',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        width: '40%',
+        margin: 10,
+    },
+    dividerText: {
+        color: '#f2f2f2',
+        fontWeight: 'bold',
+        fontSize: 16,
 
     }
 

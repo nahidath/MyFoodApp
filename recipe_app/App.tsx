@@ -4,44 +4,25 @@ import React, {createContext, useCallback, useEffect, useRef, useState} from "re
 import { auth, cloudFS } from "./src/firebase/config";
 import messaging from '@react-native-firebase/messaging';
 import {Alert, AppState, AppStateStatus, Linking, PermissionsAndroid, Platform} from 'react-native';
-import * as Permissions from 'expo-permissions';
-import NotificationPush from "./src/components/NotificationPush";
-// import admin, {firestore} from "firebase-admin";
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
-// import {getToken, onMessage} from "firebase/messaging";
-// import { getMessaging } from "firebase/messaging/sw";
-// import { onBackgroundMessage } from "firebase/messaging/sw";
 import Notifs from "./src/screens/Notifs";
 // @ts-ignore
 import {REACT_APP_VAPIDKEY, REACT_APP_CLOUD_MESSAGING} from "@env";
-// import DocumentData = firestore.DocumentData;
 import axios from "axios";
-// import firebase from "firebase/compat";
-// import DocumentData = firebase.firestore.DocumentData;
-import * as permissions from 'react-native-permissions';
-// you may also import just the functions or constants that you will use from this library
 import {request, PERMISSIONS, RESULTS, checkNotifications} from 'react-native-permissions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // @ts-ignore
 export const ThemeContext = React.createContext();
 // @ts-ignore
 export const NotificationContext = React.createContext();
-// export const NotificationContext = createContext<{notification:boolean, setNotification : (value:boolean) => void}>({
-//     notification: true,
-//     setNotification: () => {},
-// });
+
 
 
 export default function App() {
 
-    // const admin = require('firebase-admin');
-    //refresh the whole app when the user is logged in or out
     const [loggedIn, setLoggedIn] = useState(false);
-    // const navigation = useNavigation();
-    const [enabled, setEnabled] = useState(false);
     const NOTIF_SWITCH_KEY = 'notifSwitch';
     const [notifEnabled, setNotifEnabled] = useState(true);
-    // const notifEnabled = { notification, setNotification };
 
 
     useEffect(() => {
@@ -57,12 +38,9 @@ export default function App() {
         AsyncStorage.setItem(NOTIF_SWITCH_KEY, notifEnabled.toString()).then(r => console.log('Notif enabled: ', notifEnabled));
     }, [notifEnabled]);
 
-    // const [registrationToken, setRegistrationToken] = useState<string[]>([]);
     const userId : string | undefined = auth.currentUser?.uid;
     console.log('User id: ', userId);
-    // const vapidkey : string | undefined = REACT_APP_VAPIDKEY;
     const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
-    // let messagingSW = getMessaging();
     const [permissionResult, setPermissionResult] = useState<boolean>(false);
 
 
@@ -212,7 +190,7 @@ export default function App() {
 
     useEffect(() => {
         if(notifEnabled) {
-            fetchDeviceTokenAndSendNotification();
+            // fetchDeviceTokenAndSendNotification().catch(e => console.log('Error fetching device token: ', e));
             messaging()
                 .getInitialNotification()
                 .then(async (remoteMessage) => {
