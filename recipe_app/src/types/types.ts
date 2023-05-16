@@ -85,3 +85,7 @@ export type ProfileStackList = {
     ProfilePage: undefined;
     EditProfile: undefined;
 }
+
+export type AuthStackList = {
+    LoginStackScreen: undefined;
+}

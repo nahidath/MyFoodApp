@@ -12,6 +12,7 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import {updateProfile} from "firebase/auth";
 import Feather from "react-native-vector-icons/Feather";
 import Tooltip from "../components/Tooltip";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 
 // @ts-ignore
@@ -29,6 +30,8 @@ const Register = () => {
     const [password, setPassword] = useState<string>('');
     const [confPassword, setConfPassword] = useState<string>('');
     const [error, setError] = useState<any>('');
+    const [errorPwd, setErrorPwd] = useState<string>('');
+    const [errorCPwd, setErrorCPwd] = useState<string>('');
     const [isVisible, setIsVisible] = useState<any>({
         password: true,
         confPassword: true
@@ -47,7 +50,9 @@ const Register = () => {
                     });
                 }
                 setError('');
-                navigation.push('Profile');
+                // navigation.push('Profile');
+                navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+
             } else {
                 setError('Passwords do not match');
             }
@@ -78,84 +83,118 @@ const Register = () => {
 
     const handlePasswordChange = (value: string) => {
         setPassword(value);
-        if (!passwordRegex.test(value)) {
-            setError('Password must be at least 8 characters long, 1 uppercase letter and 1 number.');
+        let errorPwd = "";
+        if(value === ""){
+            errorPwd = "";
+        }else if (!passwordRegex.test(value)) {
+            errorPwd = "Password must contain at least 8 characters, 1 uppercase letter and 1 number";
         } else {
-            setError('');
+            errorPwd = "";
         }
+        setErrorPwd(errorPwd);
     };
+
+    const handleConfPasswordChange = (value: string) => {
+        setConfPassword(value);
+        let errorPwd = "";
+        if(value === ""){
+            errorPwd = "";
+        }else if (password !== value) {
+            errorPwd = "Passwords do not match";
+        } else {
+            errorPwd = "";
+        }
+        setErrorCPwd(errorPwd);
+    }
+
+    useEffect(() => {
+        handlePasswordChange(password);
+    }, [password]);
+
+    useEffect(() => {
+        handleConfPasswordChange(confPassword);
+    }, [confPassword]);
 
     return (
 
-        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
-            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView>
-                <View style={{margin:10}}>
-                    {error && <Text style={styles.error}>{error}</Text>}
-                    <View style={styles.form}>
-                        <Text style={[styles.label, {color: colors.text}]}>Username</Text>
-                        <View style={styles.inputZone}>
-                            <TextInput
-                                style={[styles.input, {color: colors.text}]}
-                                // placeholder="Username"
-                                // placeholderTextColor={colors.text}
-                                value={username}
-                                onChangeText={setUsername}
-                            />
-                        </View>
-                        <Text style={[styles.label, {color: colors.text}]}>Email</Text>
-                        <View style={styles.inputZone}>
-                            <TextInput
-                                style={[styles.input, {color: colors.text}]}
-                                // placeholder="Email"
-                                // placeholderTextColor={colors.text}
-                                value={email}
-                                onChangeText={setEmail}
-                                autoCapitalize={'none'}
-                            />
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={[styles.label, {color: colors.text}]}>Password</Text>
-                            <Tooltip content={"Password must be at least 8 characters long, 1 uppercase letter and 1 number"} >
-                                <Feather name={'info'} size={18} color={colors.text} style={{marginLeft: 5, marginTop:2}} />
-                            </Tooltip>
-                        </View>
-                        <View style={styles.inputZone}>
-                            <TextInput
-                                style={[styles.input, {color: colors.text}]}
-                                // placeholder="Password"
-                                // placeholderTextColor={colors.text}
-                                value={password}
-                                onChangeText={handlePasswordChange}
-                                secureTextEntry={isVisible.password}
-                            />
-                            {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('password')}/>}
-                        </View>
-                        <Text style={[styles.label, {color: colors.text}]}>Confirm your password</Text>
-                        <View style={styles.inputZone}>
-                            <TextInput
-                                style={[styles.input, {color: colors.text}]}
-                                // placeholder="Confirm Your Password"
-                                // placeholderTextColor={colors.text}
-                                value={confPassword}
-                                onChangeText={setConfPassword}
-                                secureTextEntry={isVisible.confPassword}
-                            />
-                            {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword('confPassword')}/>}
-                        </View>
+        <View style={styles.container}>
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
+            <KeyboardAwareScrollView>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Register</Text>
+                    <Text style={styles.subtitle}>Create your account</Text>
 
-                        <View style={styles.inputZone}>
-                            <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5}
-                                onPress={handleSubmit}
-                                disabled={!email || !password || !confPassword || !username}
-                            >
-                                <Text style={styles.btnText}>Register</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={[styles.text, {color: colors.text}]}>Already have an account ? <Link to={{screen : 'Login'}} style={[styles.link, {color: colors.text}]}>Login</Link></Text>
+                </View>
+                {error && <Text style={styles.error}>{error}</Text>}
+                <View style={styles.form}>
+                    <View style={styles.inputZone}>
+                        <Feather name={'smile'} size={20} color={"#f2f2f2"} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            placeholderTextColor={"#f2f2f2"}
+                            value={username}
+                            onChangeText={setUsername}
+                        />
+                    </View>
+                    <View style={styles.inputZone}>
+                        <Feather name={'mail'} size={20} color={"#f2f2f2"} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            placeholderTextColor={'#f2f2f2'}
+                            value={email}
+                            onChangeText={setEmail}
+                            autoCapitalize={'none'}
+                        />
+                    </View>
+
+                    <View style={styles.inputZone}>
+                        <Feather name={'lock'} size={20} color={"#f2f2f2"} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            placeholderTextColor={"#f2f2f2"}
+                            value={password}
+                            onChangeText={handlePasswordChange}
+                            secureTextEntry={isVisible.password}
+                        />
+                        {/*<View style={styles.tooltip}>*/}
+                        {/*    <Tooltip content={"Password must be at least 8 characters long, 1 uppercase letter and 1 number"} >*/}
+                        {/*        <Feather name={'info'} size={20} color={"#f2f2f2"}  />*/}
+                        {/*    </Tooltip>*/}
+                        {/*</View>*/}
+                        {isVisible.password ? <Feather name={'eye-off'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword('password')}/>}
+                    </View>
+                    {errorPwd && <Text style={styles.errorPwd}>{errorPwd}</Text>}
+                    <View style={styles.inputZone}>
+                        <Feather name={'lock'} size={20} color={"#f2f2f2"} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Confirm Your Password"
+                            placeholderTextColor={"#f2f2f2"}
+                            value={confPassword}
+                            onChangeText={handleConfPasswordChange}
+                            secureTextEntry={isVisible.confPassword}
+                        />
+                        {isVisible.confPassword ? <Feather name={'eye-off'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword('confPassword')} /> : <Feather name={'eye'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword('confPassword')}/>}
+                    </View>
+                    {errorCPwd && <Text style={styles.errorPwd}>{errorCPwd}</Text>}
+
+
+                    <View style={styles.inputZone}>
+                        <TouchableOpacity style={styles.loginBtn} activeOpacity={0.5}
+                            onPress={handleSubmit}
+                            disabled={!email || !password || !confPassword || !username}
+                        >
+                            <Text style={styles.btnText}>Register <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.registerAsk, {marginTop: 175}]}>
+                        <Text style={styles.text}>Already have an account ? <Link to={{screen : 'Login'}} style={styles.registerButton}>Login</Link></Text>
                     </View>
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
 
     );

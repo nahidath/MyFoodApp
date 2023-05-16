@@ -200,7 +200,7 @@ const Account : FC = () => {
                     <View>
                         <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, stylesMore.logoutBtn, {backgroundColor: colors.notification}]} onPress={() => logOut()}>
                             <Feather name={"log-out"} size={24} color={'#fe2f3f'} />
-                            <Text style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>LOGOUT</Text>
+                            <Text style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>LOG OUT</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 15}}>

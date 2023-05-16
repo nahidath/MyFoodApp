@@ -31,6 +31,7 @@ import Separator from "../components/Separator";
 import Feather from "react-native-vector-icons/Feather";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
@@ -92,11 +93,12 @@ export default function Login () {
             await signInWithEmailAndPassword(auth, email, password);
             setError('');
             setLoading(true);
-            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+            navigation.navigate( 'HomeStackScreen', {screen: 'HomePage'});
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
                 setError('Your email or password was incorrect');
+                setPassword('');
             }
             // else { // @ts-ignore
             //     if (e.code === 'auth/email-already-in-use') {
@@ -137,118 +139,127 @@ export default function Login () {
         setIsVisible(!isVisible);
     }
 
+    // const handlePasswordChange = (value: string) => {
+    //     setPassword(value);
+    //     if (value.length < 0) {
+    //         setError('');
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     handlePasswordChange(password)
+    // }, [password]);
+
     return (
         <View style={styles.container}>
-            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
             {/*{loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}*/}
-            <View style={styles.header}>
-                <Text style={styles.title}>Let's sign you in.</Text>
-                <Text style={styles.subtitle}>Welcome back !</Text>
+            <KeyboardAwareScrollView>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Let's sign you in.</Text>
+                    <Text style={styles.subtitle}>Welcome back !</Text>
 
-            </View>
-                {error && <Text style={styles.error}>{error}</Text>}
-            <View style={styles.form}>
-                {/*<Text style={styles.label}>Email</Text>*/}
-                <View style={styles.inputZone}>
-                    <Feather name={'user'} size={20} color={"#f2f2f2"} style={styles.icon} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        placeholderTextColor={"#f2f2f2"}
-                        onChangeText={setEmail}
-                        value={email}
-                        autoCapitalize={'none'}
-                    />
                 </View>
-                {/*<Text style={[styles.label, {color: colors.text}]}>Password</Text>*/}
-                <View style={[styles.inputZone, {flexDirection: 'row'}]}>
-                    <Feather name={'lock'} size={20} color={"#f2f2f2"} style={styles.icon} />
-                    <TextInput
-                        style={[styles.input,  {paddingRight: 45}]}
-                        placeholder="Password"
-                        placeholderTextColor={"#f2f2f2"}
-                        onChangeText={setPassword}
-                        value={password}
-                        secureTextEntry={isVisible}
-                    />
-                    {isVisible ? <Feather name={'eye-off'} size={20} color={"#f2f2f2"} style={styles.showButton}  onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword()}/>}
-                </View>
+                    {error && <Text style={styles.error}>{error}</Text>}
+                <View style={styles.form}>
+                    <View style={styles.inputZone}>
+                        <Feather name={'user'} size={20} color={"#f2f2f2"} style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            placeholderTextColor={"#f2f2f2"}
+                            onChangeText={setEmail}
+                            value={email}
+                            autoCapitalize={'none'}
+                        />
+                    </View>
+                    <View style={[styles.inputZone, {flexDirection: 'row'}]}>
+                        <Feather name={'lock'} size={20} color={"#f2f2f2"} style={styles.icon} />
+                        <TextInput
+                            style={[styles.input,  {paddingRight: 45}]}
+                            placeholder="Password"
+                            placeholderTextColor={"#f2f2f2"}
+                            onChangeText={setPassword}
+                            value={password}
+                            secureTextEntry={isVisible}
+                        />
+                        {isVisible ? <Feather name={'eye-off'} size={20} color={"#f2f2f2"} style={styles.showButton}  onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword()}/>}
+                    </View>
 
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <Text style={styles.link}>Forgot password ?</Text>
-                </TouchableOpacity>
-                <View style={styles.inputZone}>
-                    <TouchableOpacity style={styles.loginBtn}
-                                      onPress={() => handleLogin()} activeOpacity={0.5}
-                    >
-                        <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <Text style={styles.link}>Forgot password ?</Text>
                     </TouchableOpacity>
-                    <View style={styles.divider}>
-                        <View style={styles.line}></View>
-                        <Text style={styles.dividerText}>Or</Text>
-                        <View style={styles.line}></View>
-                    </View>
-                    <View style={styles.socialLogin}>
-                        <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
-                                          // onPress={() => handleFacebookLogin()}
+                    <View style={styles.inputZone}>
+                        <TouchableOpacity style={styles.loginBtn}
+                                          onPress={() => handleLogin()} activeOpacity={0.5}
                         >
-                            {/*<FontAwesome name={'facebook'} size={20} color={"#f2f2f2"} />*/}
-                            <Image source={require('../../assets/facebook.png')} style={{width: 20, height: 20}} />
+                            <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
-                                          // onPress={() => handleGoogleLogin()}
-                        >
-                            {/*<FontAwesome name={'google'} size={20} color={"#f2f2f2"} />*/}
-                            <Image source={require('../../assets/google.png')} style={{width: 20, height: 20}} />
-                        </TouchableOpacity>
+                        <View style={styles.divider}>
+                            <View style={styles.line}></View>
+                            <Text style={styles.dividerText}>Or</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        <View style={styles.socialLogin}>
+                            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
+                                              // onPress={() => handleFacebookLogin()}
+                            >
+                                <Image source={require('../../assets/facebook.png')} style={{width: 20, height: 20}} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
+                                              // onPress={() => handleGoogleLogin()}
+                            >
+                                <Image source={require('../../assets/google.png')} style={{width: 20, height: 20}} />
+                            </TouchableOpacity>
+                        </View>
+                        {/*<TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>*/}
+                        {/*    <Text style={styles.btnText}>Create an account</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
-                    {/*<TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>*/}
-                    {/*    <Text style={styles.btnText}>Create an account</Text>*/}
-                    {/*</TouchableOpacity>*/}
-                </View>
-                <View style={styles.registerAsk}>
-                    <Text style={{color:"#f2f2f2", fontSize:16, textAlign: 'right',}}>Don't have an account ? <Link to={'/register'} style={styles.registerButton}>Register</Link></Text>
-                </View>
+                    <View style={styles.registerAsk}>
+                        <Text style={styles.text}>Don't have an account ? <Link to={'/Register'} style={styles.registerButton}>Register</Link></Text>
+                    </View>
 
 
-                <Modal
-                    visible={modalVisible}
-                    animationType='slide'
-                    transparent={true}
-                    onRequestClose={() => {
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <View style={styles.modalContainer}>
-                        <View style={[styles.modalView, general.shadow, {backgroundColor: colors.notification} ]}>
-                            <View style={styles.modalHeader}>
-                                <TouchableOpacity style={{alignItems:'flex-end'}} onPress={() => setModalVisible(false)}>
-                                    <Feather name={"x"} size={24} color={'#9c9c9c'}/>
-                                </TouchableOpacity>
-                                <Text style={[styles.modalTitle, {color: colors.text}]}>I forgot my password</Text>
-                            </View>
-                            {/*{sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}*/}
-                                <Text style={[styles.modalText, {color: colors.text}]}>Please enter your email address below and you will receive a link to create a new password via email.</Text>
-                            {error && <Text style={styles.error}>{error}</Text>}
-                            <View style={styles.inputZone}>
-                                <TextInput
-                                    style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                                    placeholder="Email"
-                                    placeholderTextColor={colors.text}
-                                    onChangeText={setEmail}
-                                    value={email}
-                                    autoCapitalize={'none'}
-                                />
-                                <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
-                                                    onPress={() => resetPassword()}
-                                >
-                                    <Text style={styles.btnText}>Submit <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
-                                </TouchableOpacity>
+                    <Modal
+                        visible={modalVisible}
+                        animationType='slide'
+                        transparent={true}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <View style={styles.modalContainer}>
+                            <View style={[styles.modalView, general.shadow, {backgroundColor: colors.notification} ]}>
+                                <View style={styles.modalHeader}>
+                                    <TouchableOpacity style={{alignItems:'flex-end'}} onPress={() => setModalVisible(false)}>
+                                        <Feather name={"x"} size={24} color={'#9c9c9c'}/>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.modalTitle, {color: colors.text}]}>I forgot my password</Text>
+                                </View>
+                                {/*{sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}*/}
+                                    <Text style={[styles.modalText, {color: colors.text}]}>Please enter your email address below and you will receive a link to create a new password via email.</Text>
+                                {error && <Text style={styles.error}>{error}</Text>}
+                                <View style={styles.inputZone}>
+                                    <TextInput
+                                        style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
+                                        placeholder="Email"
+                                        placeholderTextColor={colors.text}
+                                        onChangeText={setEmail}
+                                        value={email}
+                                        autoCapitalize={'none'}
+                                    />
+                                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                                        onPress={() => resetPassword()}
+                                    >
+                                        <Text style={styles.btnText}>Submit <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
-            </View>
+                    </Modal>
+                </View>
+            </KeyboardAwareScrollView>
         </View>
     );
 

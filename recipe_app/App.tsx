@@ -11,6 +11,7 @@ import {REACT_APP_VAPIDKEY, REACT_APP_CLOUD_MESSAGING} from "@env";
 import axios from "axios";
 import {request, PERMISSIONS, RESULTS, checkNotifications} from 'react-native-permissions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {AuthStack} from "./src/components/AllStackScreen";
 // @ts-ignore
 export const ThemeContext = React.createContext();
 // @ts-ignore
@@ -280,7 +281,7 @@ export default function App() {
             <ThemeContext.Provider value={themeData}>
                 <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
                     <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                        {loggedIn ? <BottomNavigation />  : <BottomNavigation />}
+                        {loggedIn ? <BottomNavigation />  : <AuthStack />}
                         {/*<BottomNavigation />*/}
                     </NavigationContainer>
                 </NotificationContext.Provider>

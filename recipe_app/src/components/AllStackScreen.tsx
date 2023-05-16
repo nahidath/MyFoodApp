@@ -12,7 +12,7 @@ import {
     LoginStackList,
     MoreStackList,
     NotificationsStackList,
-    AccountStackList, SearchStackList, ProfileStackList
+    AccountStackList, SearchStackList, ProfileStackList, AuthStackList
 } from "../types/types";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
@@ -102,12 +102,12 @@ export function LoginStackScreen () {
         <LoginStack.Navigator >
             <LoginStack.Screen name="Login" component={Login} options={{
                 headerStyle: {
-                    backgroundColor: colors.notification,
+                    backgroundColor: "#9fc131",
                 },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
+                headerTitle: '',
+                headerShadowVisible: false,
+                headerTintColor: '#fff',
+                animation: 'slide_from_right',
             }} />
             {/*<LoginStack.Screen name="ResetPassword" component={ResetPassword} options={{*/}
             {/*    headerStyle: {*/}
@@ -121,12 +121,13 @@ export function LoginStackScreen () {
             {/*}} />*/}
             <LoginStack.Screen name="Register" component={Register} options={{
                 headerStyle: {
-                    backgroundColor: colors.notification,
+                    backgroundColor: "#9fc131",
                 },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
+                headerTitle: '',
+                headerShadowVisible: false,
+                headerTintColor: '#fff',
+                animation: 'slide_from_right',
+
             }} />
             <LoginStack.Screen name="AccountStackScreen" component={AccountStackScreen} options={{
                 headerShown: false,
@@ -368,9 +369,9 @@ export function NotificationsStackScreen () {
 
     return (
         <NotificationsStack.Navigator >
-            <NotificationsStack.Screen name="Notifs" component={Notifs} options={{
-                headerShown: false,
-            }} />
+            {/*<NotificationsStack.Screen name="Notifs" component={Notifs} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}} />*/}
             <NotificationsStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false,
             }}/>
@@ -434,4 +435,18 @@ export function ProfileStackScreen () {
             }} />
         </ProfileStack.Navigator>
     )
+}
+
+export function AuthStack() {
+    const AuthStack = createNativeStackNavigator<AuthStackList>();
+    return (
+        <AuthStack.Navigator
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <AuthStack.Screen name="LoginStackScreen" component={LoginStackScreen} />
+            {/*<AuthStack.Screen name="Register" component={Register} />*/}
+        </AuthStack.Navigator>
+    );
 }

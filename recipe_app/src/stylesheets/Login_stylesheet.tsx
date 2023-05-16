@@ -12,7 +12,7 @@ export default StyleSheet.create({
         flexDirection : 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 10,
 
     },
     headerText: {
@@ -34,8 +34,9 @@ export default StyleSheet.create({
         marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
-        // backgroundColor: '#e2e2e2',
+        // backgroundColor: 'rgba(226,226,226,0.68)',
         // borderRadius: 8,
+        color: '#f2f2f2',
         paddingLeft: 30,
     },
     loginBtn: {
@@ -57,18 +58,20 @@ export default StyleSheet.create({
 
     },
     text: {
-        fontSize: 16,
-        fontWeight: '500',
-        textAlign: 'center',
-        margin: 10,
+        color:"#f2f2f2",
+        fontSize:16,
+        textAlign: 'right',
     },
     error: {
         color: 'red',
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
+        fontStyle: 'italic',
         textAlign: 'center',
-        margin: 10,
-        backgroundColor: 'rgba(255,79,79,0.34)',
+        marginLeft: 10,
+        marginRight: 10,
+        bottom: 0,
+        // backgroundColor: 'rgba(255,79,79,0.34)',
     },
     inner: {
         // flex: 1,
@@ -214,9 +217,10 @@ export default StyleSheet.create({
     },
     registerAsk: {
         flexDirection:'column-reverse',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+        marginTop: 80,
     },
     socialLogin: {
         flexDirection: 'row',
@@ -255,6 +259,24 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
 
+    },
+    tooltip: {
+        position: 'absolute',
+        right: 60,
+        top: -2,
+        padding: 20,
+        textAlignVertical: 'center',
+        textAlign:'right',
+    },
+    errorPwd: {
+        color: 'red',
+        fontSize: 14,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        // textAlign: 'center',
+        paddingLeft: 30,
+        paddingRight: 30,
+        // backgroundColor: 'rgba(255,79,79,0.34)',
     }
 
 
