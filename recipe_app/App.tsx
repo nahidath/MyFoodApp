@@ -99,6 +99,10 @@ export default function App() {
     }
     const fetchDeviceTokenAndSendNotification = async () => {
         try {
+            if(!loggedIn){
+                console.log('User not logged in, not fetching device token');
+                return;
+            }
             const userId = auth.currentUser?.uid || "undefined";
             const docRef = doc(cloudFS, 'users', userId);
             const docSnapshot = await getDoc(docRef);
@@ -124,10 +128,12 @@ export default function App() {
 
     const handleAppStateChange = useCallback((nextAppState: AppStateStatus) => {
         setAppState(nextAppState);
-        if (nextAppState === 'active') {
-            // checkNotificationPermission();
+        if (nextAppState === 'active' && loggedIn) {
+            checkNotificationPermission();
+
         }
-    }, []);
+    }, [loggedIn]);
+
     useEffect(() => {
         let isMounted = true;
 
@@ -147,6 +153,7 @@ export default function App() {
             isMounted = false;
         };
     }, [handleAppStateChange, loggedIn]);
+
     useEffect(() => {
         return () => {
             // Set the mounted flag to false when the component unmounts
@@ -191,7 +198,7 @@ export default function App() {
             if (status === RESULTS.GRANTED) {
                 const token = await messaging().getToken();
                 console.log('Device token:', token);
-                // saveTokenToDatabase(token);
+                saveTokenToDatabase(token);
             }
         } catch (error) {
             console.log('Error requesting notification permission: ', error);
@@ -202,7 +209,7 @@ export default function App() {
 
     useEffect(() => {
         if(notifEnabled) {
-            // fetchDeviceTokenAndSendNotification().catch(e => console.log('Error fetching device token: ', e));
+            if(loggedIn) fetchDeviceTokenAndSendNotification().catch(e => console.log('Error fetching device token: ', e));
             messaging()
                 .getInitialNotification()
                 .then(async (remoteMessage) => {
