@@ -74,13 +74,13 @@ export default function Login () {
         }
     });
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (loggedIn) {
-                navigation.popToTop();
-            }
-        }, [loggedIn])
-    )
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         if (loggedIn) {
+    //             navigation.popToTop();
+    //         }
+    //     }, [loggedIn])
+    // )
 
 
 

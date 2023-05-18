@@ -3,7 +3,16 @@ import BottomNavigation from "./src/components/BottomNavigation";
 import React, {createContext, useCallback, useEffect, useRef, useState} from "react";
 import { auth, cloudFS } from "./src/firebase/config";
 import messaging from '@react-native-firebase/messaging';
-import {Alert, AppState, AppStateStatus, Linking, PermissionsAndroid, Platform} from 'react-native';
+import {
+    Alert,
+    AppState,
+    AppStateStatus, Dimensions, Image,
+    Linking,
+    PermissionsAndroid,
+    PixelRatio,
+    Platform,
+    StyleSheet, Text, View
+} from 'react-native';
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import Notifs from "./src/screens/Notifs";
 // @ts-ignore
@@ -12,6 +21,9 @@ import axios from "axios";
 import {request, PERMISSIONS, RESULTS, checkNotifications} from 'react-native-permissions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthStack} from "./src/components/AllStackScreen";
+import SwiperStarter from "./src/components/SwiperStarter";
+import AppIntroSlider from "react-native-app-intro-slider";
+import FocusAwareStatusBar from "./src/components/StatusBarStyle";
 // @ts-ignore
 export const ThemeContext = React.createContext();
 // @ts-ignore
@@ -24,6 +36,13 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const NOTIF_SWITCH_KEY = 'notifSwitch';
     const [notifEnabled, setNotifEnabled] = useState(true);
+    const userId : string | undefined = auth.currentUser?.uid;
+    console.log('User id: ', userId);
+    const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
+    const [permissionResult, setPermissionResult] = useState<boolean>(false);
+    const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
+    const [isMounted, setIsMounted] = useState(true);
+    const [showIntro, setShowIntro] = useState(true);
 
 
     useEffect(() => {
@@ -35,14 +54,10 @@ export default function App() {
         }
         loadNotifEnabled().then(r => console.log('Notif enabled: ', notifEnabled));
     }, []);
+
     useEffect(() => {
         AsyncStorage.setItem(NOTIF_SWITCH_KEY, notifEnabled.toString()).then(r => console.log('Notif enabled: ', notifEnabled));
     }, [notifEnabled]);
-
-    const userId : string | undefined = auth.currentUser?.uid;
-    console.log('User id: ', userId);
-    const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
-    const [permissionResult, setPermissionResult] = useState<boolean>(false);
 
 
     const saveTokenToDatabase = async (token: string | undefined) => {
@@ -56,8 +71,6 @@ export default function App() {
         }, { merge: true });
 
     }
-
-
 
 
     const sendNotification = async (deviceToken : string) => {
@@ -108,13 +121,11 @@ export default function App() {
         }
     };
 
-    const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
-    const [isMounted, setIsMounted] = useState(true);
 
     const handleAppStateChange = useCallback((nextAppState: AppStateStatus) => {
         setAppState(nextAppState);
         if (nextAppState === 'active') {
-            checkNotificationPermission();
+            // checkNotificationPermission();
         }
     }, []);
     useEffect(() => {
@@ -129,13 +140,13 @@ export default function App() {
         // Subscribe to app state changes
         AppState.addEventListener('change', handleAppStateChangeRef);
         console.log('Checking notification permission')
-        // checkNotificationPermission()
+        if(loggedIn) checkNotificationPermission();
 
         return () => {
             // Unsubscribe from app state changes when the component unmounts
             isMounted = false;
         };
-    }, [handleAppStateChange]);
+    }, [handleAppStateChange, loggedIn]);
     useEffect(() => {
         return () => {
             // Set the mounted flag to false when the component unmounts
@@ -236,7 +247,8 @@ export default function App() {
         //     messaging().deleteToken().then(r => console.log('Token deleted successfully: ', r)).catch(e => console.log('Error deleting token: ', e));
         // }
 
-    }, [notifEnabled]);
+
+    }, [notifEnabled, loggedIn]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -277,15 +289,29 @@ export default function App() {
     if (!isMounted) {
         return null; // Or render a placeholder component if needed
     }
-    return (
+
+    if(showIntro) {
+        return (
             <ThemeContext.Provider value={themeData}>
                 <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
                     <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                        {loggedIn ? <BottomNavigation />  : <AuthStack />}
-                        {/*<BottomNavigation />*/}
+                        <SwiperStarter setShowIntro={setShowIntro} />
                     </NavigationContainer>
                 </NotificationContext.Provider>
             </ThemeContext.Provider>
 
-  );
+
+        );
+    }
+
+    return (
+        <ThemeContext.Provider value={themeData}>
+            <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
+                <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+                    {loggedIn ? <BottomNavigation />  : <AuthStack />}
+                    {/*<BottomNavigation />*/}
+                </NavigationContainer>
+            </NotificationContext.Provider>
+        </ThemeContext.Provider>
+    );
 }
