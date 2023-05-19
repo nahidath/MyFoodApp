@@ -6,16 +6,19 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import {getMessaging} from "firebase/messaging";
 
+// @ts-ignore
+import {REACT_APP_API_KEY2, REACT_APP_AUTH_DOMAIN, REACT_APP_PROJECT_ID, REACT_APP_STORAGE_BUCKET, REACT_APP_MESSAGING_SENDER_ID, REACT_APP_APP_ID, REACT_APP_MEASUREMENT_ID,REACT_APP_DATABASE_URL } from "@env";
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAMRr_JDlJ3HEEnonhoMTjjtz85veVt_Os",
-    authDomain: "my-recipe-app-72535.firebaseapp.com",
-    projectId: "my-recipe-app-72535",
-    storageBucket: "my-recipe-app-72535.appspot.com",
-    messagingSenderId: "243345150702",
-    appId: "1:243345150702:web:1ae28b49f7cf67154d59ff",
-    databaseURL: "https://my-recipe-app-72535-default-rtdb.europe-west1.firebasedatabase.app/",
-    measurementId: "G-1YZTBY36LQ"
+    apiKey: REACT_APP_API_KEY2,
+    authDomain: REACT_APP_AUTH_DOMAIN,
+    projectId: REACT_APP_PROJECT_ID,
+    storageBucket: REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: REACT_APP_MESSAGING_SENDER_ID,
+    appId: REACT_APP_APP_ID,
+    databaseURL: REACT_APP_DATABASE_URL,
+    measurementId: REACT_APP_MEASUREMENT_ID
 };
 
 // Initialize Firebase

@@ -63,12 +63,12 @@ export default function App() {
     const saveTokenToDatabase = async (token: string | undefined) => {
         // Assume user is already signed in
         const userId = auth.currentUser?.uid || "undefined";
-        console.log('User id: ', userId);
 
-
+        console.log('cloud firestore', cloudFS);
         await setDoc(doc(cloudFS, "users",userId), {
             tokens: token
         }, { merge: true });
+        console.log('Token saved to database: ', token);
 
     }
 
@@ -199,6 +199,7 @@ export default function App() {
                 const token = await messaging().getToken();
                 console.log('Device token:', token);
                 saveTokenToDatabase(token);
+                console.log('Notification permission granted and device token saved to database');
             }
         } catch (error) {
             console.log('Error requesting notification permission: ', error);
@@ -297,7 +298,7 @@ export default function App() {
         return null; // Or render a placeholder component if needed
     }
 
-    if(showIntro) {
+    if(showIntro && !loggedIn) {
         return (
             <ThemeContext.Provider value={themeData}>
                 <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>

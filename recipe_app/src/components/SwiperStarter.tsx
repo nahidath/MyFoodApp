@@ -15,7 +15,7 @@ const SwiperStarter = ({setShowIntro} : SwiperStarterProps)  => {
         {
             id: 1,
             image: require('../../assets/Lunch-time.gif'),
-            title: 'What time is it? It is time to cook ! ',
+            title: 'What time is it ?\n It is time to cook ! ',
             description: "Let's cook delicious and healthy food with easy recipes",
         },
         {
@@ -28,7 +28,7 @@ const SwiperStarter = ({setShowIntro} : SwiperStarterProps)  => {
         {
             id: 3,
             image: require('../../assets/Cooking.gif'),
-            title: "Happy cooking!",
+            title: "Happy cooking !",
             description: 'Cooking is fun and easy with our app',
         }
     ];
@@ -62,7 +62,7 @@ const SwiperStarter = ({setShowIntro} : SwiperStarterProps)  => {
                 <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
                 <AppIntroSlider
                     renderNextButton={() => labelButton('Next')}
-                    renderDoneButton={() => labelButton('Done')}
+                    renderDoneButton={() => labelButton('Start')}
                     renderPrevButton={() => labelButton('Prev')}
                     showSkipButton={true}
                     // onDone={() => setShowRealApp(doneNavigation)}
