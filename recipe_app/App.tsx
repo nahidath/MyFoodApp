@@ -64,11 +64,9 @@ export default function App() {
         // Assume user is already signed in
         const userId = auth.currentUser?.uid || "undefined";
 
-        console.log('cloud firestore', cloudFS);
-        await setDoc(doc(cloudFS, "users",userId), {
+        await setDoc(doc(cloudFS, "devicesUsers",userId), {
             tokens: token
         }, { merge: true });
-        console.log('Token saved to database: ', token);
 
     }
 
@@ -104,12 +102,12 @@ export default function App() {
                 return;
             }
             const userId = auth.currentUser?.uid || "undefined";
-            const docRef = doc(cloudFS, 'users', userId);
+            const docRef = doc(cloudFS, 'devicesUsers', userId);
             const docSnapshot = await getDoc(docRef);
 
             if (docSnapshot.exists()) {
                 const userData = docSnapshot.data();
-                const deviceToken = userData.token;
+                const deviceToken = userData.tokens;
 
                 if (deviceToken) {
                     // Send the notification using the retrieved device token
@@ -199,7 +197,6 @@ export default function App() {
                 const token = await messaging().getToken();
                 console.log('Device token:', token);
                 saveTokenToDatabase(token);
-                console.log('Notification permission granted and device token saved to database');
             }
         } catch (error) {
             console.log('Error requesting notification permission: ', error);
@@ -242,6 +239,9 @@ export default function App() {
             // });
             const unsubscribe = messaging().onMessage(async (remoteMessage) => {
                 Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+                console.log('title : ', remoteMessage?.notification?.title);
+                console.log('body : ', remoteMessage?.notification?.body);
+                return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />
             });
 
             return unsubscribe;

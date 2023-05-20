@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getDatabase } from "firebase/database";
 import {getStorage} from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 import {getMessaging} from "firebase/messaging";
 
 // @ts-ignore
@@ -26,7 +26,8 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const storage = getStorage(app);
 export const database = getDatabase(app);
-export const cloudFS = getFirestore(app);
+// export const cloudFS = getFirestore(app);
+export const cloudFS = initializeFirestore(app, { experimentalForceLongPolling: true });
 // export const messaging = getMessaging(app);
 
 // const analytics = getAnalytics(app);

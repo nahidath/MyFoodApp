@@ -10,7 +10,7 @@ import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {NotificationsStackList} from "../types/types";
 import NotificationPush from "../components/NotificationPush";
 // @ts-ignore
-type NotificationsProps = MyStackNavigationProp<NotificationsStackList, 'Notifs'>;
+// type NotificationsProps = MyStackNavigationProp<NotificationsStackList, 'Notifs'>;
 
 interface NotifsProps {
     title: string | undefined;
@@ -25,8 +25,9 @@ const Notifs = ({title, body}:NotifsProps) => {
     const theme = useTheme();
     const user = auth.currentUser;
     const colorSpec = theme.dark ? '#252525' : '#041721';
-    const navigation = useNavigation<NotificationsProps>();
+    // const navigation = useNavigation<NotificationsProps>();
     const [notifications, setNotifications] = useState<any>([]);
+    console.log(title, body)
 
     useEffect(() => {
         if(title && body) {

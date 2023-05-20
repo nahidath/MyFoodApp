@@ -80,7 +80,7 @@ export function HomeStackScreen () {
                     fontWeight: 'bold',
                 },
             }} />
-            <HomeStack.Screen name="NotifScreen" component={NotificationsStackScreen} options={{
+            <HomeStack.Screen name="NotificationsScreen" component={Notifs} options={{
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -369,12 +369,12 @@ export function NotificationsStackScreen () {
 
     return (
         <NotificationsStack.Navigator >
-            {/*<NotificationsStack.Screen name="Notifs" component={Notifs} options={{*/}
-            {/*    headerShown: false,*/}
-            {/*}} />*/}
-            <NotificationsStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
+            <NotificationsStack.Screen name="Notifs" component={Notifs} options={{
                 headerShown: false,
-            }}/>
+            }} />
+            {/*<NotificationsStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}}/>*/}
         </NotificationsStack.Navigator>
     )
 }

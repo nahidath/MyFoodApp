@@ -232,9 +232,9 @@ const Homepage :  FC = () => {
                                 {/*<Feather name={"user"} size={24} color={colors.text} />*/}
                             </View>
                         </TouchableOpacity>
-                        <Text style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Welcome !' : 'Welcome, ' + user.displayName + ' !'}</Text>
+                        <Text style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Hi !' : 'Hi, ' + user.displayName + ' !'}</Text>
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
-                        <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotifScreen') }>
+                        <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />
                         </TouchableOpacity>
                     </View>
