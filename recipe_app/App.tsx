@@ -24,10 +24,13 @@ import {AuthStack} from "./src/components/AllStackScreen";
 import SwiperStarter from "./src/components/SwiperStarter";
 import AppIntroSlider from "react-native-app-intro-slider";
 import FocusAwareStatusBar from "./src/components/StatusBarStyle";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 // @ts-ignore
 export const ThemeContext = React.createContext();
 // @ts-ignore
 export const NotificationContext = React.createContext();
+export const NotifsParamsContext = React.createContext<any>(null);
+export const IncomingNotificationsContext = React.createContext<any>(null);
 
 
 
@@ -36,8 +39,9 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const NOTIF_SWITCH_KEY = 'notifSwitch';
     const [notifEnabled, setNotifEnabled] = useState(true);
+    const [params, setParams] = useState<any>({title: "", body: ""});
+    const [incomingNotifs, setIncomingNotifs] = useState<boolean>(false);
     const userId : string | undefined = auth.currentUser?.uid;
-    console.log('User id: ', userId);
     const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
     const [permissionResult, setPermissionResult] = useState<boolean>(false);
     const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
@@ -227,6 +231,8 @@ export default function App() {
             });
             //incoming message when the app is in the background
             messaging().setBackgroundMessageHandler(async remoteMessage => {
+                setIncomingNotifs(true);
+                setParams({title: remoteMessage?.notification?.title, body: remoteMessage?.notification?.body})
                 console.log('Message handled in the background!', remoteMessage);
             });
             //incoming message when the app is in the foreground
@@ -238,10 +244,10 @@ export default function App() {
             //     // return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />;
             // });
             const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-                Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-                console.log('title : ', remoteMessage?.notification?.title);
-                console.log('body : ', remoteMessage?.notification?.body);
-                return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />
+                // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+                setIncomingNotifs(true);
+                setParams({title: remoteMessage?.notification?.title, body: remoteMessage?.notification?.body})
+                // return <Notifs title={remoteMessage?.notification?.title} body={remoteMessage?.notification?.body} />
             });
 
             return unsubscribe;
@@ -300,26 +306,38 @@ export default function App() {
 
     if(showIntro && !loggedIn) {
         return (
-            <ThemeContext.Provider value={themeData}>
-                <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
-                    <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                        <SwiperStarter setShowIntro={setShowIntro} />
-                    </NavigationContainer>
-                </NotificationContext.Provider>
-            </ThemeContext.Provider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+                <ThemeContext.Provider value={themeData}>
+                    <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
+                        <NotifsParamsContext.Provider value={params}>
+                            <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
+                                <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+                                    <SwiperStarter setShowIntro={setShowIntro} />
+                                </NavigationContainer>
+                            </IncomingNotificationsContext.Provider>
+                        </NotifsParamsContext.Provider>
+                    </NotificationContext.Provider>
+                </ThemeContext.Provider>
+            </GestureHandlerRootView>
 
 
         );
     }
 
     return (
-        <ThemeContext.Provider value={themeData}>
-            <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
-                <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                    {loggedIn ? <BottomNavigation />  : <AuthStack />}
-                    {/*<BottomNavigation />*/}
-                </NavigationContainer>
-            </NotificationContext.Provider>
-        </ThemeContext.Provider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemeContext.Provider value={themeData}>
+                <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
+                    <NotifsParamsContext.Provider value={params}>
+                        <IncomingNotificationsContext.Provider value={incomingNotifs}>
+                            <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+                                {loggedIn ? <BottomNavigation />  : <AuthStack />}
+                                {/*<BottomNavigation />*/}
+                            </NavigationContainer>
+                        </IncomingNotificationsContext.Provider>
+                    </NotifsParamsContext.Provider>
+                </NotificationContext.Provider>
+            </ThemeContext.Provider>
+        </GestureHandlerRootView>
     );
 }

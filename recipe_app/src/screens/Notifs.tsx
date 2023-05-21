@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
-import {ScrollView, Text, TouchableOpacity, View} from "react-native";
+import React, {useContext, useEffect, useRef, useState} from "react";
+import {FlatList, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {FC} from "react";
 import styles from "../stylesheets/Notifications_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -9,44 +9,83 @@ import {auth} from "../firebase/config";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {NotificationsStackList} from "../types/types";
 import NotificationPush from "../components/NotificationPush";
+import {IncomingNotificationsContext, NotifsParamsContext} from "../../App";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+
 // @ts-ignore
 // type NotificationsProps = MyStackNavigationProp<NotificationsStackList, 'Notifs'>;
 
-interface NotifsProps {
-    title: string | undefined;
-    body: string | undefined;
-}
 
 
 
-const Notifs = ({title, body}:NotifsProps) => {
+
+const Notifs = () => {
 
     const {colors} = useTheme();
     const theme = useTheme();
     const user = auth.currentUser;
     const colorSpec = theme.dark ? '#252525' : '#041721';
+    const paramsNotifs = useContext(NotifsParamsContext);
     // const navigation = useNavigation<NotificationsProps>();
     const [notifications, setNotifications] = useState<any>([]);
-    console.log(title, body)
+    const {incomingNotifs, setIncomingNotifs} = useContext(IncomingNotificationsContext);
 
     useEffect(() => {
-        if(title && body) {
-            setNotifications([...notifications, {id: notifications.length + 1, title, body}]);
+        if(paramsNotifs?.title && paramsNotifs?.body) {
+            setNotifications([...notifications, {id: notifications.length + 1, title: paramsNotifs?.title, body: paramsNotifs?.body}]);
         }
-    }, [title, body]);
+    }, [paramsNotifs?.title, paramsNotifs?.body]);
+
+    const rightSwipeActions = (itemId :any) => {
+        const deleteNotification = () => {
+            setNotifications(notifications.filter((notification: { id: React.Key | null | undefined; }) => notification.id !== itemId));
+        }
+        return (
+            <TouchableOpacity style={styles.deleteButton} onPress={deleteNotification} activeOpacity={0.5}>
+                <Text style={styles.deleteText}>Delete</Text>
+            </TouchableOpacity>
+        );
+    };
+
+
+
+    const ListNotifications = ({item, index, deleteItem} : any) => {
+
+        return(
+            <Swipeable
+                overshootRight={false}
+                renderRightActions={() => rightSwipeActions(item.id)}
+                useNativeAnimations={true}
+            >
+                <NotificationPush title={item.title} body={item.body} />
+            </Swipeable>
+        );
+    }
+
+
+    const deleteItem = (id : any) => {
+        setNotifications(notifications.filter((notification: { id: React.Key | null | undefined; }) => notification.id !== id));
+    }
+
+    useEffect(() => {
+        if(notifications.length === 0) {
+            setIncomingNotifs(false);
+        }
+    }, [notifications.length]);
+
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
-            <ScrollView>
             <View style={styles.notificationContainer}>
-                <NotificationPush title={title} body={body}/>
-            </View>
-        </ScrollView>
+                <FlatList
+                    data={notifications}
+                    ListEmptyComponent={() => <View style={styles.nonotif}><Text style={{color: colors.text, fontStyle:"italic"}}>No notifications</Text></View>}
+                    renderItem={({item}) => <ListNotifications item={item} index={item.id} deleteItem={deleteItem} />}
+                    keyExtractor={item => item.id.toString()}
 
-        {/*{notifications.map((notification) => (*/}
-        {/*    <Text key={notification.id}>{notification.message}</Text>*/}
-        {/*))}*/}
+                />
+            </View>
         </View>
     );
 };

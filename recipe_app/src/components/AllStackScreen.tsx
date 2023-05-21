@@ -369,9 +369,9 @@ export function NotificationsStackScreen () {
 
     return (
         <NotificationsStack.Navigator >
-            <NotificationsStack.Screen name="Notifs" component={Notifs} options={{
-                headerShown: false,
-            }} />
+            {/*<NotificationsStack.Screen name="Notifs" component={Notifs} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}} />*/}
             {/*<NotificationsStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{*/}
             {/*    headerShown: false,*/}
             {/*}}/>*/}

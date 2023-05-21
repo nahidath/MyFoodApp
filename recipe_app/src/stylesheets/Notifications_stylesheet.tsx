@@ -12,7 +12,7 @@ export default StyleSheet.create({
     },
     notification: {
         backgroundColor: '#fff',
-        margin: 10,
+        marginVertical: 10,
         height: 84,
     },
     notificationText: {
@@ -60,6 +60,26 @@ export default StyleSheet.create({
     notificationBody: {
         fontSize: 15,
         padding: 5,
+    },
+    deleteButton: {
+        width: 100,
+        height: 84,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'red',
+        marginVertical: 10,
+    },
+    deleteText: {
+        color: '#f2f2f2',
+        fontWeight: '600',
+        fontSize: 18,
+        paddingHorizontal: 10,
+    },
+    nonotif:{
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 
 

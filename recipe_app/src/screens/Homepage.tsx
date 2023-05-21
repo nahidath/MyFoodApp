@@ -13,7 +13,7 @@ import {
     View,
     Image, RefreshControl, FlatList, LogBox
 } from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
@@ -34,6 +34,8 @@ import {SkeletonLoaderHomePage} from "../components/SkeletonLoader";
 import recipeRandom from "../mock/recipeRandom.json";
 import recipeTags from "../mock/recipePotatoTags.json";
 import CardRecipe from "../components/CardRecipe";
+import {Badge} from "react-native-elements";
+import {IncomingNotificationsContext} from "../../App";
 
 
 // @ts-ignore
@@ -63,6 +65,7 @@ const Homepage :  FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [saved, setSaved] = useState<boolean>(false);
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
+    const notifsArrived = useContext(IncomingNotificationsContext);
 
 
 
@@ -236,6 +239,7 @@ const Homepage :  FC = () => {
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                         <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />
+                            {notifsArrived ? <Badge status="error" containerStyle={{ position: 'absolute', top: 15, right: 3 }} /> : null}
                         </TouchableOpacity>
                     </View>
 

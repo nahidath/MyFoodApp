@@ -16,7 +16,7 @@ const NotificationPush = ({title, body}: NotificationPushProps) => {
     const theme = useTheme();
 
     return (
-        <TouchableOpacity style={[styles.notification, general.shadow, {backgroundColor: colors.notification}]}>
+        <TouchableOpacity style={[styles.notification, general.shadow, {backgroundColor: colors.notification}]} activeOpacity={0.95}>
             <Text style={[styles.notificationTitle, {color: colors.text}]}>{title}</Text>
             <Text style={[styles.notificationBody, {color: colors.text}]}>{body}</Text>
         </TouchableOpacity>
