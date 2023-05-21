@@ -47,6 +47,7 @@ export default function App() {
     const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
     const [isMounted, setIsMounted] = useState(true);
     const [showIntro, setShowIntro] = useState(true);
+    const [isWelcome, setIsWelcome] = useState(true);
 
 
     useEffect(() => {
@@ -75,12 +76,12 @@ export default function App() {
     }
 
 
-    const sendNotification = async (deviceToken : string) => {
+    const sendWelcomeNotification = async (deviceToken : string) => {
            console.log('Sending notification to device: ', deviceToken);
         const payload = {
             notification: {
-                title: 'New recipe',
-                body: 'Hey come check out this new recipe!'
+                title: 'Welcome to Recipe App!',
+                body: 'Get ready to explore a world of delicious recipes and culinary inspiration. From mouth-watering appetizers to delectable desserts, we have a wide variety of recipes to suit every taste. Start your culinary journey today and let your taste buds be delighted!'
             },
             to: deviceToken
         };
@@ -97,8 +98,34 @@ export default function App() {
             console.log('Error sending notification: ', e)
         };
 
+        setIsWelcome(false);
 
     }
+    // const sendNotification = async (deviceToken : string) => {
+    //        console.log('Sending notification to device: ', deviceToken);
+    //     const payload = {
+    //         notification: {
+    //             title: 'Welcome to Recipe App!',
+    //             body: 'Get ready to explore a world of delicious recipes and culinary inspiration. From mouth-watering appetizers to delectable desserts, we have a wide variety of recipes to suit every taste. Start your culinary journey today and let your taste buds be delighted!'
+    //         },
+    //         to: deviceToken
+    //     };
+    //
+    //
+    //     try {
+    //         const response = await axios.post('https://fcm.googleapis.com/fcm/send', payload, {
+    //
+    //             headers: {'Content-Type': 'application/json', 'Authorization': 'key=' + cloudMessaging},
+    //         });
+    //
+    //         console.log('Notification sent successfully: ', response.data);
+    //     }catch(e) {
+    //         console.log('Error sending notification: ', e)
+    //     };
+    //
+    //     setIsWelcome(false);
+    //
+    // }
     const fetchDeviceTokenAndSendNotification = async () => {
         try {
             if(!loggedIn){
@@ -115,7 +142,34 @@ export default function App() {
 
                 if (deviceToken) {
                     // Send the notification using the retrieved device token
-                    await sendNotification(deviceToken);
+                    // await sendNotification(deviceToken);
+                } else {
+                    console.log('Device token not found');
+                }
+            } else {
+                console.log('User document does not exist');
+            }
+        } catch (error) {
+            console.log('Error fetching device token:', error);
+        }
+    };
+    const fetchDeviceTokenAndSendWelcomeNotification = async () => {
+        try {
+            if(!loggedIn){
+                console.log('User not logged in, not fetching device token');
+                return;
+            }
+            const userId = auth.currentUser?.uid || "undefined";
+            const docRef = doc(cloudFS, 'devicesUsers', userId);
+            const docSnapshot = await getDoc(docRef);
+
+            if (docSnapshot.exists()) {
+                const userData = docSnapshot.data();
+                const deviceToken = userData.tokens;
+
+                if (deviceToken) {
+                    // Send the notification using the retrieved device token
+                    await sendWelcomeNotification(deviceToken);
                 } else {
                     console.log('Device token not found');
                 }
@@ -209,8 +263,10 @@ export default function App() {
 
 
 
+
     useEffect(() => {
         if(notifEnabled) {
+            if(loggedIn && isWelcome) fetchDeviceTokenAndSendWelcomeNotification().catch(e => console.log('Error fetching device token: ', e));
             if(loggedIn) fetchDeviceTokenAndSendNotification().catch(e => console.log('Error fetching device token: ', e));
             messaging()
                 .getInitialNotification()
@@ -305,6 +361,7 @@ export default function App() {
     }
 
     if(showIntro && !loggedIn) {
+        setShowIntro(false);
         return (
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <ThemeContext.Provider value={themeData}>
@@ -329,7 +386,7 @@ export default function App() {
             <ThemeContext.Provider value={themeData}>
                 <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
                     <NotifsParamsContext.Provider value={params}>
-                        <IncomingNotificationsContext.Provider value={incomingNotifs}>
+                        <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
                             <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
                                 {loggedIn ? <BottomNavigation />  : <AuthStack />}
                                 {/*<BottomNavigation />*/}

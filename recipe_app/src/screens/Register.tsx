@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {colors} from "react-native-elements";
 import {Link, useNavigation, useTheme} from "@react-navigation/native";
-import {TextInput, TouchableOpacity, View, Text, ScrollView} from "react-native";
+import {TextInput, TouchableOpacity, View, Text, ScrollView, Modal, TouchableHighlight, TouchableWithoutFeedback} from "react-native";
 import styles from "../stylesheets/Login_stylesheet";
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../firebase/config";
@@ -13,6 +13,10 @@ import {updateProfile} from "firebase/auth";
 import Feather from "react-native-vector-icons/Feather";
 import Tooltip from "../components/Tooltip";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import TermsOfUseModal from "../components/TermsOfUseModal";
+import PrivacyPolicy from "./PrivacyPolicy";
+import PrivacyPolicyModal from "../components/PrivacyPolicyModal";
 
 
 // @ts-ignore
@@ -36,6 +40,10 @@ const Register = () => {
         password: true,
         confPassword: true
     });
+    const [agree1, setAgree1] = useState<boolean>(false);
+    const [agree2, setAgree2] = useState<boolean>(false);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [modalVisible2, setModalVisible2] = useState<boolean>(false);
 
 
     const handleSubmit = async () => {
@@ -115,12 +123,14 @@ const Register = () => {
         handleConfPasswordChange(confPassword);
     }, [confPassword]);
 
+    const hh : any = "I agree to receive marketing communications and the latest information from the app by email.\n" + "You can unsubscribe at any time.";
+
     return (
 
         <View style={styles.container}>
             <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
             <KeyboardAwareScrollView>
-                <View style={styles.header}>
+                <View style={[styles.header, {marginTop: 40}]}>
                     <Text style={styles.title}>Register</Text>
                     <Text style={styles.subtitle}>Create your account</Text>
 
@@ -181,16 +191,63 @@ const Register = () => {
                     </View>
                     {errorCPwd && <Text style={styles.errorPwd}>{errorCPwd}</Text>}
 
+                    <View style={styles.agreeZone}>
+                        <BouncyCheckbox
+                            size={20}
+                            fillColor="#9fc131"
+                            unfillColor="#9fc131"
+                            style={{ marginVertical: 10, marginHorizontal: 10 }}
+                            // text="I agree to the Terms and Conditions, Privacy Policy and Cookie Policy."
+                            textComponent={<View style={{marginLeft:15}}><Text style={{color: "#f2f2f2", fontSize: 13, textDecorationLine: "none" }}>I agree to the <TouchableWithoutFeedback onPress={() => setModalVisible(true)}><Text style={styles.link}>Terms and Conditions</Text></TouchableWithoutFeedback>, <TouchableWithoutFeedback onPress={() => setModalVisible2(true)}><Text style={styles.link}>Privacy Policy</Text></TouchableWithoutFeedback> and Cookie Policy.</Text></View>}
+                            iconStyle={{ borderColor: "#9fc131" }}
+                            innerIconStyle={{ borderColor: "#f2f2f2" }}
+                            textStyle={{ fontFamily: "JosefinSans-Regular", color: "#f2f2f2", fontSize: 13, textDecorationLine: "none" }}
+                            onPress={(isChecked: boolean) => {setAgree1(isChecked)}}
+                        />
+                        <BouncyCheckbox
+                            size={20}
+                            fillColor="#9fc131"
+                            unfillColor="#9fc131"
+                            style={{ marginVertical: 10,  paddingHorizontal: 10, paddingRight: 20, }}
+                            text={hh}
+                            iconStyle={{ borderColor: "#9fc131" }}
+                            innerIconStyle={{ borderColor: "#f2f2f2" }}
+                            textStyle={{ fontFamily: "JosefinSans-Regular", color: "#f2f2f2", fontSize: 13, textDecorationLine: "none" }}
+                            onPress={(isChecked: boolean) => {setAgree2(isChecked)}}
+                        />
+
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                            <TermsOfUseModal setModalVisible={setModalVisible} modalVisible={modalVisible}/>
+                        </Modal>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible2}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible2);
+                            }}
+                        >
+                            <PrivacyPolicyModal setModalVisible={setModalVisible2} modalVisible={modalVisible2}/>
+                        </Modal>
+                    </View>
+
 
                     <View style={styles.inputZone}>
                         <TouchableOpacity style={styles.loginBtn} activeOpacity={0.5}
                             onPress={handleSubmit}
-                            disabled={!email || !password || !confPassword || !username}
+                            disabled={!email || !password || !confPassword || !username || !agree1 || !agree2}
                         >
                             <Text style={styles.btnText}>Register <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={[styles.registerAsk, {marginTop: 175}]}>
+                    <View style={[styles.registerAsk, {marginTop: 50}]}>
                         <Text style={styles.text}>Already have an account ? <Link to={{screen : 'Login'}} style={styles.registerButton}>Login</Link></Text>
                     </View>
                 </View>

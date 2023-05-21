@@ -127,6 +127,7 @@ export function LoginStackScreen () {
                 headerShadowVisible: false,
                 headerTintColor: '#fff',
                 animation: 'slide_from_right',
+                headerTransparent: true,
 
             }} />
             <LoginStack.Screen name="AccountStackScreen" component={AccountStackScreen} options={{

@@ -13,7 +13,8 @@ export default StyleSheet.create({
     notification: {
         backgroundColor: '#fff',
         marginVertical: 10,
-        height: 84,
+        // height: 84,
+        flex: 1,
     },
     notificationText: {
         fontSize: 20,

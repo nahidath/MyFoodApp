@@ -8,11 +8,11 @@ export default StyleSheet.create({
         // margin:10,
     },
     header: {
-        padding: 30,
+        padding: 20,
         flexDirection : 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
+        // marginTop: 10,
 
     },
     headerText: {
@@ -80,12 +80,12 @@ export default StyleSheet.create({
     },
     link: {
         color: '#f2f2f2',
-        fontSize: 14,
+        fontSize: 13,
         // fontWeight: 'bold',
-        textAlign: 'right',
-        marginRight: 40,
-        marginTop:8,
-        marginBottom:24,
+        // textAlign: 'right',
+        // marginRight: 40,
+        // marginTop:8,
+        // marginBottom:24,
         textDecorationLine: 'underline',
     },
     belowContainer: {
@@ -150,8 +150,7 @@ export default StyleSheet.create({
         width: '100%',
     },
     modalView: {
-        width: '100%',
-        height: '80%',
+
         padding: 10,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
@@ -220,7 +219,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        marginTop: 80,
+        marginTop: 115,
     },
     socialLogin: {
         flexDirection: 'row',
@@ -277,6 +276,38 @@ export default StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         // backgroundColor: 'rgba(255,79,79,0.34)',
+    },
+    agreeZone: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        // alignItems: 'center',
+        marginRight: 25,
+        marginLeft: 15,
+        padding: 10,
+
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        backgroundColor: '#f2f2f2',
+        // backgroundColor: 'rgba(155,155,155,0.52)',
+
+    },
+    openButton: {
+        backgroundColor: "#F194FF",
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        margin: 10,
+
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: 16,
     }
 
 

@@ -239,7 +239,7 @@ const Homepage :  FC = () => {
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                         <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />
-                            {notifsArrived ? <Badge status="error" containerStyle={{ position: 'absolute', top: 15, right: 3 }} /> : null}
+                            {notifsArrived.incomingNotifs ? <Badge status="error" containerStyle={{ position: 'absolute', top: 15, right: 3 }} /> : null}
                         </TouchableOpacity>
                     </View>
 

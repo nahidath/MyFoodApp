@@ -28,7 +28,7 @@ const Notifs = () => {
     const paramsNotifs = useContext(NotifsParamsContext);
     // const navigation = useNavigation<NotificationsProps>();
     const [notifications, setNotifications] = useState<any>([]);
-    const {incomingNotifs, setIncomingNotifs} = useContext(IncomingNotificationsContext);
+    const incomingNotifs = useContext(IncomingNotificationsContext);
 
     useEffect(() => {
         if(paramsNotifs?.title && paramsNotifs?.body) {
@@ -68,10 +68,8 @@ const Notifs = () => {
     }
 
     useEffect(() => {
-        if(notifications.length === 0) {
-            setIncomingNotifs(false);
-        }
-    }, [notifications.length]);
+        incomingNotifs.setIncomingNotifs(false);
+    }, []);
 
 
     return (
