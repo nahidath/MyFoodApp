@@ -80,12 +80,17 @@ export default StyleSheet.create({
     },
     link: {
         color: '#f2f2f2',
-        fontSize: 13,
+        fontSize: 14,
         // fontWeight: 'bold',
-        // textAlign: 'right',
-        // marginRight: 40,
-        // marginTop:8,
-        // marginBottom:24,
+        textAlign: 'right',
+        marginRight: 40,
+        marginTop:8,
+        marginBottom:24,
+        textDecorationLine: 'underline',
+    },
+    link2:{
+        color: "#3578cb",
+        fontSize: 13,
         textDecorationLine: 'underline',
     },
     belowContainer: {
@@ -175,12 +180,43 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     modalText: {
-        fontSize: 16,
-        fontWeight: 'normal',
+        fontSize: 18,
+        fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
         alignItems: 'center',
 
+    },
+    title1: {
+        fontSize: 17,
+        // margin: 10,
+        marginTop: 15,
+        marginBottom: 10,
+        fontWeight: 'bold',
+        color: '#041721'
+    },
+    title2: {
+        fontSize: 17,
+        // margin: 10,
+        marginTop: 15,
+        marginBottom: 10,
+        fontWeight: 'bold',
+        color: '#041721'
+    },
+    title3: {
+        fontSize: 16,
+        // margin: 10,
+        marginTop: 15,
+        marginBottom: 10,
+        fontWeight: 'bold',
+        color: '#041721'
+    },
+    title4: {
+        fontSize: 15,
+        marginTop: 15,
+        marginBottom: 10,
+        fontWeight: 'bold',
+        color: '#041721'
     },
     icon: {
         position: 'absolute',
@@ -295,8 +331,8 @@ export default StyleSheet.create({
         // backgroundColor: 'rgba(155,155,155,0.52)',
 
     },
-    openButton: {
-        backgroundColor: "#F194FF",
+    closeButton: {
+        backgroundColor: "#9fc131",
         borderRadius: 20,
         padding: 10,
         elevation: 2,
@@ -308,6 +344,11 @@ export default StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 16,
+    },
+    textChkBox: {
+        color: "#f2f2f2",
+        fontSize: 13,
+        textDecorationLine: "none"
     }
 
 

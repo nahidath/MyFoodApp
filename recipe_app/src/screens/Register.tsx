@@ -17,6 +17,9 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import TermsOfUseModal from "../components/TermsOfUseModal";
 import PrivacyPolicy from "./PrivacyPolicy";
 import PrivacyPolicyModal from "../components/PrivacyPolicyModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export const EmailNotificationAgreed = React.createContext(false);
 
 
 // @ts-ignore
@@ -44,6 +47,28 @@ const Register = () => {
     const [agree2, setAgree2] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [modalVisible2, setModalVisible2] = useState<boolean>(false);
+    const NOTIF_EMAIL_SWITCH_KEY = 'notifEmailSwitch';
+    const [notifEmailSwitch, setNotifEmailSwitch] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        async function getNotifEmailSwitch() {
+            const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
+            if (notifEmailSwitch) {
+                setNotifEmailSwitch(notifEmailSwitch === 'true');
+            }
+        }
+        getNotifEmailSwitch();
+    }, []);
+
+    useEffect(() => {
+        async function setNotifEmailSwitch() {
+            if(agree2) {
+                await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, notifEmailSwitch.toString());
+            }
+        }
+        setNotifEmailSwitch();
+    }, [notifEmailSwitch, agree2]);
 
 
     const handleSubmit = async () => {
@@ -69,11 +94,7 @@ const Register = () => {
         }
     }
 
-    // useEffect(() => {
-    //     navigation.setOptions({
-    //         headerTitle: 'Register',
-    //     })
-    // },[navigation]);
+
     const togglePassword = (inputN : any) => {
         if(inputN === 'password'){
             setIsVisible({
@@ -123,7 +144,24 @@ const Register = () => {
         handleConfPasswordChange(confPassword);
     }, [confPassword]);
 
-    const hh : any = "I agree to receive marketing communications and the latest information from the app by email.\n" + "You can unsubscribe at any time.";
+    const Box1 = () => {
+        return(
+            <View style={{marginLeft:15}}>
+                <Text style={styles.textChkBox}>
+                    I agree to the <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+                        <Text style={styles.link2}>Terms & Conditions, Cookie Policy</Text>
+                    </TouchableWithoutFeedback>
+                    <Text style={styles.textChkBox}>, and </Text>
+                    <TouchableWithoutFeedback onPress={() => setModalVisible2(true)}>
+                        <Text style={styles.link2}>Privacy Policy.</Text>
+                    </TouchableWithoutFeedback>
+                </Text>
+            </View>
+        )
+    }
+
+    const box2 : any ="I agree to receive marketing communications and the latest information from the app by email.\n" + "You can unsubscribe at any time.";
+
 
     return (
 
@@ -198,7 +236,7 @@ const Register = () => {
                             unfillColor="#9fc131"
                             style={{ marginVertical: 10, marginHorizontal: 10 }}
                             // text="I agree to the Terms and Conditions, Privacy Policy and Cookie Policy."
-                            textComponent={<View style={{marginLeft:15}}><Text style={{color: "#f2f2f2", fontSize: 13, textDecorationLine: "none" }}>I agree to the <TouchableWithoutFeedback onPress={() => setModalVisible(true)}><Text style={styles.link}>Terms and Conditions</Text></TouchableWithoutFeedback>, <TouchableWithoutFeedback onPress={() => setModalVisible2(true)}><Text style={styles.link}>Privacy Policy</Text></TouchableWithoutFeedback> and Cookie Policy.</Text></View>}
+                            textComponent=<Box1/>
                             iconStyle={{ borderColor: "#9fc131" }}
                             innerIconStyle={{ borderColor: "#f2f2f2" }}
                             textStyle={{ fontFamily: "JosefinSans-Regular", color: "#f2f2f2", fontSize: 13, textDecorationLine: "none" }}
@@ -209,7 +247,7 @@ const Register = () => {
                             fillColor="#9fc131"
                             unfillColor="#9fc131"
                             style={{ marginVertical: 10,  paddingHorizontal: 10, paddingRight: 20, }}
-                            text={hh}
+                            text={box2}
                             iconStyle={{ borderColor: "#9fc131" }}
                             innerIconStyle={{ borderColor: "#f2f2f2" }}
                             textStyle={{ fontFamily: "JosefinSans-Regular", color: "#f2f2f2", fontSize: 13, textDecorationLine: "none" }}
