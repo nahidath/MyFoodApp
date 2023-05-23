@@ -7,6 +7,9 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import {useTheme} from "@react-navigation/native";
 import {NotificationContext} from "../../App";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {child, ref, remove, set} from "firebase/database";
+import {auth, database} from "../firebase/config";
 
 
 
@@ -27,16 +30,53 @@ const NotificationSettings = () => {
     const [data, setData] = useState<any>({});
     const {colors} = useTheme();
     const theme = useTheme();
+    const NOTIF_EMAIL_SWITCH_KEY = 'notifEmailSwitch';
 
-    //
-    // useEffect(() => {
-    //     if (isEnabledPush) {
-    //         setNotification(true);
-    //     } else {
-    //         setNotification(false);
-    //     }
-    // }, [isEnabledPush]);
 
+    useEffect(() => {
+        async function getNotifEmailSwitch() {
+            const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
+            if (notifEmailSwitch) {
+                console.log(notifEmailSwitch);
+                setIsEnabledEmail(notifEmailSwitch === 'true');
+            }
+        }
+        getNotifEmailSwitch();
+    }, []);
+
+    console.log("before touching :",isEnabledEmail);
+
+    useEffect(() => {
+        async function setNotifEmailSwitch() {
+            await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, isEnabledEmail.toString());
+
+        }
+        setNotifEmailSwitch();
+        // remove in db
+        if (!isEnabledEmail) {
+            const db = ref(database);
+            const user = auth.currentUser;
+            const email = user?.email;
+            // @ts-ignore
+            const emailEncoded = encodeURIComponent(email).replace(/\./g, '%2E');
+            const emailRef = child(db, `subscribers/${emailEncoded}`);
+            remove(emailRef).then(() => {
+                console.log('removed');
+            }).catch((error) => {
+                console.log(error);
+            });
+        }else{
+            const db = ref(database);
+            const user = auth.currentUser;
+            const email = user?.email;
+            // @ts-ignore
+            const emailEncoded = encodeURIComponent(email).replace(/\./g, '%2E');
+            set(child(db, `subscribers/${emailEncoded}`), true).then(r => {
+                console.log('user subscribed');
+
+            });
+        }
+    }, [isEnabledEmail]);
 
 
 

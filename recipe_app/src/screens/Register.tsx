@@ -4,7 +4,7 @@ import {Link, useNavigation, useTheme} from "@react-navigation/native";
 import {TextInput, TouchableOpacity, View, Text, ScrollView, Modal, TouchableHighlight, TouchableWithoutFeedback} from "react-native";
 import styles from "../stylesheets/Login_stylesheet";
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../firebase/config";
+import {auth, database} from "../firebase/config";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
 import {LoginStackList} from "../types/types";
 import general from "../stylesheets/General_stylesheet";
@@ -18,6 +18,7 @@ import TermsOfUseModal from "../components/TermsOfUseModal";
 import PrivacyPolicy from "./PrivacyPolicy";
 import PrivacyPolicyModal from "../components/PrivacyPolicyModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {child, ref, set} from "firebase/database";
 
 export const EmailNotificationAgreed = React.createContext(false);
 
@@ -51,46 +52,57 @@ const Register = () => {
     const [notifEmailSwitch, setNotifEmailSwitch] = useState<boolean>(false);
 
 
-    useEffect(() => {
-        async function getNotifEmailSwitch() {
-            const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
-            if (notifEmailSwitch) {
-                setNotifEmailSwitch(notifEmailSwitch === 'true');
-            }
-        }
-        getNotifEmailSwitch();
-    }, []);
-
-    useEffect(() => {
-        async function setNotifEmailSwitch() {
-            if(agree2) {
-                await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, notifEmailSwitch.toString());
-            }
-        }
-        setNotifEmailSwitch();
-    }, [notifEmailSwitch, agree2]);
+    // useEffect(() => {
+    //     async function getNotifEmailSwitch() {
+    //         const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
+    //         if (notifEmailSwitch) {
+    //             setNotifEmailSwitch(notifEmailSwitch === 'true');
+    //         }
+    //     }
+    //     getNotifEmailSwitch();
+    // }, []);
+    //
+    // useEffect(() => {
+    //     async function setNotifEmailSwitch() {
+    //         if(agree2) {
+    //             await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, notifEmailSwitch.toString());
+    //         }
+    //     }
+    //     setNotifEmailSwitch();
+    // }, [notifEmailSwitch, agree2]);
 
 
     const handleSubmit = async () => {
+        const db = ref(database);
         try {
             if(password === confPassword) {
                 await createUserWithEmailAndPassword(auth, email, password);
                 if (auth.currentUser) {
                     updateProfile(auth.currentUser, {displayName: username}).then(() => {
-                        console.log('Account updated');
+                        console.log('Account created');
                     }).catch((error: any) => {
                         console.log(error);
                     });
                 }
                 setError('');
                 // navigation.push('Profile');
-                navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+                navigation.navigate('HomeStackScreen');
 
             } else {
                 setError('Passwords do not match');
             }
         } catch (err) {
             setError('Failed to create an account');
+        }
+
+        if(agree2){
+            const emailEncoded = encodeURIComponent(email).replace(/\./g, '%2E');
+            await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, "true");
+            // console.log('notifEmailSwitch: ', notifEmailSwitch);
+            set(child(db, `subscribers/${emailEncoded}`), true).then(r => {
+                console.log('user subscribed');
+
+            });
         }
     }
 
