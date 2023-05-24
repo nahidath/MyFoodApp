@@ -37,7 +37,6 @@ const NotificationSettings = () => {
         async function getNotifEmailSwitch() {
             const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
             if (notifEmailSwitch) {
-                console.log(notifEmailSwitch);
                 setIsEnabledEmail(notifEmailSwitch === 'true');
             }
         }

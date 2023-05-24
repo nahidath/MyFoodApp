@@ -19,6 +19,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         padding: 10,
         paddingTop: 10,
+        marginRight: 5,
         flex: 1,
     },
     subHeaderText: {

@@ -90,6 +90,7 @@ export default StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         paddingTop: 2,
+        paddingRight: 70,
     },
     arrowGo: {
         position: 'absolute',

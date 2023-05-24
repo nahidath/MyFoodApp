@@ -1,5 +1,16 @@
 import React, {FC, useEffect, useState} from "react";
-import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground, Image, Modal} from "react-native";
+import {
+    View,
+    Text,
+    Pressable,
+    TouchableOpacity,
+    ScrollView,
+    Alert,
+    ImageBackground,
+    Image,
+    Modal,
+    StyleSheet
+} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import styles from "../stylesheets/Profile_stylesheet";
@@ -148,7 +159,7 @@ const Profile : FC = () => {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
                 <View style={styles.profilePicContainer}>
-                    {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <AntDesign name={"user"} size={100} color={"#041721"}  />}
+                    {image ? <Image source={{uri: image}} style={styles.profilePic} /> : <Feather name={"user"} size={100} color={"#041721"} style={{borderColor:colors.text, borderRadius: 60, borderWidth: StyleSheet.hairlineWidth, padding:10}} />}
                     <Text style={[styles.profileName, {color: colors.text}]}>{newName}</Text>
                     <TouchableOpacity style={[styles.btnStyle, general.shadow, {backgroundColor: colorSpec, width: 130, height: 45}]} onPress={() => navigation.push('EditProfile')}>
                         <Feather name={"edit-3"} size={24} color={'#f2f2f2'} />

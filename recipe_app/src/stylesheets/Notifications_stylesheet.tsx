@@ -64,23 +64,28 @@ export default StyleSheet.create({
     },
     deleteButton: {
         width: 100,
-        height: 84,
+        // height: 84,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'red',
         marginVertical: 10,
+        flexDirection: 'row',
     },
     deleteText: {
         color: '#f2f2f2',
         fontWeight: '600',
         fontSize: 18,
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
     },
     nonotif:{
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    deleteImage: {
+        width: 24,
+        height: 24,
     }
 
 

@@ -231,11 +231,11 @@ const Homepage :  FC = () => {
                         <TouchableOpacity style={styles.headerProfile}  onPress={() => {navigation.navigate('Account', {screen: 'AccountStackScreen/ProfileStackScreen'})}}>
                             <View style={styles.profile}>
 
-                                {user != null ? <Image source={{uri: user.photoURL?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> :  pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
+                                {user != null && user.photoURL!=undefined ? <Image source={{uri: user.photoURL?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> :  pp !=undefined ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
                                 {/*<Feather name={"user"} size={24} color={colors.text} />*/}
                             </View>
                         </TouchableOpacity>
-                        <Text style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Hi !' : 'Hi, ' + user.displayName + ' !'}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Hi !' : 'Hi, ' + user.displayName + ' !'}</Text>
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                         <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />

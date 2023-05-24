@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, ScrollView, Text, TouchableOpacity, View, Image} from "react-native";
 import {FC} from "react";
 import styles from "../stylesheets/Notifications_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
@@ -42,6 +42,7 @@ const Notifs = () => {
         }
         return (
             <TouchableOpacity style={styles.deleteButton} onPress={deleteNotification} activeOpacity={0.5}>
+                <Image source={require('../../assets/trash.gif')} style={styles.deleteImage} />
                 <Text style={styles.deleteText}>Delete</Text>
             </TouchableOpacity>
         );
