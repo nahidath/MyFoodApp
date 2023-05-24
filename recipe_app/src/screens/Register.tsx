@@ -292,7 +292,7 @@ const Register = () => {
                     <View style={styles.inputZone}>
                         <TouchableOpacity style={styles.loginBtn} activeOpacity={0.5}
                             onPress={handleSubmit}
-                            disabled={!email || !password || !confPassword || !username || !agree1 || !agree2}
+                            disabled={!email || !password || !confPassword || !username || !agree1}
                         >
                             <Text style={styles.btnText}>Register <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
                         </TouchableOpacity>

@@ -1,6 +1,6 @@
 import {View, Text, Switch, Platform, Button} from "react-native";
 import styles from "../stylesheets/NS_stylesheet";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import general from "../stylesheets/General_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import * as Notifications from "expo-notifications";
@@ -16,7 +16,7 @@ import {auth, database} from "../firebase/config";
 const NotificationSettings = () => {
     const [isEnabledPush, setIsEnabledPush] = useState(false);
     const [isEnabledEmail, setIsEnabledEmail] = useState(false);
-
+    const [isInitialized, setIsInitialized] = useState(false);
     // @ts-ignore
     const { notifEnabled, setNotifEnabled} = React.useContext(NotificationContext);
 
@@ -27,55 +27,61 @@ const NotificationSettings = () => {
     // }
 
     //Push Notifs
-    const [data, setData] = useState<any>({});
     const {colors} = useTheme();
     const theme = useTheme();
     const NOTIF_EMAIL_SWITCH_KEY = 'notifEmailSwitch';
 
-
-    useEffect(() => {
-        async function getNotifEmailSwitch() {
-            const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
-            if (notifEmailSwitch) {
-                setIsEnabledEmail(notifEmailSwitch === 'true');
-            }
+    const getNotifEmailSwitch = useCallback(
+        async () => {
+        const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
+        if (notifEmailSwitch) {
+            setIsEnabledEmail(notifEmailSwitch === 'true');
+            setIsInitialized(true);
         }
-        getNotifEmailSwitch();
     }, []);
 
-    console.log("before touching :",isEnabledEmail);
+    useEffect(() => {
+        getNotifEmailSwitch();
+    }, [getNotifEmailSwitch]);
+
+    const setNotifEmailSwitch = useCallback(
+        async (pIsEnabledEmail: { toString: () => string; }) => {
+            await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, pIsEnabledEmail.toString());
+        }
+    , []);
 
     useEffect(() => {
-        async function setNotifEmailSwitch() {
-            await AsyncStorage.setItem(NOTIF_EMAIL_SWITCH_KEY, isEnabledEmail.toString());
+       setNotifEmailSwitch(isEnabledEmail);
+    }, [setNotifEmailSwitch, isEnabledEmail]);
 
-        }
-        setNotifEmailSwitch();
+    useEffect(() => {
+        if(!isInitialized) return;
+        console.log("useEffect SUB")
+        // setNotifEmailSwitch();
         // remove in db
+        const db = ref(database);
+        const user = auth.currentUser;
+        const email = user?.email;
+        // @ts-ignore
+        const emailEncoded = encodeURIComponent(email).replace(/\./g, '%2E');
+        const emailRef = child(db, `subscribers/${emailEncoded}`);
         if (!isEnabledEmail) {
-            const db = ref(database);
-            const user = auth.currentUser;
-            const email = user?.email;
-            // @ts-ignore
-            const emailEncoded = encodeURIComponent(email).replace(/\./g, '%2E');
-            const emailRef = child(db, `subscribers/${emailEncoded}`);
+            console.log('remove sub');
             remove(emailRef).then(() => {
                 console.log('removed');
             }).catch((error) => {
                 console.log(error);
             });
         }else{
-            const db = ref(database);
-            const user = auth.currentUser;
-            const email = user?.email;
+            console.log('add sub');
             // @ts-ignore
-            const emailEncoded = encodeURIComponent(email).replace(/\./g, '%2E');
-            set(child(db, `subscribers/${emailEncoded}`), true).then(r => {
+            set(emailRef, true).then(r => {
                 console.log('user subscribed');
-
+            }).catch((error) => {
+                console.log(error);
             });
         }
-    }, [isEnabledEmail]);
+    }, [isEnabledEmail, isInitialized ]);
 
 
 

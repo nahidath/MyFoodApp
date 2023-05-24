@@ -360,8 +360,8 @@ export default function App() {
         return null; // Or render a placeholder component if needed
     }
 
-    if(showIntro && !loggedIn) {
-        setShowIntro(false);
+    if(showIntro) {
+        // setShowIntro(false);
         return (
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <ThemeContext.Provider value={themeData}>
