@@ -78,6 +78,11 @@ const Register = () => {
             if(password === confPassword) {
                 await createUserWithEmailAndPassword(auth, email, password);
                 if (auth.currentUser) {
+                    const user = auth.currentUser;
+                    const idToken = await user?.getIdToken();
+                    const refreshToken = await user?.getIdToken(true);
+                    await AsyncStorage.setItem('idToken', idToken);
+                    await AsyncStorage.setItem('refreshToken', refreshToken);
                     updateProfile(auth.currentUser, {displayName: username}).then(() => {
                         console.log('Account created');
                     }).catch((error: any) => {

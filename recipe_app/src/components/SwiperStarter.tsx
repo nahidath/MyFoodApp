@@ -4,10 +4,10 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import FocusAwareStatusBar from "./StatusBarStyle";
 
 interface SwiperStarterProps {
-    setShowIntro : Dispatch<SetStateAction<boolean>>;
+    doneNavigation: boolean;
 }
 
-const SwiperStarter = ({setShowIntro} : SwiperStarterProps)  => {
+const SwiperStarter = ({doneNavigation} : SwiperStarterProps)  => {
     const { width, height } = Dimensions.get('window');
     const [showRealApp, setShowRealApp] = useState(true);
 
@@ -65,8 +65,8 @@ const SwiperStarter = ({setShowIntro} : SwiperStarterProps)  => {
                     renderDoneButton={() => labelButton('Start')}
                     renderPrevButton={() => labelButton('Prev')}
                     showSkipButton={true}
-                    // onDone={() => setShowRealApp(doneNavigation)}
-                    onDone={() => setShowIntro(false)}
+                    onDone={() => setShowRealApp(doneNavigation)}
+                    // onDone={() => setShowIntro(false)}
                     activeDotStyle={{backgroundColor: '#f2f2f2', width: 30}}
                     data={slides}
                     renderItem={(item) => renderItem(item)}

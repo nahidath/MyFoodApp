@@ -49,15 +49,16 @@ export default function App() {
     const [showIntro, setShowIntro] = useState(true);
     const [isWelcome, setIsWelcome] = useState(true);
 
-
-    useEffect(() => {
-        async function loadNotifEnabled() {
-            const value = await AsyncStorage.getItem(NOTIF_SWITCH_KEY);
-            if (value !== null) {
-                setNotifEnabled(value === 'true');
-            }
+    async function loadNotifEnabled() {
+        const value = await AsyncStorage.getItem(NOTIF_SWITCH_KEY);
+        if (value !== null) {
+            setNotifEnabled(value === 'true');
         }
+    }
+    useEffect(() => {
+        checkIfAppIsInstalled();
         loadNotifEnabled().then(r => console.log('Notif enabled: ', notifEnabled));
+        checkTokenValidity();
     }, []);
 
     useEffect(() => {
@@ -320,9 +321,38 @@ export default function App() {
 
     }, [notifEnabled, loggedIn]);
 
+    const checkTokenValidity = async () => {
+        try {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                const tokenResult = await currentUser.getIdTokenResult();
+                const tokenExpirationTime = tokenResult.expirationTime;
+
+                const currentTime = Date.now();
+                if (currentTime < parseInt(tokenExpirationTime)) {
+                    // Token is still valid, proceed with app logic
+                    setLoggedIn(true);
+                } else {
+                    // Token has expired, reauthenticate the user
+                    console.log('Token has expired, reauthenticate user');
+                    // You can redirect to the sign-in screen or trigger the authentication flow
+                    setLoggedIn(false)
+                }
+            } else {
+                // No user is currently signed in, handle accordingly
+                console.log('No user signed in');
+            }
+        } catch (error) {
+            console.log('Error checking token validity:', error);
+        }
+    }
+
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
+                AsyncStorage.setItem('userToken', user.uid);
+                console.log('User is signed in', user.uid);
                 setLoggedIn(true);
             } else {
                 setLoggedIn(false);
@@ -331,6 +361,22 @@ export default function App() {
 
         return unsubscribe;
     }, [auth]);
+
+    const [appInstalled, setAppInstalled] = useState(false);
+    const checkIfAppIsInstalled = async () => {
+        // const url = 'com.naben.MyRecipeApp'; // Replace with your app's custom URL scheme
+        const packageOrScheme = 'com.naben.MyRecipeApp';
+        Linking.getInitialURL()
+            .then((url) => {
+                console.log('Initial url:', url);
+                setAppInstalled(url !== null);
+            })
+            .catch((error) => {
+                console.error('Error checking app installation:', error);
+                setAppInstalled(false);
+            });
+    };
+
 
     const [theme, setTheme] = useState('Light');
     const themeData = { theme, setTheme };
@@ -360,26 +406,26 @@ export default function App() {
         return null; // Or render a placeholder component if needed
     }
 
-    if(showIntro) {
-        // setShowIntro(false);
-        return (
-            <GestureHandlerRootView style={{ flex: 1 }}>
-                <ThemeContext.Provider value={themeData}>
-                    <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
-                        <NotifsParamsContext.Provider value={params}>
-                            <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
-                                <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                                    <SwiperStarter setShowIntro={setShowIntro} />
-                                </NavigationContainer>
-                            </IncomingNotificationsContext.Provider>
-                        </NotifsParamsContext.Provider>
-                    </NotificationContext.Provider>
-                </ThemeContext.Provider>
-            </GestureHandlerRootView>
-
-
-        );
-    }
+    // if(showIntro) {
+    //     // setShowIntro(false);
+    //     return (
+    //         <GestureHandlerRootView style={{ flex: 1 }}>
+    //             <ThemeContext.Provider value={themeData}>
+    //                 <NotificationContext.Provider value={{ notifEnabled, setNotifEnabled }}>
+    //                     <NotifsParamsContext.Provider value={params}>
+    //                         <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
+    //                             <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+    //                                 <SwiperStarter setShowIntro={setShowIntro} />
+    //                             </NavigationContainer>
+    //                         </IncomingNotificationsContext.Provider>
+    //                     </NotifsParamsContext.Provider>
+    //                 </NotificationContext.Provider>
+    //             </ThemeContext.Provider>
+    //         </GestureHandlerRootView>
+    //
+    //
+    //     );
+    // }
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -388,6 +434,7 @@ export default function App() {
                     <NotifsParamsContext.Provider value={params}>
                         <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
                             <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+                                {appInstalled ? <SwiperStarter doneNavigation={true}/> : null}
                                 {loggedIn ? <BottomNavigation />  : <AuthStack />}
                                 {/*<BottomNavigation />*/}
                             </NavigationContainer>

@@ -27,6 +27,7 @@ import notifstyles from "../stylesheets/Notifications_stylesheet";
 import * as ImagePicker from 'expo-image-picker';
 import profile from "../stylesheets/Profile_stylesheet";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 // @ts-ignore
@@ -102,6 +103,9 @@ const Profile : FC = () => {
     const logOut = () => {
 
         signOut(auth).then(() => {
+            AsyncStorage.removeItem('userToken');
+            AsyncStorage.removeItem('idToken');
+            AsyncStorage.removeItem('refreshToken');
             console.log('User signed out!');
             navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
             // navigation.push('HomeStackScreen');
@@ -128,6 +132,9 @@ const Profile : FC = () => {
     const deleteAcc = async () => {
         if (user) {
             deleteUser(user).then(() => {
+                AsyncStorage.removeItem('userToken');
+                AsyncStorage.removeItem('idToken');
+                AsyncStorage.removeItem('refreshToken');
                 Alert.alert(
                     "Account deleted",
                     "Your account has been deleted successfully.",

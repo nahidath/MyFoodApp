@@ -32,6 +32,7 @@ import Feather from "react-native-vector-icons/Feather";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
@@ -85,12 +86,23 @@ export default function Login () {
 
 
     const handleLogin = async () => {
+        // const idToken: Promise<string> = auth.currentUser?.getIdToken(true) as Promise<string>;
+        // const refreshToken: string = auth.currentUser?.refreshToken as string;
+
         if(email === '' || password === '') {
             setError('Please enter your email and password');
             return;
         }
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            signInWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
+                const idToken = await userCredential.user?.getIdToken();
+                const refreshToken = await userCredential.user.getIdToken(true);
+                await AsyncStorage.setItem('idToken', idToken);
+                await AsyncStorage.setItem('refreshToken', refreshToken);
+                console.log('idToken: ', idToken);
+                console.log('refreshToken: ', refreshToken);
+
+            })
             setError('');
             setLoading(true);
             navigation.navigate( 'HomeStackScreen', {screen: 'HomePage'});
