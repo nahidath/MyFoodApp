@@ -6,7 +6,6 @@ import FocusAwareStatusBar from "../components/StatusBarStyle";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import {useTheme} from "@react-navigation/native";
-import {NotificationContext} from "../../App";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {child, ref, remove, set} from "firebase/database";
 import {auth, database} from "../firebase/config";
@@ -14,23 +13,15 @@ import {auth, database} from "../firebase/config";
 
 
 const NotificationSettings = () => {
+    const {colors} = useTheme();
+    const theme = useTheme();
     const [isEnabledPush, setIsEnabledPush] = useState(false);
     const [isEnabledEmail, setIsEnabledEmail] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
-    // @ts-ignore
-    const { notifEnabled, setNotifEnabled} = React.useContext(NotificationContext);
 
+    //Email Notifs
     const toggleSwitchEmail = () => setIsEnabledEmail(previousStateEmail => !previousStateEmail);
-    // const toggleSwitchPush = () => {
-    //     setIsEnabledPush(previousStatePush => !previousStatePush);
-    //     setNotification(notification === 'On' ? 'Off' : 'On');
-    // }
-
-    //Push Notifs
-    const {colors} = useTheme();
-    const theme = useTheme();
     const NOTIF_EMAIL_SWITCH_KEY = 'notifEmailSwitch';
-
     const getNotifEmailSwitch = useCallback(
         async () => {
         const notifEmailSwitch = await AsyncStorage.getItem(NOTIF_EMAIL_SWITCH_KEY);
@@ -83,6 +74,35 @@ const NotificationSettings = () => {
         }
     }, [isEnabledEmail, isInitialized ]);
 
+    //Push Notifs
+    const toggleSwitchPush = () => {
+        setIsEnabledPush(previousStatePush => !previousStatePush);
+    }
+    const NOTIF_PUSH_SWITCH_KEY = 'notifPushSwitch';
+    const getNotifPushSwitch = useCallback(
+        async () => {
+            const notifPushSwitch = await AsyncStorage.getItem(NOTIF_PUSH_SWITCH_KEY);
+            if (notifPushSwitch) {
+                setIsEnabledPush(notifPushSwitch === 'true');
+                setIsInitialized(true);
+            }
+    }, []);
+
+    useEffect(() => {
+        getNotifPushSwitch();
+    }, [getNotifPushSwitch]);
+
+    const setNotifPushSwitch = useCallback(
+        async (pIsEnabledPush: { toString: () => string; }) => {
+            await AsyncStorage.setItem(NOTIF_PUSH_SWITCH_KEY, pIsEnabledPush.toString());
+        }
+    , []);
+
+    useEffect(() => {
+        setNotifPushSwitch(isEnabledPush);
+    }, [setNotifPushSwitch, isEnabledPush]);
+
+
 
 
     return (
@@ -98,10 +118,10 @@ const NotificationSettings = () => {
                         <Text style={[styles.textTitle, {color:colors.text}]}>Notification Push</Text>
                         <Switch
                             trackColor={{false: '#767577', true: '#b1dad6'}}
-                            thumbColor={notifEnabled ? '#008375' : '#f4f3f4'}
+                            thumbColor={isEnabledPush ? '#008375' : '#f4f3f4'}
                             ios_backgroundColor="#3e3e3e"
-                            onValueChange={(value) => setNotifEnabled(value)}
-                            value={notifEnabled}
+                            onValueChange={toggleSwitchPush}
+                            value={isEnabledPush}
                         />
                     </View>
                     <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>

@@ -96,9 +96,11 @@ export default function Login () {
         try {
             signInWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
                 const idToken = await userCredential.user?.getIdToken();
-                const refreshToken = await userCredential.user.getIdToken(true);
+                const refreshToken = await userCredential.user?.getIdToken(true);
+                const tokenExpiration = await userCredential.user?.getIdTokenResult().then((result) => result.expirationTime);
                 await AsyncStorage.setItem('idToken', idToken);
                 await AsyncStorage.setItem('refreshToken', refreshToken);
+                await AsyncStorage.setItem('tokenExpiration', tokenExpiration);
                 console.log('idToken: ', idToken);
                 console.log('refreshToken: ', refreshToken);
 
