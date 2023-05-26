@@ -8,11 +8,13 @@ export default StyleSheet.create({
     },
     notificationContainer: {
         flexDirection: 'column',
+        margin: 10,
     },
     notification: {
         backgroundColor: '#fff',
-        margin: 10,
-        height: 84,
+        marginVertical: 10,
+        // height: 84,
+        flex: 1,
     },
     notificationText: {
         fontSize: 20,
@@ -50,6 +52,40 @@ export default StyleSheet.create({
     favList: {
         flexDirection: 'column',
         padding: 15,
+    },
+    notificationTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        padding: 5,
+    },
+    notificationBody: {
+        fontSize: 15,
+        padding: 5,
+    },
+    deleteButton: {
+        width: 100,
+        // height: 84,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'red',
+        marginVertical: 10,
+        flexDirection: 'row',
+    },
+    deleteText: {
+        color: '#f2f2f2',
+        fontWeight: '600',
+        fontSize: 18,
+        paddingHorizontal: 5,
+    },
+    nonotif:{
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    deleteImage: {
+        width: 24,
+        height: 24,
     }
 
 

@@ -1,5 +1,16 @@
 import React, {FC, useEffect, useState} from "react";
-import {View, Text, Pressable, TouchableOpacity, ScrollView, Alert, ImageBackground, Image, Modal} from "react-native";
+import {
+    View,
+    Text,
+    Pressable,
+    TouchableOpacity,
+    ScrollView,
+    Alert,
+    ImageBackground,
+    Image,
+    Modal,
+    StyleSheet
+} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Separator from "../components/Separator";
 import styles from "../stylesheets/Profile_stylesheet";
@@ -16,6 +27,7 @@ import stylesMore from "../stylesheets/More_stylesheet";
 import * as ImagePicker from 'expo-image-picker';
 import profile from "../stylesheets/Profile_stylesheet";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 // @ts-ignore
@@ -91,6 +103,9 @@ const Account : FC = () => {
     const logOut = () => {
 
         signOut(auth).then(() => {
+            AsyncStorage.removeItem('userToken');
+            AsyncStorage.removeItem('idToken');
+            AsyncStorage.removeItem('refreshToken');
             console.log('User signed out!');
             navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
             // navigation.push('HomeStackScreen');
@@ -105,17 +120,11 @@ const Account : FC = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
                 <View style={{margin:10}}>
-                    {!loggedIn ? <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('LoginStackScreen')}>
-                        <Feather name={"user"} size={24} color={colors.text} />
-                        <Text style={[styles.profileBtnText, {color: colors.text}]}>Login</Text>
+                    <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('ProfileStackScreen')}>
+                        {image ? <Image source={{uri: image}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} style={{borderColor:colors.text, borderRadius: 30, borderWidth: StyleSheet.hairlineWidth, padding:5}} />}
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
                         <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text} />
-                    </TouchableOpacity> :
-                        <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('ProfileStackScreen')}>
-                            {image ? <Image source={{uri: image}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
-                            <Text style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
-                            <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text} />
-                        </TouchableOpacity>
-                    }
+                    </TouchableOpacity>
                     <Separator />
                     <Text style={[stylesMore.textTitle, {color: colors.text}]}>Settings</Text>
                     <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('NotificationSettings')}>
@@ -200,7 +209,7 @@ const Account : FC = () => {
                     <View>
                         <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, stylesMore.logoutBtn, {backgroundColor: colors.notification}]} onPress={() => logOut()}>
                             <Feather name={"log-out"} size={24} color={'#fe2f3f'} />
-                            <Text style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>LOGOUT</Text>
+                            <Text style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>LOG OUT</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 15}}>

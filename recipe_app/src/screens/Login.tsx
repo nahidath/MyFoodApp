@@ -9,7 +9,7 @@ import {
 } from "@react-navigation/native";
 import {
     ActivityIndicator,
-    Alert,
+    Alert, Image,
     Modal,
     Pressable,
     ScrollView,
@@ -30,6 +30,9 @@ import {LoginStackList, ProfileStackList} from "../types/types";
 import Separator from "../components/Separator";
 import Feather from "react-native-vector-icons/Feather";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
@@ -72,30 +75,44 @@ export default function Login () {
         }
     });
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (loggedIn) {
-                navigation.popToTop();
-            }
-        }, [loggedIn])
-    )
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         if (loggedIn) {
+    //             navigation.popToTop();
+    //         }
+    //     }, [loggedIn])
+    // )
 
 
 
     const handleLogin = async () => {
+        // const idToken: Promise<string> = auth.currentUser?.getIdToken(true) as Promise<string>;
+        // const refreshToken: string = auth.currentUser?.refreshToken as string;
+
         if(email === '' || password === '') {
             setError('Please enter your email and password');
             return;
         }
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            signInWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
+                const idToken = await userCredential.user?.getIdToken();
+                const refreshToken = await userCredential.user?.getIdToken(true);
+                const tokenExpiration = await userCredential.user?.getIdTokenResult().then((result) => result.expirationTime);
+                await AsyncStorage.setItem('idToken', idToken);
+                await AsyncStorage.setItem('refreshToken', refreshToken);
+                await AsyncStorage.setItem('tokenExpiration', tokenExpiration);
+                console.log('idToken: ', idToken);
+                console.log('refreshToken: ', refreshToken);
+
+            })
             setError('');
             setLoading(true);
-            navigation.navigate('Home', {screen: 'HomeStackScreen/HomePage'});
+            navigation.navigate( 'HomeStackScreen', {screen: 'HomePage'});
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
                 setError('Your email or password was incorrect');
+                setPassword('');
             }
             // else { // @ts-ignore
             //     if (e.code === 'auth/email-already-in-use') {
@@ -136,49 +153,85 @@ export default function Login () {
         setIsVisible(!isVisible);
     }
 
+    // const handlePasswordChange = (value: string) => {
+    //     setPassword(value);
+    //     if (value.length < 0) {
+    //         setError('');
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     handlePasswordChange(password)
+    // }, [password]);
+
     return (
-        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
-            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
+        <View style={styles.container}>
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
             {/*{loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}*/}
-            <ScrollView>
-                {error && <Text style={styles.error}>{error}</Text>}
+            <KeyboardAwareScrollView>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Let's sign you in.</Text>
+                    <Text style={styles.subtitle}>Welcome back !</Text>
+
+                </View>
+                    {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
-                    <Text style={[styles.label, {color: colors.text}]}>Email</Text>
                     <View style={styles.inputZone}>
+                        <Feather name={'user'} size={20} color={"#f2f2f2"} style={styles.icon} />
                         <TextInput
-                            style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                            // placeholder="Email"
-                            // placeholderTextColor={colors.text}
+                            style={styles.input}
+                            placeholder="Email"
+                            placeholderTextColor={"#f2f2f2"}
                             onChangeText={setEmail}
                             value={email}
                             autoCapitalize={'none'}
                         />
                     </View>
-                    <Text style={[styles.label, {color: colors.text}]}>Password</Text>
                     <View style={[styles.inputZone, {flexDirection: 'row'}]}>
+                        <Feather name={'lock'} size={20} color={"#f2f2f2"} style={styles.icon} />
                         <TextInput
-                            style={[styles.input,  {borderColor: colors.border, color: colors.text, paddingRight: 45}]}
-                            // placeholder="Password"
-                            // placeholderTextColor={colors.text}
+                            style={[styles.input,  {paddingRight: 45}]}
+                            placeholder="Password"
+                            placeholderTextColor={"#f2f2f2"}
                             onChangeText={setPassword}
                             value={password}
                             secureTextEntry={isVisible}
                         />
-                        {isVisible ? <Feather name={'eye-off'} size={20} color={colors.text} style={styles.showButton}  onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={colors.text} style={styles.showButton} onPress={() => togglePassword()}/>}
+                        {isVisible ? <Feather name={'eye-off'} size={20} color={"#f2f2f2"} style={styles.showButton}  onPress={() => togglePassword()} /> : <Feather name={'eye'} size={20} color={"#f2f2f2"} style={styles.showButton} onPress={() => togglePassword()}/>}
                     </View>
 
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <Text style={[styles.link, {color: colors.text}]}>Forgot password ?</Text>
+                        <Text style={styles.link}>Forgot password ?</Text>
                     </TouchableOpacity>
                     <View style={styles.inputZone}>
-                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                        <TouchableOpacity style={styles.loginBtn}
                                           onPress={() => handleLogin()} activeOpacity={0.5}
                         >
-                            <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
+                            <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>
-                            <Text style={styles.btnText}>Create an account</Text>
-                        </TouchableOpacity>
+                        <View style={styles.divider}>
+                            <View style={styles.line}></View>
+                            <Text style={styles.dividerText}>Or</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        <View style={styles.socialLogin}>
+                            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
+                                              // onPress={() => handleFacebookLogin()}
+                            >
+                                <Image source={require('../../assets/facebook.png')} style={{width: 20, height: 20}} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
+                                              // onPress={() => handleGoogleLogin()}
+                            >
+                                <Image source={require('../../assets/google.png')} style={{width: 20, height: 20}} />
+                            </TouchableOpacity>
+                        </View>
+                        {/*<TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>*/}
+                        {/*    <Text style={styles.btnText}>Create an account</Text>*/}
+                        {/*</TouchableOpacity>*/}
+                    </View>
+                    <View style={styles.registerAsk}>
+                        <Text style={styles.text}>Don't have an account ? <Link to={'/Register'} style={styles.registerButton}>Register</Link></Text>
                     </View>
 
 
@@ -220,7 +273,7 @@ export default function Login () {
                         </View>
                     </Modal>
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     );
 

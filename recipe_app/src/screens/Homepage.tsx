@@ -13,7 +13,7 @@ import {
     View,
     Image, RefreshControl, FlatList, LogBox
 } from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/Homepage_stylesheet';
@@ -34,6 +34,8 @@ import {SkeletonLoaderHomePage} from "../components/SkeletonLoader";
 import recipeRandom from "../mock/recipeRandom.json";
 import recipeTags from "../mock/recipePotatoTags.json";
 import CardRecipe from "../components/CardRecipe";
+import {Badge} from "react-native-elements";
+import {IncomingNotificationsContext} from "../../App";
 
 
 // @ts-ignore
@@ -63,6 +65,7 @@ const Homepage :  FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [saved, setSaved] = useState<boolean>(false);
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
+    const notifsArrived = useContext(IncomingNotificationsContext);
 
 
 
@@ -228,14 +231,15 @@ const Homepage :  FC = () => {
                         <TouchableOpacity style={styles.headerProfile}  onPress={() => {navigation.navigate('Account', {screen: 'AccountStackScreen/ProfileStackScreen'})}}>
                             <View style={styles.profile}>
 
-                                {user != null ? <Image source={{uri: user.photoURL?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> :  pp ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
+                                {user != null && user.photoURL!=undefined ? <Image source={{uri: user.photoURL?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> :  pp !=undefined ? <Image source={{uri: pp?.replace(/\r?\n|\r/g, '')}} style={styles.pp}/> : <Feather name={"user"} size={24} color={colors.text} />}
                                 {/*<Feather name={"user"} size={24} color={colors.text} />*/}
                             </View>
                         </TouchableOpacity>
-                        <Text style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Welcome !' : 'Welcome, ' + user.displayName + ' !'}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Hi !' : 'Hi, ' + user.displayName + ' !'}</Text>
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
-                        <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotifScreen') }>
+                        <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />
+                            {notifsArrived.incomingNotifs ? <Badge status="error" containerStyle={{ position: 'absolute', top: 15, right: 3 }} /> : null}
                         </TouchableOpacity>
                     </View>
 

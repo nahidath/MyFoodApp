@@ -19,7 +19,8 @@ export type HomeStackList = {
         cuisine: string;
     }
     SearchStackScreen: undefined;
-    NotifScreen: undefined;
+    // NotifScreen: undefined;
+    NotificationsScreen: undefined;
 }
 
 export type MoreStackList = {
@@ -69,7 +70,10 @@ export type FavoritesStackList = {
 }
 
 export type NotificationsStackList = {
-    Notifs: undefined;
+    Notifs : {
+        title?: string;
+        body?: string;
+    }
     LoginStackScreen: undefined;
 }
 
@@ -84,4 +88,8 @@ export type SearchStackList = {
 export type ProfileStackList = {
     ProfilePage: undefined;
     EditProfile: undefined;
+}
+
+export type AuthStackList = {
+    LoginStackScreen: undefined;
 }
