@@ -24,6 +24,7 @@ interface IFilterModalProps {
     cuisine? : string;
     screenName? : string;
     // scrollRef?: any;
+    categories? : string;
 
 }
 

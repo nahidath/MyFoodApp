@@ -149,5 +149,16 @@ export default StyleSheet.create({
         color: '#fefefe',
         width: '80%',
         top: 40,
+    },
+    floatingButton: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#9fc131',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });

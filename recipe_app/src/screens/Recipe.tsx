@@ -7,7 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Share, TouchableWithoutFeedback, Image, Animated, Alert, LayoutChangeEvent
+    Share, TouchableWithoutFeedback, Image, Animated, Alert, LayoutChangeEvent, Modal
 } from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -33,6 +33,7 @@ import StarIconLike from "../components/StarIconLike";
 import recipeMock from "../mock/recipe649503.json";
 import app, {auth, database} from "../firebase/config";
 import { ref, set, remove, child } from "firebase/database";
+import RecipeVideo from "../components/RecipeVideo";
 
 
 
@@ -60,6 +61,8 @@ const Recipe = ({route}: Props) => {
     const [titleLength, setTitleLength] = useState<number>(0);
     const [fontSize, setFontSize] = useState<number>(30);
     const titleRef = useRef<Text>(null);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+
 
     const getRecipe = () => {
         let dataInstruction : string | any[] = [];
@@ -250,6 +253,23 @@ const Recipe = ({route}: Props) => {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {isLoading ? <SkeletonView theme={theme} color={colors}/> :
+            <>
+            {/*<Modal*/}
+            {/*    animationType={"slide"}*/}
+            {/*    transparent={true}*/}
+            {/*    visible={modalVisible}*/}
+            {/*    onRequestClose={() => {*/}
+            {/*        setModalVisible(!modalVisible);*/}
+            {/*    }}>*/}
+            {/*    <RecipeVideo video={recipe.video} />*/}
+            {/*</Modal>*/}
+            {/*<TouchableOpacity*/}
+            {/*    activeOpacity={0.8}*/}
+            {/*    style={[styles.floatingButton, general.shadow]}*/}
+            {/*    onPress={() => setModalVisible(true)}*/}
+            {/*>*/}
+            {/*   <Image source={require('../../assets/play-button.gif')} style={{width: 40, height: 40}} />*/}
+            {/*</TouchableOpacity>*/}
             <ScrollView>
                 <View style={styles.headerRecipeImage} key={recipe.id}>
                     <TouchableWithoutFeedback style={{zIndex: 100}} onPress={() => handleDoubleTap()}>
@@ -301,6 +321,7 @@ const Recipe = ({route}: Props) => {
                 <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
                 <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
             </ScrollView>
+            </>
             }
         </View>
     );

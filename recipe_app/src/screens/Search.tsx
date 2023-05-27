@@ -52,6 +52,8 @@ const Search : FC = () => {
     // const ref = useRef(null);
     const borderSpec=theme.dark ? "#fefefe" : "#505050";
     const textInputBckgr = theme.dark ? '#272727' : '#f2f2f2';
+    const [showRecipe, setShowRecipe] = useState<boolean>(true);
+    const [showVideos, setShowVideos] = useState<boolean>(false);
 
     const getSearchResult = (s?: string) => {
         let query = s ? s : search.trim();
@@ -74,6 +76,27 @@ const Search : FC = () => {
         });
 
 
+    }
+
+    const getSearchVideoResults = (s?: string) => {
+        let query = s ? s : search.trim();
+        axios.get('https://api.spoonacular.com/food/videos/search',{params:{apiKey: configValue, query: query.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
+                setResults(response1.data.results);
+                setNbResults(response1.data.totalResults);
+                setIsSearch(true);
+                setLoading(false);
+                if(response1.data.results.length == 0){
+                    setNoResults('No results found');
+                }
+            },
+            (error) => {
+                setResults(searchRecipes.results);
+                setNbResults(searchRecipes.totalResults);
+                setIsSearch(true);
+                setLoading(false);
+            }).catch((error) => {
+            console.log(error);
+        });
     }
 
 
@@ -135,6 +158,8 @@ const Search : FC = () => {
         return hours +'h' + m + ' min';
     }
 
+    const colorSpeBtn = theme.dark ? "#505050" : "#f2f2f2";
+    const colorSpeBtnText = theme.dark ? "#f2f2f2" : "#041721";
 
 
     // useEffect(() => {
@@ -181,7 +206,17 @@ const Search : FC = () => {
 
             {isSearch && results.length > 0 ? (
                 <View style={styles.resultsContainer}>
-                    <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 1 ? "Result founded" : "Results founded" } </Text>
+                    <View style={styles.resultsHeader}>
+                        <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 1 ? "Result founded" : "Results founded" }</Text>
+                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: showRecipe ? colorSpeBtn : "#f2f2f2"}]} onPress={() => setShowRecipe(!showRecipe)}>
+                            <Feather name={"book-open"} size={13} color={showRecipe ? colorSpeBtnText : colors.text} />
+                            <Text style={[styles.recipeBtnText, {color:colors.text}]}> Recipes</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: showRecipe ? colorSpeBtn : "#f2f2f2"}]} onPress={() => setShowVideos(!showVideos)}>
+                            <Feather name={"video"} size={13} color={showVideos ? colorSpeBtnText : colors.text} />
+                            <Text style={[styles.recipeBtnText, {color:colors.text}]}> Videos</Text>
+                        </TouchableOpacity>
+                    </View>
                     <Modal
                         animationType={"slide"}
                         transparent={true}
@@ -227,7 +262,6 @@ const Search : FC = () => {
                             )
                         })}
                     </ScrollView>
-
                 </View>
             ) : (
                 <Text style={[styles.resultsText, {color:colors.text}]}>{noResults}</Text>
