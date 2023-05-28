@@ -28,7 +28,12 @@ const RecipeVideo = ({videoID, setModalVisible}: RecipeVideoProps) => {
                     height={300}
                     play={true}
                     videoId={videoID}
-                    webViewStyle={{borderRadius: 10}}
+                    webViewStyle={{borderRadius: 10, opacity: 0.99}}
+                    webViewProps={{
+                        renderToHardwareTextureAndroid: true,
+                        androidLayerType:
+                            Platform.OS === 'android' && Platform.Version <= 22 ? 'hardware' : 'none',
+                    }}
                 />
             </View>
         </View>

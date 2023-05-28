@@ -1,5 +1,5 @@
 import BouncyCheckboxGroup, {ICheckboxButton} from "react-native-bouncy-checkbox-group";
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
 import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import styles from "../stylesheets/Search_stylesheet";
 import Feather from "react-native-vector-icons/Feather";
@@ -7,7 +7,7 @@ import Separator from "./Separator";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import {useScrollToTop, useTheme} from "@react-navigation/native";
 import axios from "axios";
-import * as fsPromise from 'fs/promises';
+import RangeSlider from 'react-native-range-slider-expo';
 // @ts-ignore
 import {REACT_APP_API_KEY} from "@env";
 
@@ -24,11 +24,11 @@ interface IFilterModalProps {
     cuisine? : string;
     screenName? : string;
     // scrollRef?: any;
-    categories? : string;
+    category? : string;
 
 }
 
-export function FilterModal({search, setResults, setNbResults, setIsSearch, setLoading, setModalVisible, setNoResults, cuisine, screenName}: IFilterModalProps) {
+export function FilterModal({search, setResults, setNbResults, setIsSearch, setLoading, setModalVisible, setNoResults, cuisine, screenName, category}: IFilterModalProps) {
 
     const configValue : string | undefined = REACT_APP_API_KEY;
 
@@ -41,6 +41,9 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [filtered, setFiltered] = useState<boolean>(false);
+    const [fromValue, setFromValue] = useState(0);
+    const [toValue, setToValue] = useState(0);
+    const [value, setValue] = useState(0);
 
 
 
@@ -72,12 +75,10 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         //write the filters result in a file in the mock folder
     };
 
-    // useEffect(() => {
-    //     if(scrollRef.current){
-    //         scrollRef.current.scrollTo({x: 0, y: 0});
-    //         // scrollRef.current.scrollToOffset({offset: 0});
-    //     }
-    // }, [filtered]);
+    // const handleValueChange = useCallback((low: React.SetStateAction<number>, high: React.SetStateAction<number>) => {
+    //     setRangeLow(low);
+    //     setRangeHigh(high);
+    // }, []);
 
     return (
         <View style={styles.sideView}>
@@ -91,16 +92,20 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                 <Separator />
                 <ScrollView>
                     <View style={styles.modalBody}>
-                        <Text style={[styles.modalText, {color:colors.text}]}>Sort by</Text>
-                        <View style={styles.modalFilter}>
-                            <BouncyCheckboxGroup
-                                data={sortList1}
-                                style={{ flexDirection: "column" }}
-                                onChange={(selectedItem: ICheckboxButton) => {
-                                    setFilters({ ...filters, sort: selectedItem.text?.toLowerCase() });
-                                }}
-                            />
-                        </View>
+                        {category == 'filterRecipes' &&
+                            <>
+                                <Text style={[styles.modalText, {color:colors.text}]}>Sort by</Text>
+                                <View style={styles.modalFilter}>
+                                    <BouncyCheckboxGroup
+                                        data={sortList1}
+                                        style={{ flexDirection: "column" }}
+                                        onChange={(selectedItem: ICheckboxButton) => {
+                                            setFilters({ ...filters, sort: selectedItem.text?.toLowerCase() });
+                                        }}
+                                    />
+                                </View>
+                            </>
+                        }
                         <Separator />
                         <Text style={[styles.modalText, {color:colors.text}]}>Diet</Text>
                         <View style={styles.modalFilter}>
@@ -123,25 +128,29 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                             })}
                         </View>
                         <Separator />
-                        <Text style={[styles.modalText, {color:colors.text}]}>Intolerances</Text>
-                        <View style={styles.modalFilter}>
-                            {sortList3.map((item, index) => {
-                                return (
-                                    <BouncyCheckbox
-                                        key={index}
-                                        style={{ margin: 5 }}
-                                        size={20}
-                                        fillColor="#9fc131"
-                                        unfillColor={colors.background}
-                                        text={item.name}
-                                        iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
-                                        innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}
-                                        textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
-                                        onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, intolerance: [...filters.intolerance, item.name.toLowerCase()] })}}
-                                    />
-                                );
-                            })}
-                        </View>
+                        {category == 'filterRecipes' &&
+                            <>
+                                <Text style={[styles.modalText, {color:colors.text}]}>Intolerances</Text>
+                                <View style={styles.modalFilter}>
+                                    {sortList3.map((item, index) => {
+                                        return (
+                                            <BouncyCheckbox
+                                                key={index}
+                                                style={{ margin: 5 }}
+                                                size={20}
+                                                fillColor="#9fc131"
+                                                unfillColor={colors.background}
+                                                text={item.name}
+                                                iconStyle={{  height: 20, width: 20,borderRadius: 5,borderColor: colors.border }}
+                                                innerIconStyle={{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}}
+                                                textStyle={{ color: colors.text, fontSize: 15, textDecorationLine: "none" }}
+                                                onPress={() => {setToggleCheckBox(!toggleCheckBox), setFilters({ ...filters, intolerance: [...filters.intolerance, item.name.toLowerCase()] })}}
+                                            />
+                                        );
+                                    })}
+                                </View>
+                            </>
+                        }
                         <Separator />
                         <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
                         <View style={styles.modalFilter}>
@@ -153,7 +162,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                 }}
                             />
                         </View>
-                        {screenName == 'Search' &&
+                        {screenName == 'Search' || category == 'filterVideos' &&
                             <>
                                 <Separator />
                                 <Text style={[styles.modalText, {color:colors.text}]}>Culinary speciality</Text>
@@ -174,6 +183,25 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                             />
                                         );
                                     })}
+                                </View>
+                            </>
+                        }
+                        {category == 'filterVideos' &&
+                            <>
+                                <Separator />
+                                <Text style={[styles.modalText, {color:colors.text}]}>Video duration</Text>
+                                <View style={styles.modalFilter}>
+                                    <RangeSlider min={0} max={999}
+                                                 step={1}
+                                                 fromValueOnChange={(value: React.SetStateAction<number>) => setFromValue(value)}
+                                                 toValueOnChange={(value: React.SetStateAction<number>) => setToValue(value)}
+                                                 initialFromValue={0}
+                                                 inRangeBarColor={colorSpec}
+                                                 outOfRangeBarColor={colors.border}
+                                                 barHeight={5}
+                                    />
+                                    <Text>{fromValue} sec </Text>
+                                    <Text>{toValue} sec</Text>
                                 </View>
                             </>
                         }
