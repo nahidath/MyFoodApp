@@ -30,6 +30,7 @@ import {FilterModal} from "../components/Filters";
 import hairlineWidth = StyleSheet.hairlineWidth;
 import {SkeletonView} from "../components/SkeletonLoader";
 import searchRecipes from "../mock/searchResultsBeef.json";
+import RecipeVideo from "../components/RecipeVideo";
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
@@ -40,8 +41,11 @@ const Search : FC = () => {
     const navigation = useNavigation<SearchScreenProps>();
     const [search, setSearch] = useState<string>('');
     const [results, setResults] = useState<any>([]);
+    const [resultsVideo, setResultsVideo] = useState<any>([]);
     const [noResults, setNoResults] = useState<string>('');
+    const [noResultsVideo, setNoResultsVideo] = useState<string>('');
     const [nbResults, setNbResults] = useState<number>(0);
+    const [nbResultsVideo, setNbResultsVideo] = useState<number>(0);
     const [isSearch, setIsSearch] = useState<boolean>(false);
     const configValue : string | undefined = REACT_APP_API_KEY;
     const inputRef = useRef<TextInput>(null);
@@ -54,6 +58,8 @@ const Search : FC = () => {
     const textInputBckgr = theme.dark ? '#272727' : '#f2f2f2';
     const [showRecipe, setShowRecipe] = useState<boolean>(true);
     const [showVideos, setShowVideos] = useState<boolean>(false);
+    const [selectedButton, setSelectedButton] = useState('button1');
+
 
     const getSearchResult = (s?: string) => {
         let query = s ? s : search.trim();
@@ -81,17 +87,17 @@ const Search : FC = () => {
     const getSearchVideoResults = (s?: string) => {
         let query = s ? s : search.trim();
         axios.get('https://api.spoonacular.com/food/videos/search',{params:{apiKey: configValue, query: query.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
-                setResults(response1.data.results);
-                setNbResults(response1.data.totalResults);
+                setResultsVideo(response1.data.results);
+                setNbResultsVideo(response1.data.totalResults);
                 setIsSearch(true);
                 setLoading(false);
                 if(response1.data.results.length == 0){
-                    setNoResults('No results found');
+                    setNoResultsVideo('No results found');
                 }
             },
             (error) => {
-                setResults(searchRecipes.results);
-                setNbResults(searchRecipes.totalResults);
+                setResultsVideo(searchRecipes.results);
+                setNbResultsVideo(searchRecipes.totalResults);
                 setIsSearch(true);
                 setLoading(false);
             }).catch((error) => {
@@ -126,6 +132,13 @@ const Search : FC = () => {
     }, [search, isSearch, isFocused]);
 
     useEffect(() => {
+        if(selectedButton == 'button2'){
+            setLoading(true);
+            getSearchVideoResults(search);
+        }
+    }, [selectedButton]);
+
+    useEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
 
@@ -143,8 +156,9 @@ const Search : FC = () => {
                 </View>
             ),
             //style back button
+
             headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => {setIsSearch(false), setSearch('')}}>
                     <Feather style={styles.icon} name={"arrow-left"} size={22} color={colors.text} />
                 </TouchableOpacity>
             ),
@@ -158,8 +172,8 @@ const Search : FC = () => {
         return hours +'h' + m + ' min';
     }
 
-    const colorSpeBtn = theme.dark ? "#505050" : "#f2f2f2";
-    const colorSpeBtnText = theme.dark ? "#f2f2f2" : "#041721";
+    const colorSpeBtn = theme.dark ? "#505050" : "#041721";
+    const colorSpeBtnText = theme.dark ? "#f2f2f2" : "#f2f2f2";
 
 
     // useEffect(() => {
@@ -168,7 +182,9 @@ const Search : FC = () => {
     //     }
     // }, [modalVisible]);
 
-//
+    const handleButtonPress = (buttonName: string) => {
+        setSelectedButton(buttonName);
+    };
 
     return (
 
@@ -204,17 +220,17 @@ const Search : FC = () => {
                  <SkeletonView theme={theme} color={colors}/>
             )}
 
-            {isSearch && results.length > 0 ? (
+            {isSearch && results.length && resultsVideo.length > 0 ? (
                 <View style={styles.resultsContainer}>
                     <View style={styles.resultsHeader}>
-                        <Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 1 ? "Result founded" : "Results founded" }</Text>
-                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: showRecipe ? colorSpeBtn : "#f2f2f2"}]} onPress={() => setShowRecipe(!showRecipe)}>
-                            <Feather name={"book-open"} size={13} color={showRecipe ? colorSpeBtnText : colors.text} />
-                            <Text style={[styles.recipeBtnText, {color:colors.text}]}> Recipes</Text>
+                        <Text style={[styles.resultsText, {color:colors.text}]}>{selectedButton === 'button2' ? nbResultsVideo==1 ? nbResultsVideo + ' video found' : nbResultsVideo + ' videos found' : nbResults==1 ? nbResults + ' recipe found' : nbResults + ' recipes found'}</Text>
+                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'button1' ? colorSpeBtn : "#f2f2f2"}]} onPress={() => handleButtonPress('button1')}>
+                            <Feather name={"book-open"} size={13} color={selectedButton === 'button1' ? colorSpeBtnText : colors.text} />
+                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'button1' ? colorSpeBtnText : colors.text}]}> Recipes</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: showRecipe ? colorSpeBtn : "#f2f2f2"}]} onPress={() => setShowVideos(!showVideos)}>
-                            <Feather name={"video"} size={13} color={showVideos ? colorSpeBtnText : colors.text} />
-                            <Text style={[styles.recipeBtnText, {color:colors.text}]}> Videos</Text>
+                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'button2' ? colorSpeBtn : "#f2f2f2"}]} onPress={() => handleButtonPress('button2')}>
+                            <Feather name={"video"} size={13} color={selectedButton === 'button2' ? colorSpeBtnText : colors.text} />
+                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'button2' ? colorSpeBtnText : colors.text}]}> Videos</Text>
                         </TouchableOpacity>
                     </View>
                     <Modal
@@ -238,29 +254,56 @@ const Search : FC = () => {
                     </TouchableOpacity>
                     <Separator />
                     <ScrollView keyboardShouldPersistTaps='always' >
-                        {results.map((result : any) => {
-                            return (
-                                <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
-                                    <View style={recipeStyles.imgRecipe}>
-                                        {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
-                                    </View>
-                                    {/*<View style={recipeStyles.blocRecipeLikes}>*/}
-                                    {/*    <Text style={recipeStyles.recipeLikesText}>{result.aggregateLikes}<FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" /></Text>*/}
-                                    {/*</View>*/}
-                                    <View style={recipeStyles.blocRecipeBelow}>
-                                        <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
-                                        <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
-                                    </View>
-                                    <View style={recipeStyles.blocRecipeLabel}>
-                                        {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
-                                        {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
-                                        {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
-                                        {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
-                                        {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })}
+                        {selectedButton === 'button1' ? (
+                            {results.map((result : any) => {
+                                return (
+                                    <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
+                                        <View style={recipeStyles.imgRecipe}>
+                                            {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
+                                        </View>
+                                        {/*<View style={recipeStyles.blocRecipeLikes}>*/}
+                                        {/*    <Text style={recipeStyles.recipeLikesText}>{result.aggregateLikes}<FontAwesome style={recipeStyles.heart} name="heart" size={20} color="#9fc131" /></Text>*/}
+                                        {/*</View>*/}
+                                        <View style={recipeStyles.blocRecipeBelow}>
+                                            <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{result.title}</Text>
+                                            <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
+                                        </View>
+                                        <View style={recipeStyles.blocRecipeLabel}>
+                                            {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
+                                            {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
+                                            {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
+                                            {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
+                                            {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            })}
+                        ) : (
+                            {resultsVideo.map((resultV : any) => {
+                                return (
+                                    <>
+                                        <Modal
+                                            animationType={"slide"}
+                                            transparent={true}
+                                            visible={modalVisible}
+                                            onRequestClose={() => {
+                                                setModalVisible(!modalVisible);
+                                            }}>
+                                            <RecipeVideo videoID={resultV.youTubeId} setModalVisible={setModalVisible} />
+                                        </Modal>
+                                        <TouchableOpacity key={resultV.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setModalVisible(true)}>
+                                            <View style={recipeStyles.imgRecipe}>
+                                                {resultV.thumbnail ? <Image source={{uri: resultV.thumbnail}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
+                                            </View>
+                                            <View style={recipeStyles.blocRecipeBelow}>
+                                                <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{resultV.shortTitle}</Text>
+                                                <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="eye" size={20} color={colors.text}/> {resultV.views}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </>
+                                )
+                            })}
+                        )}
                     </ScrollView>
                 </View>
             ) : (

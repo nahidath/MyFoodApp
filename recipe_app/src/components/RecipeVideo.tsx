@@ -1,24 +1,36 @@
 import {inspect} from "util";
-import {View, StyleSheet} from "react-native";
+import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
+import YoutubePlayer from "react-native-youtube-iframe";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {useTheme} from "@react-navigation/native";
+import {Dispatch, SetStateAction} from "react";
 
 
 interface RecipeVideoProps {
-    video: string;
+    videoID: string;
+    setModalVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-const RecipeVideo = (video: RecipeVideoProps) => {
+const RecipeVideo = ({videoID, setModalVisible}: RecipeVideoProps) => {
+    const {colors} = useTheme();
+    const theme = useTheme();
+
     return (
         <View style={styles.container}>
-            <Video
-                source={{uri: video.video}}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                shouldPlay
-                isLooping
-                style={styles.video}
-            />
+            <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
+                <View style={styles.modalHeader}>
+                    <Text style={[styles.modalTitle, {color: colors.text}]}>Video</Text>
+                    <TouchableOpacity onPress={() => setModalVisible(false)}>
+                        <FontAwesome name="close" size={24} color={colors.text} />
+                    </TouchableOpacity>
+                </View>
+                <YoutubePlayer
+                    height={300}
+                    play={true}
+                    videoId={videoID}
+                    webViewStyle={{borderRadius: 10}}
+                />
+            </View>
         </View>
     );
 }
@@ -35,6 +47,22 @@ const styles = StyleSheet.create({
     video: {
         width: '100%',
         height: 300,
+    },
+    modalContainer: {
+        width: '100%',
+        height: '100%',
+        padding: 20,
+        borderRadius: 10,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
     }
 });
 

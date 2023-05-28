@@ -245,7 +245,7 @@ const Homepage :  FC = () => {
 
 
                 {/*</View>*/}
-                <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.push('SearchStackScreen')}>
+                <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.navigate('Search', {screen :'SearchStackScreen/SearchPage'})}>
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
                     <Text style={[styles.searchText, {color: colors.text}]}>Search recipes</Text>
                 </Pressable>
