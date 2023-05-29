@@ -35,7 +35,8 @@ export function HomeStackScreen () {
     const { colors } = useTheme();
     return (
         <HomeStack.Navigator >
-            <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
+            <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false, animation:'none',
+            }} />
             {/*<HomeStack.Screen name="Account" component={Account} options={{*/}
             {/*    headerStyle: {*/}
             {/*        backgroundColor: colors.notification,*/}
@@ -64,7 +65,8 @@ export function HomeStackScreen () {
                 },
                 headerTitle: 'Spotlight Recipes',
             }} />
-            <HomeStack.Screen name="SearchStackScreen" component={SearchStackScreen} options={{headerShown: false}} />
+            <HomeStack.Screen name="SearchStackScreen" component={SearchStackScreen} options={{headerShown: false,                 animation:'none',
+            }} />
             <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false
             }} />
@@ -393,6 +395,7 @@ export function SearchStackScreen () {
                 },
                //hide back button
                headerBackVisible: false,
+                animation:'none',
             }} />
             <SearchStack.Screen name="Recipe" component={Recipe} options={{
                 headerStyle: {

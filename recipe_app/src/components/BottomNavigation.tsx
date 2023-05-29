@@ -63,6 +63,7 @@ const BottomNavigation : FC = () => {
                     tabBarLabelStyle: {
                         fontSize: 12,
                     },
+
             }}
         >
             <Tab.Screen name="Home" component={HomeStackScreen} options={{
