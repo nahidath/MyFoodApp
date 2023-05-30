@@ -52,6 +52,7 @@ const Search : FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [modalVisible2, setModalVisible2] = useState<boolean>(false);
     // const ref = useRef(null);
     const borderSpec=theme.dark ? "#fefefe" : "#505050";
     const textInputBckgr = theme.dark ? '#272727' : '#f2f2f2';
@@ -277,13 +278,13 @@ const Search : FC = () => {
                                             <Modal
                                                 animationType={"slide"}
                                                 transparent={true}
-                                                visible={modalVisible}
+                                                visible={modalVisible2}
                                                 onRequestClose={() => {
-                                                    setModalVisible(!modalVisible);
+                                                    setModalVisible2(!modalVisible2);
                                                 }}>
-                                                <RecipeVideo videoID={resultV.youTubeId} setModalVisible={setModalVisible} />
+                                                <RecipeVideo videoID={resultV.youTubeId} setModalVisible={setModalVisible2} />
                                             </Modal>
-                                            <TouchableOpacity key={resultV.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setModalVisible(true)}>
+                                            <TouchableOpacity key={resultV.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setModalVisible2(true)}>
                                                 <View style={recipeStyles.imgRecipe}>
                                                     {resultV.thumbnail ? <Image source={{uri: resultV.thumbnail}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
                                                 </View>

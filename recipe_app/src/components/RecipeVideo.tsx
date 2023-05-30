@@ -4,6 +4,10 @@ import YouTube from 'react-native-youtube';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {useTheme} from "@react-navigation/native";
 import {Dispatch, SetStateAction} from "react";
+import { WebView } from 'react-native-webview';
+import YoutubePlayer from "react-native-youtube-iframe";
+
+
 
 
 
@@ -25,17 +29,27 @@ const RecipeVideo = ({videoID, setModalVisible}: RecipeVideoProps) => {
                         <FontAwesome name="close" size={24} color={colors.text} />
                     </TouchableOpacity>
                 </View>
-                <YouTube
-                    videoId={videoID}
-                    play={true}
-                    apiKey="AIzaSyBqxVvUSqKq6OmfbmRUAjW3jTrZFcpHpaI"
-                />
-                {/*<WebView*/}
-                {/*    style={{width: '100%', height: 300, borderRadius: 10}}*/}
-                {/*    javaScriptEnabled={true}*/}
-                {/*    domStorageEnabled={true}*/}
+                {/*<Video*/}
                 {/*    source={{uri: `https://www.youtube.com/embed/${videoID}`}}*/}
+                {/*    style={styles.video}*/}
+                {/*    controls={true}*/}
+                {/*    resizeMode="contain"*/}
                 {/*/>*/}
+
+                {/*<YouTube*/}
+                {/*    videoId={videoID}*/}
+                {/*    play={true}*/}
+                {/*    apiKey="AIzaSyBqxVvUSqKq6OmfbmRUAjW3jTrZFcpHpaI"*/}
+                {/*/>*/}
+                {/*<WebView*/}
+                {/*    // style={styles.webView}*/}
+                {/*    source={{ uri: `https://www.youtube.com/embed/${videoID}` }}*/}
+                {/*/>*/}
+                <YoutubePlayer
+                    height={300}
+                    play={false}
+                    videoId={videoID}
+                />
             </View>
         </View>
     );
@@ -46,7 +60,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: 300,
-        backgroundColor: '#fff',
+        backgroundColor: 'rgba(0,0,0,0.05)',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -56,7 +70,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: '100%',
-        height: '100%',
+        height: 400,
         padding: 20,
         borderRadius: 10,
     },
