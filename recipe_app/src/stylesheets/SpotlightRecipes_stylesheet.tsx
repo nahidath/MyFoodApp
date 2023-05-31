@@ -9,6 +9,7 @@ export default StyleSheet.create({
     blocRecipe: {
         flexDirection: 'column',
         padding: 15,
+        paddingTop: 20,
         borderRadius: 10,
         margin: 10,
     },
@@ -29,12 +30,12 @@ export default StyleSheet.create({
     },
     blocRecipeLabel: {
         position: 'absolute',
-        top: 20,
+        top: 10,
         marginLeft: 15,
         flexDirection: 'row',
     },
     blocRecipeLabelText : {
-        backgroundColor: 'rgba(195,229,111,0.75)',
+        backgroundColor: 'rgba(195,229,111,0.87)',
         fontSize: 10,
         color: '#041721',
         padding: 5,

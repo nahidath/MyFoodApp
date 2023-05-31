@@ -30,6 +30,8 @@ import {SkeletonView} from "../components/SkeletonLoader";
 import searchRecipes from "../mock/searchResultsBeef.json";
 import searchVideos from "../mock/searchVideosPasta.json";
 import RecipeVideo from "../components/RecipeVideo";
+import * as WebBrowser from 'expo-web-browser';
+
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
@@ -91,7 +93,7 @@ const Search : FC = () => {
                 setNbResultsVideo(response1.data.totalResults);
                 setIsSearch(true);
                 setLoading(false);
-                if(response1.data.results.length == 0){
+                if(response1.data.videos.length == 0){
                     setNoResultsVideo('No results found');
                 }
             },
@@ -158,7 +160,7 @@ const Search : FC = () => {
             //style back button
 
             headerLeft: () => (
-                <TouchableOpacity onPress={() => {setIsSearch(false), setSearch('')}}>
+                <TouchableOpacity onPress={() => {setIsSearch(false), setSearch(''), setSelectedButton('recipeBtn'), setResultsVideo('')}}>
                     <Feather style={styles.icon} name={"arrow-left"} size={22} color={colors.text} />
                 </TouchableOpacity>
             ),
@@ -172,8 +174,10 @@ const Search : FC = () => {
         return hours +'h' + m + ' min';
     }
 
-    const colorSpeBtn = theme.dark ? "#505050" : "#041721";
-    const colorSpeBtnText = theme.dark ? "#f2f2f2" : "#f2f2f2";
+    const colorSpeBtn = theme.dark ? "#f2f2f2" : "#041721";
+    const colorSpeBtn2 = theme.dark ? "#505050" : "#f2f2f2";
+    const colorSpeBtnText = theme.dark ? "#041721" : "#f2f2f2";
+    const colorSpeBtnText2 = theme.dark ? "#f2f2f2" : "#041721";
 
 
     // useEffect(() => {
@@ -212,13 +216,13 @@ const Search : FC = () => {
                 <View style={styles.resultsContainer}>
                     <View style={styles.resultsHeader}>
                         <Text style={[styles.resultsText, {color:colors.text}]}>{selectedButton === 'videoBtn' ? nbResultsVideo==1 ? nbResultsVideo + ' video found' : nbResultsVideo + ' videos found' : nbResults==1 ? nbResults + ' recipe found' : nbResults + ' recipes found'}</Text>
-                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'recipeBtn' ? colorSpeBtn : "#f2f2f2"}]} onPress={() => handleButtonPress('recipeBtn')}>
-                            <Feather name={"book-open"} size={13} color={selectedButton === 'recipeBtn' ? colorSpeBtnText : colors.text} />
-                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'recipeBtn' ? colorSpeBtnText : colors.text}]}> Recipes</Text>
+                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'recipeBtn' ? colorSpeBtn : colorSpeBtn2}]} onPress={() => handleButtonPress('recipeBtn')}>
+                            <Feather name={"book-open"} size={13} color={selectedButton === 'recipeBtn' ? colorSpeBtnText : colorSpeBtnText2} />
+                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'recipeBtn' ? colorSpeBtnText : colorSpeBtnText2}]}> Recipes</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'videoBtn' ? colorSpeBtn : "#f2f2f2"}]} onPress={() => handleButtonPress('videoBtn')}>
-                            <Feather name={"video"} size={13} color={selectedButton === 'videoBtn' ? colorSpeBtnText : colors.text} />
-                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'videoBtn' ? colorSpeBtnText : colors.text}]}> Videos</Text>
+                        <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'videoBtn' ? colorSpeBtn : colorSpeBtn2}]} onPress={() => handleButtonPress('videoBtn')}>
+                            <Feather name={"video"} size={13} color={selectedButton === 'videoBtn' ? colorSpeBtnText : colorSpeBtnText2} />
+                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'videoBtn' ? colorSpeBtnText : colorSpeBtnText2}]}> Videos</Text>
                         </TouchableOpacity>
                     </View>
                     <Modal
@@ -228,7 +232,12 @@ const Search : FC = () => {
                         onRequestClose={() => {
                             setModalVisible(!modalVisible);
                         }}>
-                        <FilterModal search={search} setResults={setResults} setNoResults={setNoResults} setNbResults={setNbResults} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} screenName={'Search'} category={'filterRecipes'} />
+                        {selectedButton === 'recipeBtn' ? (
+                            <FilterModal search={search} setResults={setResults} setNoResults={setNoResults} setNbResults={setNbResults} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} screenName={'Search'} category={'filterRecipes'} />
+                        ) : (
+                            <FilterModal search={search} setResults={setResultsVideo} setNoResults={setNoResultsVideo} setNbResults={setNbResultsVideo} setIsSearch={setIsSearch} setLoading={setLoading} setModalVisible={setModalVisible} screenName={'Search'} category={'filterVideos'} />
+                        )}
+
                     </Modal>
 
                     <TouchableOpacity
@@ -244,9 +253,9 @@ const Search : FC = () => {
                             results.length === 0 ? (
                                 <Text style={[styles.resultsText, {color:colors.text}]}>{noResults}</Text>
                             ) : (
-                                results.map((result : any) => {
+                                results.map((result : any, index : number) => {
                                     return (
-                                        <TouchableOpacity key={result.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
+                                        <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}>
                                             <View style={recipeStyles.imgRecipe}>
                                                 {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
                                             </View>
@@ -272,28 +281,19 @@ const Search : FC = () => {
                             resultsVideo.length === 0 ? (
                                 <Text style={[styles.resultsText, {color:colors.text}]}>{noResultsVideo}</Text>
                             ) : (
-                                resultsVideo.map((resultV : any) => {
+                                resultsVideo.map((resultV : any, index: number) => {
                                     return (
-                                        <>
-                                            <Modal
-                                                animationType={"slide"}
-                                                transparent={true}
-                                                visible={modalVisible2}
-                                                onRequestClose={() => {
-                                                    setModalVisible2(!modalVisible2);
-                                                }}>
-                                                <RecipeVideo videoID={resultV.youTubeId} setModalVisible={setModalVisible2} />
-                                            </Modal>
-                                            <TouchableOpacity key={resultV.id} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setModalVisible2(true)}>
-                                                <View style={recipeStyles.imgRecipe}>
-                                                    {resultV.thumbnail ? <Image source={{uri: resultV.thumbnail}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
-                                                </View>
-                                                <View style={recipeStyles.blocRecipeBelow}>
-                                                    <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{resultV.shortTitle}</Text>
-                                                    <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="eye" size={20} color={colors.text}/> {resultV.views}</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </>
+
+                                        <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => WebBrowser.openBrowserAsync('https://www.youtube.com/embed/' + resultV.youTubeId)}>
+                                            <View style={recipeStyles.imgRecipe}>
+                                                {resultV.thumbnail ? <Image source={{uri: resultV.thumbnail}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
+                                            </View>
+                                            <View style={recipeStyles.blocRecipeBelow}>
+                                                <Text style={[recipeStyles.blocRecipeImageText, {color:colors.text}]}>{resultV.shortTitle}</Text>
+                                                <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="eye" size={20} color={colors.text}/> {resultV.views}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+
                                     )
                                 })
                             )

@@ -42,7 +42,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
     const colorSpec = theme.dark ? '#252525' : '#041721';
     const [filtered, setFiltered] = useState<boolean>(false);
     const [fromValue, setFromValue] = useState(0);
-    const [toValue, setToValue] = useState(0);
+    const [toValue, setToValue] = useState(999);
     const [value, setValue] = useState(0);
 
 
@@ -56,29 +56,66 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         let cuisineFilters = cuisine ? cuisine : filtersArray.cuisine;
         let sortFilter = filtersArray.sort;
 
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: search.toLowerCase(), number: 100, addRecipeInformation:true, diet : dietFilters.toString(), intolerances:intoleranceFilters.toString(), type: dishTypeFilter, cuisine: cuisineFilters, sort: sortFilter } }).then((response1) => {
-            setResults(response1.data.results);
-            setNbResults(response1.data.results.length);
-            setIsSearch(true);
-            setLoading(false);
-            setFiltered(true);
-            if(response1.data.results.length == 0){
-                setNoResults('No results found');
-            }
-        },).catch((error) => {
-            console.log(error);
-        });
+        if(category == 'filterRecipes') {
 
-        // useScrollToTop(scrollRef);
-        setModalVisible(false);
+            axios.get('https://api.spoonacular.com/recipes/complexSearch', {
+                params: {
+                    apiKey: configValue,
+                    query: search.toLowerCase(),
+                    number: 100,
+                    addRecipeInformation: true,
+                    diet: dietFilters.toString(),
+                    intolerances: intoleranceFilters.toString(),
+                    type: dishTypeFilter,
+                    cuisine: cuisineFilters,
+                    sort: sortFilter
+                }
+            }).then((response1) => {
+                setResults(response1.data.results);
+                setNbResults(response1.data.results.length);
+                setIsSearch(true);
+                setLoading(false);
+                setFiltered(true);
+                if (response1.data.results.length == 0) {
+                    setNoResults('No results found');
+                }
+            },).catch((error) => {
+                console.log(error);
+            });
 
-        //write the filters result in a file in the mock folder
+            // useScrollToTop(scrollRef);
+            setModalVisible(false);
+
+            //write the filters result in a file in the mock folder
+        } else if (category == 'filterVideos') {
+            axios.get('https://api.spoonacular.com/food/videos/search', {
+                params: {
+                    apiKey: configValue,
+                    query: search.toLowerCase(),
+                    number: 100,
+                    diet: dietFilters.toString(),
+                    type: dishTypeFilter,
+                    cuisine: cuisineFilters,
+                    minLength: fromValue,
+                    maxLength: toValue,
+                }
+            }).then((response1) => {
+                setResults(response1.data.videos);
+                setNbResults(response1.data.videos.length);
+                setIsSearch(true);
+                setLoading(false);
+                setFiltered(true);
+                if (response1.data.videos.length == 0) {
+                    setNoResults('No results found');
+                }
+            },).catch((error) => {
+                console.log(error);
+            });
+            setModalVisible(false);
+
+        }
     };
 
-    // const handleValueChange = useCallback((low: React.SetStateAction<number>, high: React.SetStateAction<number>) => {
-    //     setRangeLow(low);
-    //     setRangeHigh(high);
-    // }, []);
 
     return (
         <View style={styles.sideView}>
@@ -104,9 +141,9 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                         }}
                                     />
                                 </View>
+                                <Separator />
                             </>
                         }
-                        <Separator />
                         <Text style={[styles.modalText, {color:colors.text}]}>Diet</Text>
                         <View style={styles.modalFilter}>
                             {sortList2.map((item, index) => {
@@ -149,9 +186,9 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                         );
                                     })}
                                 </View>
+                                <Separator />
                             </>
                         }
-                        <Separator />
                         <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
                         <View style={styles.modalFilter}>
                             <BouncyCheckboxGroup
@@ -199,9 +236,12 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                                  inRangeBarColor={colorSpec}
                                                  outOfRangeBarColor={colors.border}
                                                  barHeight={5}
+                                                 knobSize={20}
+                                                 fromKnobColor={'#9fc131'}
+                                                 toKnobColor={'#9fc131'}
+                                                 rangeLabelsTextColor={colors.text}
                                     />
-                                    <Text>{fromValue} sec </Text>
-                                    <Text>{toValue} sec</Text>
+                                    <Text style={{color: colors.text}}>Time : {fromValue} sec to {toValue} sec </Text>
                                 </View>
                             </>
                         }
