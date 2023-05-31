@@ -195,6 +195,13 @@ export default StyleSheet.create({
         color: '#fefefe',
         padding: 10,
     },
+    cuisineBlocItemText2: {
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: '#fefefe',
+        padding: 10,
+        textAlign: 'center',
+    },
     cuisineBlocItemImage: {
         flex: 1,
         justifyContent: 'flex-end',

@@ -311,6 +311,11 @@ const Homepage :  FC = () => {
                                 )
 
                             })}
+                            <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: '#9fc131', alignItems:'center', justifyContent: 'center', flexDirection: 'column'}]} onPress={() => navigation.navigate('Search', {screen :'SearchStackScreen/SearchPage'})} activeOpacity={0.4}>
+                                <Text style={styles.cuisineBlocItemText2}>Discover more delicious recipes 😋</Text>
+                                {/*<Feather name={"arrow-right"} size={30} color={"#f2f2f2"} />*/}
+                                <Image source={require('../../assets/arrow-right.png')} style={{width: 30, height: 30}} />
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
