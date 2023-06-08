@@ -361,6 +361,16 @@ export default function App() {
 
     }, [notifEnabled, loggedIn]);
 
+    useEffect(() => {
+        if(showIntro) {
+            AsyncStorage.getItem('showIntro').then((value) => {
+                if (value === 'false') {
+                    setShowIntro(false);
+                }
+            });
+        }
+    }, [showIntro]);
+
 
     //theme section
     const [theme, setTheme] = useState('Light');
@@ -389,40 +399,40 @@ export default function App() {
     }
 
 
-    if(showIntro && !appReloading) {
-        // setShowIntro(false);
-        return (
-            <GestureHandlerRootView style={{ flex: 1 }}>
-                <ThemeContext.Provider value={themeData}>
-                    <NotifsParamsContext.Provider value={params}>
-                        <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
-                            <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                                {/*{appInstalled ? <SwiperStarter doneNavigation={true}/> : null}*/}
-                                {loggedIn ? <BottomNavigation />  : <AuthStack />}
-                                {/*<BottomNavigation />*/}
-                            </NavigationContainer>
-                        </IncomingNotificationsContext.Provider>
-                    </NotifsParamsContext.Provider>
-                </ThemeContext.Provider>
-            </GestureHandlerRootView>
-        );
-    }else{
-        return (
-            <GestureHandlerRootView style={{ flex: 1 }}>
-                <ThemeContext.Provider value={themeData}>
-                    <NotifsParamsContext.Provider value={params}>
-                        <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
-                            <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                                <SwiperStarter setShowIntro={setShowIntro} doneNavigation={true} />
-                            </NavigationContainer>
-                        </IncomingNotificationsContext.Provider>
-                    </NotifsParamsContext.Provider>
-                </ThemeContext.Provider>
-            </GestureHandlerRootView>
+    // if(showIntro) {
+    //     // setShowIntro(false);
+    //     return (
+    //         <GestureHandlerRootView style={{ flex: 1 }}>
+    //             <ThemeContext.Provider value={themeData}>
+    //                 <NotifsParamsContext.Provider value={params}>
+    //                     <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
+    //                         <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+    //
+    //                         </NavigationContainer>
+    //                     </IncomingNotificationsContext.Provider>
+    //                 </NotifsParamsContext.Provider>
+    //             </ThemeContext.Provider>
+    //         </GestureHandlerRootView>
+    //     );
+    // }
+    return (
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemeContext.Provider value={themeData}>
+                <NotifsParamsContext.Provider value={params}>
+                    <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
+                        <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+                            {/*{appInstalled ? <SwiperStarter doneNavigation={true}/> : null}*/}
+                            {showIntro ?  <SwiperStarter/> : loggedIn ? <BottomNavigation />  : <AuthStack />}
+                            {/*<BottomNavigation />*/}
+                        </NavigationContainer>
+                    </IncomingNotificationsContext.Provider>
+                </NotifsParamsContext.Provider>
+            </ThemeContext.Provider>
+        </GestureHandlerRootView>
 
 
-        );
-    }
+    );
+
 
 
 }

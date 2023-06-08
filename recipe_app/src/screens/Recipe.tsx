@@ -35,13 +35,15 @@ import app, {auth, database} from "../firebase/config";
 import { ref, set, remove, child } from "firebase/database";
 import RecipeVideo from "../components/RecipeVideo";
 
-
+interface RecipeProps {
+    idR?: any;
+}
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
 // @ts-ignore
 type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 
-const Recipe = ({route}: Props) => {
+const Recipe = ({route}: Props, {idR}: RecipeProps) => {
     const navigation = useNavigation<RecipesScreenProps>();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipe, setRecipe] = useState<any>([]);
@@ -54,6 +56,7 @@ const Recipe = ({route}: Props) => {
     let lastTap : any = null;
     const {id} = route.params;
     const {name} = route.params;
+    const idOfRecipe = id ? JSON.stringify(id) : idR;
     const {colors} = useTheme();
     const theme = useTheme();
     const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
@@ -66,7 +69,7 @@ const Recipe = ({route}: Props) => {
 
     const getRecipe = () => {
         let dataInstruction : string | any[] = [];
-        axios.get('https://api.spoonacular.com/recipes/'+JSON.stringify(id)+'/information',{params:{apiKey: configValue} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/'+idOfRecipe+'/information',{params:{apiKey: configValue} }).then((response) => {
             setRecipe(response.data);
             setIngredients(response.data.extendedIngredients.map((item: any) => item.original));
             dataInstruction = response.data.analyzedInstructions.map((item: any) => item.steps.map((item: any) => 'Step ' + item.number + ' : ' + item.step))

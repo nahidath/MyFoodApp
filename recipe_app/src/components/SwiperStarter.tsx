@@ -2,15 +2,16 @@ import {Dimensions, ScrollView, View, Text, PixelRatio, StyleSheet, Image} from 
 import React, {Dispatch, SetStateAction, useState} from "react";
 import AppIntroSlider from "react-native-app-intro-slider";
 import FocusAwareStatusBar from "./StatusBarStyle";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface SwiperStarterProps {
-    doneNavigation: boolean;
-    setShowIntro: Dispatch<SetStateAction<boolean>>;
-}
+// interface SwiperStarterProps {
+//     doneNavigation: boolean;
+//     setShowIntro: Dispatch<SetStateAction<boolean>>;
+// }
 
-const SwiperStarter = ({doneNavigation, setShowIntro} : SwiperStarterProps)  => {
+const SwiperStarter = ()  => {
     const { width, height } = Dimensions.get('window');
-    const [showRealApp, setShowRealApp] = useState(true);
+    const [showIntro, setShowIntro] = useState(true);
 
     const slides : any = [
         {
@@ -54,27 +55,33 @@ const SwiperStarter = ({doneNavigation, setShowIntro} : SwiperStarterProps)  => 
         );
     }
 
+    const onDone = async () => {
+        // setShowIntro(false);
+        await AsyncStorage.setItem('showIntro', 'false');
+    }
 
 
 
 
-        return (
-            <>
-                <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
-                <AppIntroSlider
-                    renderNextButton={() => labelButton('Next')}
-                    renderDoneButton={() => labelButton('Start')}
-                    renderPrevButton={() => labelButton('Prev')}
-                    showSkipButton={true}
-                    onDone={() => setShowIntro(doneNavigation)}
-                    // onDone={() => setShowIntro(false)}
-                    activeDotStyle={{backgroundColor: '#f2f2f2', width: 30}}
-                    data={slides}
-                    renderItem={(item) => renderItem(item)}
-                />
-            </>
 
-        );
+
+    return (
+        <>
+            <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
+            <AppIntroSlider
+                renderNextButton={() => labelButton('Next')}
+                renderDoneButton={() => labelButton('Start')}
+                renderPrevButton={() => labelButton('Prev')}
+                showSkipButton={true}
+                onDone={() => onDone()}
+                // onDone={() => setShowIntro(false)}
+                activeDotStyle={{backgroundColor: '#f2f2f2', width: 30}}
+                data={slides}
+                renderItem={(item) => renderItem(item)}
+            />
+        </>
+
+    );
 }
 
 const styles = StyleSheet.create({
