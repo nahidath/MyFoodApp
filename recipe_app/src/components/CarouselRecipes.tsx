@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import Carousel from "react-native-snap-carousel";
 import Recipe from "../screens/Recipe";
+import {ScrollView} from "react-native";
 
 
 
@@ -30,6 +31,15 @@ export const CarouselRecipes = ({listeOfRecipes, indexRecipe, layout} : Carousel
             layout={layout}
             onSnapToItem={handleSnapToItem}
         />
+        // <ScrollView
+        //     horizontal={true}
+        //     showsHorizontalScrollIndicator={false}
+        //     pagingEnabled={true}
+        //     >
+        //     {listeOfRecipes.map((item: recipeProps, index: number) => (
+        //         <Recipe   navigation={item.id} route={item}/>
+        //     ))}
+        // </ScrollView>
     );
 
 
