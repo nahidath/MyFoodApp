@@ -83,6 +83,10 @@ export type SearchStackList = {
         id?: string;
         name?: string;
     }
+    Carousel : {
+        index: string;
+        listOfRecipes: string[];
+    }
 }
 
 export type ProfileStackList = {

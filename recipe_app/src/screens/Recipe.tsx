@@ -35,15 +35,12 @@ import app, {auth, database} from "../firebase/config";
 import { ref, set, remove, child } from "firebase/database";
 import RecipeVideo from "../components/RecipeVideo";
 
-interface RecipeProps {
-    idR?: any;
-}
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
 // @ts-ignore
 type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 
-const Recipe = ({route}: Props, {idR}: RecipeProps) => {
+const Recipe = ({route}: Props) => {
     const navigation = useNavigation<RecipesScreenProps>();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipe, setRecipe] = useState<any>([]);
@@ -56,7 +53,7 @@ const Recipe = ({route}: Props, {idR}: RecipeProps) => {
     let lastTap : any = null;
     const {id} = route.params;
     const {name} = route.params;
-    const idOfRecipe = id ? JSON.stringify(id) : idR;
+    const idOfRecipe = JSON.stringify(id);
     const {colors} = useTheme();
     const theme = useTheme();
     const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
