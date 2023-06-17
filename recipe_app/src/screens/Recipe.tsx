@@ -280,7 +280,7 @@ const Recipe = ({route}: Props) => {
                     <Feather  name="share-2" size={32} color={"#fefefe"}  />
                   </TouchableOpacity>
                     <TouchableOpacity style={styles.heartBtn} onPress={() => handleSave()}>
-                        {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
+                        {saved ? <FontAwesome name="heart" size={32} color={"#f8cf19"} /> : <FontAwesome name="heart-o" size={32} color={"#fefefe"} />}
                     </TouchableOpacity>
                    <View style={styles.headerRecipeLabel}>
                         {labels.map((label, index) => (
@@ -296,7 +296,7 @@ const Recipe = ({route}: Props) => {
                        {/*<Text style={styles.headerRecipeImageText}>{recipe.title}</Text>*/}
                        <View style={styles.recipeLikes}>
                            <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
-                           <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" />
+                           <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" />
                        </View>
                    </LinearGradient>
                 </View>

@@ -143,7 +143,7 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
                              onPress={() => handleFavorite(recipe.id)}
                              activeOpacity={0.4}
            >
-               {saved ? <FontAwesome name="star" size={32} color={"#f8cf19"} /> : <FontAwesome name="star-o" size={32} color={"#fefefe"} />}
+               {saved ? <FontAwesome name="heart" size={32} color={"#f8cf19"} /> : <FontAwesome name="heart-o" size={32} color={"#fefefe"} />}
            </TouchableOpacity>}
            {trash && <TouchableOpacity style={styles.blocRecipeDelete}
                                        onPress={() => deleteFavorite(recipe.id)}

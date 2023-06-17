@@ -49,7 +49,7 @@ export const CarouselRecipes = ({route} : Props) => {
             <PagerView  initialPage={indx}>
                 {listeOfRecipes.map((item, index) => (
                     <View key={index}>
-                        <Recipe  navigation={item.id} route={item}/>
+                        <Recipe  navigation={item} route={item}/>
                     </View>
                 ))}
             </PagerView>
