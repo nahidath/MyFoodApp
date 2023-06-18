@@ -96,7 +96,7 @@ const SpotlightRecipes = ({route}: Props) => {
                                 <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe2.title}</Text>
                                 <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe2.readyInMinutes > 59 ? formatTime(recipe2.readyInMinutes) :recipe2.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes} <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" /></Text>
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes} <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" /></Text>
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>

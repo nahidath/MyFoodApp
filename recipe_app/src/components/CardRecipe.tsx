@@ -20,11 +20,12 @@ interface CardRecipeProps {
     star?: boolean;
     label?: boolean;
     trash?: boolean;
-
+    listOfRecipesId?: any[];
+    index?: number;
 
 }
 
-const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, label=true, trash=false}: CardRecipeProps) => {
+const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, label=true, trash=false, listOfRecipesId, index}: CardRecipeProps) => {
     const { colors } = useTheme();
     const theme = useTheme();
     const [saved, setSaved] = useState<boolean>(false);
@@ -125,7 +126,7 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
 
 
     return (
-       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})} activeOpacity={0.4}>
+       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title, listOfRecipes : listOfRecipesId, indxCurrent: index})} activeOpacity={0.4}>
            {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
            <LinearGradient
                colors={['transparent','rgba(0,0,0,0.8)' ]}

@@ -8,6 +8,8 @@ export type HomeStackList = {
     Recipe: {
         id?: string;
         name?: string;
+        listOfRecipes?: string[];
+        indxCurrent?: number ;
     }
     SpotlightRecipes: {
         recipesArray: string[];

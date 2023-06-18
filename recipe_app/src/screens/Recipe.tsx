@@ -7,7 +7,15 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Share, TouchableWithoutFeedback, Image, Animated, Alert, LayoutChangeEvent, Modal
+    Share,
+    TouchableWithoutFeedback,
+    Image,
+    Animated,
+    Alert,
+    LayoutChangeEvent,
+    Modal,
+    PanResponder,
+    PanResponderInstance, Dimensions, NativeScrollEvent, NativeSyntheticEvent
 } from "react-native";
 import styles from "../stylesheets/Recipe_stylesheet";
 import general from "../stylesheets/General_stylesheet";
@@ -34,6 +42,8 @@ import recipeMock from "../mock/recipe649503.json";
 import app, {auth, database} from "../firebase/config";
 import { ref, set, remove, child } from "firebase/database";
 import RecipeVideo from "../components/RecipeVideo";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
@@ -53,7 +63,9 @@ const Recipe = ({route}: Props) => {
     let lastTap : any = null;
     const {id} = route.params;
     const {name} = route.params;
-    const idOfRecipe = JSON.stringify(id);
+    const {listOfRecipes} = route.params;
+    const {indxCurrent} = route.params;
+    const [iC, setIC] = useState(indxCurrent ? indxCurrent : 0);
     const {colors} = useTheme();
     const theme = useTheme();
     const sourceUrlColor = theme.dark ? "#9892ef" : "#2319ad";
@@ -62,9 +74,13 @@ const Recipe = ({route}: Props) => {
     const [fontSize, setFontSize] = useState<number>(30);
     const titleRef = useRef<Text>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [indexCurrent, setIndexCurrent] = useState<number | undefined>(indxCurrent);
+    console.log( 'indexCurrent : ',indexCurrent);
+    const scrollViewRef = useRef<ScrollView>(null);
+    const itemRefs = useRef<Array<View | null>>([]);
 
-
-    const getRecipe = () => {
+    const getRecipe = (idRecipe? : string) => {
+        let idOfRecipe : string = idRecipe ? idRecipe : JSON.stringify(id);
         let dataInstruction : string | any[] = [];
         axios.get('https://api.spoonacular.com/recipes/'+idOfRecipe+'/information',{params:{apiKey: configValue} }).then((response) => {
             setRecipe(response.data);
@@ -88,7 +104,9 @@ const Recipe = ({route}: Props) => {
         });
 
 
+
     }
+
 
 
     useEffect(() => {
@@ -101,6 +119,19 @@ const Recipe = ({route}: Props) => {
             getLabels();
         }
     }, [isLoaded, name]);
+
+    //useEffect to change header title depending on the recipe scrolled horizontally
+    // useEffect(() => {
+    //     let namE : any = '';
+    //     if (listOfRecipes) {
+    //         namE = listOfRecipes[iC]
+    //         namE = namE.title;
+    //         console.log(namE);
+    //     }
+    //     navigation.setOptions({
+    //         headerTitle: namE,
+    //     })
+    // }, [iC]);
 
     const getLabels = () => {
         const vegan : string = 'Vegan';
@@ -243,85 +274,89 @@ const Recipe = ({route}: Props) => {
     }, [fontSize]);
     const handleTextLayout = (event: LayoutChangeEvent) => {
         const { height } = event.nativeEvent.layout;
-        console.log(height);
         if (height > 80 && fontSize > 20) {
             setFontSize(fontSize - 2);
         }
     };
 
+    const renderedList = listOfRecipes?.map((recipe: any, index) => {
+        if(index >= iC){
+            return (
+                <ScrollView contentContainerStyle={{width: Dimensions.get('window').width}} >
+                    <View style={styles.headerRecipeImage} key={index} ref={ref=>(itemRefs.current[index] = ref)}>
+                        <TouchableWithoutFeedback style={{zIndex: 100}} onPress={() => handleDoubleTap()}>
+                            {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}} /> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}/>}
+                        </TouchableWithoutFeedback>
+                        {animated && <StarIconLike  scale={2} />}
+                        <TouchableOpacity style={styles.shareBtn} onPress={() => onShare()}>
+                            <Feather  name="share-2" size={32} color={"#fefefe"}  />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.heartBtn} onPress={() => handleSave()}>
+                            {saved ? <FontAwesome name="heart" size={32} color={"#f8cf19"} /> : <FontAwesome name="heart-o" size={32} color={"#fefefe"} />}
+                        </TouchableOpacity>
+                        <View style={styles.headerRecipeLabel}>
+                            {labels.map((label, index) => (
+                                <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
+                            ))}
+                        </View>
+                        <LinearGradient
+                            colors={['transparent','rgba(0,0,0,0.8)' ]}
+                            style={styles.blocRecipeGradient}
+                        >
+                            {/*{recipe.title.length > 30 ? <Text style={styles.headerRecipeImageTextSmall}>{recipe.title}</Text> : <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>}*/}
+                            <Text ref={titleRef} style={[styles.headerRecipeImageText, {fontSize: fontSize}]} onLayout={handleTextLayout}>{recipe.title}</Text>
+                            {/*<Text style={styles.headerRecipeImageText}>{recipe.title}</Text>*/}
+                            <View style={styles.recipeLikes}>
+                                <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
+                                <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" />
+                            </View>
+                        </LinearGradient>
+                    </View>
+
+                    <View style={styles.recipeInfos}>
+                        <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> Ready in {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " minutes"} </Text>
+                        <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/> Serves {recipe.servings} people</Text>
+                        <View style={styles.ingredientList}>
+                            <Text style={[styles.ingredientListTitle, {color:colors.text}]}>INGREDIENTS</Text>
+                            {ingredients.map((ingredient, index) => (
+                                <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient}</Text>
+                            ))}
+
+                        </View>
+                        <View style={styles.recipeDescription}>
+                            <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
+                            {instructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No instructions available</Text>  : instructions.map((instruction, index) => (
+                                <Text key={index} style={[styles.items, {color:colors.text}]}>{instruction}</Text>
+                            ))}
+                        </View>
+                    </View>
+                    <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
+                    <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
+                </ScrollView>
+            )
+        }
+    })
+
+    // const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    //     const { contentOffset } = event.nativeEvent;
+    //     const visibleItemIndex = Math.floor(contentOffset.x / Dimensions.get('window').width); // Adjust ITEM_WIDTH as needed
+    //     if (visibleItemIndex !== iC) {
+    //         setIC(visibleItemIndex);
+    //     }
+    //
+    // }
+
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {isLoading ? <SkeletonView theme={theme} color={colors}/> :
-            <>
-            {/*<Modal*/}
-            {/*    animationType={"slide"}*/}
-            {/*    transparent={true}*/}
-            {/*    visible={modalVisible}*/}
-            {/*    onRequestClose={() => {*/}
-            {/*        setModalVisible(!modalVisible);*/}
-            {/*    }}>*/}
-            {/*    <RecipeVideo video={recipe.video} />*/}
-            {/*</Modal>*/}
-            {/*<TouchableOpacity*/}
-            {/*    activeOpacity={0.8}*/}
-            {/*    style={[styles.floatingButton, general.shadow]}*/}
-            {/*    onPress={() => setModalVisible(true)}*/}
-            {/*>*/}
-            {/*   <Image source={require('../../assets/play-button.gif')} style={{width: 40, height: 40}} />*/}
-            {/*</TouchableOpacity>*/}
-            <ScrollView>
-                <View style={styles.headerRecipeImage} key={recipe.id}>
-                    <TouchableWithoutFeedback style={{zIndex: 100}} onPress={() => handleDoubleTap()}>
-                        {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}} /> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}/>}
-                    </TouchableWithoutFeedback>
-                    {animated && <StarIconLike  scale={2} />}
-                  <TouchableOpacity style={styles.shareBtn} onPress={() => onShare()}>
-                    <Feather  name="share-2" size={32} color={"#fefefe"}  />
-                  </TouchableOpacity>
-                    <TouchableOpacity style={styles.heartBtn} onPress={() => handleSave()}>
-                        {saved ? <FontAwesome name="heart" size={32} color={"#f8cf19"} /> : <FontAwesome name="heart-o" size={32} color={"#fefefe"} />}
-                    </TouchableOpacity>
-                   <View style={styles.headerRecipeLabel}>
-                        {labels.map((label, index) => (
-                            <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
-                        ))}
-                   </View>
-                   <LinearGradient
-                       colors={['transparent','rgba(0,0,0,0.8)' ]}
-                       style={styles.blocRecipeGradient}
-                   >
-                       {/*{recipe.title.length > 30 ? <Text style={styles.headerRecipeImageTextSmall}>{recipe.title}</Text> : <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>}*/}
-                          <Text ref={titleRef} style={[styles.headerRecipeImageText, {fontSize: fontSize}]} onLayout={handleTextLayout}>{recipe.title}</Text>
-                       {/*<Text style={styles.headerRecipeImageText}>{recipe.title}</Text>*/}
-                       <View style={styles.recipeLikes}>
-                           <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
-                           <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" />
-                       </View>
-                   </LinearGradient>
-                </View>
 
-                <View style={styles.recipeInfos}>
-                    <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> Ready in {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " minutes"} </Text>
-                    <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/> Serves {recipe.servings} people</Text>
-                    <View style={styles.ingredientList}>
-                        <Text style={[styles.ingredientListTitle, {color:colors.text}]}>INGREDIENTS</Text>
-                        {ingredients.map((ingredient, index) => (
-                            <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient}</Text>
-                        ))}
+            <ScrollView snapToInterval={Dimensions.get('window').width} decelerationRate="fast" horizontal  ref={scrollViewRef}
+                        // onScroll={handleScroll} scrollEventThrottle={10}
+            >
+                {renderedList}
 
-                    </View>
-                    <View style={styles.recipeDescription}>
-                        <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
-                        {instructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No instructions available</Text>  : instructions.map((instruction, index) => (
-                            <Text key={index} style={[styles.items, {color:colors.text}]}>{instruction}</Text>
-                        ))}
-                    </View>
-                </View>
-                <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
-                <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
             </ScrollView>
-            </>
             }
         </View>
     );

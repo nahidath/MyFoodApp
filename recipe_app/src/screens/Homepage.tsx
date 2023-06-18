@@ -66,6 +66,8 @@ const Homepage :  FC = () => {
     const [saved, setSaved] = useState<boolean>(false);
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
     const notifsArrived = useContext(IncomingNotificationsContext);
+    const [listOfRecipesIds, setListOfRecipesIds] = useState<string[]>([]);
+    const [listOfRecipesIds2, setListOfRecipesIds2] = useState<string[]>([]);
 
 
 
@@ -110,6 +112,12 @@ const Homepage :  FC = () => {
             dataRecipes.sort((a: any, b: any) => {
                 return b.aggregateLikes - a.aggregateLikes;
             });
+            //get all recipes ids
+            let recipesIds : string[] = [];
+            dataRecipes.map((recipe : any) => {
+                recipesIds.push(recipe.id);
+            });
+            setListOfRecipesIds(recipesIds);
             setRecipes(dataRecipes);
             setLoading(false);
         }, (error) => {
@@ -135,6 +143,12 @@ const Homepage :  FC = () => {
                 getRecipesByTags(ing);
                 // setNewIngredient(randomIngredients[Math.floor(Math.random() * randomIngredients.length)]);
             }
+            //get all recipes ids
+            let recipesIds : string[] = [];
+            response.data.recipes.map((recipe : any) => {
+                recipesIds.push(recipe.id);
+            });
+            setListOfRecipesIds2(recipesIds);
             setNewIngredient(ing);
             setPass(true);
             setLoading(false);
@@ -270,7 +284,7 @@ const Homepage :  FC = () => {
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     {recipes.map((recipe: any, index: number) => {
                                         return (
-                                            <CardRecipe key={index} recipe={recipe} navigation={navigation} />
+                                            <CardRecipe key={index} recipe={recipe} navigation={navigation} listOfRecipesId={recipes} index={index} />
                                         )
                                     })}
                                 </ScrollView>
@@ -286,7 +300,7 @@ const Homepage :  FC = () => {
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     {recipes2.map((recipe2: any, index: number) => {
                                         return (
-                                            <CardRecipe key={index} recipe={recipe2} navigation={navigation} />
+                                            <CardRecipe key={index} recipe={recipe2} navigation={navigation} listOfRecipesId={recipes2} index={index} />
                                         )
                                     })}
                                 </ScrollView>

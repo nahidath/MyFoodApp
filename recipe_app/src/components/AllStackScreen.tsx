@@ -28,7 +28,7 @@ import Favorites from "../screens/Favorites";
 import Notifs from "../screens/Notifs";
 import Cuisine from "../screens/Cuisine";
 import Profile from "../screens/Profile";
-import {CarouselRecipes} from "./CarouselRecipes";
+// import {CarouselRecipes} from "./CarouselRecipes";
 
 
 export function HomeStackScreen () {
@@ -407,9 +407,9 @@ export function SearchStackScreen () {
                     fontWeight: 'bold',
                 },
             }} />
-            <SearchStack.Screen name="Carousel" component={CarouselRecipes} options={{
-                headerShown: false,
-            }} />
+            {/*<SearchStack.Screen name="Carousel" component={CarouselRecipes} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}} />*/}
 
         </SearchStack.Navigator>
     )

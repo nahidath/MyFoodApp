@@ -106,7 +106,7 @@ const Cuisine = ({route}: Props) => {
                                 <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe.title}</Text>
                                 <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe.aggregateLikes} <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" /></Text>
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe.aggregateLikes} <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" /></Text>
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>

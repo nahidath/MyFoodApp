@@ -257,8 +257,8 @@ const Search : FC = () => {
                                 results.map((result : any, index : number) => {
                                     return (
                                         <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]}
-                                                          // onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}
-                                            onPress={() => navigation.navigate('Carousel', {index: index, listOfRecipes: results})}
+                                                          onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}
+                                            // onPress={() => navigation.navigate('Carousel', {index: index, listOfRecipes: results})}
                                         >
                                             <View style={recipeStyles.imgRecipe}>
                                                 {result.image ? <Image source={{uri: result.image}} style={recipeStyles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={recipeStyles.blocRecipeImage} />}
