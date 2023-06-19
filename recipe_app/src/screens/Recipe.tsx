@@ -43,6 +43,7 @@ import app, {auth, database} from "../firebase/config";
 import { ref, set, remove, child } from "firebase/database";
 import RecipeVideo from "../components/RecipeVideo";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import {CarouselRecipes} from "../components/CarouselRecipes";
 
 
 
@@ -75,7 +76,6 @@ const Recipe = ({route}: Props) => {
     const titleRef = useRef<Text>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [indexCurrent, setIndexCurrent] = useState<number | undefined>(indxCurrent);
-    console.log( 'indexCurrent : ',indexCurrent);
     const scrollViewRef = useRef<ScrollView>(null);
     const itemRefs = useRef<Array<View | null>>([]);
 
@@ -280,10 +280,10 @@ const Recipe = ({route}: Props) => {
     };
 
     const renderedList = listOfRecipes?.map((recipe: any, index) => {
-        if(index >= iC){
+        // if(index >= iC){
             return (
-                <ScrollView contentContainerStyle={{width: Dimensions.get('window').width}} >
-                    <View style={styles.headerRecipeImage} key={index} ref={ref=>(itemRefs.current[index] = ref)}>
+                <ScrollView>
+                    <View style={styles.headerRecipeImage} key={index}>
                         <TouchableWithoutFeedback style={{zIndex: 100}} onPress={() => handleDoubleTap()}>
                             {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}} /> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}/>}
                         </TouchableWithoutFeedback>
@@ -318,15 +318,15 @@ const Recipe = ({route}: Props) => {
                         <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/> Serves {recipe.servings} people</Text>
                         <View style={styles.ingredientList}>
                             <Text style={[styles.ingredientListTitle, {color:colors.text}]}>INGREDIENTS</Text>
-                            {ingredients.map((ingredient, index) => (
-                                <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient}</Text>
+                            {recipe.extendedIngredients.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No ingredients available</Text>  :
+                                recipe.extendedIngredients.map((ingredient : any, index: any) => (
+                                <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient.original}</Text>
                             ))}
-
                         </View>
                         <View style={styles.recipeDescription}>
                             <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
-                            {instructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No instructions available</Text>  : instructions.map((instruction, index) => (
-                                <Text key={index} style={[styles.items, {color:colors.text}]}>{instruction}</Text>
+                            {recipe.analyzedInstructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No instructions available</Text>  : recipe.analyzedInstructions[0].steps.map((step: any, index: any) => (
+                                <Text key={index} style={[styles.items, {color:colors.text}]}>{step.number}. {step.step}</Text>
                             ))}
                         </View>
                     </View>
@@ -334,7 +334,7 @@ const Recipe = ({route}: Props) => {
                     <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
                 </ScrollView>
             )
-        }
+        // }
     })
 
     // const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -346,17 +346,20 @@ const Recipe = ({route}: Props) => {
     //
     // }
 
+
+
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {isLoading ? <SkeletonView theme={theme} color={colors}/> :
 
-            <ScrollView snapToInterval={Dimensions.get('window').width} decelerationRate="fast" horizontal  ref={scrollViewRef}
-                        // onScroll={handleScroll} scrollEventThrottle={10}
-            >
-                {renderedList}
-
-            </ScrollView>
+            // <ScrollView snapToInterval={Dimensions.get('window').width} decelerationRate="fast" horizontal  ref={scrollViewRef}
+            //             // onScroll={handleScroll} scrollEventThrottle={10}
+            // >
+            //     {renderedList}
+            //
+            // </ScrollView>
+                <CarouselRecipes listeOfRecipes={renderedList} indexRecipe={indxCurrent ? indxCurrent : 0} setRecipe={setRecipe}/>
             }
         </View>
     );
