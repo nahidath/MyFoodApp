@@ -4,18 +4,23 @@ import Recipe from "../screens/Recipe";
 import {ScrollView, View, StyleSheet, Text} from "react-native";
 import PagerView from "react-native-pager-view";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {SearchStackList} from "../types/types";
+import {HomeStackList, SearchStackList} from "../types/types";
+import MyStackNavigationProp from "./MyStackNavigationProp";
+import {useNavigation} from "@react-navigation/native";
 
 
 
 interface CarouselRecipesProps {
     listeOfRecipes: (JSX.Element | undefined)[] | undefined;
     indexRecipe: number;
-    setRecipe: Dispatch<SetStateAction<any>>;
+    lR : string[] | undefined;
 }
 type Props = NativeStackScreenProps<SearchStackList, 'Carousel'>
+// @ts-ignore
+type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 
-export const CarouselRecipes = ({listeOfRecipes, indexRecipe, setRecipe} : CarouselRecipesProps) => {
+
+export const CarouselRecipes = ({listeOfRecipes, indexRecipe, lR} : CarouselRecipesProps) => {
     // type recipeProps = typeof listeOfRecipes[0];
     // const indx = Number(route.params.index);
     // const listeOfRecipes = route.params.listOfRecipes;
@@ -27,42 +32,35 @@ export const CarouselRecipes = ({listeOfRecipes, indexRecipe, setRecipe} : Carou
     // const renderItem = ({ item, index }: { item: recipeProps; index: number }) => (
     //     <Recipe   navigation={item.id} route={item}/>
     // );
+    const navigation = useNavigation<RecipesScreenProps>();
+    const [activePage, setActivePage] = useState(indexRecipe);
 
-    const setNextRecipe = () => {
-        console.log("next recipe");
-        setRecipe((prev: number) => prev + 1);
+    const setNextRecipe = (event: { nativeEvent: any; }) => {
+        const { nativeEvent } = event;
+        const nextPosition = nativeEvent.position;
+
+        if (nextPosition !== activePage) {
+            setActivePage(nextPosition);
+        }
+
     }
+
+    useEffect(() => {
+        let namE : any = '';
+        if (lR) {
+            namE = lR[activePage]
+            namE = namE.title;
+        }
+        navigation.setOptions({
+            headerTitle: namE,
+        })
+
+    }, [activePage]);
 
 
     return (
-        // <Carousel
-        //     ref={carouselEl}
-        //     data={listeOfRecipes}
-        //     renderItem={renderItem}
-        //     layout={layout}
-        //     onSnapToItem={handleSnapToItem}
-        // />
-        // <ScrollView
-        //     horizontal={true}
-        //     showsHorizontalScrollIndicator={false}
-        //     pagingEnabled={true}
-        //     >
-        //     {listeOfRecipes.map((item: recipeProps, index: number) => (
-        //         <Recipe   navigation={item.id} route={item}/>
-        //     ))}
-        // </ScrollView>
         <View style={{ flex: 1 }}>
-            <PagerView style={styles.viewPager}   initialPage={indexRecipe} onPageScroll={() => setNextRecipe()}>
-                {/*<View style={styles.page} key="1">*/}
-                {/*    <Text>First page</Text>*/}
-                {/*    <Text>Swipe ➡️</Text>*/}
-                {/*</View>*/}
-                {/*<View style={styles.page} key="2">*/}
-                {/*    <Text>Second page</Text>*/}
-                {/*</View>*/}
-                {/*<View style={styles.page} key="3">*/}
-                {/*    <Text>Third page</Text>*/}
-                {/*</View>*/}
+            <PagerView style={styles.viewPager}  initialPage={indexRecipe} onPageScroll={setNextRecipe}>
                 {listeOfRecipes}
             </PagerView>
         </View>

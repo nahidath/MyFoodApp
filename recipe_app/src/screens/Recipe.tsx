@@ -39,6 +39,7 @@ import {SkeletonLoader, SkeletonView} from "../components/SkeletonLoader";
 import StarIconLike from "../components/StarIconLike";
 //import recipe649503.json from mock directory
 import recipeMock from "../mock/recipe649503.json";
+import bulkRecipeMock from "../mock/bulkRecipeMock.json";
 import app, {auth, database} from "../firebase/config";
 import { ref, set, remove, child } from "firebase/database";
 import RecipeVideo from "../components/RecipeVideo";
@@ -64,7 +65,9 @@ const Recipe = ({route}: Props) => {
     let lastTap : any = null;
     const {id} = route.params;
     const {name} = route.params;
-    const {listOfRecipes} = route.params;
+    let {listOfRecipes} = route.params;
+    const {listOfRecipesIDs} = route.params;
+    const {screenFrom} = route.params;
     const {indxCurrent} = route.params;
     const [iC, setIC] = useState(indxCurrent ? indxCurrent : 0);
     const {colors} = useTheme();
@@ -74,10 +77,7 @@ const Recipe = ({route}: Props) => {
     const [titleLength, setTitleLength] = useState<number>(0);
     const [fontSize, setFontSize] = useState<number>(30);
     const titleRef = useRef<Text>(null);
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [indexCurrent, setIndexCurrent] = useState<number | undefined>(indxCurrent);
-    const scrollViewRef = useRef<ScrollView>(null);
-    const itemRefs = useRef<Array<View | null>>([]);
+    const [allRecipes , setAllRecipes] = useState<any>(listOfRecipes);
 
     const getRecipe = (idRecipe? : string) => {
         let idOfRecipe : string = idRecipe ? idRecipe : JSON.stringify(id);
@@ -107,55 +107,28 @@ const Recipe = ({route}: Props) => {
 
     }
 
-
-
     useEffect(() => {
-        navigation.setOptions({
-            headerTitle: name,
-        })
-        getRecipe();
-        setIsLoading(true);
-        if(isLoaded) {
-            getLabels();
-        }
-    }, [isLoaded, name]);
+        if (screenFrom === 'Search') {
+            console.log('search')
+            getMultipleRecipes();
 
-    //useEffect to change header title depending on the recipe scrolled horizontally
-    // useEffect(() => {
-    //     let namE : any = '';
-    //     if (listOfRecipes) {
-    //         namE = listOfRecipes[iC]
-    //         namE = namE.title;
-    //         console.log(namE);
-    //     }
-    //     navigation.setOptions({
-    //         headerTitle: namE,
-    //     })
-    // }, [iC]);
+        }
+    }, []);
 
-    const getLabels = () => {
-        const vegan : string = 'Vegan';
-        const vegetarian : string = 'Vegetarian';
-        const glutenFree : string = 'Gluten Free';
-        const dairyFree : string = 'Dairy Free';
-        const veryHealthy : string = 'Very Healthy';
-
-        if (recipe.vegan) {
-            setLabels((labels) => [...labels, vegan]);
-        }
-        if (recipe.vegetarian) {
-            setLabels((labels) => [...labels, vegetarian]);
-        }
-        if (recipe.glutenFree) {
-            setLabels((labels) => [...labels, glutenFree]);
-        }
-        if (recipe.dairyFree) {
-            setLabels((labels) => [...labels, dairyFree]);
-        }
-        if (recipe.veryHealthy) {
-            setLabels((labels) => [...labels, veryHealthy]);
+    const getMultipleRecipes = () => {
+        // let getRecipes : any[] = [];
+        if (listOfRecipesIDs) {
+            axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: listOfRecipesIDs.toString()} }).then((response) => {
+                setAllRecipes(response.data);
+            }, (error) => {
+                setAllRecipes(bulkRecipeMock);
+                console.log("1 " ,error);
+            }).catch((error) => {
+                console.log("2 ", error);
+            });
         }
     }
+
 
     const formatTime = (time: number) => {
         const hours = Math.floor(time / 60);
@@ -279,11 +252,41 @@ const Recipe = ({route}: Props) => {
         }
     };
 
-    const renderedList = listOfRecipes?.map((recipe: any, index) => {
-        // if(index >= iC){
+
+
+    // console.log(listOfRecipes?.length);
+
+    const renderedList = allRecipes?.map((recipe: any, index : any) => {
+        const getLabels = () => {
+            let allLabels : string[] = [];
+            const vegan : string = 'Vegan';
+            const vegetarian : string = 'Vegetarian';
+            const glutenFree : string = 'Gluten Free';
+            const dairyFree : string = 'Dairy Free';
+            const veryHealthy : string = 'Very Healthy';
+
+            if (recipe.vegan) {
+                allLabels.push(vegan);
+            }
+            if (recipe.vegetarian) {
+                allLabels.push(vegetarian);
+            }
+            if (recipe.glutenFree) {
+                allLabels.push(glutenFree);
+            }
+            if (recipe.dairyFree) {
+                allLabels.push(dairyFree);
+            }
+            if (recipe.veryHealthy) {
+                allLabels.push(veryHealthy);
+            }
+
+            return allLabels;
+        }
+
             return (
-                <ScrollView>
-                    <View style={styles.headerRecipeImage} key={index}>
+                <ScrollView key={index}>
+                    <View style={styles.headerRecipeImage} >
                         <TouchableWithoutFeedback style={{zIndex: 100}} onPress={() => handleDoubleTap()}>
                             {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderBottomLeftRadius: 30, borderBottomRightRadius: 30}} /> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage}/>}
                         </TouchableWithoutFeedback>
@@ -295,7 +298,7 @@ const Recipe = ({route}: Props) => {
                             {saved ? <FontAwesome name="heart" size={32} color={"#f8cf19"} /> : <FontAwesome name="heart-o" size={32} color={"#fefefe"} />}
                         </TouchableOpacity>
                         <View style={styles.headerRecipeLabel}>
-                            {labels.map((label, index) => (
+                            {getLabels().map((label, index) => (
                                 <Text key={index} style={styles.headerRecipeLabelText}>{label}</Text>
                             ))}
                         </View>
@@ -334,17 +337,7 @@ const Recipe = ({route}: Props) => {
                     <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
                 </ScrollView>
             )
-        // }
     })
-
-    // const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    //     const { contentOffset } = event.nativeEvent;
-    //     const visibleItemIndex = Math.floor(contentOffset.x / Dimensions.get('window').width); // Adjust ITEM_WIDTH as needed
-    //     if (visibleItemIndex !== iC) {
-    //         setIC(visibleItemIndex);
-    //     }
-    //
-    // }
 
 
 
@@ -353,13 +346,7 @@ const Recipe = ({route}: Props) => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {isLoading ? <SkeletonView theme={theme} color={colors}/> :
 
-            // <ScrollView snapToInterval={Dimensions.get('window').width} decelerationRate="fast" horizontal  ref={scrollViewRef}
-            //             // onScroll={handleScroll} scrollEventThrottle={10}
-            // >
-            //     {renderedList}
-            //
-            // </ScrollView>
-                <CarouselRecipes listeOfRecipes={renderedList} indexRecipe={indxCurrent ? indxCurrent : 0} setRecipe={setRecipe}/>
+                <CarouselRecipes listeOfRecipes={renderedList} indexRecipe={indxCurrent ? indxCurrent : 0}  lR={allRecipes}/>
             }
         </View>
     );

@@ -9,7 +9,9 @@ export type HomeStackList = {
         id?: string;
         name?: string;
         listOfRecipes?: string[];
+        listOfRecipesIDs?: string[];
         indxCurrent?: number ;
+        screenFrom?: string;
     }
     SpotlightRecipes: {
         recipesArray: string[];

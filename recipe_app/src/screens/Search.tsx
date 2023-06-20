@@ -61,12 +61,14 @@ const Search : FC = () => {
     const [showRecipe, setShowRecipe] = useState<boolean>(true);
     const [showVideos, setShowVideos] = useState<boolean>(false);
     const [selectedButton, setSelectedButton] = useState('recipeBtn');
+    const [resultsID, setResultsID] = useState<any>([]);
 
 
     const getSearchResult = (s?: string) => {
         let query = s ? s : search.trim();
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: query.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
             setResults(response1.data.results);
+            setResultsID(response1.data.results.map((item: any) => item.id));
             setNbResults(response1.data.totalResults);
             setIsSearch(true);
             setLoading(false);
@@ -76,6 +78,7 @@ const Search : FC = () => {
         },
         (error) => {
             setResults(searchRecipes.results);
+            setResultsID(searchRecipes.results.map((item: any) => item.id));
             setNbResults(searchRecipes.totalResults);
             setIsSearch(true);
             setLoading(false);
@@ -257,7 +260,7 @@ const Search : FC = () => {
                                 results.map((result : any, index : number) => {
                                     return (
                                         <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]}
-                                                          onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title})}
+                                                          onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title, listOfRecipesIDs: resultsID, indxCurrent : index, screenFrom: 'Search'})}
                                             // onPress={() => navigation.navigate('Carousel', {index: index, listOfRecipes: results})}
                                         >
                                             <View style={recipeStyles.imgRecipe}>

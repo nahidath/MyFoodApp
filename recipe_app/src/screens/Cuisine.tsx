@@ -32,14 +32,18 @@ const Cuisine = ({route}: Props) => {
     const [isSearch, setIsSearch] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [resultsID, setResultsID] = useState<any>([]);
+
 
 
     const getRecipesByCuisine = () => {
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP.toLowerCase()} }).then((response) => {
             setRecipesC(response.data.results);
+            setResultsID(response.data.results.map((item: any) => item.id));
             setLoading(false);
         },  (error) => {
                 setRecipesC(recipeCuisine.results);
+                setResultsID(recipeCuisine.results.map((item: any) => item.id));
                 setLoading(false);
             }).catch((error) => {
             console.log(error);
@@ -96,9 +100,9 @@ const Cuisine = ({route}: Props) => {
 
             {isSearch && <View><Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 0 ? noResults : nbResults == 1 ? "Result founded" : "Results founded" } </Text><Separator /></View>}
             <ScrollView>
-                {recipesC.map((recipe: any) => {
+                {recipesC.map((recipe: any, index:any) => {
                     return (
-                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})}>
+                        <TouchableOpacity key={index} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title, listOfRecipesIDs: resultsID, indxCurrent : index, screenFrom: 'Search'})}>
                             <View style={[styles.imgRecipe]}>
                                 {recipe.image ? <Image source={{uri: recipe.image}} style={styles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} />}
                             </View>
