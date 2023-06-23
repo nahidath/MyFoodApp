@@ -62,7 +62,7 @@ const EditProfile = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const loadingColor = theme.dark ? '#E5E2E3' : '#929090';
     const inputColor = theme.dark ? 'rgba(155,155,155,0.52)' : '#F0F0F0';
-    const inputColor2 = theme.dark ? '#252525': '#121212' ;
+    const inputColor2 = theme.dark ? '#252525': '#fff' ;
 
 
 

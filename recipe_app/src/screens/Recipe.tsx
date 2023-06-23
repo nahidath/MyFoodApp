@@ -107,27 +107,33 @@ const Recipe = ({route}: Props) => {
 
     }
 
-    useEffect(() => {
-        if (screenFrom === 'Search') {
-            console.log('search')
-            getMultipleRecipes();
-
-        }
-    }, []);
 
     const getMultipleRecipes = () => {
         // let getRecipes : any[] = [];
         if (listOfRecipesIDs) {
             axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: listOfRecipesIDs.toString()} }).then((response) => {
                 setAllRecipes(response.data);
+                setIsLoading(false);
             }, (error) => {
                 setAllRecipes(bulkRecipeMock);
+                setIsLoading(false);
                 console.log("1 " ,error);
             }).catch((error) => {
                 console.log("2 ", error);
             });
         }
     }
+
+    useEffect(() => {
+        if (screenFrom === 'Search') {
+            console.log('search')
+            setIsLoading(true);
+            getMultipleRecipes();
+
+        }
+    }, [allRecipes]);
+
+
 
 
     const formatTime = (time: number) => {
