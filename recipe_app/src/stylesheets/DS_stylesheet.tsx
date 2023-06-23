@@ -40,6 +40,41 @@ export default StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         marginLeft: 10,
+    },
+    themeContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        height: 56,
+        margin: 10,
+    },
+    themeCardContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        height: 56,
+        margin: 10,
+    },
+    themeCard: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        height: 56,
+        margin: 10,
+    },
+    themeImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
     }
 
 

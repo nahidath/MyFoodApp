@@ -1,4 +1,4 @@
-import {View, Text, Switch} from "react-native";
+import {View, Text, Switch, TouchableOpacity, ImageBackground} from "react-native";
 import styles from "../stylesheets/DS_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import React, {useEffect, useState} from "react";
@@ -51,6 +51,18 @@ const DisplaySettings = () => {
                             onValueChange={toggleSwitchDarkMode}
                             value={isEnabled}
                         />
+                        //theme card selection
+                        <View style={[styles.themeContainer, general.shadow, {backgroundColor: colors.notification}]}>
+                            <Text style={[styles.textTitle, {color: colors.text}]}>Select a theme</Text>
+                            <View style={styles.themeCardContainer}>
+                                <TouchableOpacity style={[styles.themeCard, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setTheme('Light')}>
+                                    <ImageBackground source={require('../assets/light-theme.png')} style={styles.themeImage}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.themeCard, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setTheme('Dark')}>
+                                    <Text style={[styles.textTitle, {color: colors.text}]}>Dark</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </View>
