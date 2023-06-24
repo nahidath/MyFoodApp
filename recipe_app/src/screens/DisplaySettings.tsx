@@ -1,10 +1,11 @@
-import {View, Text, Switch, TouchableOpacity, ImageBackground} from "react-native";
+import {View, Text, Switch, TouchableOpacity, ImageBackground, TouchableWithoutFeedback} from "react-native";
 import styles from "../stylesheets/DS_stylesheet";
 import general from "../stylesheets/General_stylesheet";
 import React, {useEffect, useState} from "react";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import {ThemeContext} from "../../App";
 import {useTheme} from "@react-navigation/native";
+import {color} from "react-native-elements/dist/helpers";
 
 interface DisplaySettingsProps {
     themeContext: any;
@@ -33,6 +34,8 @@ const DisplaySettings = () => {
         }
     }, [theme2.dark]);
 
+    console.log("theme2.dark", theme2.dark);
+
     return (
         <View style={[styles.container, general.container, {backgroundColor:colors.background}] }>
             {theme2.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
@@ -41,29 +44,43 @@ const DisplaySettings = () => {
                     <Text style={[styles.title, {color: colors.text}]}>Application theme</Text>
                     <Text style={styles.subTitle}>Selecting a particular option will change the appearance (coloring) of the application according to your preferences.</Text>
                 </View>
-                <View style={styles.switchContainer}>
-                    <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
-                        <Text style={[styles.textTitle, {color: colors.text}]}>Switch to Dark Mode</Text>
-                        <Switch
-                            trackColor={{false: '#767577', true: '#b1dad6'}}
-                            thumbColor={isEnabled ? '#008375' : '#f4f3f4'}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitchDarkMode}
-                            value={isEnabled}
-                        />
-                        //theme card selection
-                        <View style={[styles.themeContainer, general.shadow, {backgroundColor: colors.notification}]}>
-                            <Text style={[styles.textTitle, {color: colors.text}]}>Select a theme</Text>
-                            <View style={styles.themeCardContainer}>
-                                <TouchableOpacity style={[styles.themeCard, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setTheme('Light')}>
-                                    <ImageBackground source={require('../assets/light-theme.png')} style={styles.themeImage}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={[styles.themeCard, general.shadow, {backgroundColor: colors.notification}]} onPress={() => setTheme('Dark')}>
-                                    <Text style={[styles.textTitle, {color: colors.text}]}>Dark</Text>
-                                </TouchableOpacity>
+                {/*<View style={styles.switchContainer}>*/}
+                {/*    <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>*/}
+                {/*        <Text style={[styles.textTitle, {color: colors.text}]}>Select a theme</Text>*/}
+                {/*        <Switch*/}
+                {/*            trackColor={{false: '#767577', true: '#b1dad6'}}*/}
+                {/*            thumbColor={isEnabled ? '#008375' : '#f4f3f4'}*/}
+                {/*            ios_backgroundColor="#3e3e3e"*/}
+                {/*            onValueChange={toggleSwitchDarkMode}*/}
+                {/*            value={isEnabled}*/}
+                {/*        />*/}
+                {/*    </View>*/}
+                {/*</View>*/}
+                <Text style={[styles.textTitle, {color: colors.text}]}>Select a theme</Text>
+
+                <View style={styles.themeCardContainer}>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{flexDirection:'column'}}>
+                            <TouchableOpacity style={[styles.themeCard, general.shadow, {borderWidth : !theme2.dark ? 1 : 0, borderColor: !theme2.dark ? "#ccc" : "transparent", borderRadius: 10, backgroundColor : colors.background} ]} onPress={() => setTheme('Light')} activeOpacity={0.3}>
+                                <ImageBackground source={require('../../assets/lightTheme.png')} style={[styles.themeImage, {height: !theme2.dark ? 280 : 300}]} resizeMode="contain"/>
+                            </TouchableOpacity>
+                            <View style={{flexDirection:'row', justifyContent:'center', alignItems: 'center', padding:10}}>
+                                <Text style={[styles.themeTitle, {color: colors.text}]}>Light</Text>
+                            </View>
+                        </View>
+                        <View style={{flexDirection:'column'}}>
+                            <TouchableOpacity style={[styles.themeCard, general.shadow,  {borderWidth : theme2.dark ? 1 : 0, borderColor: theme2.dark ? "#ccc" : "transparent", borderRadius: 10}]} onPress={() => setTheme('Dark')} activeOpacity={0.3}>
+                                <ImageBackground source={require('../../assets/darkTheme.png')} style={[styles.themeImage, {height: theme2.dark ? 280 : 300}]} resizeMode="contain" />
+                            </TouchableOpacity>
+                            <View style={{flexDirection:'row', justifyContent:'center', alignItems: 'center', padding:10}}>
+                                <Text style={[styles.themeTitle, {color: colors.text}]}>Dark</Text>
                             </View>
                         </View>
                     </View>
+                    {/*<View style={styles.themeCardTitleContainer}>*/}
+                    {/*    <Text style={[styles.themeTitle, {color: colors.text}]}>Light</Text>*/}
+                    {/*    <Text style={[styles.themeTitle, {color: colors.text}]}>Dark</Text>*/}
+                    {/*</View>*/}
                 </View>
             </View>
         </View>
