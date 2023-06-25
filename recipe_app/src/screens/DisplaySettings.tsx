@@ -34,7 +34,6 @@ const DisplaySettings = () => {
         }
     }, [theme2.dark]);
 
-    console.log("theme2.dark", theme2.dark);
 
     return (
         <View style={[styles.container, general.container, {backgroundColor:colors.background}] }>
@@ -62,18 +61,18 @@ const DisplaySettings = () => {
                     <View style={{flexDirection:'row'}}>
                         <View style={{flexDirection:'column'}}>
                             <TouchableOpacity style={[styles.themeCard, general.shadow, {borderWidth : !theme2.dark ? 1 : 0, borderColor: !theme2.dark ? "#ccc" : "transparent", borderRadius: 10, backgroundColor : colors.background} ]} onPress={() => setTheme('Light')} activeOpacity={0.3}>
-                                <ImageBackground source={require('../../assets/lightTheme.png')} style={[styles.themeImage, {height: !theme2.dark ? 280 : 300}]} resizeMode="contain"/>
+                                <ImageBackground source={require('../../assets/lightTheme.png')} style={[styles.themeImage, {height: !theme2.dark ? 280 : 290}]} resizeMode="contain"/>
                             </TouchableOpacity>
                             <View style={{flexDirection:'row', justifyContent:'center', alignItems: 'center', padding:10}}>
-                                <Text style={[styles.themeTitle, {color: colors.text}]}>Light</Text>
+                                <Text style={[styles.themeTitle, {color: colors.text, fontSize: !theme2.dark ? 20: 15}]}>Light</Text>
                             </View>
                         </View>
                         <View style={{flexDirection:'column'}}>
-                            <TouchableOpacity style={[styles.themeCard, general.shadow,  {borderWidth : theme2.dark ? 1 : 0, borderColor: theme2.dark ? "#ccc" : "transparent", borderRadius: 10}]} onPress={() => setTheme('Dark')} activeOpacity={0.3}>
-                                <ImageBackground source={require('../../assets/darkTheme.png')} style={[styles.themeImage, {height: theme2.dark ? 280 : 300}]} resizeMode="contain" />
+                            <TouchableOpacity style={[styles.themeCard, general.shadowDark,  {borderWidth : theme2.dark ? 1 : 0, borderColor: theme2.dark ? "#ccc" : "transparent", borderRadius: 10, backgroundColor : colors.background}]} onPress={() => setTheme('Dark')} activeOpacity={0.3}>
+                                <ImageBackground source={require('../../assets/darkTheme.png')} style={[styles.themeImage, {height: theme2.dark ? 280 : 290}]} resizeMode="contain" />
                             </TouchableOpacity>
                             <View style={{flexDirection:'row', justifyContent:'center', alignItems: 'center', padding:10}}>
-                                <Text style={[styles.themeTitle, {color: colors.text}]}>Dark</Text>
+                                <Text style={[styles.themeTitle, {color: colors.text, fontSize: theme2.dark ? 20: 15}]}>Dark</Text>
                             </View>
                         </View>
                     </View>

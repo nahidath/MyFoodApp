@@ -108,30 +108,33 @@ const Recipe = ({route}: Props) => {
     }
 
 
-    const getMultipleRecipes = () => {
-        // let getRecipes : any[] = [];
-        if (listOfRecipesIDs) {
-            axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: listOfRecipesIDs.toString()} }).then((response) => {
-                setAllRecipes(response.data);
-                setIsLoading(false);
-            }, (error) => {
-                setAllRecipes(bulkRecipeMock);
-                setIsLoading(false);
-                console.log("1 " ,error);
-            }).catch((error) => {
-                console.log("2 ", error);
-            });
-        }
-    }
+    // const getMultipleRecipes = () => {
+    //     // let getRecipes : any[] = [];
+    //     if (listOfRecipesIDs) {
+    //         axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: listOfRecipesIDs.toString()} }).then((response) => {
+    //             setAllRecipes(response.data);
+    //             setIsLoading(false);
+    //         }, (error) => {
+    //             setAllRecipes(bulkRecipeMock);
+    //             setIsLoading(false);
+    //             console.log("1 " ,error);
+    //         }).catch((error) => {
+    //             console.log("2 ", error);
+    //         });
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     if (listOfRecipesIDs) {
+    //         console.log('search')
+    //         console.log(listOfRecipesIDs.toString())
+    //         setIsLoading(true);
+    //         getMultipleRecipes();
+    //
+    //     }
+    // }, [listOfRecipesIDs]);
 
-    useEffect(() => {
-        if (screenFrom === 'Search') {
-            console.log('search')
-            setIsLoading(true);
-            getMultipleRecipes();
-
-        }
-    }, [allRecipes]);
+    // console.log('allRecipes', allRecipes);
 
 
 
@@ -262,7 +265,7 @@ const Recipe = ({route}: Props) => {
 
     // console.log(listOfRecipes?.length);
 
-    const renderedList = allRecipes?.map((recipe: any, index : any) => {
+    const renderedList = listOfRecipes?.map((recipe: any, index : any) => {
         const getLabels = () => {
             let allLabels : string[] = [];
             const vegan : string = 'Vegan';
