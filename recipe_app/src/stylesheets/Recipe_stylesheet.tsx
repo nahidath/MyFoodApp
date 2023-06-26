@@ -62,7 +62,8 @@ export default StyleSheet.create({
     },
     ingredientListTitle: {
         textAlign: 'center',
-        textDecorationLine: 'underline',
+        // textDecorationLine: 'underline',
+        textTransform: 'capitalize',
         textDecorationStyle: 'solid',
         textDecorationColor: 'rgba(254,254,254,0.82)',
         fontSize: 20,
@@ -75,7 +76,8 @@ export default StyleSheet.create({
     },
     titleDesc: {
         textAlign: 'center',
-        textDecorationLine: 'underline',
+        // textDecorationLine: 'underline',
+        textTransform: 'capitalize',
         textDecorationStyle: 'solid',
         textDecorationColor: 'rgba(254,254,254,0.82)',
         fontSize: 20,

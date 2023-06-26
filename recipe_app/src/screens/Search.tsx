@@ -31,6 +31,7 @@ import searchRecipes from "../mock/searchResultsBeef.json";
 import searchVideos from "../mock/searchVideosPasta.json";
 import RecipeVideo from "../components/RecipeVideo";
 import * as WebBrowser from 'expo-web-browser';
+import bulkRecipeMock from "../mock/bulkRecipeMock.json";
 
 
 // @ts-ignore
@@ -62,6 +63,8 @@ const Search : FC = () => {
     const [showVideos, setShowVideos] = useState<boolean>(false);
     const [selectedButton, setSelectedButton] = useState('recipeBtn');
     const [resultsID, setResultsID] = useState<any>([]);
+    const [allRecipes , setAllRecipes] = useState<any>([]);
+
 
 
     const getSearchResult = (s?: string) => {
@@ -123,6 +126,26 @@ const Search : FC = () => {
         setLoading(true);
         getSearchResult(ingredient.trim());
     }
+
+    const getMultipleRecipes = () => {
+        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: resultsID.toString()} }).then((response) => {
+            setAllRecipes(response.data);
+            // setIsLoading(false);
+        }, (error) => {
+            setAllRecipes(bulkRecipeMock);
+            // setIsLoading(false);
+            console.log("1 " ,error);
+        }).catch((error) => {
+            console.log("2 ", error);
+        });
+    }
+
+    useEffect(() => {
+        if(resultsID.length > 0){
+            getMultipleRecipes();
+        }
+    }, [resultsID]);
+
 
     useEffect(() => {
         if(isFocused){
@@ -260,7 +283,7 @@ const Search : FC = () => {
                                 results.map((result : any, index : number) => {
                                     return (
                                         <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]}
-                                                          onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title, listOfRecipesIDs: resultsID, indxCurrent : index, screenFrom: 'Search'})}
+                                                          onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title, listOfRecipes: allRecipes, indxCurrent : index, screenFrom: 'Search'})}
                                             // onPress={() => navigation.navigate('Carousel', {index: index, listOfRecipes: results})}
                                         >
                                             <View style={recipeStyles.imgRecipe}>
