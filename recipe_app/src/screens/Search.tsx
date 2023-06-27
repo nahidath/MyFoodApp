@@ -69,9 +69,11 @@ const Search : FC = () => {
 
     const getSearchResult = (s?: string) => {
         let query = s ? s : search.trim();
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: query.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
+        let idsRecup : any[] = [];
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: query.toLowerCase(), number: 10, addRecipeInformation:true} }).then((response1) => {
             setResults(response1.data.results);
             setResultsID(response1.data.results.map((item: any) => item.id));
+            idsRecup = response1.data.results.map((item: any) => item.id);
             setNbResults(response1.data.totalResults);
             setIsSearch(true);
             setLoading(false);
@@ -89,12 +91,16 @@ const Search : FC = () => {
             console.log(error);
         });
 
+        if(idsRecup.length > 0){
+            getMultipleRecipes(idsRecup);
+        }
+
 
     }
 
     const getSearchVideoResults = (s?: string) => {
         let query = s ? s : search.trim();
-        axios.get('https://api.spoonacular.com/food/videos/search',{params:{apiKey: configValue, query: query.toLowerCase(), number: 100, addRecipeInformation:true} }).then((response1) => {
+        axios.get('https://api.spoonacular.com/food/videos/search',{params:{apiKey: configValue, query: query.toLowerCase(), number: 10, addRecipeInformation:true} }).then((response1) => {
                 setResultsVideo(response1.data.videos);
                 setNbResultsVideo(response1.data.totalResults);
                 setIsSearch(true);
@@ -127,8 +133,8 @@ const Search : FC = () => {
         getSearchResult(ingredient.trim());
     }
 
-    const getMultipleRecipes = () => {
-        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: resultsID.toString()} }).then((response) => {
+    const getMultipleRecipes = (idss : any[]) => {
+        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: idss.toString()} }).then((response) => {
             setAllRecipes(response.data);
             // setIsLoading(false);
         }, (error) => {
@@ -141,9 +147,11 @@ const Search : FC = () => {
     }
 
     useEffect(() => {
-        if(resultsID.length > 0){
-            getMultipleRecipes();
-        }
+        const temp = resultsID;
+        console.log("temp", temp === resultsID);
+        // if(resultsID.length > 0){
+        //     getMultipleRecipes();
+        // }
     }, [resultsID]);
 
 
