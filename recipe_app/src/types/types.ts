@@ -86,6 +86,11 @@ export type SearchStackList = {
     Recipe: {
         id?: string;
         name?: string;
+        listOfRecipes?: string[];
+        listOfRecipesIDs?: string[];
+        indxCurrent?: number ;
+        screenFrom?: string;
+
     }
     Carousel : {
         index: string;

@@ -91,7 +91,10 @@ const Search : FC = () => {
             console.log(error);
         });
 
+        console.log("after axios")
+
         if(idsRecup.length > 0){
+            console.log("new method called")
             getMultipleRecipes(idsRecup);
         }
 
@@ -291,7 +294,7 @@ const Search : FC = () => {
                                 results.map((result : any, index : number) => {
                                     return (
                                         <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]}
-                                                          onPress={() => navigation.navigate('Recipe', {id :result.id, name: result.title, listOfRecipes: allRecipes, indxCurrent : index, screenFrom: 'Search'})}
+                                                          onPress={() => navigation.push('Recipe', {id :result.id, name: result.title, listOfRecipes: allRecipes, indxCurrent : index, screenFrom: 'Search'})}
                                             // onPress={() => navigation.navigate('Carousel', {index: index, listOfRecipes: results})}
                                         >
                                             <View style={recipeStyles.imgRecipe}>

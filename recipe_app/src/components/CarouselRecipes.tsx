@@ -49,6 +49,7 @@ export const CarouselRecipes = ({listeOfRecipes, indexRecipe, lR} : CarouselReci
         let namE : any = '';
         if (lR) {
             namE = lR[activePage]
+            console.log(namE)
             // console.log("lr lenght:",lR.length);
             // console.log("active page", activePage);
             // console.log(lR[activePage]);
