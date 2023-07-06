@@ -73,6 +73,7 @@ const Search : FC = () => {
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, query: query.toLowerCase(), number: 10, addRecipeInformation:true} }).then((response1) => {
             setResults(response1.data.results);
             setResultsID(response1.data.results.map((item: any) => item.id));
+                // getMultipleRecipes(response1.data.results.map((item: any) => item.id));
             idsRecup = response1.data.results.map((item: any) => item.id);
             setNbResults(response1.data.totalResults);
             setIsSearch(true);
@@ -90,14 +91,6 @@ const Search : FC = () => {
         }).catch((error) => {
             console.log(error);
         });
-
-        console.log("after axios")
-
-        if(idsRecup.length > 0){
-            console.log("new method called")
-            getMultipleRecipes(idsRecup);
-        }
-
 
     }
 
@@ -136,26 +129,19 @@ const Search : FC = () => {
         getSearchResult(ingredient.trim());
     }
 
-    const getMultipleRecipes = (idss : any[]) => {
-        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: idss.toString()} }).then((response) => {
-            setAllRecipes(response.data);
-            // setIsLoading(false);
-        }, (error) => {
-            setAllRecipes(bulkRecipeMock);
-            // setIsLoading(false);
-            console.log("1 " ,error);
-        }).catch((error) => {
-            console.log("2 ", error);
-        });
-    }
-
-    useEffect(() => {
-        const temp = resultsID;
-        console.log("temp", temp === resultsID);
-        // if(resultsID.length > 0){
-        //     getMultipleRecipes();
-        // }
-    }, [resultsID]);
+    // const getMultipleRecipes = (idss : any) => {
+    //     console.log("resultsID", idss.length);
+    //     axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: idss.toString()} }).then((response) => {
+    //         setAllRecipes(response.data);
+    //         // setIsLoading(false);
+    //     }, (error) => {
+    //         setAllRecipes(bulkRecipeMock);
+    //         // setIsLoading(false);
+    //         console.log("1 " ,error);
+    //     }).catch((error) => {
+    //         console.log("2 ", error);
+    //     });
+    // }
 
 
     useEffect(() => {
@@ -294,7 +280,7 @@ const Search : FC = () => {
                                 results.map((result : any, index : number) => {
                                     return (
                                         <TouchableOpacity key={index} style={[recipeStyles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]}
-                                                          onPress={() => navigation.push('Recipe', {id :result.id, name: result.title, listOfRecipes: allRecipes, indxCurrent : index, screenFrom: 'Search'})}
+                                                          onPress={() => navigation.push('Recipe', {id :result.id, name: result.title, indxCurrent : index, screenFrom: 'Search', listOfRecipesIDs: resultsID})}
                                             // onPress={() => navigation.navigate('Carousel', {index: index, listOfRecipes: results})}
                                         >
                                             <View style={recipeStyles.imgRecipe}>

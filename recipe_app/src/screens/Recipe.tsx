@@ -247,11 +247,34 @@ const Recipe = ({route}: Props) => {
         }
     };
 
+    const getMultipleRecipes = (idss : any) => {
+        axios.get('https://api.spoonacular.com/recipes/informationBulk',{params:{apiKey: configValue, ids: idss.toString()} }).then((response) => {
+            setAllRecipes(response.data);
+            setIsLoading(false);
+        }, (error) => {
+            setAllRecipes(bulkRecipeMock);
+            setIsLoading(false);
+            console.log("1 " ,error);
+        }).catch((error) => {
+            console.log("2 ", error);
+        });
+    }
+
+    useEffect(() => {
+        if(screenFrom === 'Search' && listOfRecipesIDs) {
+            // console.log('search')
+            // console.log(listOfRecipesIDs.toString())
+            setIsLoading(true);
+            getMultipleRecipes(listOfRecipesIDs);
+        }
+        setAllRecipes(listOfRecipes);
+    }, [listOfRecipesIDs]);
+
 
 
     // console.log(listOfRecipes?.length);
 
-    const renderedList = listOfRecipes?.map((recipe: any, index : any) => {
+    const renderedList = allRecipes?.map((recipe: any, index : any) => {
         const getLabels = () => {
             let allLabels : string[] = [];
             const vegan : string = 'Vegan';
@@ -341,7 +364,7 @@ const Recipe = ({route}: Props) => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             {isLoading ? <SkeletonView theme={theme} color={colors}/> :
 
-                <CarouselRecipes listeOfRecipes={renderedList} indexRecipe={indxCurrent ? indxCurrent : 0}  lR={listOfRecipes}/>
+                <CarouselRecipes listeOfRecipes={renderedList} indexRecipe={indxCurrent ? indxCurrent : 0}  lR={allRecipes}/>
             }
         </View>
     );
