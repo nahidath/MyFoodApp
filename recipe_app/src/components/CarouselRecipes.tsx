@@ -15,23 +15,11 @@ interface CarouselRecipesProps {
     indexRecipe: number;
     lR : string[] | undefined;
 }
-type Props = NativeStackScreenProps<SearchStackList, 'Carousel'>
 // @ts-ignore
 type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 
 
 export const CarouselRecipes = ({listeOfRecipes, indexRecipe, lR} : CarouselRecipesProps) => {
-    // type recipeProps = typeof listeOfRecipes[0];
-    // const indx = Number(route.params.index);
-    // const listeOfRecipes = route.params.listOfRecipes;
-    // const [_, setActiveIndex] = useState<number>(indx);
-    // const carouselEl = useRef(null);
-    // const handleSnapToItem = (index: number) => {
-    //     setActiveIndex(index);
-    // };
-    // const renderItem = ({ item, index }: { item: recipeProps; index: number }) => (
-    //     <Recipe   navigation={item.id} route={item}/>
-    // );
     const navigation = useNavigation<RecipesScreenProps>();
     const [activePage, setActivePage] = useState(indexRecipe);
 
@@ -49,10 +37,6 @@ export const CarouselRecipes = ({listeOfRecipes, indexRecipe, lR} : CarouselReci
         let namE : any = '';
         if (lR) {
             namE = lR[activePage]
-            console.log(namE)
-            // console.log("lr lenght:",lR.length);
-            // console.log("active page", activePage);
-            // console.log(lR[activePage]);
             namE = namE.title;
         }
         navigation.setOptions({
