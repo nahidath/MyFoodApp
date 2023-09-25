@@ -18,5 +18,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Screenshots
 
-<img height="600" src="recipe_app/assets/Screenshot_HomePage.jpg" width="270"/>
+https://github.com/nahidath/MyRecipeApp/assets/36660735/520b29e5-9925-42a3-b4e9-4995d97113fa
+
+
 
