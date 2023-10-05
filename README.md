@@ -18,7 +18,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Screenshots
 
+![Screenshot_2023-10-05-03-43-27-19_a7eeeaf44f8da42c402ebea8cbc0c7b0](https://github.com/nahidath/MyRecipeApp/assets/36660735/202959b9-34dd-45a7-b737-ad4f64b4a839)
 https://github.com/nahidath/MyRecipeApp/assets/36660735/520b29e5-9925-42a3-b4e9-4995d97113fa
-
-
-
