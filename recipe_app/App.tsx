@@ -26,6 +26,7 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import FocusAwareStatusBar from "./src/components/StatusBarStyle";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import Constants from 'expo-constants';
+import {LanguageProvider} from "./src/translation/LanguageContext";
 // @ts-ignore
 export const ThemeContext = React.createContext();
 // @ts-ignore
@@ -417,17 +418,19 @@ export default function App() {
     // }
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ThemeContext.Provider value={themeData}>
-                <NotifsParamsContext.Provider value={params}>
-                    <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
-                        <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
-                            {/*{appInstalled ? <SwiperStarter doneNavigation={true}/> : null}*/}
-                            {showIntro ?  <SwiperStarter/> : loggedIn ? <BottomNavigation />  : <AuthStack />}
-                            {/*<BottomNavigation />*/}
-                        </NavigationContainer>
-                    </IncomingNotificationsContext.Provider>
-                </NotifsParamsContext.Provider>
-            </ThemeContext.Provider>
+            <LanguageProvider>
+                <ThemeContext.Provider value={themeData}>
+                    <NotifsParamsContext.Provider value={params}>
+                        <IncomingNotificationsContext.Provider value={{incomingNotifs, setIncomingNotifs}}>
+                            <NavigationContainer theme={theme == 'Light' ? MyLightTheme : MyDarkTheme}>
+                                {/*{appInstalled ? <SwiperStarter doneNavigation={true}/> : null}*/}
+                                {showIntro ?  <SwiperStarter/> : loggedIn ? <BottomNavigation />  : <AuthStack />}
+                                {/*<BottomNavigation />*/}
+                            </NavigationContainer>
+                        </IncomingNotificationsContext.Provider>
+                    </NotifsParamsContext.Provider>
+                </ThemeContext.Provider>
+            </LanguageProvider>
         </GestureHandlerRootView>
 
 

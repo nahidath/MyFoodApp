@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { translate } from 'react-native-microsoft-translator';
+import {translateText} from "./TranslationService";
 
 
 type LanguageContextType = {
@@ -18,11 +18,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const t = async (key: string): Promise<string> => {
         try {
-            const translation = await translate({
-                apiKey: 'VOTRE_CLE_API',
-                text: key,
-                to: language,
-            });
+            const translation = await translateText(key, language);
 
             return translation;
         } catch (error) {
