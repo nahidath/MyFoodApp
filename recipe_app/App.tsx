@@ -16,7 +16,7 @@ import {
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import Notifs from "./src/screens/Notifs";
 // @ts-ignore
-import {REACT_APP_VAPIDKEY, REACT_APP_CLOUD_MESSAGING} from "@env";
+// import {REACT_APP_VAPIDKEY, REACT_APP_CLOUD_MESSAGING} from "@env";
 import axios from "axios";
 import {request, PERMISSIONS, RESULTS, checkNotifications} from 'react-native-permissions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -42,7 +42,7 @@ export default function App() {
     const [notifEnabled, setNotifEnabled] = useState(true);
     const [params, setParams] = useState<any>({title: "", body: ""});
     const [incomingNotifs, setIncomingNotifs] = useState<boolean>(false);
-    const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
+    // const cloudMessaging : string | undefined = REACT_APP_CLOUD_MESSAGING;
     const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
     const [isMounted, setIsMounted] = useState(true);
     const [showIntro, setShowIntro] = useState(false);
@@ -197,57 +197,57 @@ export default function App() {
 
     }
 
-    const sendWelcomeNotification = async (deviceToken : string) => {
-        const payload = {
-            notification: {
-                title: 'Welcome to Recipe App!',
-                body: 'Get ready to explore a world of delicious recipes and culinary inspiration. From mouth-watering appetizers to delectable desserts, we have a wide variety of recipes to suit every taste. Start your culinary journey today and let your taste buds be delighted!'
-            },
-            to: deviceToken
-        };
-
-
-        try {
-            const response = await axios.post('https://fcm.googleapis.com/fcm/send', payload, {
-
-                headers: {'Content-Type': 'application/json', 'Authorization': 'key=' + cloudMessaging},
-            });
-
-            console.log('Notification sent successfully: ', response.data);
-        }catch(e) {
-            console.log('Error sending notification: ', e)
-        };
-
-        setIsWelcome(false);
-
-    }
-    const fetchDeviceTokenAndSendWelcomeNotification = async () => {
-        try {
-            if(!loggedIn){
-                console.log('User not logged in, not fetching device token');
-                return;
-            }
-            const userId = auth.currentUser?.uid || "undefined";
-            const docRef = doc(cloudFS, 'devicesUsers', userId);
-            const docSnapshot = await getDoc(docRef);
-
-            if (docSnapshot.exists()) {
-                const userData = docSnapshot.data();
-                const deviceToken = userData.tokens;
-
-                if (deviceToken) {
-                    // Send the notification using the retrieved device token
-                    await sendWelcomeNotification(deviceToken);
-                } else {
-                    console.log('Device token not found');
-                }
-            } else {
-                console.log('User document does not exist');
-            }
-        } catch (error) {
-            console.log('Error fetching device token:', error);
-        }
-    };
+    // const sendWelcomeNotification = async (deviceToken : string) => {
+    //     const payload = {
+    //         notification: {
+    //             title: 'Welcome to Recipe App!',
+    //             body: 'Get ready to explore a world of delicious recipes and culinary inspiration. From mouth-watering appetizers to delectable desserts, we have a wide variety of recipes to suit every taste. Start your culinary journey today and let your taste buds be delighted!'
+    //         },
+    //         to: deviceToken
+    //     };
+    //
+    //
+    //     try {
+    //         const response = await axios.post('https://fcm.googleapis.com/fcm/send', payload, {
+    //
+    //             headers: {'Content-Type': 'application/json', 'Authorization': 'key=' + cloudMessaging},
+    //         });
+    //
+    //         console.log('Notification sent successfully: ', response.data);
+    //     }catch(e) {
+    //         console.log('Error sending notification: ', e)
+    //     };
+    //
+    //     setIsWelcome(false);
+    //
+    // }
+    // const fetchDeviceTokenAndSendWelcomeNotification = async () => {
+    //     try {
+    //         if(!loggedIn){
+    //             console.log('User not logged in, not fetching device token');
+    //             return;
+    //         }
+    //         const userId = auth.currentUser?.uid || "undefined";
+    //         const docRef = doc(cloudFS, 'devicesUsers', userId);
+    //         const docSnapshot = await getDoc(docRef);
+    //
+    //         if (docSnapshot.exists()) {
+    //             const userData = docSnapshot.data();
+    //             const deviceToken = userData.tokens;
+    //
+    //             if (deviceToken) {
+    //                 // Send the notification using the retrieved device token
+    //                 await sendWelcomeNotification(deviceToken);
+    //             } else {
+    //                 console.log('Device token not found');
+    //             }
+    //         } else {
+    //             console.log('User document does not exist');
+    //         }
+    //     } catch (error) {
+    //         console.log('Error fetching device token:', error);
+    //     }
+    // };
     // const sendNotification = async (deviceToken : string) => {
     //        console.log('Sending notification to device: ', deviceToken);
     //     const payload = {
@@ -308,7 +308,7 @@ export default function App() {
 
     useEffect(() => {
         if(notifEnabled) {
-            if(loggedIn && isWelcome) fetchDeviceTokenAndSendWelcomeNotification();
+            // if(loggedIn && isWelcome) fetchDeviceTokenAndSendWelcomeNotification();
             if(loggedIn) fetchDeviceTokenAndSendNotification();
             messaging()
                 .getInitialNotification()

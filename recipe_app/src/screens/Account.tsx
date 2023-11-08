@@ -51,6 +51,22 @@ const Account : FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
     const {setLanguage, t} = useLanguage();
+    const [translatedSettings, setTranslatedSettings] = useState<string | null>(null);
+    const [translatedNotification, setTranslatedNotification] = useState<string | null>(null);
+    const [translatedAppearance, setTranslatedAppearance] = useState<string | null>(null);
+    const [translatedLanguages, setTranslatedLanguages] = useState<string | null>(null);
+    const [translatedLoving, setTranslatedLoving] = useState<string | null>(null);
+    const [translatedRate, setTranslatedRate] = useState<string | null>(null);
+    const [translatedShare, setTranslatedShare] = useState<string | null>(null);
+    const [translatedPrivacy, setTranslatedPrivacy] = useState<string | null>(null);
+    const [translatedTerms, setTranslatedTerms] = useState<string | null>(null);
+    const [translatedLogout, setTranslatedLogout] = useState<string | null>(null);
+    const [translatedChooseLanguage, setTranslatedChooseLanguage] = useState<string | null>(null);
+    const [translatedEnglish, setTranslatedEnglish] = useState<string | null>(null);
+    const [translatedFrench, setTranslatedFrench] = useState<string | null>(null);
+
+
+
 
 
     // const route = useNavigationState(state => state.routes[state.index]);
@@ -67,6 +83,42 @@ const Account : FC = () => {
 
         return unsubscribe;
     }, [auth]);
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            try{
+                const translationOfSettings = await t('Settings');
+                const translationOfNotification = await t('Notifications');
+                const translationOfAppearance = await t('Appearance');
+                const translationOfLanguages = await t('Languages');
+                const translationOfLoving = await t('Loving MyRecipeApp ?');
+                const translationOfRate = await t('Rate us');
+                const translationOfShare = await t('Share the application');
+                const translationOfPrivacy = await t('Privacy Policy');
+                const translationOfTerms = await t('Terms of use');
+                const translationOfLogout = await t('LOG OUT');
+                const translationOfChooseLanguage = await t('Choose your language');
+                const translationOfEnglish = await t('English');
+                const translationOfFrench = await t('French');
+                setTranslatedSettings(translationOfSettings);
+                setTranslatedNotification(translationOfNotification);
+                setTranslatedAppearance(translationOfAppearance);
+                setTranslatedLanguages(translationOfLanguages);
+                setTranslatedLoving(translationOfLoving);
+                setTranslatedRate(translationOfRate);
+                setTranslatedShare(translationOfShare);
+                setTranslatedPrivacy(translationOfPrivacy);
+                setTranslatedTerms(translationOfTerms);
+                setTranslatedLogout(translationOfLogout);
+                setTranslatedChooseLanguage(translationOfChooseLanguage);
+                setTranslatedEnglish(translationOfEnglish);
+                setTranslatedFrench(translationOfFrench);
+            } catch (e) {
+                console.log('Error when translating text:', e);
+            }
+        };
+        fetchTranslation();
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -91,7 +143,7 @@ const Account : FC = () => {
                         setImage(userPP);
                         // @ts-ignore
                         setNewName(nameUser);
-                        setLoading(false)
+                        // setLoading(false)
                     }
                 }catch (e) {
                     console.log(e);
@@ -104,13 +156,13 @@ const Account : FC = () => {
             };
         },[user, userPic, name])
     );
-    if (loading) {
-        return (
-            <View>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <View>
+    //             <ActivityIndicator size="large" color="#0000ff" />
+    //         </View>
+    //     );
+    // }
 
 
     const logOut = () => {
@@ -135,147 +187,136 @@ const Account : FC = () => {
 
     //const renderTranslatedText = async () => {
 
-        return (
-            <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
-                {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525"/> :
-                    <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe"/>}
-                <ScrollView>
-                    <View style={{margin: 10}}>
-                        <TouchableOpacity
-                            style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]}
-                            onPress={() => navigation.navigate('ProfileStackScreen')}>
-                            {image ? <Image source={{uri: image}} style={styles.pp}/> :
-                                <Feather name={"user"} size={24} color={colors.text}
-                                         style={{borderColor: colors.text, borderRadius: 30, borderWidth: StyleSheet.hairlineWidth, padding: 5}}/>}
-                            <Text numberOfLines={1} ellipsizeMode="tail"
-                                  style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
-                            <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text}/>
-                        </TouchableOpacity>
-                        <Separator/>
-                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>{t('Settings')}</Text>
-                        <TouchableOpacity
-                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                            onPress={() => navigation.push('NotificationSettings')}>
-                            <Feather name={"bell"} size={22} color={colors.text}/>
-                            {/*<Text style={[styles.btnStyleText, {fontFamily: 'Poppins'}]}>Notifs</Text>*/}
-                            <Text
-                                style={[stylesMore.btnStyleText, {color: colors.text}]}>{t('Notifications')}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                            onPress={() => navigation.push('DisplaySettings')}>
-                            <Feather name={"settings"} size={22} color={colors.text}/>
-                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>{t('Appearance')}</Text>
-                        </TouchableOpacity>
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                setModalVisible(!modalVisible);
-                            }}>
-                            <View style={stylesMore.centeredView}>
-                                <View
-                                    style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification}]}>
-                                    <Text
-                                        style={[stylesMore.modalText, {color: colors.text}]}>{t('Choose your language')}</Text>
-                                    <Separator/>
-                                    <TouchableOpacity style={stylesMore.languageBtn}
-                                                      onPress={() => changeLanguage('en')}>
-                                        <Text
-                                            style={[stylesMore.languageBtnText, {color: colors.text}]}>{t('English')}</Text>
-                                    </TouchableOpacity>
-                                    <Separator/>
-                                    <TouchableOpacity style={stylesMore.languageBtn}
-                                                      onPress={() => changeLanguage('fr')}>
-                                        <Text
-                                            style={[stylesMore.languageBtnText, {color: colors.text}]}>{t('French')}</Text>
-                                    </TouchableOpacity>
+    return (
+        <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
+            {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525"/> :
+                <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe"/>}
+            <ScrollView>
+                <View style={{margin: 10}}>
+                    <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('ProfileStackScreen')}>
+                        {image ? <Image source={{uri: image}} style={styles.pp}/> :
+                            <Feather name={"user"} size={24} color={colors.text} style={{borderColor: colors.text, borderRadius: 30, borderWidth: StyleSheet.hairlineWidth, padding: 5}}/>}
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.profileBtnText, {color: colors.text}]}>{newName}</Text>
+                        <Feather name={"arrow-right"} style={styles.arrowGo} size={24} color={colors.text}/>
+                    </TouchableOpacity>
+                    <Separator/>
+                    <Text style={[stylesMore.textTitle, {color: colors.text}]}>{translatedSettings}</Text>
+                    <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                        onPress={() => navigation.push('NotificationSettings')}>
+                        <Feather name={"bell"} size={22} color={colors.text}/>
+                        {/*<Text style={[styles.btnStyleText, {fontFamily: 'Poppins'}]}>Notifs</Text>*/}
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>{translatedNotification}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                        onPress={() => navigation.push('DisplaySettings')}>
+                        <Feather name={"settings"} size={22} color={colors.text}/>
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>{translatedAppearance}</Text>
+                    </TouchableOpacity>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <View style={stylesMore.centeredView}>
+                            <View
+                                style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification}]}>
+                                <Text style={[stylesMore.modalText, {color: colors.text}]}>{translatedChooseLanguage}</Text>
+                                <Separator/>
+                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('en')}>
+                                    <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedEnglish}</Text>
+                                </TouchableOpacity>
+                                <Separator/>
+                                <TouchableOpacity style={stylesMore.languageBtn}
+                                                  onPress={() => changeLanguage('fr')}>
+                                    <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedFrench}</Text>
+                                </TouchableOpacity>
 
-                                    {/*<TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => setModalVisible(!modalVisible)}>*/}
-                                    {/*    <Feather name={"x"} size={22} color={"#666666"} />*/}
-                                    {/*    <Text style={styles.btnStyleText}>Close</Text>*/}
-                                    {/*</TouchableOpacity>*/}
-                                    {/*<Pressable*/}
-                                    {/*    style={[styles.button, styles.buttonClose]}*/}
-                                    {/*    onPress={() => setModalVisible(!modalVisible)}>*/}
-                                    {/*    <Text style={styles.textStyle}>Hide Modal</Text>*/}
-                                    {/*</Pressable>*/}
-                                </View>
+                                {/*<TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => setModalVisible(!modalVisible)}>*/}
+                                {/*    <Feather name={"x"} size={22} color={"#666666"} />*/}
+                                {/*    <Text style={styles.btnStyleText}>Close</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                                {/*<Pressable*/}
+                                {/*    style={[styles.button, styles.buttonClose]}*/}
+                                {/*    onPress={() => setModalVisible(!modalVisible)}>*/}
+                                {/*    <Text style={styles.textStyle}>Hide Modal</Text>*/}
+                                {/*</Pressable>*/}
                             </View>
-                        </Modal>
+                        </View>
+                    </Modal>
+                    <TouchableOpacity style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                        onPress={() => setModalVisible(true)}>
+                        <Feather name={"globe"} size={22} color={colors.text}/>
+                        <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>{ translatedLanguages}</Text>
+                    </TouchableOpacity>
+
+                    <View>
+                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>Support</Text>
                         <TouchableOpacity
                             style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                            onPress={() => setModalVisible(true)}>
-                            <Feather name={"globe"} size={22} color={colors.text}/>
-                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>{ t('Languages')}</Text>
+                            onPress={() => navigation.push('Faq')}>
+                            <Feather name={"help-circle"} size={22} color={colors.text}/>
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>FAQ</Text>
                         </TouchableOpacity>
-
-                        <View>
-                            <Text style={[stylesMore.textTitle, {color: colors.text}]}>Support</Text>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                                onPress={() => navigation.push('Faq')}>
-                                <Feather name={"help-circle"} size={22} color={colors.text}/>
-                                <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>FAQ</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                                onPress={() => navigation.push('Contact')}>
-                                <Feather name={"mail"} size={22} color={colors.text}/>
-                                <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Contact</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text
-                                style={[stylesMore.textTitle, {color: colors.text}]}>{t('Loving MyRecipeApp ?')}</Text>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
-                                <FontAwesome name={"star"} size={22} color={colors.text}/>
-                                <Text
-                                    style={[stylesMore.btnStyleText, {color: colors.text}]}>{t('Rate us')}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
-                                <FontAwesome name={"share"} size={22} color={colors.text}/>
-                                <Text
-                                    style={[stylesMore.btnStyleText, {color: colors.text}]}>{t('Share the application')}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={[stylesMore.textTitle, {color: colors.text}]}>{ t('About')}</Text>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                                onPress={() => navigation.push('PrivacyPolicy')}>
-                                <Feather name={"shield"} size={22} color={colors.text}/>
-                                <Text
-                                    style={[stylesMore.btnStyleText, {color: colors.text}]}>{t('Privacy Policy')}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
-                                onPress={() => navigation.push('TermsOfUse')}>
-                                <FontAwesome name={"file"} size={22} color={colors.text}/>
-                                <Text
-                                    style={[stylesMore.btnStyleText, {color: colors.text}]}>{t('Terms of use')}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <Separator/>
-                        <View>
-                            <TouchableOpacity
-                                style={[stylesMore.btnStyle, general.shadow, stylesMore.logoutBtn, {backgroundColor: colors.notification}]}
-                                onPress={() => logOut()}>
-                                <Feather name={"log-out"} size={24} color={'#fe2f3f'}/>
-                                <Text
-                                    style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>{ t('LOG OUT')}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 15}}>
-                            <Text style={{color: 'grey', fontSize: 15, fontStyle: 'italic'}}>Version 1.0.0</Text>
-                        </View>
+                        <TouchableOpacity
+                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                            onPress={() => navigation.push('Contact')}>
+                            <Feather name={"mail"} size={22} color={colors.text}/>
+                            <Text style={[stylesMore.btnStyleText, {color: colors.text}]}>Contact</Text>
+                        </TouchableOpacity>
                     </View>
-                </ScrollView>
-            </View>
-        );
+                    <View>
+                        <Text
+                            style={[stylesMore.textTitle, {color: colors.text}]}>{translatedLoving}</Text>
+                        <TouchableOpacity
+                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
+                            <FontAwesome name={"star"} size={22} color={colors.text}/>
+                            <Text
+                                style={[stylesMore.btnStyleText, {color: colors.text}]}>{translatedRate}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}>
+                            <FontAwesome name={"share"} size={22} color={colors.text}/>
+                            <Text
+                                style={[stylesMore.btnStyleText, {color: colors.text}]}>{translatedShare}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>{ t('About')}</Text>
+                        <TouchableOpacity
+                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                            onPress={() => navigation.push('PrivacyPolicy')}>
+                            <Feather name={"shield"} size={22} color={colors.text}/>
+                            <Text
+                                style={[stylesMore.btnStyleText, {color: colors.text}]}>{translatedPrivacy}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
+                            onPress={() => navigation.push('TermsOfUse')}>
+                            <FontAwesome name={"file"} size={22} color={colors.text}/>
+                            <Text
+                                style={[stylesMore.btnStyleText, {color: colors.text}]}>{translatedTerms}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Separator/>
+                    <View>
+                        <TouchableOpacity
+                            style={[stylesMore.btnStyle, general.shadow, stylesMore.logoutBtn, {backgroundColor: colors.notification}]}
+                            onPress={() => logOut()}>
+                            <Feather name={"log-out"} size={24} color={'#fe2f3f'}/>
+                            <Text
+                                style={[stylesMore.btnStyleText, stylesMore.logoutTxt]}>{ translatedLogout}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 15}}>
+                        <Text style={{color: 'grey', fontSize: 15, fontStyle: 'italic'}}>Version 1.0.0</Text>
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
+    );
     // }
 
     //return renderTranslatedText();
