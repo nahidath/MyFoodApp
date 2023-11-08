@@ -64,6 +64,7 @@ const Account : FC = () => {
     const [translatedChooseLanguage, setTranslatedChooseLanguage] = useState<string | null>(null);
     const [translatedEnglish, setTranslatedEnglish] = useState<string | null>(null);
     const [translatedFrench, setTranslatedFrench] = useState<string | null>(null);
+    const [translatedAbout, setTranslatedAbout] = useState<string | null>(null);
 
 
 
@@ -100,6 +101,7 @@ const Account : FC = () => {
                 const translationOfChooseLanguage = await t('Choose your language');
                 const translationOfEnglish = await t('English');
                 const translationOfFrench = await t('French');
+                const translationOfAbout= await t('About');
                 setTranslatedSettings(translationOfSettings);
                 setTranslatedNotification(translationOfNotification);
                 setTranslatedAppearance(translationOfAppearance);
@@ -113,6 +115,7 @@ const Account : FC = () => {
                 setTranslatedChooseLanguage(translationOfChooseLanguage);
                 setTranslatedEnglish(translationOfEnglish);
                 setTranslatedFrench(translationOfFrench);
+                setTranslatedAbout(translationOfAbout);
             } catch (e) {
                 console.log('Error when translating text:', e);
             }
@@ -185,7 +188,6 @@ const Account : FC = () => {
         await t('reload');
     }
 
-    //const renderTranslatedText = async () => {
 
     return (
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
@@ -284,7 +286,7 @@ const Account : FC = () => {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>{ t('About')}</Text>
+                        <Text style={[stylesMore.textTitle, {color: colors.text}]}>{ translatedAbout}</Text>
                         <TouchableOpacity
                             style={[stylesMore.btnStyle, general.shadow, {backgroundColor: colors.notification}]}
                             onPress={() => navigation.push('PrivacyPolicy')}>
@@ -317,9 +319,7 @@ const Account : FC = () => {
             </ScrollView>
         </View>
     );
-    // }
-
-    //return renderTranslatedText();
 
 }
+
 export default Account;
