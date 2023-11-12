@@ -227,7 +227,7 @@ const Account : FC = () => {
                                 style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification}]}>
                                 <Text style={[stylesMore.modalText, {color: colors.text}]}>{translatedChooseLanguage}</Text>
                                 <Separator/>
-                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('en')}>
+                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('en-GB')}>
                                     <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedEnglish}</Text>
                                 </TouchableOpacity>
                                 <Separator/>
