@@ -50,21 +50,23 @@ const Account : FC = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
-    const {setLanguage, t} = useLanguage();
-    const [translatedSettings, setTranslatedSettings] = useState<string | null>(null);
-    const [translatedNotification, setTranslatedNotification] = useState<string | null>(null);
-    const [translatedAppearance, setTranslatedAppearance] = useState<string | null>(null);
-    const [translatedLanguages, setTranslatedLanguages] = useState<string | null>(null);
-    const [translatedLoving, setTranslatedLoving] = useState<string | null>(null);
-    const [translatedRate, setTranslatedRate] = useState<string | null>(null);
-    const [translatedShare, setTranslatedShare] = useState<string | null>(null);
-    const [translatedPrivacy, setTranslatedPrivacy] = useState<string | null>(null);
-    const [translatedTerms, setTranslatedTerms] = useState<string | null>(null);
-    const [translatedLogout, setTranslatedLogout] = useState<string | null>(null);
-    const [translatedChooseLanguage, setTranslatedChooseLanguage] = useState<string | null>(null);
-    const [translatedEnglish, setTranslatedEnglish] = useState<string | null>(null);
-    const [translatedFrench, setTranslatedFrench] = useState<string | null>(null);
-    const [translatedAbout, setTranslatedAbout] = useState<string | null>(null);
+    const {language,setLanguage, t} = useLanguage();
+    const [translatedSettings, setTranslatedSettings] = useState<string >("Settings");
+    const [translatedNotification, setTranslatedNotification] = useState<string>('Notifications');
+    const [translatedAppearance, setTranslatedAppearance] = useState<string >('Appearance');
+    const [translatedLanguages, setTranslatedLanguages] = useState<string >('Languages');
+    const [translatedLoving, setTranslatedLoving] = useState<string>('Loving MyRecipeApp ?');
+    const [translatedRate, setTranslatedRate] = useState<string>('Rate us');
+    const [translatedShare, setTranslatedShare] = useState<string>('Share the application');
+    const [translatedPrivacy, setTranslatedPrivacy] = useState<string>('Privacy Policy');
+    const [translatedTerms, setTranslatedTerms] = useState<string>('Terms of use');
+    const [translatedLogout, setTranslatedLogout] = useState<string>('LOG OUT');
+    const [translatedChooseLanguage, setTranslatedChooseLanguage] = useState<string>('Choose your language');
+    const [translatedEnglish, setTranslatedEnglish] = useState<string>('English');
+    const [translatedFrench, setTranslatedFrench] = useState<string>('French');
+    const [translatedAbout, setTranslatedAbout] = useState<string>('About');
+    const [translated, setTranslated] = useState<boolean>(false);
+    const [languageSelected, setLanguageSelected] = useState<boolean>(false);
 
 
 
@@ -86,22 +88,24 @@ const Account : FC = () => {
     }, [auth]);
 
     useEffect(() => {
+        console.log('translated', translated);
         const fetchTranslation = async () => {
+            console.log('fetchTranslation');
             try{
-                const translationOfSettings = await t('Settings');
-                const translationOfNotification = await t('Notifications');
-                const translationOfAppearance = await t('Appearance');
-                const translationOfLanguages = await t('Languages');
-                const translationOfLoving = await t('Loving MyRecipeApp ?');
-                const translationOfRate = await t('Rate us');
-                const translationOfShare = await t('Share the application');
-                const translationOfPrivacy = await t('Privacy Policy');
-                const translationOfTerms = await t('Terms of use');
-                const translationOfLogout = await t('LOG OUT');
-                const translationOfChooseLanguage = await t('Choose your language');
-                const translationOfEnglish = await t('English');
-                const translationOfFrench = await t('French');
-                const translationOfAbout= await t('About');
+                const translationOfSettings = await t(translatedSettings);
+                const translationOfNotification = await t(translatedNotification);
+                const translationOfAppearance = await t(translatedAppearance);
+                const translationOfLanguages = await t(translatedLanguages);
+                const translationOfLoving = await t(translatedLoving);
+                const translationOfRate = await t(translatedRate);
+                const translationOfShare = await t(translatedShare);
+                const translationOfPrivacy = await t(translatedPrivacy);
+                const translationOfTerms = await t(translatedTerms);
+                const translationOfLogout = await t(translatedLogout);
+                const translationOfChooseLanguage = await t(translatedChooseLanguage);
+                const translationOfEnglish = await t(translatedEnglish);
+                const translationOfFrench = await t(translatedFrench);
+                const translationOfAbout= await t(translatedAbout);
                 setTranslatedSettings(translationOfSettings);
                 setTranslatedNotification(translationOfNotification);
                 setTranslatedAppearance(translationOfAppearance);
@@ -120,8 +124,8 @@ const Account : FC = () => {
                 console.log('Error when translating text:', e);
             }
         };
-        fetchTranslation();
-    }, []);
+        if(translated)fetchTranslation();
+    }, [translated]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -183,9 +187,17 @@ const Account : FC = () => {
     }
 
     const changeLanguage = async (newLang : string) => {
-        setLanguage(newLang);
-        await AsyncStorage.setItem('lang', newLang);
-        await t('reload');
+        console.log('newLang', newLang);
+        try {
+            await AsyncStorage.setItem('lang', newLang);
+            setLanguage(newLang);
+            setLanguageSelected(true);
+            setModalVisible(false);
+            setTranslated(true);
+            await t('reload');
+        } catch (error) {
+            console.error('Erreur de sauvegarde de la langue:', error);
+        }
     }
 
 
@@ -227,13 +239,16 @@ const Account : FC = () => {
                                 style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification}]}>
                                 <Text style={[stylesMore.modalText, {color: colors.text}]}>{translatedChooseLanguage}</Text>
                                 <Separator/>
-                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('en-GB')}>
+                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('EN-GB')}>
                                     <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedEnglish}</Text>
+                                    {language == "EN-GB" && <Feather name={"check"} size={20} color={colors.text} style={{marginLeft: 10}}/>}
                                 </TouchableOpacity>
                                 <Separator/>
                                 <TouchableOpacity style={stylesMore.languageBtn}
-                                                  onPress={() => changeLanguage('fr')}>
+                                                  onPress={() => changeLanguage('FR')}>
                                     <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedFrench}</Text>
+                                    {language == "FR" && <Feather name={"check"} size={20} color={colors.text} style={{marginLeft: 10}}/>}
+
                                 </TouchableOpacity>
 
                                 {/*<TouchableOpacity style={[styles.btnStyle, general.shadow]} onPress={() => setModalVisible(!modalVisible)}>*/}

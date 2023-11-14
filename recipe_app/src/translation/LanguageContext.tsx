@@ -1,10 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {createContext, useContext, useState, ReactNode, useEffect} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {translateText} from "./TranslationService";
-import {TargetLanguageCode, TextResult} from "deepl-node";
-import * as deepl from "deepl-node";
-// @ts-ignore
-import {REACT_APP_DEEPL_AUTH_KEY} from "@env";
 
 
 type LanguageContextType = {
@@ -17,18 +13,41 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
-    const defaultLang = String(AsyncStorage.getItem('lang'));
-    const [language, setLanguage] = useState(defaultLang.length===2 ? defaultLang : 'en-GB');
-    const authKey :string | undefined = REACT_APP_DEEPL_AUTH_KEY;
-    const translator = new deepl.Translator(String(authKey));
+    const [language, setLanguage] = useState<string>("");
 
-    // @ts-ignore
-    const t = async (key : string): Promise<string> => {
+    const getLanguage = async () => {
         try {
-            const result = await translator.translateText(key, null, language as "bg" | "cs" | "da" | "de" | "el" | "es" | "et" | "fi" | "fr" | "hu" | "id" | "it" | "ja" | "ko" | "lt" | "lv" | "nb" | "nl" | "pl" | "ro" | "ru" | "sk" | "sl" | "sv" | "tr" | "uk" | "zh" | "en-GB" | "en-US" | "pt-BR" | "pt-PT");
-            return result.text;
-        } catch (e) {
-            console.log(e);
+            const lang = await AsyncStorage.getItem('lang');
+            if (lang !== null) {
+                setLanguage(lang);
+            }
+        } catch (error) {
+            console.error('Erreur de récupération de la langue:', error);
+        }
+    };
+
+    useEffect(() => {
+        getLanguage();
+    }, []);
+
+    // const setLanguage = async (lang: string) => {
+    //     try {
+    //         await AsyncStorage.setItem('lang', lang);
+    //         setLanguage(lang);
+    //     } catch (error) {
+    //         console.error('Erreur de sauvegarde de la langue:', error);
+    //     }
+    // };
+
+
+    const t = async (key: string): Promise<string> => {
+        try {
+            const translation = await translateText(key, language);
+
+            return translation;
+        } catch (error) {
+            console.error('Erreur de traduction:', error);
+            return key; // En cas d'erreur, renvoyer la clé non traduite
         }
     };
 
