@@ -90,41 +90,47 @@ const Account : FC = () => {
     useEffect(() => {
         console.log('translated', translated);
         const fetchTranslation = async () => {
-            console.log('fetchTranslation');
-            try{
-                const translationOfSettings = await t(translatedSettings);
-                const translationOfNotification = await t(translatedNotification);
-                const translationOfAppearance = await t(translatedAppearance);
-                const translationOfLanguages = await t(translatedLanguages);
-                const translationOfLoving = await t(translatedLoving);
-                const translationOfRate = await t(translatedRate);
-                const translationOfShare = await t(translatedShare);
-                const translationOfPrivacy = await t(translatedPrivacy);
-                const translationOfTerms = await t(translatedTerms);
-                const translationOfLogout = await t(translatedLogout);
-                const translationOfChooseLanguage = await t(translatedChooseLanguage);
-                const translationOfEnglish = await t(translatedEnglish);
-                const translationOfFrench = await t(translatedFrench);
-                const translationOfAbout= await t(translatedAbout);
-                setTranslatedSettings(translationOfSettings);
-                setTranslatedNotification(translationOfNotification);
-                setTranslatedAppearance(translationOfAppearance);
-                setTranslatedLanguages(translationOfLanguages);
-                setTranslatedLoving(translationOfLoving);
-                setTranslatedRate(translationOfRate);
-                setTranslatedShare(translationOfShare);
-                setTranslatedPrivacy(translationOfPrivacy);
-                setTranslatedTerms(translationOfTerms);
-                setTranslatedLogout(translationOfLogout);
-                setTranslatedChooseLanguage(translationOfChooseLanguage);
-                setTranslatedEnglish(translationOfEnglish);
-                setTranslatedFrench(translationOfFrench);
-                setTranslatedAbout(translationOfAbout);
-            } catch (e) {
-                console.log('Error when translating text:', e);
+            if(translated) {
+                try {
+                    const translationOfSettings = await t(translatedSettings);
+                    const translationOfNotification = await t(translatedNotification);
+                    const translationOfAppearance = await t(translatedAppearance);
+                    const translationOfLanguages = await t(translatedLanguages);
+                    const translationOfLoving = await t(translatedLoving);
+                    const translationOfRate = await t(translatedRate);
+                    const translationOfShare = await t(translatedShare);
+                    const translationOfPrivacy = await t(translatedPrivacy);
+                    const translationOfTerms = await t(translatedTerms);
+                    const translationOfLogout = await t(translatedLogout);
+                    const translationOfChooseLanguage = await t(translatedChooseLanguage);
+                    const translationOfEnglish = await t(translatedEnglish);
+                    const translationOfFrench = await t(translatedFrench);
+                    const translationOfAbout = await t(translatedAbout);
+                    setTranslatedSettings(translationOfSettings);
+                    setTranslatedNotification(translationOfNotification);
+                    setTranslatedAppearance(translationOfAppearance);
+                    setTranslatedLanguages(translationOfLanguages);
+                    setTranslatedLoving(translationOfLoving);
+                    setTranslatedRate(translationOfRate);
+                    setTranslatedShare(translationOfShare);
+                    setTranslatedPrivacy(translationOfPrivacy);
+                    setTranslatedTerms(translationOfTerms);
+                    setTranslatedLogout(translationOfLogout);
+                    setTranslatedChooseLanguage(translationOfChooseLanguage);
+                    setTranslatedEnglish(translationOfEnglish);
+                    setTranslatedFrench(translationOfFrench);
+                    setTranslatedAbout(translationOfAbout);
+                } catch (e) {
+                    console.log('Error when translating text:', e);
+                }
+
+                setTranslated(false);
             }
+
         };
-        if(translated)fetchTranslation();
+
+        fetchTranslation();
+
     }, [translated]);
 
     useFocusEffect(
@@ -205,6 +211,7 @@ const Account : FC = () => {
         <View style={[styles.container, general.container, {backgroundColor: colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525"/> :
                 <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe"/>}
+            {translated && <View style={styles.centeredView}><ActivityIndicator  size="large" color="#9fc131" /></View>}
             <ScrollView>
                 <View style={{margin: 10}}>
                     <TouchableOpacity style={[styles.profileBtn, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.navigate('ProfileStackScreen')}>
@@ -239,7 +246,7 @@ const Account : FC = () => {
                                 style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification}]}>
                                 <Text style={[stylesMore.modalText, {color: colors.text}]}>{translatedChooseLanguage}</Text>
                                 <Separator/>
-                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('EN-GB')}>
+                                <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('EN-US')}>
                                     <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedEnglish}</Text>
                                     {language == "EN-GB" && <Feather name={"check"} size={20} color={colors.text} style={{marginLeft: 10}}/>}
                                 </TouchableOpacity>

@@ -4,7 +4,6 @@ import {REACT_APP_DEEPL_AUTH_KEY} from "@env";
 axios.defaults.withCredentials = true;
 
 const translateText = async (text: string, targetLanguage: string) => {
-    console.log('targetLanguage', targetLanguage);
     const deepLApiKey = REACT_APP_DEEPL_AUTH_KEY;
     const url = 'https://api-free.deepl.com/v2/translate';
     const headers = {
