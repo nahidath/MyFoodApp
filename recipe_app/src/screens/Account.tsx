@@ -91,37 +91,54 @@ const Account : FC = () => {
         console.log('translated', translated);
         const fetchTranslation = async () => {
             if(translated) {
-                try {
-                    const translationOfSettings = await t(translatedSettings);
-                    const translationOfNotification = await t(translatedNotification);
-                    const translationOfAppearance = await t(translatedAppearance);
-                    const translationOfLanguages = await t(translatedLanguages);
-                    const translationOfLoving = await t(translatedLoving);
-                    const translationOfRate = await t(translatedRate);
-                    const translationOfShare = await t(translatedShare);
-                    const translationOfPrivacy = await t(translatedPrivacy);
-                    const translationOfTerms = await t(translatedTerms);
-                    const translationOfLogout = await t(translatedLogout);
-                    const translationOfChooseLanguage = await t(translatedChooseLanguage);
-                    const translationOfEnglish = await t(translatedEnglish);
-                    const translationOfFrench = await t(translatedFrench);
-                    const translationOfAbout = await t(translatedAbout);
-                    setTranslatedSettings(translationOfSettings);
-                    setTranslatedNotification(translationOfNotification);
-                    setTranslatedAppearance(translationOfAppearance);
-                    setTranslatedLanguages(translationOfLanguages);
-                    setTranslatedLoving(translationOfLoving);
-                    setTranslatedRate(translationOfRate);
-                    setTranslatedShare(translationOfShare);
-                    setTranslatedPrivacy(translationOfPrivacy);
-                    setTranslatedTerms(translationOfTerms);
-                    setTranslatedLogout(translationOfLogout);
-                    setTranslatedChooseLanguage(translationOfChooseLanguage);
-                    setTranslatedEnglish(translationOfEnglish);
-                    setTranslatedFrench(translationOfFrench);
-                    setTranslatedAbout(translationOfAbout);
-                } catch (e) {
-                    console.log('Error when translating text:', e);
+                if(language !='EN-US') {
+                    try {
+                        const translationOfSettings = await t(translatedSettings);
+                        const translationOfNotification = await t(translatedNotification);
+                        const translationOfAppearance = await t(translatedAppearance);
+                        const translationOfLanguages = await t(translatedLanguages);
+                        const translationOfLoving = await t(translatedLoving);
+                        const translationOfRate = await t(translatedRate);
+                        const translationOfShare = await t(translatedShare);
+                        const translationOfPrivacy = await t(translatedPrivacy);
+                        const translationOfTerms = await t(translatedTerms);
+                        const translationOfLogout = await t(translatedLogout);
+                        const translationOfChooseLanguage = await t(translatedChooseLanguage);
+                        const translationOfEnglish = await t(translatedEnglish);
+                        const translationOfFrench = await t(translatedFrench);
+                        const translationOfAbout = await t(translatedAbout);
+                        setTranslatedSettings(translationOfSettings);
+                        setTranslatedNotification(translationOfNotification);
+                        setTranslatedAppearance(translationOfAppearance);
+                        setTranslatedLanguages(translationOfLanguages);
+                        setTranslatedLoving(translationOfLoving);
+                        setTranslatedRate(translationOfRate);
+                        setTranslatedShare(translationOfShare);
+                        setTranslatedPrivacy(translationOfPrivacy);
+                        setTranslatedTerms(translationOfTerms);
+                        setTranslatedLogout(translationOfLogout);
+                        setTranslatedChooseLanguage(translationOfChooseLanguage);
+                        setTranslatedEnglish(translationOfEnglish);
+                        setTranslatedFrench(translationOfFrench);
+                        setTranslatedAbout(translationOfAbout);
+                    } catch (e) {
+                        console.log('Error when translating text:', e);
+                    }
+                }else {
+                    setTranslatedSettings('Settings');
+                    setTranslatedNotification('Notifications');
+                    setTranslatedAppearance('Appearance');
+                    setTranslatedLanguages('Languages');
+                    setTranslatedLoving('Loving MyRecipeApp ?');
+                    setTranslatedRate('Rate us');
+                    setTranslatedShare('Share the application');
+                    setTranslatedPrivacy('Privacy Policy');
+                    setTranslatedTerms('Terms of use');
+                    setTranslatedLogout('LOG OUT');
+                    setTranslatedChooseLanguage('Choose your language');
+                    setTranslatedEnglish('English');
+                    setTranslatedFrench('French');
+                    setTranslatedAbout('About');
                 }
 
                 setTranslated(false);
@@ -244,11 +261,16 @@ const Account : FC = () => {
                         <View style={stylesMore.centeredView}>
                             <View
                                 style={[stylesMore.modalView, general.shadow, {backgroundColor: colors.notification}]}>
+                                <View style={stylesMore.headerModal}>
+                                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                                        <AntDesign name={"close"} size={20} color={"#797979"}/>
+                                    </TouchableOpacity>
+                                </View>
                                 <Text style={[stylesMore.modalText, {color: colors.text}]}>{translatedChooseLanguage}</Text>
                                 <Separator/>
                                 <TouchableOpacity style={stylesMore.languageBtn} onPress={() => changeLanguage('EN-US')}>
                                     <Text style={[stylesMore.languageBtnText, {color: colors.text}]}>{translatedEnglish}</Text>
-                                    {language == "EN-GB" && <Feather name={"check"} size={20} color={colors.text} style={{marginLeft: 10}}/>}
+                                    {language == "EN-US" && <Feather name={"check"} size={20} color={colors.text} style={{marginLeft: 10}}/>}
                                 </TouchableOpacity>
                                 <Separator/>
                                 <TouchableOpacity style={stylesMore.languageBtn}

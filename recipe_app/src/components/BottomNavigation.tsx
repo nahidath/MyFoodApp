@@ -24,6 +24,8 @@ import {
     SearchStackScreen
 } from "./AllStackScreen";
 import hairlineWidth = StyleSheet.hairlineWidth;
+import {translateText} from "../translation/TranslationService";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 
@@ -35,6 +37,38 @@ const BottomNavigation : FC = () => {
     const theme = useTheme();
     const roundBckColor = theme.dark ? "#9fc131" : "#FAF9F6";
     const iconColor = theme.dark ? "#FAF9F6" : "#9fc131";
+    const [translationOfHome, setTranslationofHome] = useState("Home");
+    const [translationOfSearch, setTranslationofSearch] = useState("Search");
+    const [translationOfFavorites, setTranslationofFavorites] = useState("Favorites");
+    const [translationOfAccount, setTranslationofAccount] = useState("Account");
+    const {language,setLanguage, t} = useLanguage();
+
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfHome = await t("Home");
+                    const translationOfSearch = await t("Search");
+                    const translationOfFavorites = await t("Favorites");
+                    const translationOfAccount = await t("Account");
+                    setTranslationofHome(translationOfHome);
+                    setTranslationofSearch(translationOfSearch);
+                    setTranslationofFavorites(translationOfFavorites);
+                    setTranslationofAccount(translationOfAccount);
+                } catch (error) {
+                    console.error('Erreur de traduction bottomNavigation:', error);
+                }
+
+            }else {
+                setTranslationofHome("Home");
+                setTranslationofSearch("Search");
+                setTranslationofFavorites("Favorites");
+                setTranslationofAccount("Account");
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
     return (
         <Tab.Navigator
@@ -68,7 +102,7 @@ const BottomNavigation : FC = () => {
         >
             <Tab.Screen name="Home" component={HomeStackScreen} options={{
                 headerShown: false,
-                tabBarLabel: 'Home',
+                tabBarLabel: translationOfHome,
                 tabBarIcon: ({color}) => (
                     <Feather name={"home"} size={24} color={color} />
                 ),
@@ -81,7 +115,7 @@ const BottomNavigation : FC = () => {
             {/*}/>*/}
             <Tab.Screen name="Search" component={SearchStackScreen} options={{
                 headerShown: false,
-                // tabBarLabel:'',
+                tabBarLabel: translationOfSearch,
                 tabBarIcon: ({color}) => (
                     // <FontAwesome name={"search"} size={30} color={iconColor} style={{...styles.roundTabButton, backgroundColor: roundBckColor, ...styles.shadow}}/>
                     <Feather name={"search"} size={24} color={color} />
@@ -90,6 +124,7 @@ const BottomNavigation : FC = () => {
             }
             } />
             <Tab.Screen name="Favorites" component={FavoriteStackScreen} options={{
+                tabBarLabel: translationOfFavorites,
                 tabBarIcon: ({color}) => (
                     <Feather name={"heart"} size={24} color={color} />
                 ),}
@@ -97,7 +132,7 @@ const BottomNavigation : FC = () => {
 
             <Tab.Screen name="Account" component={AccountStackScreen} options={{
                 headerShown: false,
-                tabBarLabel: 'Account',
+                tabBarLabel: translationOfAccount,
                 tabBarIcon: ({color}) => (
                     <Feather name={"user"} size={24} color={color} />
                 ),}
