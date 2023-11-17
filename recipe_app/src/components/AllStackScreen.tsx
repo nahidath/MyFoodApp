@@ -38,18 +38,22 @@ export function HomeStackScreen () {
     const { colors } = useTheme();
     const {language,setLanguage, t} = useLanguage();
     const [translationSR, setTranslationSR] = useState("Spotlight Recipes");
+    const [translationNotifs, setTranslationNotifs] = useState("Notifications");
 
     useEffect(() => {
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
                     const translationOfSR = await t(translationSR);
+                    const translationOfNotifs = await t(translationNotifs);
                     setTranslationSR(translationOfSR);
+                    setTranslationNotifs(translationOfNotifs);
                 } catch (error) {
                     console.error('Erreur de traduction HomeStackScreen:', error);
                 }
             }else{
                 setTranslationSR("Spotlight Recipes");
+                setTranslationNotifs("Notifications");
             }
         };
         fetchTranslation();
@@ -108,7 +112,7 @@ export function HomeStackScreen () {
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
-                headerTitle: 'Notifications',
+                headerTitle: translationNotifs,
                 headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
