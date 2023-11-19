@@ -9,6 +9,7 @@ import {auth, database} from "../firebase/config";
 import Feather from "react-native-vector-icons/Feather";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {child, ref, remove} from "firebase/database";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 interface CardRecipeProps {
@@ -33,6 +34,33 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
     const user = auth.currentUser;
     const titleRef = useRef<Text>(null);
     const [fontSize, setFontSize] = useState<number>(20);
+    const {language,setLanguage, t} = useLanguage();
+    const [translationRecipeTitle, setTranslationRecipeTitle] = useState<any>(recipe.title);
+    const[translationVegan, setTranslationVegan] = useState<string>("Vegan");
+    const[translationVeryHealthy, setTranslationVeryHealthy] = useState<string>("Very Healthy");
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfRecipeTitle = await t(translationRecipeTitle);
+                    const translationOfVegan = await t("Vegan");
+                    const translationOfVeryHealthy = await t("Very Healthy");
+                    setTranslationVegan(translationOfVegan);
+                    setTranslationVeryHealthy(translationOfVeryHealthy);
+                    setTranslationRecipeTitle(translationOfRecipeTitle);
+
+                } catch (error) {
+                    console.error('Erreur de traduction CardRecipe:', error);
+                }
+            }else {
+                setTranslationVegan("Vegan");
+                setTranslationVeryHealthy("Very Healthy");
+                setTranslationRecipeTitle(recipe.title);
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
 
     const handleFavorite = (recipeIndx : any) => {
@@ -126,7 +154,7 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
 
 
     return (
-       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title, listOfRecipes : listOfRecipesId, indxCurrent: index})} activeOpacity={0.4}>
+       <TouchableOpacity style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.background, height: height, width: width}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: translationRecipeTitle, listOfRecipes : listOfRecipesId, indxCurrent: index})} activeOpacity={0.4}>
            {recipe.image ? <ImageBackground source={{uri: recipe.image}} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}/> : <ImageBackground source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} imageStyle={{borderRadius: 10}}  />}
            <LinearGradient
                colors={['transparent','rgba(0,0,0,0.8)' ]}
@@ -136,8 +164,8 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
            </LinearGradient>
               {label &&
            <View style={styles.blocRecipeLabel}>
-               {recipe.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
-               {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
+               {recipe.vegan && <Text style={styles.blocRecipeLabelText}>{translationVegan}</Text>}
+               {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>{translationVeryHealthy}</Text>}
            </View>}
            {star &&
            <TouchableOpacity style={styles.blocRecipeLike}
