@@ -331,12 +331,12 @@ export function filtersList({colors}: IFilterList) {
             ,
         }
     ];
-    const sortList2 = [{id: 1, name: translationGlutenFree}, {id: 2, name: translationKetogenic}, {id: 3, name: translationVegetarian}, {id: 4, name: 'Lacto-Vegetarian'}, {id: 5, name: 'Ovo-Vegetarian'}, {id: 6, name: 'Vegan'}, {id: 7, name: 'Pescetarian'}, {id: 8, name: 'Paleo'}, {id: 9, name: 'Primal'}, {id: 10, name: 'Whole30'}];
-    const sortList3 = [{id: 1, name: 'Dairy'}, {id: 2, name: 'Egg'}, {id: 3, name: 'Gluten'}, {id: 4, name: 'Grain'}, {id: 5, name: 'Peanut'}, {id: 6, name: 'Seafood'}, {id: 7, name: 'Sesame'}, {id: 8, name: 'Shellfish'}, {id: 9, name: 'Soy'}, {id: 10, name: 'Sulfite'}, {id: 11, name: 'Tree Nut'}, {id: 12, name: 'Wheat'}];
+    const sortList2 = [{id: 1, name: translationGlutenFree}, {id: 2, name: translationKetogenic}, {id: 3, name: translationVegetarian}, {id: 4, name: translationLactoVegetarian}, {id: 5, name: translationOvoVegetarian}, {id: 6, name: translationVegan}, {id: 7, name: translationPescetarian}, {id: 8, name: translationPaleo}, {id: 9, name: translationPrimal}, {id: 10, name: translationWhole30}];
+    const sortList3 = [{id: 1, name: translationDairy}, {id: 2, name: translationEgg}, {id: 3, name: translationGluten}, {id: 4, name: translationGrain}, {id: 5, name: translationPeanut}, {id: 6, name: translationSeafood}, {id: 7, name: translationSesame}, {id: 8, name: translationShellfish}, {id: 9, name: translationSoy}, {id: 10, name: translationSulfite}, {id: 11, name: translationTreeNut}, {id: 12, name: translationWheat}];
     const sortList4 : ICheckboxButton[] = [
         {
             id: 1,
-            text: 'Breakfast',
+            text: translationBreakfast,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -348,7 +348,7 @@ export function filtersList({colors}: IFilterList) {
         },
         {
             id: 2,
-            text: 'Lunch',
+            text: translationLunch,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -360,7 +360,7 @@ export function filtersList({colors}: IFilterList) {
 
         },
         {
-            id: 3, text: 'Dinner',
+            id: 3, text: translationDinner,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -371,7 +371,7 @@ export function filtersList({colors}: IFilterList) {
 
         },
         {
-            id: 4, text: 'Snack',
+            id: 4, text: translationSnack,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -382,7 +382,7 @@ export function filtersList({colors}: IFilterList) {
 
         },
         {
-            id: 5, text: 'Teatime',
+            id: 5, text: translationTeatime,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -393,7 +393,7 @@ export function filtersList({colors}: IFilterList) {
 
         },
         {
-            id: 6, text: 'Sauce',
+            id: 6, text: translationSauce,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -404,7 +404,7 @@ export function filtersList({colors}: IFilterList) {
 
         },
         {
-            id: 7, text :'Drink',
+            id: 7, text :translationDrink,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -414,7 +414,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 8, text: 'Dessert',
+        {id: 8, text: translationDessert,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -424,7 +424,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 9, text: 'Appetizer',
+        {id: 9, text: translationAppetizer,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -434,7 +434,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 10,text: 'Salad',
+        {id: 10,text: translationSalad,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -444,7 +444,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 11,text: 'Bread',
+        {id: 11,text: translationBread,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -454,7 +454,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 12,text: 'Soup',
+        {id: 12,text: translationSoup,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -464,7 +464,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 13,text: 'Beverage',
+        {id: 13,text: translationBeverage,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -474,7 +474,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 14,text: 'Marinade',
+        {id: 14,text: translationMarinade,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -484,7 +484,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 15,text: 'Fingerfood',
+        {id: 15,text: translationFingerfood,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -494,7 +494,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 16,text: 'Main Course',
+        {id: 16,text: translationMainCourse,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -504,7 +504,7 @@ export function filtersList({colors}: IFilterList) {
             innerIconStyle:{ borderWidth: 1, borderRadius: 5, width: 20, height: 20, borderColor: colors.border}
 
         },
-        {id: 17,text: 'Side Dish',
+        {id: 17,text: translationSideDish,
             style:{ margin: 5 },
             size:20,
             fillColor:"#9fc131",
@@ -515,7 +515,7 @@ export function filtersList({colors}: IFilterList) {
 
         }
     ];
-    const sortList5 = [{id: 1, name: 'American'}, {id: 2, name: 'British'}, {id: 3, name: 'Cajun'}, {id: 4, name: 'Caribbean'}, {id: 5, name: 'Chinese'}, {id: 6, name: 'Eastern European'}, {id: 7, name: 'European'}, {id: 8, name: 'French'}, {id: 9, name: 'German'}, {id: 10, name: 'Greek'}, {id: 11, name: 'Indian'}, {id: 12, name: 'Irish'}, {id: 13, name: 'Italian'}, {id: 14, name: 'Japanese'}, {id: 15, name: 'Jewish'}, {id: 16, name: 'Korean'}, {id: 17, name: 'Latin American'}, {id: 18, name: 'Mediterranean'}, {id: 19, name: 'Mexican'}, {id: 20, name: 'Middle Eastern'}, {id: 21, name: 'Nordic'}, {id: 22, name: 'Southern'}, {id: 23, name: 'Spanish'}, {id: 24, name: 'Thai'}, {id: 25, name: 'Vietnamese'}];
+    const sortList5 = [{id: 1, name: translationAmerican}, {id: 2, name: translationBritish}, {id: 3, name: translationCajun}, {id: 4, name: translationCaribbean}, {id: 5, name: translationChinese}, {id: 6, name: translationEasternEuropean}, {id: 7, name: translationEuropean}, {id: 8, name: translationFrench}, {id: 9, name: translationGerman}, {id: 10, name: translationGreek}, {id: 11, name: translationIndian}, {id: 12, name: translationIrish}, {id: 13, name: translationItalian}, {id: 14, name: translationJapanese}, {id: 15, name: translationJewish}, {id: 16, name: translationKorean}, {id: 17, name: translationLatinAmerican}, {id: 18, name: translationMediterranean}, {id: 19, name: translationMexican}, {id: 20, name: translationMiddleEastern}, {id: 21, name: translationNordic}, {id: 22, name: translationSouthern}, {id: 23, name: translationSpanish}, {id: 24, name: translationThai}, {id: 25, name: translationVietnamese}];
 
     return {
         sortList1,
