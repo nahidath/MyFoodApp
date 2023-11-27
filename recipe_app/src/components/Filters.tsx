@@ -12,6 +12,7 @@ import RangeSlider from 'react-native-range-slider-expo';
 import {REACT_APP_API_KEY} from "@env";
 
 import {filtersList} from "../data/filtersList";
+import {useLanguage} from "../translation/LanguageContext";
 
 interface IFilterModalProps {
     search: string;
@@ -44,7 +45,19 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
     const [fromValue, setFromValue] = useState(0);
     const [toValue, setToValue] = useState(999);
     const [value, setValue] = useState(0);
-
+    const {language,setLanguage, t} = useLanguage();
+    const [translationSort, setTranslationSort] = useState("Sort by");
+    const [translationDiet, setTranslationDiet] = useState("Diet");
+    const [translationIntolerance, setTranslationIntolerance] = useState("Intolerance");
+    const [translationType, setTranslationType] = useState("Type of Dish");
+    const [translationCuisine, setTranslationCuisine] = useState("Culinary speciality");
+    const [translationApply, setTranslationApply] = useState("Apply");
+    const [translationVD, setTranslationVD] = useState("Video duration");
+    const [translationNF, setTranslationNF] = useState("No results found");
+    const [translationFilters, setTranslationFilters] = useState("Filters");
+    const [translationTime, setTranslationTime] = useState("Time : ");
+    const [translationSec, setTranslationSec] = useState(" sec to ");
+    const [translationSec2, setTranslationSec2] = useState(" sec");
 
 
     const filterResult =  (filtersArray : any) => {
@@ -77,7 +90,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                 setLoading(false);
                 setFiltered(true);
                 if (response1.data.results.length == 0) {
-                    setNoResults('No results found');
+                    setNoResults(translationNF);
                 }
             },).catch((error) => {
                 console.log(error);
@@ -106,7 +119,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                 setLoading(false);
                 setFiltered(true);
                 if (response1.data.videos.length == 0) {
-                    setNoResults('No results found');
+                    setNoResults(translationNF);
                 }
             },).catch((error) => {
                 console.log(error);
@@ -116,12 +129,53 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         }
     };
 
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfSort = await t(translationSort);
+                    const translationOfDiet = await t(translationDiet);
+                    const translationOfIntolerance = await t(translationIntolerance);
+                    const translationOfType = await t(translationType);
+                    const translationOfCuisine = await t(translationCuisine);
+                    const translationOfApply = await t(translationApply);
+                    const translationOfVD = await t(translationVD);
+                    const translationOfNF = await t(translationNF);
+                    const translationOfFilters = await t(translationFilters);
+                    setTranslationSort(translationOfSort);
+                    setTranslationDiet(translationOfDiet);
+                    setTranslationIntolerance(translationOfIntolerance);
+                    setTranslationType(translationOfType);
+                    setTranslationCuisine(translationOfCuisine);
+                    setTranslationApply(translationOfApply);
+                    setTranslationVD(translationOfVD);
+                    setTranslationNF(translationOfNF);
+                    setTranslationFilters(translationOfFilters);
+                } catch (error) {
+                    console.error('Erreur de traduction filterModal:', error);
+                }
+
+            }else {
+                setTranslationSort("Sort by");
+                setTranslationDiet("Diet");
+                setTranslationIntolerance("Intolerance");
+                setTranslationType("Type of Dish");
+                setTranslationCuisine("Culinary speciality");
+                setTranslationApply("Apply");
+                setTranslationVD("Video duration");
+                setTranslationNF("No results found");
+                setTranslationFilters("Filters");
+            }
+        }
+        fetchTranslation();
+    }, [language]);
+
 
     return (
         <View style={styles.sideView}>
             <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
                 <View style={styles.modalHeader}>
-                    <Text style={[styles.modalTitle, {color:colors.text}]}>Filters</Text>
+                    <Text style={[styles.modalTitle, {color:colors.text}]}>{translationFilters}</Text>
                     <TouchableOpacity onPress={() => setModalVisible(false)}>
                         <Feather name={"x"} size={24} color={colors.text}/>
                     </TouchableOpacity>
@@ -131,7 +185,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                     <View style={styles.modalBody}>
                         {category == 'filterRecipes' &&
                             <>
-                                <Text style={[styles.modalText, {color:colors.text}]}>Sort by</Text>
+                                <Text style={[styles.modalText, {color:colors.text}]}>{translationSort}</Text>
                                 <View style={styles.modalFilter}>
                                     <BouncyCheckboxGroup
                                         data={sortList1}
@@ -144,7 +198,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                 <Separator />
                             </>
                         }
-                        <Text style={[styles.modalText, {color:colors.text}]}>Diet</Text>
+                        <Text style={[styles.modalText, {color:colors.text}]}>{translationDiet}</Text>
                         <View style={styles.modalFilter}>
                             {sortList2.map((item, index) => {
                                 return (
@@ -167,7 +221,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                         <Separator />
                         {category == 'filterRecipes' &&
                             <>
-                                <Text style={[styles.modalText, {color:colors.text}]}>Intolerances</Text>
+                                <Text style={[styles.modalText, {color:colors.text}]}>{translationIntolerance}</Text>
                                 <View style={styles.modalFilter}>
                                     {sortList3.map((item, index) => {
                                         return (
@@ -189,7 +243,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                 <Separator />
                             </>
                         }
-                        <Text style={[styles.modalText, {color:colors.text}]}>Type of Dish</Text>
+                        <Text style={[styles.modalText, {color:colors.text}]}>{translationType}</Text>
                         <View style={styles.modalFilter}>
                             <BouncyCheckboxGroup
                                 data={sortList4}
@@ -202,7 +256,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                         {screenName == 'Search' || category == 'filterVideos' &&
                             <>
                                 <Separator />
-                                <Text style={[styles.modalText, {color:colors.text}]}>Culinary speciality</Text>
+                                <Text style={[styles.modalText, {color:colors.text}]}>{translationCuisine}</Text>
                                 <View style={styles.modalFilter}>
                                     {sortList5.map((item, index) => {
                                         return (
@@ -226,7 +280,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                         {category == 'filterVideos' &&
                             <>
                                 <Separator />
-                                <Text style={[styles.modalText, {color:colors.text}]}>Video duration</Text>
+                                <Text style={[styles.modalText, {color:colors.text}]}>{translationVD}</Text>
                                 <View style={styles.modalFilter}>
                                     <RangeSlider min={0} max={999}
                                                  step={1}
@@ -241,7 +295,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                                                  toKnobColor={'#9fc131'}
                                                  rangeLabelsTextColor={colors.text}
                                     />
-                                    <Text style={{color: colors.text}}>Time : {fromValue} sec to {toValue} sec </Text>
+                                    <Text style={{color: colors.text}}>{translationTime} {fromValue} {translationSec} {toValue} {translationSec2} </Text>
                                 </View>
                             </>
                         }
@@ -249,7 +303,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
                 </ScrollView>
                 <Separator />
                 <TouchableOpacity style={[styles.modalButton, {backgroundColor: colorSpec, borderColor: colors.border}]} onPress={() =>{filterResult(filters), setLoading(true)}} >
-                    <Text style={styles.modalButtonText}>Apply</Text>
+                    <Text style={styles.modalButtonText}>{translationApply}</Text>
                 </TouchableOpacity>
             </View>
         </View>

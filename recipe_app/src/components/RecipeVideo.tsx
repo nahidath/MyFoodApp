@@ -3,9 +3,10 @@ import {View, StyleSheet, TouchableOpacity, Text, Platform} from "react-native";
 import YouTube from 'react-native-youtube';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {useTheme} from "@react-navigation/native";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import { WebView } from 'react-native-webview';
 import YoutubePlayer from "react-native-youtube-iframe";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 
@@ -19,12 +20,31 @@ interface RecipeVideoProps {
 const RecipeVideo = ({videoID, setModalVisible}: RecipeVideoProps) => {
     const {colors} = useTheme();
     const theme = useTheme();
+    const {language,setLanguage, t} = useLanguage();
+    const [translationTitle, setTranslationTitle] = useState("Video");
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfTitle = await t(String(translationTitle));
+                    setTranslationTitle(translationOfTitle);
+                } catch (error) {
+                    console.error('Erreur de traduction recipeVideo:', error);
+                }
+
+            }else {
+                setTranslationTitle("Video");
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
     return (
         <View style={styles.container}>
             <View style={[styles.modalContainer, {backgroundColor: colors.background}]}>
                 <View style={styles.modalHeader}>
-                    <Text style={[styles.modalTitle, {color: colors.text}]}>Video</Text>
+                    <Text style={[styles.modalTitle, {color: colors.text}]}>{translationTitle}</Text>
                     <TouchableOpacity onPress={() => setModalVisible(false)}>
                         <FontAwesome name="close" size={24} color={colors.text} />
                     </TouchableOpacity>
