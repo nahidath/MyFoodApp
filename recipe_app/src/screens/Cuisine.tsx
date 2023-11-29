@@ -33,6 +33,7 @@ const Cuisine = ({route}: Props) => {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [resultsID, setResultsID] = useState<any>([]);
+    const [cuisine, setCuisine] = useState<string>('');
 
 
 
