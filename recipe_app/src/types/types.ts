@@ -21,6 +21,7 @@ export type HomeStackList = {
     AccountStackScreen: undefined;
     Cuisine: {
         cuisine: string;
+        idC: number;
     }
     SearchStackScreen: undefined;
     // NotifScreen: undefined;

@@ -36,6 +36,7 @@ import recipeTags from "../mock/recipePotatoTags.json";
 import CardRecipe from "../components/CardRecipe";
 import {Badge} from "react-native-elements";
 import {IncomingNotificationsContext} from "../../App";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 // @ts-ignore
@@ -68,8 +69,57 @@ const Homepage :  FC = () => {
     const notifsArrived = useContext(IncomingNotificationsContext);
     const [listOfRecipesIds, setListOfRecipesIds] = useState<string[]>([]);
     const [listOfRecipesIds2, setListOfRecipesIds2] = useState<string[]>([]);
+    const [translationCuisine, setTranslationCuisine] = useState<any[]>(cuisinesList);
+    const [translationHi, setTranslationHi] = useState<string>('Hi');
+    const [translationSR, setTranslationSR] = useState<string>('Search recipes');
+    const [translationSR2, setTranslationSR2] = useState<string>('Spotlights recipes');
+    const [translationTI, setTranslationTI] = useState<string>("Today's ingredient : ");
+    const [translationC, setTranslationC] = useState<string>('Cuisines');
+    const [translationDM, setTranslationDM] = useState<string>('Discover more delicious recipes');
+    const [translationIngredient, setTranslationIngredient] = useState<string>(newIngredient);
+    const {language,setLanguage, t} = useLanguage();
 
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                let tc = [];
+                try {
+                    const translationOfHi = await t(String(translationHi));
+                    const translationOfSR = await t(String(translationSR));
+                    const translationOfSR2 = await t(String(translationSR2));
+                    const translationOfTI = await t(String(translationTI));
+                    const translationOfC = await t(String(translationC));
+                    const translationOfDM = await t(String(translationDM));
+                    const translationOfIngredient = await t(String(translationIngredient));
+                    setTranslationHi(translationOfHi);
+                    setTranslationSR(translationOfSR);
+                    setTranslationSR2(translationOfSR2);
+                    setTranslationTI(translationOfTI);
+                    setTranslationC(translationOfC);
+                    setTranslationDM(translationOfDM);
+                    setTranslationIngredient(translationOfIngredient);
+                    for(let i = 0; i < cuisinesList.length; i++){
+                        const translationOfCuisine = await t(String(cuisinesList[i].name));
+                        tc.push(translationOfCuisine);
+                    }
+                    setTranslationCuisine(tc);
+                } catch (error) {
+                    console.log(error);
+                }
+            }else {
+                setTranslationHi('Hi');
+                setTranslationSR('Search recipes');
+                setTranslationSR2('Spotlights recipes');
+                setTranslationTI("Today's ingredient : ");
+                setTranslationC('Cuisines');
+                setTranslationDM('Discover more delicious recipes');
+                setTranslationIngredient(newIngredient);
+                setTranslationCuisine(cuisinesList);
 
+            }
+        }
+        fetchTranslation();
+    },[language]);
 
 
     useFocusEffect(
@@ -249,7 +299,7 @@ const Homepage :  FC = () => {
                                 {/*<Feather name={"user"} size={24} color={colors.text} />*/}
                             </View>
                         </TouchableOpacity>
-                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Hi !' : 'Hi, ' + user.displayName + ' !'}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.headerText, {color: colors.text}]}>{user == null ? translationHi +'!' : translationHi + ', ' + user.displayName + ' !'}</Text>
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                         <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />
@@ -261,7 +311,7 @@ const Homepage :  FC = () => {
                 {/*</View>*/}
                 <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.navigate('Search', {screen :'SearchStackScreen/SearchPage'})}>
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
-                    <Text style={[styles.searchText, {color: colors.text}]}>Search recipes</Text>
+                    <Text style={[styles.searchText, {color: colors.text}]}>{translationSR}</Text>
                 </Pressable>
                 {/*<View style={[styles.searchBloc, general.shadow,styles.searchButton, {backgroundColor:colors.notification}]}>*/}
                 {/*    */}
@@ -274,7 +324,7 @@ const Homepage :  FC = () => {
                 <View style={styles.recipesDisplay}>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Spotlight Recipes</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>{translationSR2}</Text>
                             <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.push('SpotlightRecipes', {recipesArray: recipes})}>
                                 <Feather name={'arrow-right'} size={24} color={colors.text} />
                             </TouchableOpacity>
@@ -293,7 +343,7 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Today's ingredient : {'\n'}{newIngredient.charAt(0).toUpperCase() + newIngredient.slice(1)}</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>{translationTI} {'\n'}{translationIngredient.charAt(0).toUpperCase() + translationIngredient.slice(1)}</Text>
                         </View>
                         <View style={styles.blocDisplay}>
                             {loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :
@@ -309,7 +359,7 @@ const Homepage :  FC = () => {
 
                     </View>
                     <View>
-                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>Cuisines</Text>
+                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>{translationCuisine}</Text>
                         <View style={styles.cuisineBloc}>
                             {cuisinesList.map((cuisine: any) => {
                                 return (
