@@ -69,7 +69,7 @@ const Homepage :  FC = () => {
     const notifsArrived = useContext(IncomingNotificationsContext);
     const [listOfRecipesIds, setListOfRecipesIds] = useState<string[]>([]);
     const [listOfRecipesIds2, setListOfRecipesIds2] = useState<string[]>([]);
-    const [translationCuisine, setTranslationCuisine] = useState<any[]>(cuisinesList);
+    const [translationCuisine, setTranslationCuisine] = useState<any>(cuisinesList);
     const [translationHi, setTranslationHi] = useState<string>('Hi');
     const [translationSR, setTranslationSR] = useState<string>('Search recipes');
     const [translationSR2, setTranslationSR2] = useState<string>('Spotlights recipes');
@@ -100,7 +100,7 @@ const Homepage :  FC = () => {
                     setTranslationIngredient(translationOfIngredient);
                     for(let i = 0; i < cuisinesList.length; i++){
                         const translationOfCuisine = await t(String(cuisinesList[i].name));
-                        tc.push(translationOfCuisine);
+                        tc.push({id: cuisinesList[i].id, name: translationOfCuisine, image: cuisinesList[i].image})
                     }
                     setTranslationCuisine(tc);
                 } catch (error) {
@@ -359,11 +359,11 @@ const Homepage :  FC = () => {
 
                     </View>
                     <View>
-                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>{translationCuisine}</Text>
+                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>{translationC}</Text>
                         <View style={styles.cuisineBloc}>
-                            {cuisinesList.map((cuisine: any) => {
+                            {translationCuisine.map((cuisine: any) => {
                                 return (
-                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name})} activeOpacity={0.4}>
+                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name, idc: cuisine.id})} activeOpacity={0.4}>
                                         <LinearGradient
                                             colors={['rgba(0,0,0,0.8)','transparent' ]}
                                             style={styles.cuisineGradient}
@@ -376,7 +376,7 @@ const Homepage :  FC = () => {
 
                             })}
                             <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: '#9fc131', alignItems:'center', justifyContent: 'center', flexDirection: 'column'}]} onPress={() => navigation.navigate('Search', {screen :'SearchStackScreen/SearchPage'})} activeOpacity={0.4}>
-                                <Text style={styles.cuisineBlocItemText2}>Discover more delicious recipes 😋</Text>
+                                <Text style={styles.cuisineBlocItemText2}>{translationDM} 😋</Text>
                                 {/*<Feather name={"arrow-right"} size={30} color={"#f2f2f2"} />*/}
                                 <Image source={require('../../assets/arrow-right.gif')} style={{width: 30, height: 30}} />
                             </TouchableOpacity>
