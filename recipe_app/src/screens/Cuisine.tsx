@@ -16,6 +16,7 @@ import {FilterModal} from "../components/Filters";
 import Separator from "../components/Separator";
 import {SkeletonView} from "../components/SkeletonLoader";
 import recipeCuisine from "../mock/recipesAsianCuisine.json";
+import cuisinesList from "../data/cuisinesList";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
@@ -25,6 +26,7 @@ const Cuisine = ({route}: Props) => {
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipesC, setRecipesC ] = useState<any>([]);
     let cuisineFromHP  = route.params.cuisine;
+    let icCuisineFromHP = route.params.idC;
     const navigation = useNavigation<CuisineScreenProps>();
     const [results, setResults] = useState<any>([]);
     const [noResults, setNoResults] = useState<string>('');
@@ -33,12 +35,12 @@ const Cuisine = ({route}: Props) => {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [resultsID, setResultsID] = useState<any>([]);
-    const [cuisine, setCuisine] = useState<string>('');
+    let cuisine= cuisinesList[icCuisineFromHP].name;
 
 
 
     const getRecipesByCuisine = () => {
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP.toLowerCase()} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisine.toLowerCase()} }).then((response) => {
             setRecipesC(response.data.results);
             setResultsID(response.data.results.map((item: any) => item.id));
             setLoading(false);
