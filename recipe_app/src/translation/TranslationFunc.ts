@@ -1,3 +1,4 @@
+import {useLanguage} from "./LanguageContext";
 
 
 interface TranslationFuncProps {
@@ -5,7 +6,19 @@ interface TranslationFuncProps {
 }
 
 const TranslationFunc = ({ params }: TranslationFuncProps) => {
-    const { t } = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
 
-    return t(...params);
+    let translated = [];
+    try{
+        for(let i = 0; i < params.length; i++){
+            const tt = t(params[i]);
+            translated.push(tt);
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+
+
+
 }
