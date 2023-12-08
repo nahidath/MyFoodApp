@@ -10,15 +10,18 @@ const TranslationFunc = ({ params }: TranslationFuncProps) => {
 
     let translated = [];
     try{
-        for(let i = 0; i < params.length; i++){
-            const tt = t(params[i]);
-            translated.push(tt);
+        if(params) {
+            for (let i = 0; i < params.length; i++) {
+                const tt = t(params[i]);
+                translated.push(tt);
+            }
         }
     }
     catch(err){
         console.log(err);
     }
-
-
+    return translated;
 
 }
+
+export default TranslationFunc;
