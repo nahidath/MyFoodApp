@@ -17,12 +17,17 @@ import Separator from "../components/Separator";
 import {SkeletonView} from "../components/SkeletonLoader";
 import recipeCuisine from "../mock/recipesAsianCuisine.json";
 import cuisinesList from "../data/cuisinesList";
+import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
 // @ts-ignore
 type CuisineScreenProps = MyStackNavigationProp<HomeStackList, 'Cuisine'>;
 const Cuisine = ({route}: Props) => {
+    const {translationFunc} = useTranslation();
+
+    const {language,setLanguage, t} = useLanguage();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipesC, setRecipesC ] = useState<any>([]);
     let cuisineFromHP  = route.params.cuisine;
@@ -36,6 +41,12 @@ const Cuisine = ({route}: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [resultsID, setResultsID] = useState<any>([]);
     let cuisine= cuisinesList[icCuisineFromHP].name;
+    const[translationVegan, setTranslationVegan] = useState<string>("Vegan");
+    const[translationVeryHealthy, setTranslationVeryHealthy] = useState<string>("Very Healthy");
+    const[translationGlutenFree, setTranslationGlutenFree] = useState<string>("Gluten Free");
+    const[translationVegetarian, setTranslationVegetarian] = useState<string>("Vegetarian");
+    const[translationDairyFree, setTranslationDairyFree] = useState<string>("Dairy Free");
+
 
 
 
@@ -61,6 +72,18 @@ const Cuisine = ({route}: Props) => {
         setLoading(true);
         getRecipesByCuisine();
     },[])
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translationVegan, translationVeryHealthy, translationGlutenFree, translationVegetarian, translationDairyFree])
+                } catch (error) {
+                    console.error('Erreur de traduction contact:', error);
+                }
+            }
+        }
+    }, [language]);
 
     const formatTime = (time: number) => {
         const hours = Math.floor(time / 60);

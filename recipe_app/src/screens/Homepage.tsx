@@ -79,47 +79,47 @@ const Homepage :  FC = () => {
     const [translationIngredient, setTranslationIngredient] = useState<string>(newIngredient);
     const {language,setLanguage, t} = useLanguage();
 
-    useEffect(() => {
-        const fetchTranslation = async () => {
-            if(language != "EN-US") {
-                let tc = [];
-                try {
-                    const translationOfHi = await t(String(translationHi));
-                    const translationOfSR = await t(String(translationSR));
-                    const translationOfSR2 = await t(String(translationSR2));
-                    const translationOfTI = await t(String(translationTI));
-                    const translationOfC = await t(String(translationC));
-                    const translationOfDM = await t(String(translationDM));
-                    const translationOfIngredient = await t(String(translationIngredient));
-                    setTranslationHi(translationOfHi);
-                    setTranslationSR(translationOfSR);
-                    setTranslationSR2(translationOfSR2);
-                    setTranslationTI(translationOfTI);
-                    setTranslationC(translationOfC);
-                    setTranslationDM(translationOfDM);
-                    setTranslationIngredient(translationOfIngredient);
-                    for(let i = 0; i < cuisinesList.length; i++){
-                        const translationOfCuisine = await t(String(cuisinesList[i].name));
-                        tc.push({id: cuisinesList[i].id, name: translationOfCuisine, image: cuisinesList[i].image})
-                    }
-                    setTranslationCuisine(tc);
-                } catch (error) {
-                    console.log(error);
-                }
-            }else {
-                setTranslationHi('Hi');
-                setTranslationSR('Search recipes');
-                setTranslationSR2('Spotlights recipes');
-                setTranslationTI("Today's ingredient : ");
-                setTranslationC('Cuisines');
-                setTranslationDM('Discover more delicious recipes');
-                setTranslationIngredient(newIngredient);
-                setTranslationCuisine(cuisinesList);
-
-            }
-        }
-        fetchTranslation();
-    },[language]);
+    // useEffect(() => {
+    //     const fetchTranslation = async () => {
+    //         if(language != "EN-US") {
+    //             let tc = [];
+    //             try {
+    //                 const translationOfHi = await t(String(translationHi));
+    //                 const translationOfSR = await t(String(translationSR));
+    //                 const translationOfSR2 = await t(String(translationSR2));
+    //                 const translationOfTI = await t(String(translationTI));
+    //                 const translationOfC = await t(String(translationC));
+    //                 const translationOfDM = await t(String(translationDM));
+    //                 const translationOfIngredient = await t(String(translationIngredient));
+    //                 setTranslationHi(translationOfHi);
+    //                 setTranslationSR(translationOfSR);
+    //                 setTranslationSR2(translationOfSR2);
+    //                 setTranslationTI(translationOfTI);
+    //                 setTranslationC(translationOfC);
+    //                 setTranslationDM(translationOfDM);
+    //                 setTranslationIngredient(translationOfIngredient);
+    //                 for(let i = 0; i < cuisinesList.length; i++){
+    //                     const translationOfCuisine = await t(String(cuisinesList[i].name));
+    //                     tc.push({id: cuisinesList[i].id, name: translationOfCuisine, image: cuisinesList[i].image})
+    //                 }
+    //                 setTranslationCuisine(tc);
+    //             } catch (error) {
+    //                 console.log(error);
+    //             }
+    //         }else {
+    //             setTranslationHi('Hi');
+    //             setTranslationSR('Search recipes');
+    //             setTranslationSR2('Spotlights recipes');
+    //             setTranslationTI("Today's ingredient : ");
+    //             setTranslationC('Cuisines');
+    //             setTranslationDM('Discover more delicious recipes');
+    //             setTranslationIngredient(newIngredient);
+    //             setTranslationCuisine(cuisinesList);
+    //
+    //         }
+    //     }
+    //     fetchTranslation();
+    // },[language]);
 
 
     useFocusEffect(

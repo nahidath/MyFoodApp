@@ -29,12 +29,14 @@ import profile from "../stylesheets/Profile_stylesheet";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 // @ts-ignore
 type AccountProps = MyStackNavigationProp<AccountStackList, 'AccountPage'>;
 
 const Account : FC = () => {
+    const {translationFunc} = useTranslation();
 
     const {colors} = useTheme();
     const theme = useTheme();
@@ -88,43 +90,34 @@ const Account : FC = () => {
     }, [auth]);
 
     useEffect(() => {
-        console.log('translated', translated);
         const fetchTranslation = async () => {
-            if(translated) {
-                if(language !='EN-US') {
+            if (translated) {
+                if (language != 'EN-US') {
                     try {
-                        const translationOfSettings = await t(translatedSettings);
-                        const translationOfNotification = await t(translatedNotification);
-                        const translationOfAppearance = await t(translatedAppearance);
-                        const translationOfLanguages = await t(translatedLanguages);
-                        const translationOfLoving = await t(translatedLoving);
-                        const translationOfRate = await t(translatedRate);
-                        const translationOfShare = await t(translatedShare);
-                        const translationOfPrivacy = await t(translatedPrivacy);
-                        const translationOfTerms = await t(translatedTerms);
-                        const translationOfLogout = await t(translatedLogout);
-                        const translationOfChooseLanguage = await t(translatedChooseLanguage);
-                        const translationOfEnglish = await t(translatedEnglish);
-                        const translationOfFrench = await t(translatedFrench);
-                        const translationOfAbout = await t(translatedAbout);
-                        setTranslatedSettings(translationOfSettings);
-                        setTranslatedNotification(translationOfNotification);
-                        setTranslatedAppearance(translationOfAppearance);
-                        setTranslatedLanguages(translationOfLanguages);
-                        setTranslatedLoving(translationOfLoving);
-                        setTranslatedRate(translationOfRate);
-                        setTranslatedShare(translationOfShare);
-                        setTranslatedPrivacy(translationOfPrivacy);
-                        setTranslatedTerms(translationOfTerms);
-                        setTranslatedLogout(translationOfLogout);
-                        setTranslatedChooseLanguage(translationOfChooseLanguage);
-                        setTranslatedEnglish(translationOfEnglish);
-                        setTranslatedFrench(translationOfFrench);
-                        setTranslatedAbout(translationOfAbout);
+
+                        const elementsTranslated = await translationFunc([translatedSettings, translatedNotification, translatedAppearance, translatedLanguages, translatedLoving, translatedRate, translatedShare, translatedPrivacy, translatedTerms, translatedLogout, translatedChooseLanguage, translatedEnglish, translatedFrench, translatedAbout])
+
+                        setTranslatedSettings(elementsTranslated[0]);
+                        setTranslatedNotification( elementsTranslated[1]);
+                        setTranslatedAppearance(elementsTranslated[2]);
+                        setTranslatedLanguages( elementsTranslated[3]);
+                        setTranslatedLoving(elementsTranslated[4]);
+                        setTranslatedRate( elementsTranslated[5]);
+                        setTranslatedShare( elementsTranslated[6]);
+                        setTranslatedPrivacy( elementsTranslated[7]);
+                        setTranslatedTerms( elementsTranslated[8]);
+                        setTranslatedLogout( elementsTranslated[9]);
+                        setTranslatedChooseLanguage( elementsTranslated[10]);
+                        setTranslatedEnglish( elementsTranslated[11]);
+                        setTranslatedFrench( elementsTranslated[12]);
+                        setTranslatedAbout( elementsTranslated[13]);
+
+
+
                     } catch (e) {
                         console.log('Error when translating text:', e);
                     }
-                }else {
+                } else {
                     setTranslatedSettings('Settings');
                     setTranslatedNotification('Notifications');
                     setTranslatedAppearance('Appearance');

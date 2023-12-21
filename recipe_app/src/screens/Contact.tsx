@@ -18,11 +18,14 @@ import emailjs from '@emailjs/browser';
 import {REACT_APP_EMAIL_PUBLIC_KEY, REACT_APP_SERVICE_EMAIL} from "@env";
 import {useTheme} from "@react-navigation/native";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 
 
 const Contact = () => {
+    const {translationFunc} = useTranslation();
+
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -51,22 +54,16 @@ const Contact = () => {
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOf1 = await t(String(translation1));
-                    const translationOf2 = await t(String(translation2));
-                    const translationOf3 = await t(String(translation3));
-                    const translationOf4 = await t(String(translation4));
-                    const translationOf5 = await t(String(translation5));
-                    const translationOf6 = await t(String(translation6));
-                    const translationOf7 = await t(String(translation7));
-                    const translationOf8 = await t(String(translation8));
-                    setTranslation1(translationOf1);
-                    setTranslation2(translationOf2);
-                    setTranslation3(translationOf3);
-                    setTranslation4(translationOf4);
-                    setTranslation5(translationOf5);
-                    setTranslation6(translationOf6);
-                    setTranslation7(translationOf7);
-                    setTranslation8(translationOf8);
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8])
+
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+                    setTranslation5(elementsTranslated[4]);
+                    setTranslation6(elementsTranslated[5]);
+                    setTranslation7(elementsTranslated[6]);
+                    setTranslation8(elementsTranslated[7]);
                 } catch (error) {
                     console.error('Erreur de traduction contact:', error);
                 }
