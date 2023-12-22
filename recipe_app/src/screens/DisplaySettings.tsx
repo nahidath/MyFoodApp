@@ -8,14 +8,21 @@ import {useTheme} from "@react-navigation/native";
 import {color} from "react-native-elements/dist/helpers";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {useTranslation} from "../translation/TranslationFunc";
 
 interface DisplaySettingsProps {
     themeContext: any;
 }
 
 const DisplaySettings = () => {
+    const {translationFunc} = useTranslation();
+
 
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
+    const [translation1, setTranslation1] = useState<string>("Application theme")
+    const [translation2, setTranslation2] = useState<string>("Selecting a particular option will change the appearance (coloring) of the application according to your preferences")
+    // const [translation3, setTranslation3] = useState<string>("Selecting a particular option will change the appearance (coloring) of the application according to your preferences")
+
 
     // @ts-ignore
     const { setTheme, theme } = React.useContext(ThemeContext);

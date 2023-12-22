@@ -46,6 +46,8 @@ const Cuisine = ({route}: Props) => {
     const[translationGlutenFree, setTranslationGlutenFree] = useState<string>("Gluten Free");
     const[translationVegetarian, setTranslationVegetarian] = useState<string>("Vegetarian");
     const[translationDairyFree, setTranslationDairyFree] = useState<string>("Dairy Free");
+    const [translationRF, setTranslationRF] = useState<string>("Result founded");
+    const [translationRFS, setTranslationRFS] = useState<string>("Results founded");
 
 
 
@@ -77,12 +79,29 @@ const Cuisine = ({route}: Props) => {
         const fetchTranslation = async () => {
             if (language != 'EN-US') {
                 try {
-                    const elementsTranslated = await translationFunc([translationVegan, translationVeryHealthy, translationGlutenFree, translationVegetarian, translationDairyFree])
+                    const elementsTranslated = await translationFunc([translationVegan, translationVeryHealthy, translationGlutenFree, translationVegetarian, translationDairyFree, translationRF, translationRFS])
+                    setTranslationVegan(elementsTranslated[0]);
+                    setTranslationVeryHealthy(elementsTranslated[1]);
+                    setTranslationGlutenFree(elementsTranslated[2]);
+                    setTranslationVegetarian(elementsTranslated[3]);
+                    setTranslationDairyFree(elementsTranslated[4]);
+                    setTranslationRF(elementsTranslated[5]);
+                    setTranslationRFS(elementsTranslated[6]);
                 } catch (error) {
                     console.error('Erreur de traduction contact:', error);
                 }
+            }else{
+                setTranslationVegan("Vegan");
+                setTranslationVeryHealthy("Very Healthy");
+                setTranslationGlutenFree("Gluten Free");
+                setTranslationVegetarian("Vegetarian");
+                setTranslationDairyFree("Dairy Free");
+                setTranslationRF("Result founded");
+                setTranslationRFS("Results founded")
+
             }
         }
+        fetchTranslation();
     }, [language]);
 
     const formatTime = (time: number) => {
@@ -124,7 +143,7 @@ const Cuisine = ({route}: Props) => {
                     <FontAwesome name="filter" size={30} color="#ffffff" />
                 </TouchableOpacity>
 
-            {isSearch && <View><Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 0 ? noResults : nbResults == 1 ? "Result founded" : "Results founded" } </Text><Separator /></View>}
+            {isSearch && <View><Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 0 ? noResults : nbResults == 1 ? translationRF : translationRFS } </Text><Separator /></View>}
             <ScrollView>
                 {recipesC.map((recipe: any, index:any) => {
                     return (
@@ -140,11 +159,11 @@ const Cuisine = ({route}: Props) => {
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>
-                                {recipe.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
-                                {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
-                                {recipe.glutenFree && <Text style={styles.blocRecipeLabelText}>Gluten Free</Text>}
-                                {recipe.vegetarian && <Text style={styles.blocRecipeLabelText}>Vegetarian</Text>}
-                                {recipe.dairyFree && <Text style={styles.blocRecipeLabelText}>Dairy Free</Text>}
+                                {recipe.vegan && <Text style={styles.blocRecipeLabelText}>{translationVegan}</Text>}
+                                {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>{translationVeryHealthy}</Text>}
+                                {recipe.glutenFree && <Text style={styles.blocRecipeLabelText}>{translationGlutenFree}</Text>}
+                                {recipe.vegetarian && <Text style={styles.blocRecipeLabelText}>{translationVegetarian}</Text>}
+                                {recipe.dairyFree && <Text style={styles.blocRecipeLabelText}>{translationDairyFree}</Text>}
                             </View>
                         </TouchableOpacity>
                     )
