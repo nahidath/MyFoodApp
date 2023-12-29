@@ -33,6 +33,8 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
@@ -46,6 +48,8 @@ type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
 
 //Login function and principal screen
 export default function Login () {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -60,6 +64,24 @@ export default function Login () {
     const [modalVisible, setModalVisible] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [sent, setSent] = useState(false);
+    const [translation1, setTranslation1] = useState<string>('Please enter your email and password');
+    const [translation2, setTranslation2] = useState<string>('Your email or password was incorrect');
+    const [translation3, setTranslation3] = useState<string>('Email sent');
+    const [translation4, setTranslation4] = useState<string>('Please check your email to reset your password');
+    const [translation5, setTranslation5] = useState<string>('There was a problem with your request. Please try again later');
+    const [translation6, setTranslation6] = useState<string>('Let\'s sign you in.');
+    const [translation7, setTranslation7] = useState<string>('Welcome back !');
+    const [translation8, setTranslation8] = useState<string>('Forgot password ?');
+    const [translation9, setTranslation9] = useState<string>('Log in');
+    const [translation10, setTranslation10] = useState<string>('Or');
+    const [translation11, setTranslation11] = useState<string>('Don\'t have an account ?');
+    const [translation12, setTranslation12] = useState<string>('Register');
+    const [translation13, setTranslation13] = useState<string>('I forgot my password');
+    const [translation14, setTranslation14] = useState<string>('Please enter your email address below and you will receive a link to create a new password via email.');
+    const [translation15, setTranslation15] = useState<string>('Submit');
+
+
+
 
 
     // const {from} = route.params;
@@ -74,6 +96,50 @@ export default function Login () {
             setLoggedIn(false);
         }
     });
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8, translation9, translation10, translation11, translation12, translation13, translation14, translation15]);
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+                    setTranslation5(elementsTranslated[4]);
+                    setTranslation6(elementsTranslated[5]);
+                    setTranslation7(elementsTranslated[6]);
+                    setTranslation8(elementsTranslated[7]);
+                    setTranslation9(elementsTranslated[8]);
+                    setTranslation10(elementsTranslated[9]);
+                    setTranslation11(elementsTranslated[10]);
+                    setTranslation12(elementsTranslated[11]);
+                    setTranslation13(elementsTranslated[12]);
+                    setTranslation14(elementsTranslated[13]);
+                    setTranslation15(elementsTranslated[14]);
+                } catch (error) {
+                    console.error('Erreur de traduction Login:', error);
+                }
+            }else {
+                setTranslation1('Please enter your email and password');
+                setTranslation2('Your email or password was incorrect');
+                setTranslation3('Email sent');
+                setTranslation4('Please check your email to reset your password');
+                setTranslation5('There was a problem with your request. Please try again later');
+                setTranslation6('Let\'s sign you in.');
+                setTranslation7('Welcome back !');
+                setTranslation8('Forgot password ?');
+                setTranslation9('Log in');
+                setTranslation10('Or');
+                setTranslation11('Don\'t have an account ?');
+                setTranslation12('Register');
+                setTranslation13('I forgot my password');
+                setTranslation14('Please enter your email address below and you will receive a link to create a new password via email.');
+                setTranslation15('Submit');
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
     // useFocusEffect(
     //     React.useCallback(() => {
@@ -90,7 +156,7 @@ export default function Login () {
         // const refreshToken: string = auth.currentUser?.refreshToken as string;
 
         if(email === '' || password === '') {
-            setError('Please enter your email and password');
+            setError(translation1);
             return;
         }
         try {
@@ -111,7 +177,7 @@ export default function Login () {
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password') {
-                setError('Your email or password was incorrect');
+                setError(translation2);
                 setPassword('');
             }
             // else { // @ts-ignore
@@ -130,8 +196,8 @@ export default function Login () {
             setSubmitted(true);
             setError('');
             setSent(true);
-            Alert.alert('Email sent',
-                'Please check your email to reset your password',
+            Alert.alert(translation3,
+                translation4,
                 [
                     {
                         text: "Ok",
@@ -142,9 +208,9 @@ export default function Login () {
         } catch (e) {
             // @ts-ignore
             if (e.code === 'auth/user-not-found') {
-                setError('User not found with this email');
+                setError(translation5);
             } else {
-                setError('There was a problem with your request. Please try again later');
+                setError(translation6);
             }
         }
     }
