@@ -9,15 +9,46 @@ import {useTheme} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {child, ref, remove, set} from "firebase/database";
 import {auth, database} from "../firebase/config";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 
 const NotificationSettings = () => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const {colors} = useTheme();
     const theme = useTheme();
     const [isEnabledPush, setIsEnabledPush] = useState(false);
     const [isEnabledEmail, setIsEnabledEmail] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
+    const [translation1, setTranslation1] = useState<string>("System notifications");
+    const [translation2, setTranslation2] = useState<string>("Receive notifications about latest recipes updates.");
+    const [translation3, setTranslation3] = useState<string>("Notification Push");
+    const [translation4, setTranslation4] = useState<string>("Notification Email");
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4]);
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+
+                } catch (error) {
+                    console.error('Erreur de traduction NotificationSettings:', error);
+                }
+            }else {
+                setTranslation1("System notifications");
+                setTranslation2("Receive notifications about latest recipes updates.");
+                setTranslation3("Notification Push");
+                setTranslation4("Notification Email");
+            }
+        }
+        fetchTranslation();
+    }, [language])
 
     //Email Notifs
     const toggleSwitchEmail = () => setIsEnabledEmail(previousStateEmail => !previousStateEmail);
@@ -110,12 +141,12 @@ const NotificationSettings = () => {
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" /> : <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <View style={{margin: 10}}>
                 <View style={styles.titleContainer}>
-                    <Text style={[styles.title, {color: colors.text}]}>System notifications</Text>
-                    <Text style={styles.subTitle}>Receive notifications about latest recipes updates.</Text>
+                    <Text style={[styles.title, {color: colors.text}]}>{translation1}</Text>
+                    <Text style={styles.subTitle}>{translation2}</Text>
                 </View>
                 <View style={styles.switchContainer}>
                     <View style={[styles.pusherContainer, general.shadow, {backgroundColor:colors.notification}]}>
-                        <Text style={[styles.textTitle, {color:colors.text}]}>Notification Push</Text>
+                        <Text style={[styles.textTitle, {color:colors.text}]}>{translation3}</Text>
                         <Switch
                             trackColor={{false: '#767577', true: '#b1dad6'}}
                             thumbColor={isEnabledPush ? '#008375' : '#f4f3f4'}
@@ -125,7 +156,7 @@ const NotificationSettings = () => {
                         />
                     </View>
                     <View style={[styles.pusherContainer, general.shadow, {backgroundColor: colors.notification}]}>
-                        <Text style={[styles.textTitle, {color: colors.text}]}>Notification Email</Text>
+                        <Text style={[styles.textTitle, {color: colors.text}]}>{translation4}</Text>
                         <Switch
                             trackColor={{false: '#767577', true: '#b1dad6'}}
                             thumbColor={isEnabledEmail? '#008375' : '#f4f3f4'}

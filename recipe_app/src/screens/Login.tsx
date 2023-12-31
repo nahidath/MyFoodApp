@@ -68,17 +68,21 @@ export default function Login () {
     const [translation2, setTranslation2] = useState<string>('Your email or password was incorrect');
     const [translation3, setTranslation3] = useState<string>('Email sent');
     const [translation4, setTranslation4] = useState<string>('Please check your email to reset your password');
-    const [translation5, setTranslation5] = useState<string>('There was a problem with your request. Please try again later');
-    const [translation6, setTranslation6] = useState<string>('Let\'s sign you in.');
-    const [translation7, setTranslation7] = useState<string>('Welcome back !');
-    const [translation8, setTranslation8] = useState<string>('Forgot password ?');
-    const [translation9, setTranslation9] = useState<string>('Log in');
-    const [translation10, setTranslation10] = useState<string>('Or');
-    const [translation11, setTranslation11] = useState<string>('Don\'t have an account ?');
-    const [translation12, setTranslation12] = useState<string>('Register');
-    const [translation13, setTranslation13] = useState<string>('I forgot my password');
-    const [translation14, setTranslation14] = useState<string>('Please enter your email address below and you will receive a link to create a new password via email.');
-    const [translation15, setTranslation15] = useState<string>('Submit');
+    const [translation5, setTranslation5] = useState<string>('User not found with this email');
+
+    const [translation6, setTranslation6] = useState<string>('There was a problem with your request. Please try again later');
+    const [translation7, setTranslation7] = useState<string>('Let\'s sign you in.');
+    const [translation8, setTranslation8] = useState<string>('Welcome back !');
+    const [translation9, setTranslation9] = useState<string>('Forgot password ?');
+    const [translation10, setTranslation10] = useState<string>('Log in');
+    const [translation11, setTranslation11] = useState<string>('Or');
+    const [translation12, setTranslation12] = useState<string>('Don\'t have an account ?');
+    const [translation13, setTranslation13] = useState<string>('Register');
+    const [translation14, setTranslation14] = useState<string>('I forgot my password');
+    const [translation15, setTranslation15] = useState<string>('Please enter your email address below and you will receive a link to create a new password via email.');
+    const [translation16, setTranslation16] = useState<string>('Submit');
+    const [placeholder1, setPlaceholder1] = useState<string>('Email');
+    const [placeholder2, setPlaceholder2] = useState<string>('Password');
 
 
 
@@ -101,7 +105,7 @@ export default function Login () {
         const fetchTranslation = async () => {
             if (language != 'EN-US') {
                 try {
-                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8, translation9, translation10, translation11, translation12, translation13, translation14, translation15]);
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8, translation9, translation10, translation11, translation12, translation13, translation14, translation15, translation16, placeholder1, placeholder2]);
                     setTranslation1(elementsTranslated[0]);
                     setTranslation2(elementsTranslated[1]);
                     setTranslation3(elementsTranslated[2]);
@@ -117,6 +121,9 @@ export default function Login () {
                     setTranslation13(elementsTranslated[12]);
                     setTranslation14(elementsTranslated[13]);
                     setTranslation15(elementsTranslated[14]);
+                    setTranslation16(elementsTranslated[15]);
+                    setPlaceholder1(elementsTranslated[16]);
+                    setPlaceholder2(elementsTranslated[17]);
                 } catch (error) {
                     console.error('Erreur de traduction Login:', error);
                 }
@@ -125,17 +132,20 @@ export default function Login () {
                 setTranslation2('Your email or password was incorrect');
                 setTranslation3('Email sent');
                 setTranslation4('Please check your email to reset your password');
-                setTranslation5('There was a problem with your request. Please try again later');
-                setTranslation6('Let\'s sign you in.');
-                setTranslation7('Welcome back !');
-                setTranslation8('Forgot password ?');
-                setTranslation9('Log in');
-                setTranslation10('Or');
-                setTranslation11('Don\'t have an account ?');
-                setTranslation12('Register');
-                setTranslation13('I forgot my password');
-                setTranslation14('Please enter your email address below and you will receive a link to create a new password via email.');
-                setTranslation15('Submit');
+                setTranslation5('User not found with this email');
+                setTranslation6('There was a problem with your request. Please try again later');
+                setTranslation7('Let\'s sign you in.');
+                setTranslation8('Welcome back !');
+                setTranslation9('Forgot password ?');
+                setTranslation10('Log in');
+                setTranslation11('Or');
+                setTranslation12('Don\'t have an account ?');
+                setTranslation13('Register');
+                setTranslation14('I forgot my password');
+                setTranslation15('Please enter your email address below and you will receive a link to create a new password via email.');
+                setTranslation16('Submit');
+                setPlaceholder1('Email');
+                setPlaceholder2('Password');
             }
         }
         fetchTranslation();
@@ -236,8 +246,8 @@ export default function Login () {
             {/*{loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}*/}
             <KeyboardAwareScrollView>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Let's sign you in.</Text>
-                    <Text style={styles.subtitle}>Welcome back !</Text>
+                    <Text style={styles.title}>{translation7}</Text>
+                    <Text style={styles.subtitle}>{translation8}</Text>
 
                 </View>
                     {error && <Text style={styles.error}>{error}</Text>}
@@ -246,7 +256,7 @@ export default function Login () {
                         <Feather name={'user'} size={20} color={"#f2f2f2"} style={styles.icon} />
                         <TextInput
                             style={styles.input}
-                            placeholder="Email"
+                            placeholder={placeholder1}
                             placeholderTextColor={"#f2f2f2"}
                             onChangeText={setEmail}
                             value={email}
@@ -257,7 +267,7 @@ export default function Login () {
                         <Feather name={'lock'} size={20} color={"#f2f2f2"} style={styles.icon} />
                         <TextInput
                             style={[styles.input,  {paddingRight: 45}]}
-                            placeholder="Password"
+                            placeholder={placeholder2}
                             placeholderTextColor={"#f2f2f2"}
                             onChangeText={setPassword}
                             value={password}
@@ -267,17 +277,17 @@ export default function Login () {
                     </View>
 
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <Text style={styles.link}>Forgot password ?</Text>
+                        <Text style={styles.link}>{translation9}</Text>
                     </TouchableOpacity>
                     <View style={styles.inputZone}>
                         <TouchableOpacity style={styles.loginBtn}
                                           onPress={() => handleLogin()} activeOpacity={0.5}
                         >
-                            <Text style={styles.btnText}>Log in <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
+                            <Text style={styles.btnText}>{translation10} <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
                         </TouchableOpacity>
                         <View style={styles.divider}>
                             <View style={styles.line}></View>
-                            <Text style={styles.dividerText}>Or</Text>
+                            <Text style={styles.dividerText}>{translation11}</Text>
                             <View style={styles.line}></View>
                         </View>
                         <View style={styles.socialLogin}>
@@ -297,7 +307,7 @@ export default function Login () {
                         {/*</TouchableOpacity>*/}
                     </View>
                     <View style={styles.registerAsk}>
-                        <Text style={styles.text}>Don't have an account ? <Link to={'/Register'} style={styles.registerButton}>Register</Link></Text>
+                        <Text style={styles.text}>{translation12} <Link to={'/Register'} style={styles.registerButton}>{translation13}</Link></Text>
                     </View>
 
 
@@ -315,15 +325,15 @@ export default function Login () {
                                     <TouchableOpacity style={{alignItems:'flex-end'}} onPress={() => setModalVisible(false)}>
                                         <Feather name={"x"} size={24} color={'#9c9c9c'}/>
                                     </TouchableOpacity>
-                                    <Text style={[styles.modalTitle, {color: colors.text}]}>I forgot my password</Text>
+                                    <Text style={[styles.modalTitle, {color: colors.text}]}>{translation14}</Text>
                                 </View>
                                 {/*{sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}*/}
-                                    <Text style={[styles.modalText, {color: colors.text}]}>Please enter your email address below and you will receive a link to create a new password via email.</Text>
+                                    <Text style={[styles.modalText, {color: colors.text}]}>{translation15}</Text>
                                 {error && <Text style={styles.error}>{error}</Text>}
                                 <View style={styles.inputZone}>
                                     <TextInput
                                         style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
-                                        placeholder="Email"
+                                        placeholder={placeholder1}
                                         placeholderTextColor={colors.text}
                                         onChangeText={setEmail}
                                         value={email}
@@ -332,7 +342,7 @@ export default function Login () {
                                     <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
                                                         onPress={() => resetPassword()}
                                     >
-                                        <Text style={styles.btnText}>Submit <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
+                                        <Text style={styles.btnText}>{translation16} <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
