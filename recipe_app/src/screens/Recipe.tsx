@@ -45,6 +45,8 @@ import { ref, set, remove, child } from "firebase/database";
 import RecipeVideo from "../components/RecipeVideo";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import {CarouselRecipes} from "../components/CarouselRecipes";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 
@@ -53,6 +55,8 @@ type Props = NativeStackScreenProps<HomeStackList, 'Recipe'>;
 type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 
 const Recipe = ({route}: Props) => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const navigation = useNavigation<RecipesScreenProps>();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipe, setRecipe] = useState<any>([]);
@@ -78,6 +82,80 @@ const Recipe = ({route}: Props) => {
     const [fontSize, setFontSize] = useState<number>(30);
     const titleRef = useRef<Text>(null);
     const [allRecipes , setAllRecipes] = useState<any>(listOfRecipes);
+    const [translation1, setTranslation1] = useState<string>("minutes");
+    const [translation2, setTranslation2] = useState<string>("Hey, I found this recipe on Recipe App, check it out!");
+    const [translation3, setTranslation3] = useState<string>("Confirmation");
+    const [translation4, setTranslation4] = useState<string>("Are you sure you want to delete this recipe?");
+    const [translation5, setTranslation5] = useState<string>("No");
+    const [translation6, setTranslation6] = useState<string>("Yes");
+    const [translation7, setTranslation7] = useState<string>("Vegan");
+    const [translation8, setTranslation8] = useState<string>("Vegetarian");
+    const [translation9, setTranslation9] = useState<string>("Gluten Free");
+    const [translation10, setTranslation10] = useState<string>("Dairy Free");
+    const [translation11, setTranslation11] = useState<string>("Very Healthy");
+    const [translation12, setTranslation12] = useState<string>("INGREDIENTS");
+    const [translation13, setTranslation13] = useState<string>("No ingredients available");
+    const [translation14, setTranslation14] = useState<string>("PREPARATION");
+    const [translation15, setTranslation15] = useState<string>("No instructions available");
+    const [translation16, setTranslation16] = useState<string>("Enjoy your meal !");
+    const [translation17, setTranslation17] = useState<string>("Ready in");
+    const [translation18, setTranslation18] = useState<string>("Serves");
+    const [translation19, setTranslation19] = useState<string>("people");
+
+
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8, translation9, translation10, translation11, translation12, translation13, translation14, translation15, translation16, translation17, translation18, translation19]);
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+                    setTranslation5(elementsTranslated[4]);
+                    setTranslation6(elementsTranslated[5]);
+                    setTranslation7(elementsTranslated[6]);
+                    setTranslation8(elementsTranslated[7]);
+                    setTranslation9(elementsTranslated[8]);
+                    setTranslation10(elementsTranslated[9]);
+                    setTranslation11(elementsTranslated[10]);
+                    setTranslation12(elementsTranslated[11]);
+                    setTranslation13(elementsTranslated[12]);
+                    setTranslation14(elementsTranslated[13]);
+                    setTranslation15(elementsTranslated[14]);
+                    setTranslation16(elementsTranslated[15]);
+                    setTranslation17(elementsTranslated[16]);
+                    setTranslation18(elementsTranslated[17]);
+                    setTranslation19(elementsTranslated[18]);
+                } catch (error) {
+                    console.error('Erreur de traduction Recipe:', error);
+                }
+            } else {
+                setTranslation1("minutes");
+                setTranslation2("Hey, I found this recipe on Recipe App, check it out!");
+                setTranslation3("Confirmation");
+                setTranslation4("Are you sure you want to delete this recipe?");
+                setTranslation5("No");
+                setTranslation6("Yes");
+                setTranslation7("Vegan");
+                setTranslation8("Vegetarian");
+                setTranslation9("Gluten Free");
+                setTranslation10("Dairy Free");
+                setTranslation11("Very Healthy");
+                setTranslation12("INGREDIENTS");
+                setTranslation13("No ingredients available");
+                setTranslation14("PREPARATION");
+                setTranslation15("No instructions available");
+                setTranslation16("Enjoy your meal !");
+                setTranslation17("Ready in");
+                setTranslation18("Serves");
+                setTranslation19("people");
+            }
+        }
+        fetchTranslation();
+    }, [language]);
+
 
     const getRecipe = (idRecipe? : string) => {
         let idOfRecipe : string = idRecipe ? idRecipe : JSON.stringify(id);
@@ -129,13 +207,13 @@ const Recipe = ({route}: Props) => {
         const hours = Math.floor(time / 60);
         const minutes = time % 60;
         const m = minutes < 10 ? '0' + minutes : minutes
-        return hours +'h' + m + ' minutes';
+        return hours +'h' + m + translation1;
     }
 
 
 
     //share recipe
-    let message : string = "Hey, I found this recipe on Recipe App, check it out!"+'\n'+'\n'+recipe.title+'\n'+'\n'+recipe.sourceUrl;
+    let message : string = translation2+'\n'+'\n'+recipe.title+'\n'+'\n'+recipe.sourceUrl;
     const onShare = async () => {
         try {
             await Share.share({
@@ -168,15 +246,15 @@ const Recipe = ({route}: Props) => {
 
     const confirmDelete = () => {
         Alert.alert(
-            'Confirmation',
-            'Are you sure you want to delete this recipe?',
+            translation3,
+            translation4,
             [
                 {
-                    text: 'No',
+                    text: translation5,
                     onPress: () => console.log('No Pressed'),
                     style: 'cancel',
                 },
-                {text: 'Yes', onPress: () => deleteRecipe()},
+                {text: translation6, onPress: () => deleteRecipe()},
             ],
             {cancelable: false},
         );
@@ -277,11 +355,11 @@ const Recipe = ({route}: Props) => {
     const renderedList = allRecipes?.map((recipe: any, index : any) => {
         const getLabels = () => {
             let allLabels : string[] = [];
-            const vegan : string = 'Vegan';
-            const vegetarian : string = 'Vegetarian';
-            const glutenFree : string = 'Gluten Free';
-            const dairyFree : string = 'Dairy Free';
-            const veryHealthy : string = 'Very Healthy';
+            const vegan : string = translation7;
+            const vegetarian : string = translation8;
+            const glutenFree : string = translation9;
+            const dairyFree : string = translation10;
+            const veryHealthy : string = translation11;
 
             if (recipe.vegan) {
                 allLabels.push(vegan);
@@ -335,23 +413,23 @@ const Recipe = ({route}: Props) => {
                     </View>
 
                     <View style={styles.recipeInfos}>
-                        <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> Ready in {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " minutes"} </Text>
-                        <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/> Serves {recipe.servings} people</Text>
+                        <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {translation17} {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " " + translation1} </Text>
+                        <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/>  {translation18 + " " + recipe.servings + " " + translation18} </Text>
                         <View style={styles.ingredientList}>
-                            <Text style={[styles.ingredientListTitle, {color:colors.text}]}>INGREDIENTS</Text>
-                            {recipe.extendedIngredients.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No ingredients available</Text>  :
+                            <Text style={[styles.ingredientListTitle, {color:colors.text}]}>{translation12}</Text>
+                            {recipe.extendedIngredients.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation13}</Text>  :
                                 recipe.extendedIngredients.map((ingredient : any, index: any) => (
                                 <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient.original}</Text>
                             ))}
                         </View>
                         <View style={styles.recipeDescription}>
-                            <Text style={[styles.titleDesc, {color:colors.text}]}>PREPARATION</Text>
-                            {recipe.analyzedInstructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>No instructions available</Text>  : recipe.analyzedInstructions[0].steps.map((step: any, index: any) => (
+                            <Text style={[styles.titleDesc, {color:colors.text}]}>{translation14}</Text>
+                            {recipe.analyzedInstructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation15}</Text>  : recipe.analyzedInstructions[0].steps.map((step: any, index: any) => (
                                 <Text key={index} style={[styles.items, {color:colors.text}]}>{step.number}. {step.step}</Text>
                             ))}
                         </View>
                     </View>
-                    <Text style={styles.enjoy}>Enjoy your meal ! 😋</Text>
+                    <Text style={styles.enjoy}>{translation16} 😋</Text>
                     <Text style={[styles.source, {color:colors.text}]}>Source : <Text style={[styles.sourceLink, {color: sourceUrlColor}]} onPress={() => WebBrowser.openBrowserAsync(recipe.sourceUrl)}>{recipe.sourceUrl}</Text> </Text>
                 </ScrollView>
             )
