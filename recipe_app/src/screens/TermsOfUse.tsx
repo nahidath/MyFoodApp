@@ -1,13 +1,21 @@
 import {View, Text, ScrollView} from "react-native";
 import styles from "../stylesheets/TermsOfUse_stylesheet";
 import FocusAwareStatusBar from "../components/StatusBarStyle";
-import React from "react";
+import React, {useState} from "react";
 import general from "../stylesheets/General_stylesheet";
 import {useTheme} from "@react-navigation/native";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 const TermsOfUse = () => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const {colors} = useTheme();
     const theme = useTheme();
+    const [translation1, setTranslation1] = useState<string>('1. Terms');
+    const [translation2, setTranslation2] = useState<string>('By accessing the application, you are agreeing to be bound by these terms of service, all\napplicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.\nIf you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials\ncontained in this website are protected by applicable copyright and trademark law.');
+    const [translation3, setTranslation3] = useState<string>('2. Use License');
+    const [translation4, setTranslation4] = useState<string>('Permission is granted to temporarily download one copy of the materials (information or software) on RecipeApp\'s website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not : \n\nmodify or copy the materials;\n use the materials for any commercial purpose, or for any public display (commercial or non-commercial); attempt to decompile or reverse engineer any software contained on RecipeApp\'s application; remove any');
     
     return (
         <View style={[styles.container, general.container, {backgroundColor :  colors.background}]}>

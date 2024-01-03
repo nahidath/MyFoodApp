@@ -32,12 +32,16 @@ import searchVideos from "../mock/searchVideosPasta.json";
 import RecipeVideo from "../components/RecipeVideo";
 import * as WebBrowser from 'expo-web-browser';
 import bulkRecipeMock from "../mock/bulkRecipeMock.json";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 // @ts-ignore
 type SearchScreenProps = MyStackNavigationProp<SearchStackList, 'SearchPage'>;
 
 const Search : FC = () => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const {colors} = useTheme();
     const theme = useTheme();
     const navigation = useNavigation<SearchScreenProps>();
@@ -64,6 +68,59 @@ const Search : FC = () => {
     const [selectedButton, setSelectedButton] = useState('recipeBtn');
     const [resultsID, setResultsID] = useState<any>([]);
     const [allRecipes , setAllRecipes] = useState<any>([]);
+    const [translation1, setTranslation1] = useState<string>('No results found');
+    const [translation2, setTranslation2] = useState<string>('Search recipes, ingredients, etc.');
+    const [translation3, setTranslation3] = useState<string>(' video found');
+    const [translation4, setTranslation4] = useState<string>(' videos found');
+    const [translation5, setTranslation5] = useState<string>(' recipe found');
+    const [translation6, setTranslation6] = useState<string>(' recipes found');
+    const [translation7, setTranslation7] = useState<string>('Recipes');
+    const [translation8, setTranslation8] = useState<string>('Videos');
+    const [translation9, setTranslation9] = useState<string>('Vegan');
+    const [translation10, setTranslation10] = useState<string>('Very Healthy');
+    const [translation11, setTranslation11] = useState<string>('Gluten Free');
+    const [translation12, setTranslation12] = useState<string>('Vegetarian');
+    const [translation13, setTranslation13] = useState<string>('Dairy Free');
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8, translation9, translation10, translation11, translation12, translation13]);
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+                    setTranslation5(elementsTranslated[4]);
+                    setTranslation6(elementsTranslated[5]);
+                    setTranslation7(elementsTranslated[6]);
+                    setTranslation8(elementsTranslated[7]);
+                    setTranslation9(elementsTranslated[8]);
+                    setTranslation10(elementsTranslated[9]);
+                    setTranslation11(elementsTranslated[10]);
+                    setTranslation12(elementsTranslated[11]);
+                    setTranslation13(elementsTranslated[12]);
+                } catch (error) {
+                    console.log("Error in translation Search", error);
+                }
+            } else {
+                setTranslation1('No results found');
+                setTranslation2('Search recipes, ingredients, etc.');
+                setTranslation3(' video found');
+                setTranslation4(' videos found');
+                setTranslation5(' recipe found');
+                setTranslation6(' recipes found');
+                setTranslation7('Recipes');
+                setTranslation8('Videos');
+                setTranslation9('Vegan');
+                setTranslation10('Very Healthy');
+                setTranslation11('Gluten Free');
+                setTranslation12('Vegetarian');
+                setTranslation13('Dairy Free');
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
 
 
@@ -79,7 +136,7 @@ const Search : FC = () => {
             setIsSearch(true);
             setLoading(false);
             if(response1.data.results.length == 0){
-                setNoResults('No results found');
+                setNoResults(translation1);
             }
         },
         (error) => {
@@ -102,7 +159,7 @@ const Search : FC = () => {
                 setIsSearch(true);
                 setLoading(false);
                 if(response1.data.videos.length == 0){
-                    setNoResultsVideo('No results found');
+                    setNoResultsVideo(translation1);
                 }
             },
             (error) => {
@@ -172,7 +229,7 @@ const Search : FC = () => {
                         ref={inputRef}
                         style={{color:colors.text, width: 290, marginRight: 10,  height: 40,  backgroundColor: textInputBckgr, paddingLeft: 10, paddingRight: 10, borderBottomWidth: hairlineWidth, borderBottomColor: borderSpec}}
                         placeholderTextColor={colors.text}
-                        placeholder={'Search recipes, ingredients, etc.'}
+                        placeholder={translation2}
                         value={search}
                         onChangeText={setSearch}
                         onSubmitEditing={handleSearch}
@@ -239,14 +296,14 @@ const Search : FC = () => {
             {isSearch ? (
                 <View style={styles.resultsContainer}>
                     <View style={styles.resultsHeader}>
-                        <Text style={[styles.resultsText, {color:colors.text}]}>{selectedButton === 'videoBtn' ? nbResultsVideo==1 ? nbResultsVideo + ' video found' : nbResultsVideo + ' videos found' : nbResults==1 ? nbResults + ' recipe found' : nbResults + ' recipes found'}</Text>
+                        <Text style={[styles.resultsText, {color:colors.text}]}>{selectedButton === 'videoBtn' ? nbResultsVideo==1 ? nbResultsVideo + translation3 : nbResultsVideo + translation4 : nbResults==1 ? nbResults + translation5 : nbResults + translation6}</Text>
                         <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'recipeBtn' ? colorSpeBtn : colorSpeBtn2}]} onPress={() => handleButtonPress('recipeBtn')}>
                             <Feather name={"book-open"} size={13} color={selectedButton === 'recipeBtn' ? colorSpeBtnText : colorSpeBtnText2} />
-                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'recipeBtn' ? colorSpeBtnText : colorSpeBtnText2}]}> Recipes</Text>
+                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'recipeBtn' ? colorSpeBtnText : colorSpeBtnText2}]}> {translation7}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.recipeTab, {backgroundColor: selectedButton === 'videoBtn' ? colorSpeBtn : colorSpeBtn2}]} onPress={() => handleButtonPress('videoBtn')}>
                             <Feather name={"video"} size={13} color={selectedButton === 'videoBtn' ? colorSpeBtnText : colorSpeBtnText2} />
-                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'videoBtn' ? colorSpeBtnText : colorSpeBtnText2}]}> Videos</Text>
+                            <Text style={[styles.recipeBtnText, {color: selectedButton === 'videoBtn' ? colorSpeBtnText : colorSpeBtnText2}]}> {translation8}</Text>
                         </TouchableOpacity>
                     </View>
                     <Modal
@@ -294,11 +351,11 @@ const Search : FC = () => {
                                                 <Text style={[recipeStyles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {result.readyInMinutes > 59 ? formatTime(result.readyInMinutes) : result.readyInMinutes + " min"}</Text>
                                             </View>
                                             <View style={recipeStyles.blocRecipeLabel}>
-                                                {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>Vegan</Text>}
-                                                {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>Very Healthy</Text>}
-                                                {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>Gluten Free</Text>}
-                                                {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>Vegetarian</Text>}
-                                                {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>Dairy Free</Text>}
+                                                {result.vegan && <Text style={recipeStyles.blocRecipeLabelText}>{translation9}</Text>}
+                                                {result.veryHealthy && <Text style={recipeStyles.blocRecipeLabelText}>V{translation10}</Text>}
+                                                {result.glutenFree && <Text style={recipeStyles.blocRecipeLabelText}>{translation11}</Text>}
+                                                {result.vegetarian && <Text style={recipeStyles.blocRecipeLabelText}>{translation12}</Text>}
+                                                {result.dairyFree && <Text style={recipeStyles.blocRecipeLabelText}>{translation13}</Text>}
                                             </View>
                                         </TouchableOpacity>
                                     )
