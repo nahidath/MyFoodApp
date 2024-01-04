@@ -4,6 +4,7 @@ import general from "../stylesheets/General_stylesheet";
 import React, {useEffect, useState} from "react";
 import {useTheme} from "@react-navigation/native";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 interface NotificationPushProps {
@@ -12,10 +13,10 @@ interface NotificationPushProps {
 }
 
 const NotificationPush = ({title, body}: NotificationPushProps) => {
-
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const {colors} = useTheme();
     const theme = useTheme();
-    const {language,setLanguage, t} = useLanguage();
     const [translationTitle, setTranslationTitle] = useState(title);
     const [translationBody, setTranslationBody] = useState(body);
 
@@ -23,10 +24,9 @@ const NotificationPush = ({title, body}: NotificationPushProps) => {
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOfTitle = await t(String(translationTitle));
-                    const translationOfBody = await t(String(translationBody));
-                    setTranslationTitle(translationOfTitle);
-                    setTranslationBody(translationOfBody);
+                    const elementsTranslated = await translationFunc([translationTitle, translationBody]);
+                    setTranslationTitle(elementsTranslated[0]);
+                    setTranslationBody(elementsTranslated[1]);
                 } catch (error) {
                     console.error('Erreur de traduction notificationPush:', error);
                 }

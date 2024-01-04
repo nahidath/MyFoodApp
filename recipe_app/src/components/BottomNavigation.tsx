@@ -26,11 +26,14 @@ import {
 import hairlineWidth = StyleSheet.hairlineWidth;
 import {translateText} from "../translation/TranslationService";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 
 
 const BottomNavigation : FC = () => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
 
     const Tab = createBottomTabNavigator();
     const colors = useTheme().colors;
@@ -41,21 +44,17 @@ const BottomNavigation : FC = () => {
     const [translationSearch, setTranslationSearch] = useState("Search");
     const [translationFavorites, setTranslationFavorites] = useState("Favorites");
     const [translationAccount, setTranslationAccount] = useState("Account");
-    const {language,setLanguage, t} = useLanguage();
 
 
     useEffect(() => {
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOfHome = await t(translationHome);
-                    const translationOfSearch = await t(translationSearch);
-                    const translationOfFavorites = await t(translationFavorites);
-                    const translationOfAccount = await t(translationAccount);
-                    setTranslationHome(translationOfHome);
-                    setTranslationSearch(translationOfSearch);
-                    setTranslationFavorites(translationOfFavorites);
-                    setTranslationAccount(translationOfAccount);
+                    const elementsTranslated = await translationFunc([translationHome, translationSearch, translationFavorites, translationAccount]);
+                    setTranslationHome(elementsTranslated[0]);
+                    setTranslationSearch(elementsTranslated[1]);
+                    setTranslationFavorites(elementsTranslated[2]);
+                    setTranslationAccount(elementsTranslated[3]);
                 } catch (error) {
                     console.error('Erreur de traduction bottomNavigation:', error);
                 }

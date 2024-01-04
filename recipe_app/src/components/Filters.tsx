@@ -13,6 +13,7 @@ import {REACT_APP_API_KEY} from "@env";
 
 import {filtersList} from "../data/filtersList";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 interface IFilterModalProps {
     search: string;
@@ -30,7 +31,8 @@ interface IFilterModalProps {
 }
 
 export function FilterModal({search, setResults, setNbResults, setIsSearch, setLoading, setModalVisible, setNoResults, cuisine, screenName, category}: IFilterModalProps) {
-
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const configValue : string | undefined = REACT_APP_API_KEY;
 
 
@@ -45,7 +47,6 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
     const [fromValue, setFromValue] = useState(0);
     const [toValue, setToValue] = useState(999);
     const [value, setValue] = useState(0);
-    const {language,setLanguage, t} = useLanguage();
     const [translationSort, setTranslationSort] = useState("Sort by");
     const [translationDiet, setTranslationDiet] = useState("Diet");
     const [translationIntolerance, setTranslationIntolerance] = useState("Intolerance");
@@ -133,24 +134,16 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOfSort = await t(translationSort);
-                    const translationOfDiet = await t(translationDiet);
-                    const translationOfIntolerance = await t(translationIntolerance);
-                    const translationOfType = await t(translationType);
-                    const translationOfCuisine = await t(translationCuisine);
-                    const translationOfApply = await t(translationApply);
-                    const translationOfVD = await t(translationVD);
-                    const translationOfNF = await t(translationNF);
-                    const translationOfFilters = await t(translationFilters);
-                    setTranslationSort(translationOfSort);
-                    setTranslationDiet(translationOfDiet);
-                    setTranslationIntolerance(translationOfIntolerance);
-                    setTranslationType(translationOfType);
-                    setTranslationCuisine(translationOfCuisine);
-                    setTranslationApply(translationOfApply);
-                    setTranslationVD(translationOfVD);
-                    setTranslationNF(translationOfNF);
-                    setTranslationFilters(translationOfFilters);
+                    const elementsTranslated = await translationFunc([translationSort, translationDiet, translationIntolerance, translationType, translationCuisine, translationApply, translationVD, translationNF, translationFilters, translationTime, translationSec, translationSec2]);
+                    setTranslationSort(elementsTranslated[0]);
+                    setTranslationDiet(elementsTranslated[1]);
+                    setTranslationIntolerance(elementsTranslated[2]);
+                    setTranslationType(elementsTranslated[3]);
+                    setTranslationCuisine(elementsTranslated[4]);
+                    setTranslationApply(elementsTranslated[5]);
+                    setTranslationVD(elementsTranslated[6]);
+                    setTranslationNF(elementsTranslated[7]);
+                    setTranslationFilters(elementsTranslated[8]);
                 } catch (error) {
                     console.error('Erreur de traduction filterModal:', error);
                 }

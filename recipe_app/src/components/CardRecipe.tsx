@@ -10,6 +10,7 @@ import Feather from "react-native-vector-icons/Feather";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {child, ref, remove} from "firebase/database";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 interface CardRecipeProps {
@@ -27,6 +28,8 @@ interface CardRecipeProps {
 }
 
 const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, label=true, trash=false, listOfRecipesId, index}: CardRecipeProps) => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const { colors } = useTheme();
     const theme = useTheme();
     const [saved, setSaved] = useState<boolean>(false);
@@ -34,7 +37,6 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
     const user = auth.currentUser;
     const titleRef = useRef<Text>(null);
     const [fontSize, setFontSize] = useState<number>(20);
-    const {language,setLanguage, t} = useLanguage();
     const [translationRecipeTitle, setTranslationRecipeTitle] = useState<any>(recipe.title);
     const[translationVegan, setTranslationVegan] = useState<string>("Vegan");
     const[translationVeryHealthy, setTranslationVeryHealthy] = useState<string>("Very Healthy");
@@ -43,12 +45,10 @@ const CardRecipe = ({ recipe, navigation, height=260, width=170, star=true, labe
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOfRecipeTitle = await t(translationRecipeTitle);
-                    const translationOfVegan = await t("Vegan");
-                    const translationOfVeryHealthy = await t("Very Healthy");
-                    setTranslationVegan(translationOfVegan);
-                    setTranslationVeryHealthy(translationOfVeryHealthy);
-                    setTranslationRecipeTitle(translationOfRecipeTitle);
+                    const elementsTranslated = await translationFunc([translationRecipeTitle, translationVegan, translationVeryHealthy]);
+                    setTranslationVegan(elementsTranslated[1]);
+                    setTranslationVeryHealthy(elementsTranslated[2]);
+                    setTranslationRecipeTitle(elementsTranslated[0]);
 
                 } catch (error) {
                     console.error('Erreur de traduction CardRecipe:', error);

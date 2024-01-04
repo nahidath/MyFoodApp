@@ -7,6 +7,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import { WebView } from 'react-native-webview';
 import YoutubePlayer from "react-native-youtube-iframe";
 import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 
@@ -18,17 +19,18 @@ interface RecipeVideoProps {
 }
 
 const RecipeVideo = ({videoID, setModalVisible}: RecipeVideoProps) => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const {colors} = useTheme();
     const theme = useTheme();
-    const {language,setLanguage, t} = useLanguage();
     const [translationTitle, setTranslationTitle] = useState("Video");
 
     useEffect(() => {
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOfTitle = await t(String(translationTitle));
-                    setTranslationTitle(translationOfTitle);
+                    const elementsTranslated = await translationFunc([translationTitle]);
+                    setTranslationTitle(elementsTranslated[0]);
                 } catch (error) {
                     console.error('Erreur de traduction recipeVideo:', error);
                 }
@@ -49,22 +51,6 @@ const RecipeVideo = ({videoID, setModalVisible}: RecipeVideoProps) => {
                         <FontAwesome name="close" size={24} color={colors.text} />
                     </TouchableOpacity>
                 </View>
-                {/*<Video*/}
-                {/*    source={{uri: `https://www.youtube.com/embed/${videoID}`}}*/}
-                {/*    style={styles.video}*/}
-                {/*    controls={true}*/}
-                {/*    resizeMode="contain"*/}
-                {/*/>*/}
-
-                {/*<YouTube*/}
-                {/*    videoId={videoID}*/}
-                {/*    play={true}*/}
-                {/*    apiKey="AIzaSyBqxVvUSqKq6OmfbmRUAjW3jTrZFcpHpaI"*/}
-                {/*/>*/}
-                {/*<WebView*/}
-                {/*    // style={styles.webView}*/}
-                {/*    source={{ uri: `https://www.youtube.com/embed/${videoID}` }}*/}
-                {/*/>*/}
                 <YoutubePlayer
                     height={300}
                     play={false}

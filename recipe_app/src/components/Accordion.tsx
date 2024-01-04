@@ -7,6 +7,7 @@ import general from "../stylesheets/General_stylesheet";
 import {useTheme} from "@react-navigation/native";
 import {useLanguage} from "../translation/LanguageContext";
 import styles from "../stylesheets/Accordion_stylesheet";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 // interface TitleProps{
@@ -23,11 +24,11 @@ interface AccordionProps{
 }
 
 const Accordion : FC<AccordionProps>  = ({title, data})  => {
-
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
     const [expanded, setExpanded] = useState(false);
     const {colors} = useTheme();
     const theme = useTheme();
-    const {language,setLanguage, t} = useLanguage();
     const [translationTitle, setTranslationTitle] = useState(title);
     const [translationData,setTranslationData] = useState(data);
 
@@ -35,10 +36,9 @@ const Accordion : FC<AccordionProps>  = ({title, data})  => {
         const fetchTranslation = async () => {
             if(language != "EN-US") {
                 try {
-                    const translationOfTitle = await t(String(translationTitle));
-                    const translationOfData = await t(String(translationData));
-                    setTranslationTitle(translationOfTitle);
-                    setTranslationData(translationOfData);
+                    const elementsTranslated = await translationFunc([translationTitle, translationData]);
+                    setTranslationTitle(elementsTranslated[0]);
+                    setTranslationData(elementsTranslated[1]);
                 } catch (error) {
                     console.error('Erreur de traduction Accordion:', error);
                 }
