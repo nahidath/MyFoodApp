@@ -353,6 +353,29 @@ const Recipe = ({route}: Props) => {
     // console.log(listOfRecipes?.length);
 
     const renderedList = allRecipes?.map((recipe: any, index : any) => {
+        const [translation1, setTranslation1] = useState<string>(recipe.title);
+        const [translation2, setTranslation2] = useState<any>(recipe.extendedIngredients.map((item: any) => item.original));
+        const [translation3, setTranslation3] = useState<string>(recipe.analyzedInstructions);
+
+        if(language != 'EN-US') {
+            const fetchTranslation = async () => {
+                let exIng = [];
+                let anIns = [];
+                try {
+                    const elementsTranslated = await translationFunc([translation1]);
+                    setTranslation1(elementsTranslated[0]);
+                    for(let i = 0; i < translation2.length; i++) {
+
+                    }
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                } catch (error) {
+                    console.error('Erreur de traduction Recipe:', error);
+                }
+            }
+            fetchTranslation();
+        }
+
         const getLabels = () => {
             let allLabels : string[] = [];
             const vegan : string = translation7;
