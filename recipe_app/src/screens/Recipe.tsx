@@ -355,22 +355,17 @@ const Recipe = ({route}: Props) => {
     const renderedList = allRecipes?.map((recipe: any, index : any) => {
         const [translation1, setTranslation1] = useState<string>(recipe.title);
         const [translation2, setTranslation2] = useState<any>(recipe.extendedIngredients.map((item: any) => item.original));
-        const [translation3, setTranslation3] = useState<string>(recipe.analyzedInstructions);
+        const [translation3, setTranslation3] = useState<any>(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
 
         if(language != 'EN-US') {
             const fetchTranslation = async () => {
-                let exIng = [];
-                let anIns = [];
                 try {
-                    const elementsTranslated = await translationFunc([translation1]);
+                    const elementsTranslated = await translationFunc([translation1, translation2.toString(), translation3.toString()]);
                     setTranslation1(elementsTranslated[0]);
-                    for(let i = 0; i < translation2.length; i++) {
-
-                    }
-                    setTranslation2(elementsTranslated[1]);
-                    setTranslation3(elementsTranslated[2]);
+                    setTranslation2(elementsTranslated[1].split(','));
+                    setTranslation3(elementsTranslated[2].split(','));
                 } catch (error) {
-                    console.error('Erreur de traduction Recipe:', error);
+                    console.error('Erreur de traduction Recipe2:', error);
                 }
             }
             fetchTranslation();
