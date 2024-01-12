@@ -353,22 +353,26 @@ const Recipe = ({route}: Props) => {
     // console.log(listOfRecipes?.length);
 
     const renderedList = allRecipes?.map((recipe: any, index : any) => {
-        const [translation1, setTranslation1] = useState<string>(recipe.title);
-        const [translation2, setTranslation2] = useState<any>(recipe.extendedIngredients.map((item: any) => item.original));
-        const [translation3, setTranslation3] = useState<any>(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
+        const [translationA, setTranslationA] = useState<string>(recipe.title);
+        const [translationB, setTranslationB] = useState<any>(recipe.extendedIngredients.map((item: any) => item.original));
+        const [translationC, setTranslationC] = useState<any>(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
 
         if(language != 'EN-US') {
             const fetchTranslation = async () => {
                 try {
-                    const elementsTranslated = await translationFunc([translation1, translation2.toString(), translation3.toString()]);
-                    setTranslation1(elementsTranslated[0]);
-                    setTranslation2(elementsTranslated[1].split(','));
-                    setTranslation3(elementsTranslated[2].split(','));
+                    const elementsTranslated = await translationFunc([translationA, translationB.toString(), translationC.toString()]);
+                    setTranslationA(elementsTranslated[0]);
+                    setTranslationB(elementsTranslated[1].split(','));
+                    setTranslationC(elementsTranslated[2].split(','));
                 } catch (error) {
                     console.error('Erreur de traduction Recipe2:', error);
                 }
             }
             fetchTranslation();
+        }else {
+            setTranslationA(recipe.title);
+            setTranslationB(recipe.extendedIngredients.map((item: any) => item.original));
+            setTranslationC(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
         }
 
         const getLabels = () => {
@@ -421,7 +425,7 @@ const Recipe = ({route}: Props) => {
                             style={styles.blocRecipeGradient}
                         >
                             {/*{recipe.title.length > 30 ? <Text style={styles.headerRecipeImageTextSmall}>{recipe.title}</Text> : <Text style={styles.headerRecipeImageText}>{recipe.title}</Text>}*/}
-                            <Text ref={titleRef} style={[styles.headerRecipeImageText, {fontSize: fontSize}]} onLayout={handleTextLayout}>{recipe.title}</Text>
+                            <Text ref={titleRef} style={[styles.headerRecipeImageText, {fontSize: fontSize}]} onLayout={handleTextLayout}>{translationA}</Text>
                             {/*<Text style={styles.headerRecipeImageText}>{recipe.title}</Text>*/}
                             <View style={styles.recipeLikes}>
                                 <Text style={styles.recipeLikesText}>{recipe.aggregateLikes}</Text>
@@ -435,15 +439,15 @@ const Recipe = ({route}: Props) => {
                         <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/>  {translation18 + " " + recipe.servings + " " + translation18} </Text>
                         <View style={styles.ingredientList}>
                             <Text style={[styles.ingredientListTitle, {color:colors.text}]}>{translation12}</Text>
-                            {recipe.extendedIngredients.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation13}</Text>  :
-                                recipe.extendedIngredients.map((ingredient : any, index: any) => (
-                                <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient.original}</Text>
+                            {translationB.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation13}</Text>  :
+                                translationB.map((ingredient : any, index: any) => (
+                                <Text key={index} style={[styles.items, {color:colors.text}]}>- {ingredient}</Text>
                             ))}
                         </View>
                         <View style={styles.recipeDescription}>
                             <Text style={[styles.titleDesc, {color:colors.text}]}>{translation14}</Text>
-                            {recipe.analyzedInstructions.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation15}</Text>  : recipe.analyzedInstructions[0].steps.map((step: any, index: any) => (
-                                <Text key={index} style={[styles.items, {color:colors.text}]}>{step.number}. {step.step}</Text>
+                            {translationC.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation15}</Text>  : translationC.map((step: any, index: any) => (
+                                <Text key={index} style={[styles.items, {color:colors.text}]}>{step}</Text>
                             ))}
                         </View>
                     </View>
