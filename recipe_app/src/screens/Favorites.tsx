@@ -19,6 +19,7 @@ import {SkeletonLoaderFavoritesPage} from "../components/SkeletonLoader";
 // @ts-ignore
 type FavoriteProps = MyStackNavigationProp<FavoritesStackList, 'Favs'>;
 
+//TODO: fix the loading of the recipes when the user is logged in
 const Favorites : FC = () => {
     const {colors} = useTheme();
     const theme = useTheme();

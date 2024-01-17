@@ -9,6 +9,7 @@ interface PPMProps {
     modalVisible :  boolean;
 }
 const PrivacyPolicyModal = ({setModalVisible, modalVisible} :  PPMProps) => {
+    //TODO: fix the privacy modal
     return(
         // <View style={styles.centeredView}>
         //     <View style={styles.modalView}>
@@ -218,7 +219,19 @@ const PrivacyPolicyModal = ({setModalVisible, modalVisible} :  PPMProps) => {
         //         </TouchableHighlight>
         //     </View>
         // </View>
-        <PrivacyPolicy/>
+        <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+                <PrivacyPolicy/>
+                <TouchableHighlight
+                    style={styles.closeButton}
+                    onPress={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <Text style={styles.textStyle}>Close</Text>
+                </TouchableHighlight>
+            </View>
+        </View>
     )
 }
 

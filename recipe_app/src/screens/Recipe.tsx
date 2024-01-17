@@ -355,25 +355,26 @@ const Recipe = ({route}: Props) => {
     const renderedList = allRecipes?.map((recipe: any, index : any) => {
         const [translationA, setTranslationA] = useState<string>(recipe.title);
         const [translationB, setTranslationB] = useState<any>(recipe.extendedIngredients.map((item: any) => item.original));
-        const [translationC, setTranslationC] = useState<any>(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
+        const [translationC, setTranslationC] = useState<any>(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step + '\n\n')));
 
-        if(language != 'EN-US') {
-            const fetchTranslation = async () => {
-                try {
-                    const elementsTranslated = await translationFunc([translationA, translationB.toString(), translationC.toString()]);
-                    setTranslationA(elementsTranslated[0]);
-                    setTranslationB(elementsTranslated[1].split(','));
-                    setTranslationC(elementsTranslated[2].split(','));
-                } catch (error) {
-                    console.error('Erreur de traduction Recipe2:', error);
-                }
-            }
-            fetchTranslation();
-        }else {
-            setTranslationA(recipe.title);
-            setTranslationB(recipe.extendedIngredients.map((item: any) => item.original));
-            setTranslationC(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
-        }
+        //TODO: fix translation
+        // if(language != 'EN-US') {
+        //     const fetchTranslation = async () => {
+        //         try {
+        //             const elementsTranslated = await translationFunc([translationA, translationB.toString(), translationC.toString()]);
+        //             setTranslationA(elementsTranslated[0]);
+        //             setTranslationB(elementsTranslated[1].split(','));
+        //             setTranslationC(elementsTranslated[2].split(','));
+        //         } catch (error) {
+        //             console.error('Erreur de traduction Recipe2:', error);
+        //         }
+        //     }
+        //     fetchTranslation();
+        // }else {
+        //     setTranslationA(recipe.title);
+        //     setTranslationB(recipe.extendedIngredients.map((item: any) => item.original));
+        //     setTranslationC(recipe.analyzedInstructions.map((item: any) => item.steps.map((item: any) => item.number + '. ' + item.step)));
+        // }
 
         const getLabels = () => {
             let allLabels : string[] = [];
@@ -436,7 +437,7 @@ const Recipe = ({route}: Props) => {
 
                     <View style={styles.recipeInfos}>
                         <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {translation17} {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " " + translation1} </Text>
-                        <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/>  {translation18 + " " + recipe.servings + " " + translation18} </Text>
+                        <Text style={[styles.servings, {color:colors.text}]}><Feather name="user" size={20} color={colors.text}/>  {translation18 + " " + recipe.servings + " " + translation19} </Text>
                         <View style={styles.ingredientList}>
                             <Text style={[styles.ingredientListTitle, {color:colors.text}]}>{translation12}</Text>
                             {translationB.length == 0 ? <Text style={[styles.items, {color:colors.text, fontStyle: "italic"}]}>{translation13}</Text>  :

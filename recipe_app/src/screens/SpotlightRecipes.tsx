@@ -64,6 +64,7 @@ const SpotlightRecipes = ({route}: Props) => {
     }, [language]);
 
 
+    //TODO: fix the the list of recipes when the user go to spotlight recipes
     const getRecipes = () => {
         let dataRecipesMerged : string | any[] = [];
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 10} }).then((response) => {

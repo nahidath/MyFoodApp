@@ -163,6 +163,7 @@ export function FilterModal({search, setResults, setNbResults, setIsSearch, setL
         fetchTranslation();
     }, [language]);
 
+    //TODO: persist checkbox state
 
     return (
         <View style={styles.sideView}>

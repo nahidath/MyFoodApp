@@ -10,6 +10,7 @@ interface TOUMProps {
 }
 
 const TermsOfUseModal = ({setModalVisible, modalVisible} : TOUMProps) => {
+    //TODO: fix the term of use modal
     return(
         // <View style={styles.centeredView}>
         //     <View style={styles.modalView}>
@@ -95,7 +96,19 @@ const TermsOfUseModal = ({setModalVisible, modalVisible} : TOUMProps) => {
         //     </View>
         // </View>
 
-        <TermsOfUse/>
+        <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+                <TermsOfUse/>
+                <TouchableHighlight
+                    style={styles.closeButton}
+                    onPress={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <Text style={styles.textStyle}>Close</Text>
+                </TouchableHighlight>
+            </View>
+        </View>
     )
 }
 

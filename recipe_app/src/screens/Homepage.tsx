@@ -360,7 +360,7 @@ const Homepage :  FC = () => {
                         <View style={styles.cuisineBloc}>
                             {translationCuisine.map((cuisine: any) => {
                                 return (
-                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name, idc: cuisine.id})} activeOpacity={0.4}>
+                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name, idC: cuisine.id})} activeOpacity={0.4}>
                                         <LinearGradient
                                             colors={['rgba(0,0,0,0.8)','transparent' ]}
                                             style={styles.cuisineGradient}

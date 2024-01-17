@@ -86,7 +86,9 @@ export default function Login () {
 
 
 
-
+//TODO: fix the design of the login page
+    //TODO: fix login with facebook and google
+    //TODO: fix forget password design
 
     // const {from} = route.params;
     // const prevScreen = from;
