@@ -129,12 +129,13 @@ export function LoginStackScreen () {
     return (
         <LoginStack.Navigator >
             <LoginStack.Screen name="Login" component={Login} options={{
-                headerStyle: {
-                    backgroundColor: "#9fc131",
-                },
-                headerTitle: '',
-                headerShadowVisible: false,
-                headerTintColor: '#fff',
+                // headerStyle: {
+                //     backgroundColor: "#9fc131",
+                // },
+                // headerTitle: '',
+                // headerShadowVisible: false,
+                // headerTintColor: '#fff',
+                headerShown: false,
                 animation: 'slide_from_right',
             }} />
             {/*<LoginStack.Screen name="ResetPassword" component={ResetPassword} options={{*/}

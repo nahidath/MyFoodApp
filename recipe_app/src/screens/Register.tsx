@@ -350,7 +350,7 @@ const Register = () => {
                                 setModalVisible(!modalVisible);
                             }}
                         >
-                            <TermsOfUseModal setModalVisible={setModalVisible} modalVisible={modalVisible}/>
+                            <TermsOfUseModal setModalVisible={setModalVisible} modalVisible={modalVisible} isRegisterPage={true}/>
                         </Modal>
                         <Modal
                             animationType="slide"
@@ -360,7 +360,7 @@ const Register = () => {
                                 setModalVisible(!modalVisible2);
                             }}
                         >
-                            <PrivacyPolicyModal setModalVisible={setModalVisible2} modalVisible={modalVisible2}/>
+                            <PrivacyPolicyModal setModalVisible={setModalVisible2} modalVisible={modalVisible2} isRegisterPage={true}/>
                         </Modal>
                     </View>
 

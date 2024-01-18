@@ -7,7 +7,10 @@ import {useTheme} from "@react-navigation/native";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
 
-const PrivacyPolicy = () => {
+interface PrivacyPolicyProps {
+    isRegisterPage: boolean;
+}
+const PrivacyPolicy = ({isRegisterPage}:PrivacyPolicyProps) => {
     const {translationFunc} = useTranslation();
     const {language,setLanguage, t} = useLanguage();
 
@@ -163,7 +166,7 @@ const PrivacyPolicy = () => {
 
 
     return (
-        <View style={[styles.container, general.container, {backgroundColor :  colors.background}]}>
+        <View style={[styles.container, general.container, {backgroundColor :  isRegisterPage ? "#f2f2f2" : colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" />  :  <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
                <ScrollView>
                    <View style={{margin :  10}}>

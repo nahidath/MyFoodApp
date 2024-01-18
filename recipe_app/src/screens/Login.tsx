@@ -75,7 +75,7 @@ export default function Login () {
     const [translation8, setTranslation8] = useState<string>('Welcome back !');
     const [translation9, setTranslation9] = useState<string>('Forgot password ?');
     const [translation10, setTranslation10] = useState<string>('Log in');
-    const [translation11, setTranslation11] = useState<string>('Or');
+    const [translation11, setTranslation11] = useState<string>('Or continue with');
     const [translation12, setTranslation12] = useState<string>('Don\'t have an account ?');
     const [translation13, setTranslation13] = useState<string>('Register');
     const [translation14, setTranslation14] = useState<string>('I forgot my password');
@@ -140,7 +140,7 @@ export default function Login () {
                 setTranslation8('Welcome back !');
                 setTranslation9('Forgot password ?');
                 setTranslation10('Log in');
-                setTranslation11('Or');
+                setTranslation11('Or continue with');
                 setTranslation12('Don\'t have an account ?');
                 setTranslation13('Register');
                 setTranslation14('I forgot my password');
@@ -248,9 +248,11 @@ export default function Login () {
             {/*{loading && <ActivityIndicator style={styles.activityIndicator} size="large" color="#9fc131" />}*/}
             <KeyboardAwareScrollView>
                 <View style={styles.header}>
-                    <Text style={styles.title}>{translation7}</Text>
+                    <Image source={require('../../assets/logo.png')} style={styles.logo} />
+                    {/*<Text style={styles.title}>{translation7}</Text>*/}
+                </View>
+                <View style={styles.subHeader}>
                     <Text style={styles.subtitle}>{translation8}</Text>
-
                 </View>
                     {error && <Text style={styles.error}>{error}</Text>}
                 <View style={styles.form}>
@@ -292,18 +294,16 @@ export default function Login () {
                             <Text style={styles.dividerText}>{translation11}</Text>
                             <View style={styles.line}></View>
                         </View>
-                        <View style={styles.socialLogin}>
-                            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
-                                              // onPress={() => handleFacebookLogin()}
-                            >
-                                <Image source={require('../../assets/facebook.png')} style={{width: 20, height: 20}} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
-                                              // onPress={() => handleGoogleLogin()}
-                            >
-                                <Image source={require('../../assets/google.png')} style={{width: 20, height: 20}} />
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
+                                          // onPress={() => handleFacebookLogin()}
+                        >
+                            <Text style={styles.btnText}><Image source={require('../../assets/facebook.png')} style={{width: 20, height: 20, padding:5}} />  Log with Facebook</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
+                                          // onPress={() => handleGoogleLogin()}
+                        >
+                            <Text style={styles.btnText}><Image source={require('../../assets/google.png')} style={{width: 20, height: 20, padding:5}} />  Log with Google</Text>
+                        </TouchableOpacity>
                         {/*<TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]} activeOpacity={0.5} onPress={() => navigation.navigate('Register')}>*/}
                         {/*    <Text style={styles.btnText}>Create an account</Text>*/}
                         {/*</TouchableOpacity>*/}

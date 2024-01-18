@@ -8,11 +8,11 @@ export default StyleSheet.create({
         // margin:10,
     },
     header: {
-        padding: 20,
+        // padding: 20,
         flexDirection : 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        // marginTop: 10,
+        marginTop: 30,
 
     },
     headerText: {
@@ -225,14 +225,16 @@ export default StyleSheet.create({
         top: 6,
     },
     subtitle: {
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: 'bold',
-        justifyContent: 'flex-start',
+        // alignItems: 'flex-start',
+        paddingTop: 10,
+        paddingLeft: 30,
         color: '#f2f2f2',
     },
     logo: {
-        width: 130,
-        height: 130,
+        width: 120,
+        height: 120,
 
     },
     title: {
@@ -258,17 +260,14 @@ export default StyleSheet.create({
         marginTop: 115,
     },
     socialLogin: {
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
     },
     socialBtn: {
-        width: 50,
+        width: '80%',
         height: 50,
         margin: 10,
         borderWidth: 1,
-        padding: 10,
         borderRadius: 8,
         backgroundColor: '#f2f2f2',
         borderColor: '#f2f2f2',
@@ -277,7 +276,7 @@ export default StyleSheet.create({
     },
     divider: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 10,
         padding: 18,
@@ -286,7 +285,7 @@ export default StyleSheet.create({
     line: {
         borderBottomColor: '#f2f2f2',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        width: '40%',
+        width: '28%',
         margin: 10,
     },
     dividerText: {
@@ -349,6 +348,9 @@ export default StyleSheet.create({
         color: "#f2f2f2",
         fontSize: 13,
         textDecorationLine: "none"
+    },
+    subHeader: {
+        marginTop: 10
     }
 
 

@@ -6,8 +6,11 @@ import general from "../stylesheets/General_stylesheet";
 import {useTheme} from "@react-navigation/native";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
+interface TOUProps {
+    isRegisterPage : boolean;
+}
 
-const TermsOfUse = () => {
+const TermsOfUse = ({isRegisterPage}:TOUProps) => {
     const {translationFunc} = useTranslation();
     const {language,setLanguage, t} = useLanguage();
     const {colors} = useTheme();
@@ -76,7 +79,7 @@ const TermsOfUse = () => {
     }, [language]);
     
     return (
-        <View style={[styles.container, general.container, {backgroundColor :  colors.background}]}>
+        <View style={[styles.container, general.container, {backgroundColor : isRegisterPage ? "#f2f2f2" :  colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" />  :  <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
                 <View style={{margin :  10}}>
