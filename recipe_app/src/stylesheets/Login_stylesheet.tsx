@@ -140,9 +140,12 @@ export default StyleSheet.create({
         margin: 10,
     },
     modalHeader: {
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         width: '100%',
-        padding: 10,
+        paddingLeft: 70,
+        borderRadius: 10,
     },
     modalContainer: {
         flex: 1,
@@ -155,7 +158,7 @@ export default StyleSheet.create({
         width: '100%',
     },
     modalView: {
-
+        backgroundColor: '#fefefe',
         padding: 10,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
@@ -177,14 +180,15 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
-        alignItems: 'center',
+        color: "#041721"
+        // alignItems: 'center',
     },
     modalText: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
-        alignItems: 'center',
+        color: "#041721"
 
     },
     title1: {
@@ -253,11 +257,11 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
     registerAsk: {
-        flexDirection:'column-reverse',
-        justifyContent: 'center',
+        flexDirection:'column',
+        // justifyContent: 'flex-end',
         alignItems: 'center',
         flex: 1,
-        marginTop: 115,
+        // marginTop: 115,
     },
     socialLogin: {
         justifyContent: 'center',

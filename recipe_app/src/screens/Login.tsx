@@ -308,9 +308,7 @@ export default function Login () {
                         {/*    <Text style={styles.btnText}>Create an account</Text>*/}
                         {/*</TouchableOpacity>*/}
                     </View>
-                    <View style={styles.registerAsk}>
-                        <Text style={styles.text}>{translation12} <Link to={'/Register'} style={styles.registerButton}>{translation13}</Link></Text>
-                    </View>
+
 
 
                     <Modal
@@ -322,29 +320,30 @@ export default function Login () {
                         }}
                     >
                         <View style={styles.modalContainer}>
-                            <View style={[styles.modalView, general.shadow, {backgroundColor: colors.notification} ]}>
+                            <View style={[styles.modalView, general.shadow]}>
                                 <View style={styles.modalHeader}>
-                                    <TouchableOpacity style={{alignItems:'flex-end'}} onPress={() => setModalVisible(false)}>
+                                    <Text style={styles.modalTitle}>{translation14}</Text>
+                                    <TouchableOpacity  onPress={() => setModalVisible(false)}>
                                         <Feather name={"x"} size={24} color={'#9c9c9c'}/>
                                     </TouchableOpacity>
-                                    <Text style={[styles.modalTitle, {color: colors.text}]}>{translation14}</Text>
                                 </View>
                                 {/*{sent && <Text style={styles.success}>An email has been sent to {email}. Please check your email.</Text>}*/}
-                                    <Text style={[styles.modalText, {color: colors.text}]}>{translation15}</Text>
+                                    <Text style={styles.modalText}>{translation15}</Text>
                                 {error && <Text style={styles.error}>{error}</Text>}
                                 <View style={styles.inputZone}>
+                                    <Feather name={'mail'} size={20} color={"#041721"} style={styles.icon} />
                                     <TextInput
-                                        style={[styles.input,  {borderColor: colors.border, color: colors.text}]}
+                                        style={[styles.input,  {borderBottomColor: "rgba(4,23,33,0.53)", color: "#041721"}]}
                                         placeholder={placeholder1}
-                                        placeholderTextColor={colors.text}
+                                        placeholderTextColor={"#041721"}
                                         onChangeText={setEmail}
                                         value={email}
                                         autoCapitalize={'none'}
                                     />
-                                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
+                                    <TouchableOpacity style={[styles.loginBtn, {backgroundColor: "#041721", borderColor: "#041721"}]}
                                                         onPress={() => resetPassword()}
                                     >
-                                        <Text style={styles.btnText}>{translation16} <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
+                                        <Text style={[styles.btnText, {color:"#f2f2f2"}]}>{translation16} <Feather name={'arrow-right'} size={16} color={"#fff"}/></Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -352,6 +351,9 @@ export default function Login () {
                     </Modal>
                 </View>
             </KeyboardAwareScrollView>
+            <View style={styles.registerAsk}>
+                <Text style={styles.text}>{translation12} <Link to={'/Register'} style={styles.registerButton}>{translation13}</Link></Text>
+            </View>
         </View>
     );
 
