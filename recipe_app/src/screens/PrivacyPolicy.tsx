@@ -8,7 +8,7 @@ import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
 
 interface PrivacyPolicyProps {
-    isRegisterPage: boolean;
+    isRegisterPage?: boolean;
 }
 const PrivacyPolicy = ({isRegisterPage}:PrivacyPolicyProps) => {
     const {translationFunc} = useTranslation();
@@ -166,7 +166,7 @@ const PrivacyPolicy = ({isRegisterPage}:PrivacyPolicyProps) => {
 
 
     return (
-        <View style={[styles.container, general.container, {backgroundColor :  isRegisterPage ? "#f2f2f2" : colors.background}]}>
+        <View style={[styles.container, general.container, {backgroundColor :  isRegisterPage ? "#fefefe" : colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" />  :  <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
                <ScrollView>
                    <View style={{margin :  10}}>

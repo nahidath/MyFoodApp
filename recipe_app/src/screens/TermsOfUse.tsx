@@ -7,7 +7,7 @@ import {useTheme} from "@react-navigation/native";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
 interface TOUProps {
-    isRegisterPage : boolean;
+    isRegisterPage? : boolean;
 }
 
 const TermsOfUse = ({isRegisterPage}:TOUProps) => {
@@ -77,9 +77,9 @@ const TermsOfUse = ({isRegisterPage}:TOUProps) => {
         }
         fetchTranslation();
     }, [language]);
-    
+
     return (
-        <View style={[styles.container, general.container, {backgroundColor : isRegisterPage ? "#f2f2f2" :  colors.background}]}>
+        <View style={[styles.container, general.container, {backgroundColor : isRegisterPage ? "#fefefe" :  colors.background}]}>
             {theme.dark ? <FocusAwareStatusBar barStyle="light-content" backgroundColor="#252525" />  :  <FocusAwareStatusBar barStyle="dark-content" backgroundColor="#fefefe" />}
             <ScrollView>
                 <View style={{margin :  10}}>

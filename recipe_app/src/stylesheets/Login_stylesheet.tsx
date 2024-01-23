@@ -28,6 +28,16 @@ export default StyleSheet.create({
         // marginTop: -50,
         // padding: 10,
     },
+    form2 : {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        // alignItems: 'center',
+        // marginTop: 50,
+        padding: 10,
+        paddingTop: 50,
+        paddingBottom:0
+    },
     input: {
         width: '80%',
         height: 52,

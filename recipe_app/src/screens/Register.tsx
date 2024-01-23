@@ -256,13 +256,12 @@ const Register = () => {
         <View style={styles.container}>
             <FocusAwareStatusBar barStyle="light-content" backgroundColor="#9fc131" />
             <KeyboardAwareScrollView>
-                <View style={[styles.header, {marginTop: 40}]}>
-                    <Text style={styles.title}>{translation9}</Text>
-                    <Text style={styles.subtitle}>{translation10}</Text>
-
+                <View style={[styles.header, {marginTop: 60}]}>
+                    {/*<Text style={styles.title}>{translation9}</Text>*/}
+                    <Text style={[styles.subtitle, {paddingLeft: 0, paddingTop:0}]}>{translation10}</Text>
                 </View>
                 {error && <Text style={styles.error}>{error}</Text>}
-                <View style={styles.form}>
+                <View style={styles.form2}>
                     <View style={styles.inputZone}>
                         <Feather name={'smile'} size={20} color={"#f2f2f2"} style={styles.icon} />
                         <TextInput
@@ -373,11 +372,11 @@ const Register = () => {
                             <Text style={styles.btnText}>{translation15} <Feather name={'arrow-right'} size={16} color={"#9fc131"}/></Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={[styles.registerAsk, {marginTop: 50}]}>
-                        <Text style={styles.text}>{translation16} <Link to={{screen : 'Login'}} style={styles.registerButton}>{translation17}</Link></Text>
-                    </View>
                 </View>
             </KeyboardAwareScrollView>
+            <View style={[styles.registerAsk]}>
+                <Text style={styles.text}>{translation16} <Link to={{screen : 'Login'}} style={styles.registerButton}>{translation17}</Link></Text>
+            </View>
         </View>
 
     );
