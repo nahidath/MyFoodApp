@@ -6,6 +6,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore, initializeFirestore } from "firebase/firestore";
 import {getMessaging} from "firebase/messaging";
 import Constants from "expo-constants";
+import { GoogleAuthProvider } from "firebase/auth";
 
 // @ts-ignore
 import {REACT_APP_API_KEY2, REACT_APP_AUTH_DOMAIN, REACT_APP_PROJECT_ID, REACT_APP_STORAGE_BUCKET, REACT_APP_MESSAGING_SENDER_ID, REACT_APP_APP_ID, REACT_APP_MEASUREMENT_ID,REACT_APP_DATABASE_URL } from "@env";
@@ -21,7 +22,6 @@ const firebaseConfig = {
     databaseURL: REACT_APP_DATABASE_URL,
     measurementId: REACT_APP_MEASUREMENT_ID
 };
-console.log("firebaseConf", firebaseConfig);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -33,4 +33,5 @@ export const cloudFS = initializeFirestore(app, { experimentalForceLongPolling: 
 // export const messaging = getMessaging(app);
 
 // const analytics = getAnalytics(app);
+export const provider = new GoogleAuthProvider();
 export default app;

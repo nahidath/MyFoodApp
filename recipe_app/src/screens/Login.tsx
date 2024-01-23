@@ -21,8 +21,8 @@ import {
 import FocusAwareStatusBar from "../components/StatusBarStyle";
 import styles from "../stylesheets/Login_stylesheet";
 import general from "../stylesheets/General_stylesheet";
-import {auth} from "../firebase/config";
-import { onAuthStateChanged, signInWithEmailAndPassword,sendPasswordResetEmail } from 'firebase/auth';
+import {auth, provider} from "../firebase/config";
+import { onAuthStateChanged, signInWithEmailAndPassword,sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import Account from "./Account";
 import Register from "./Register";
 import MyStackNavigationProp from "../components/MyStackNavigationProp";
@@ -35,7 +35,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
-
+import {GoogleSignin} from "react-native-google-signin";
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
 // type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
@@ -200,6 +200,27 @@ export default function Login () {
         }
     };
 
+
+    //google login
+    const handleGoogleLogin = async () => {
+        GoogleSignin.configure({
+            webClientId: '',
+        });
+        // Check if your device supports Google Play
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        // Get the users ID token
+        const { idToken } = await GoogleSignin.signIn();
+
+        // Create a Google credential with the token
+        const googleCredential = GoogleAuthProvider.credential(idToken);
+
+        // Sign-in the user with the credential
+        return signInWithCredential(auth,googleCredential);
+
+
+    }
+
+
     const resetPassword = async () => {
         try {
             await sendPasswordResetEmail(auth, email);
@@ -298,7 +319,7 @@ export default function Login () {
                             <Text style={styles.btnText}><Image source={require('../../assets/facebook.png')} style={{width: 20, height: 20, padding:5}} />  Log with Facebook</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.socialBtn} activeOpacity={0.5}
-                                          // onPress={() => handleGoogleLogin()}
+                                          onPress={() => handleGoogleLogin()}
                         >
                             <Text style={styles.btnText}><Image source={require('../../assets/google.png')} style={{width: 20, height: 20, padding:5}} />  Log with Google</Text>
                         </TouchableOpacity>
