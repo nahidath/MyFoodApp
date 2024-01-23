@@ -73,6 +73,12 @@ export default StyleSheet.create({
         color: '#fe2f3f',
         fontWeight: 'bold',
         fontSize: 18,
+    },
+    headerModal: {
+        position: 'absolute',
+        right: 10,
+        top: 10,
+
     }
 
 });

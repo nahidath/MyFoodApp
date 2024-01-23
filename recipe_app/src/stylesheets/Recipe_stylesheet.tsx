@@ -62,7 +62,8 @@ export default StyleSheet.create({
     },
     ingredientListTitle: {
         textAlign: 'center',
-        textDecorationLine: 'underline',
+        // textDecorationLine: 'underline',
+        textTransform: 'capitalize',
         textDecorationStyle: 'solid',
         textDecorationColor: 'rgba(254,254,254,0.82)',
         fontSize: 20,
@@ -75,7 +76,8 @@ export default StyleSheet.create({
     },
     titleDesc: {
         textAlign: 'center',
-        textDecorationLine: 'underline',
+        // textDecorationLine: 'underline',
+        textTransform: 'capitalize',
         textDecorationStyle: 'solid',
         textDecorationColor: 'rgba(254,254,254,0.82)',
         fontSize: 20,
@@ -149,5 +151,16 @@ export default StyleSheet.create({
         color: '#fefefe',
         width: '80%',
         top: 40,
+    },
+    floatingButton: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#9fc131',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });

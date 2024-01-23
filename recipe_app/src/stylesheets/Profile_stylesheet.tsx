@@ -106,6 +106,19 @@ export default StyleSheet.create({
         color: '#fe2f3f',
         fontWeight: 'bold',
         fontSize: 18,
-    }
+    },
+
+    centeredView: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(211,211,211,0.3)', // Sheer grey background
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+    },
 
 });

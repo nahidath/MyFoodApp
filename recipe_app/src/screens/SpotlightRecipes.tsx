@@ -16,19 +16,55 @@ import {colors} from "react-native-elements";
 import recipeStyles from "../stylesheets/SpotlightRecipes_stylesheet";
 import {SkeletonView} from "../components/SkeletonLoader";
 import spotlightRecipes from "../mock/spotlightRecipes.json";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 type Props = NativeStackScreenProps<HomeStackList, 'SpotlightRecipes'>;
 // @ts-ignore
 type SpotlightScreenProps = MyStackNavigationProp<HomeStackList, 'SpotlightRecipes'>;
 const SpotlightRecipes = ({route}: Props) => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
+
     const navigation = useNavigation<SpotlightScreenProps>();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipesR, setRecipesR] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
     let recipeFromHP  = route.params.recipesArray;
+    const [translation1, setTranslation1] = useState<string>('Vegan');
+    const [translation2, setTranslation2] = useState<string>('Very Healthy');
+    const [translation3, setTranslation3] = useState<string>('Gluten Free');
+    const [translation4, setTranslation4] = useState<string>('Vegetarian');
+    const [translation5, setTranslation5] = useState<string>('Dairy Free');
     // console.log(route.params.recipesArray);
 
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5]);
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+                    setTranslation5(elementsTranslated[4]);
+                } catch (error) {
+                    console.log("Error in translation SpotlightRecipes: ", error);
+                }
+            } else {
+                setTranslation1('Vegan');
+                setTranslation2('Very Healthy');
+                setTranslation3('Gluten Free');
+                setTranslation4('Vegetarian');
+                setTranslation5('Dairy Free');
+            }
+        }
+        fetchTranslation();
+    }, [language]);
+
+
+    //TODO: fix the the list of recipes when the user go to spotlight recipes
     const getRecipes = () => {
         let dataRecipesMerged : string | any[] = [];
         axios.get('https://api.spoonacular.com/recipes/random',{params:{apiKey: configValue, number: 10} }).then((response) => {
@@ -96,15 +132,15 @@ const SpotlightRecipes = ({route}: Props) => {
                                 <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe2.title}</Text>
                                 <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe2.readyInMinutes > 59 ? formatTime(recipe2.readyInMinutes) :recipe2.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes} <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" /></Text>
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe2.aggregateLikes} <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" /></Text>
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>
-                                {recipe2.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
-                                {recipe2.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
-                                {recipe2.glutenFree && <Text style={styles.blocRecipeLabelText}>Gluten Free</Text>}
-                                {recipe2.vegetarian && <Text style={styles.blocRecipeLabelText}>Vegetarian</Text>}
-                                {recipe2.dairyFree && <Text style={styles.blocRecipeLabelText}>Dairy Free</Text>}
+                                {recipe2.vegan && <Text style={styles.blocRecipeLabelText}>{translation1}</Text>}
+                                {recipe2.veryHealthy && <Text style={styles.blocRecipeLabelText}>{translation2}</Text>}
+                                {recipe2.glutenFree && <Text style={styles.blocRecipeLabelText}>{translation3}</Text>}
+                                {recipe2.vegetarian && <Text style={styles.blocRecipeLabelText}>{translation4}</Text>}
+                                {recipe2.dairyFree && <Text style={styles.blocRecipeLabelText}>{translation5}</Text>}
                             </View>
                         </TouchableOpacity>
                     )

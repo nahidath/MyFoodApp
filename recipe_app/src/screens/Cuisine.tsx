@@ -16,15 +16,22 @@ import {FilterModal} from "../components/Filters";
 import Separator from "../components/Separator";
 import {SkeletonView} from "../components/SkeletonLoader";
 import recipeCuisine from "../mock/recipesAsianCuisine.json";
+import cuisinesList from "../data/cuisinesList";
+import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 type Props = NativeStackScreenProps<HomeStackList, 'Cuisine'>;
 // @ts-ignore
 type CuisineScreenProps = MyStackNavigationProp<HomeStackList, 'Cuisine'>;
 const Cuisine = ({route}: Props) => {
+    const {translationFunc} = useTranslation();
+
+    const {language,setLanguage, t} = useLanguage();
     const configValue : string | undefined = REACT_APP_API_KEY;
     const [recipesC, setRecipesC ] = useState<any>([]);
     let cuisineFromHP  = route.params.cuisine;
+    let icCuisineFromHP = route.params.idC;
     const navigation = useNavigation<CuisineScreenProps>();
     const [results, setResults] = useState<any>([]);
     const [noResults, setNoResults] = useState<string>('');
@@ -32,14 +39,27 @@ const Cuisine = ({route}: Props) => {
     const [isSearch, setIsSearch] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [resultsID, setResultsID] = useState<any>([]);
+    let cuisine= cuisinesList[icCuisineFromHP].name;
+    const[translationVegan, setTranslationVegan] = useState<string>("Vegan");
+    const[translationVeryHealthy, setTranslationVeryHealthy] = useState<string>("Very Healthy");
+    const[translationGlutenFree, setTranslationGlutenFree] = useState<string>("Gluten Free");
+    const[translationVegetarian, setTranslationVegetarian] = useState<string>("Vegetarian");
+    const[translationDairyFree, setTranslationDairyFree] = useState<string>("Dairy Free");
+    const [translationRF, setTranslationRF] = useState<string>("Result founded");
+    const [translationRFS, setTranslationRFS] = useState<string>("Results founded");
+
+
 
 
     const getRecipesByCuisine = () => {
-        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisineFromHP.toLowerCase()} }).then((response) => {
+        axios.get('https://api.spoonacular.com/recipes/complexSearch',{params:{apiKey: configValue, number: 100, addRecipeInformation:true, query:'', cuisine: cuisine.toLowerCase()} }).then((response) => {
             setRecipesC(response.data.results);
+            setResultsID(response.data.results.map((item: any) => item.id));
             setLoading(false);
         },  (error) => {
                 setRecipesC(recipeCuisine.results);
+                setResultsID(recipeCuisine.results.map((item: any) => item.id));
                 setLoading(false);
             }).catch((error) => {
             console.log(error);
@@ -54,6 +74,35 @@ const Cuisine = ({route}: Props) => {
         setLoading(true);
         getRecipesByCuisine();
     },[])
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translationVegan, translationVeryHealthy, translationGlutenFree, translationVegetarian, translationDairyFree, translationRF, translationRFS])
+                    setTranslationVegan(elementsTranslated[0]);
+                    setTranslationVeryHealthy(elementsTranslated[1]);
+                    setTranslationGlutenFree(elementsTranslated[2]);
+                    setTranslationVegetarian(elementsTranslated[3]);
+                    setTranslationDairyFree(elementsTranslated[4]);
+                    setTranslationRF(elementsTranslated[5]);
+                    setTranslationRFS(elementsTranslated[6]);
+                } catch (error) {
+                    console.error('Erreur de traduction contact:', error);
+                }
+            }else{
+                setTranslationVegan("Vegan");
+                setTranslationVeryHealthy("Very Healthy");
+                setTranslationGlutenFree("Gluten Free");
+                setTranslationVegetarian("Vegetarian");
+                setTranslationDairyFree("Dairy Free");
+                setTranslationRF("Result founded");
+                setTranslationRFS("Results founded")
+
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
     const formatTime = (time: number) => {
         const hours = Math.floor(time / 60);
@@ -94,11 +143,11 @@ const Cuisine = ({route}: Props) => {
                     <FontAwesome name="filter" size={30} color="#ffffff" />
                 </TouchableOpacity>
 
-            {isSearch && <View><Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 0 ? noResults : nbResults == 1 ? "Result founded" : "Results founded" } </Text><Separator /></View>}
+            {isSearch && <View><Text style={[styles.resultsText, {color:colors.text}]}>{nbResults} {nbResults == 0 ? noResults : nbResults == 1 ? translationRF : translationRFS } </Text><Separator /></View>}
             <ScrollView>
-                {recipesC.map((recipe: any) => {
+                {recipesC.map((recipe: any, index:any) => {
                     return (
-                        <TouchableOpacity key={recipe.id} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title})}>
+                        <TouchableOpacity key={index} style={[styles.blocRecipe, general.shadow, {backgroundColor: colors.notification}]} onPress={() => navigation.push('Recipe', {id :recipe.id, name: recipe.title, listOfRecipesIDs: resultsID, indxCurrent : index, screenFrom: 'Search'})}>
                             <View style={[styles.imgRecipe]}>
                                 {recipe.image ? <Image source={{uri: recipe.image}} style={styles.blocRecipeImage}/> : <Image source={require('../../assets/no-photo-resized-new.png')} style={styles.blocRecipeImage} />}
                             </View>
@@ -106,15 +155,15 @@ const Cuisine = ({route}: Props) => {
                                 <Text style={[styles.blocRecipeImageText, {color:colors.text}]}>{recipe.title}</Text>
                                 <Text style={[styles.time, {color:colors.text}]}><Feather name="clock" size={20} color={colors.text}/> {recipe.readyInMinutes > 59 ? formatTime(recipe.readyInMinutes) :recipe.readyInMinutes + " min"} </Text>
                                 <View style={styles.blocRecipeLikes}>
-                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe.aggregateLikes} <FontAwesome style={styles.heart} name="heart" size={20} color="#9fc131" /></Text>
+                                    <Text style={[styles.recipeLikesText, {color:colors.text}]}>{recipe.aggregateLikes} <FontAwesome style={styles.heart} name="thumbs-up" size={20} color="#9fc131" /></Text>
                                 </View>
                             </View>
                             <View style={styles.blocRecipeLabel}>
-                                {recipe.vegan && <Text style={styles.blocRecipeLabelText}>Vegan</Text>}
-                                {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>Very Healthy</Text>}
-                                {recipe.glutenFree && <Text style={styles.blocRecipeLabelText}>Gluten Free</Text>}
-                                {recipe.vegetarian && <Text style={styles.blocRecipeLabelText}>Vegetarian</Text>}
-                                {recipe.dairyFree && <Text style={styles.blocRecipeLabelText}>Dairy Free</Text>}
+                                {recipe.vegan && <Text style={styles.blocRecipeLabelText}>{translationVegan}</Text>}
+                                {recipe.veryHealthy && <Text style={styles.blocRecipeLabelText}>{translationVeryHealthy}</Text>}
+                                {recipe.glutenFree && <Text style={styles.blocRecipeLabelText}>{translationGlutenFree}</Text>}
+                                {recipe.vegetarian && <Text style={styles.blocRecipeLabelText}>{translationVegetarian}</Text>}
+                                {recipe.dairyFree && <Text style={styles.blocRecipeLabelText}>{translationDairyFree}</Text>}
                             </View>
                         </TouchableOpacity>
                     )

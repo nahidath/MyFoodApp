@@ -29,10 +29,15 @@ import axios from "axios";
 import stylesEdit from "../stylesheets/EditProfile_Stylesheet";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Tooltip from "../components/Tooltip";
+import {useTranslation} from "../translation/TranslationFunc";
+import {useLanguage} from "../translation/LanguageContext";
 
 
 
 const EditProfile = () => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
+
     const user = auth.currentUser;
     // @ts-ignore
     const [email, setEmail] = useState<string>(user.email);
@@ -62,13 +67,58 @@ const EditProfile = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const loadingColor = theme.dark ? '#E5E2E3' : '#929090';
     const inputColor = theme.dark ? 'rgba(155,155,155,0.52)' : '#F0F0F0';
-    const inputColor2 = theme.dark ? '#252525': '#121212' ;
+    const inputColor2 = theme.dark ? '#252525': '#fff' ;
+    const [translation1, setTranslation1] = useState<string>("Passwords do not match");
+    const [translation2, setTranslation2] = useState<string>("Updated");
+    const [translation3, setTranslation3] = useState<string>("Your profile has been updated successfully");
+    const [translation4, setTranslation4] = useState<string>("Sorry, we need camera roll permissions to make this work!");
+    const [translation5, setTranslation5] = useState<string>("Password must be at least 8 characters long, 1 uppercase letter and 1 number.");
+    const [translation6, setTranslation6] = useState<string>("Email");
+    const [translation7, setTranslation7] = useState<string>("Name");
+    const [translation8, setTranslation8] = useState<string>("New Password");
+    const [translation9, setTranslation9] = useState<string>("Confirm New Password");
+    const [translation10, setTranslation10] = useState<string>("Update");
 
 
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if (language != 'EN-US') {
+                try {
+                    const elementsTranslated = await translationFunc([translation1, translation2, translation3, translation4, translation5, translation6, translation7, translation8, translation9, translation10]);
+                    setTranslation1(elementsTranslated[0]);
+                    setTranslation2(elementsTranslated[1]);
+                    setTranslation3(elementsTranslated[2]);
+                    setTranslation4(elementsTranslated[3]);
+                    setTranslation5(elementsTranslated[4]);
+                    setTranslation6(elementsTranslated[5]);
+                    setTranslation7(elementsTranslated[6]);
+                    setTranslation8(elementsTranslated[7]);
+                    setTranslation9(elementsTranslated[8]);
+                    setTranslation10(elementsTranslated[9]);
+
+                } catch (error) {
+                    console.error('Erreur de traduction EditProfile:', error);
+                }
+            }else{
+                setTranslation1("Passwords do not match");
+                setTranslation2("Updated");
+                setTranslation3("Your profile has been updated successfully");
+                setTranslation4("Sorry, we need camera roll permissions to make this work!");
+                setTranslation5("Password must be at least 8 characters long, 1 uppercase letter and 1 number.");
+                setTranslation6("Email");
+                setTranslation7("Name");
+                setTranslation8("New Password");
+                setTranslation9("Confirm New Password");
+                setTranslation10("Update");
+            }
+        }
+        fetchTranslation();
+    }, [language]);
 
     const updateInfos = () => {
         if (password !== confPassword) {
-            setError('Passwords do not match');
+            setError(translation1);
         } else {
             setError('');
             if (user) {
@@ -100,8 +150,8 @@ const EditProfile = () => {
 
         }
         Alert.alert(
-            'Updated 🎉',
-            'Your profile has been updated successfully',
+            translation2 + ' 🎉',
+            translation3,
             [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],
@@ -177,7 +227,7 @@ const EditProfile = () => {
         let imageExt  = null;
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-            Alert.alert('Sorry, we need camera roll permissions to make this work!');
+            Alert.alert(translation4);
             return;
         }
 
@@ -227,7 +277,7 @@ const EditProfile = () => {
     const handlePasswordChange = (value: string) => {
         setPassword(value);
         if (!passwordRegex.test(value)) {
-            setError('Password must be at least 8 characters long, 1 uppercase letter and 1 number.');
+            setError(translation5);
         } else {
             setError('');
         }
@@ -252,7 +302,7 @@ const EditProfile = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={stylesEdit.form}>
-                        <Text style={[styles.label, {color: colors.text}]}>Email</Text>
+                        <Text style={[styles.label, {color: colors.text}]}>{translation6}</Text>
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
                                 style={[stylesEdit.input,  {borderColor: isEditable.email ? 'red' : colors.border, borderWidth: isEditable.email ? 2 : 1, color: colors.text, backgroundColor: isEditable.email ? inputColor2 : inputColor}]}
@@ -264,7 +314,7 @@ const EditProfile = () => {
                             />
                             <Feather name={'edit-3'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => inputEditable('email')}/>
                         </View>
-                        <Text style={[styles.label, {color: colors.text}]}>Name</Text>
+                        <Text style={[styles.label, {color: colors.text}]}>{translation7}</Text>
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
                                 style={[stylesEdit.input,  {borderColor: isEditable.username ? 'red' : colors.border, borderWidth: isEditable.username ? 2 : 1, color: colors.text, backgroundColor: isEditable.username ?
@@ -277,7 +327,7 @@ const EditProfile = () => {
                             <Feather name={'edit-3'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => inputEditable('username')}/>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={[styles.label, {color: colors.text}]}>New Password</Text>
+                            <Text style={[styles.label, {color: colors.text}]}>{translation8}</Text>
                             <Tooltip content={"Password must be at least 8 characters long, 1 uppercase letter and 1 number"} >
                                 <Feather name={'info'} size={18} color={colors.text} style={{marginLeft: 5, marginTop:2}} />
                             </Tooltip>
@@ -296,7 +346,7 @@ const EditProfile = () => {
                             />
                             {isVisible.password ? <Feather name={'eye-off'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => togglePassword('password')} /> : <Feather name={'eye'} size={20} color={colors.text} style={stylesEdit.editButton} onPress={() => togglePassword('password')}/>}
                         </View>
-                        <Text style={[styles.label, {color: colors.text}]}>Confirm New Password</Text>
+                        <Text style={[styles.label, {color: colors.text}]}>{translation9}</Text>
                         <View style={stylesEdit.inputContainer}>
                             <TextInput
                                 style={[stylesEdit.input,  {borderColor: isFocused.confPassword ? 'red' : colors.border, color: colors.text, borderWidth: isFocused.confPassword ? 2 : 1, backgroundColor: isFocused.confPassword ?
@@ -316,7 +366,7 @@ const EditProfile = () => {
                             <TouchableOpacity style={[styles.loginBtn, {backgroundColor: colorSpec, borderColor: colors.border}]}
                                               onPress={() => updateInfos()} activeOpacity={0.5}
                             >
-                                <Text style={styles.btnText}>Update</Text>
+                                <Text style={styles.btnText}>{translation10}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

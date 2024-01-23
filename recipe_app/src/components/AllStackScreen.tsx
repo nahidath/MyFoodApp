@@ -28,14 +28,41 @@ import Favorites from "../screens/Favorites";
 import Notifs from "../screens/Notifs";
 import Cuisine from "../screens/Cuisine";
 import Profile from "../screens/Profile";
+import {useLanguage} from "../translation/LanguageContext";
+import {useEffect, useState} from "react";
+// import {CarouselRecipes} from "./CarouselRecipes";
 
 
 export function HomeStackScreen () {
     const HomeStack = createNativeStackNavigator<HomeStackList>();
     const { colors } = useTheme();
+    const {language,setLanguage, t} = useLanguage();
+    const [translationSR, setTranslationSR] = useState("Spotlight Recipes");
+    const [translationNotifs, setTranslationNotifs] = useState("Notifications");
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfSR = await t(translationSR);
+                    const translationOfNotifs = await t(translationNotifs);
+                    setTranslationSR(translationOfSR);
+                    setTranslationNotifs(translationOfNotifs);
+                } catch (error) {
+                    console.error('Erreur de traduction HomeStackScreen:', error);
+                }
+            }else{
+                setTranslationSR("Spotlight Recipes");
+                setTranslationNotifs("Notifications");
+            }
+        };
+        fetchTranslation();
+    }, [language]);
+
     return (
         <HomeStack.Navigator >
-            <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false}} />
+            <HomeStack.Screen name="HomePage" component={Homepage} options={{headerShown: false, animation:'none',
+            }} />
             {/*<HomeStack.Screen name="Account" component={Account} options={{*/}
             {/*    headerStyle: {*/}
             {/*        backgroundColor: colors.notification,*/}
@@ -62,9 +89,10 @@ export function HomeStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerTitle: 'Spotlight Recipes',
+                headerTitle: translationSR,
             }} />
-            <HomeStack.Screen name="SearchStackScreen" component={SearchStackScreen} options={{headerShown: false}} />
+            <HomeStack.Screen name="SearchStackScreen" component={SearchStackScreen} options={{headerShown: false,                 animation:'none',
+            }} />
             <HomeStack.Screen name="LoginStackScreen" component={LoginStackScreen} options={{
                 headerShown: false
             }} />
@@ -84,7 +112,7 @@ export function HomeStackScreen () {
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
-                headerTitle: 'Notifications',
+                headerTitle: translationNotifs,
                 headerTintColor: colors.text,
                 headerTitleStyle: {
                     fontWeight: 'bold',
@@ -101,12 +129,13 @@ export function LoginStackScreen () {
     return (
         <LoginStack.Navigator >
             <LoginStack.Screen name="Login" component={Login} options={{
-                headerStyle: {
-                    backgroundColor: "#9fc131",
-                },
-                headerTitle: '',
-                headerShadowVisible: false,
-                headerTintColor: '#fff',
+                // headerStyle: {
+                //     backgroundColor: "#9fc131",
+                // },
+                // headerTitle: '',
+                // headerShadowVisible: false,
+                // headerTintColor: '#fff',
+                headerShown: false,
                 animation: 'slide_from_right',
             }} />
             {/*<LoginStack.Screen name="ResetPassword" component={ResetPassword} options={{*/}
@@ -239,6 +268,46 @@ export function AccountStackScreen () {
     const AccountStack = createNativeStackNavigator<AccountStackList>();
 
     const { colors } = useTheme();
+    const {language,setLanguage, t} = useLanguage();
+    const [translationAcc, setTranslationAcc] = useState("Account");
+    const [translationNS, setTranslationNS] = useState("Notifications Settings");
+    const [translationContact, setTranslationContact] = useState("Contact");
+    const [translationPP, setTranslationPP] = useState("Privacy Policy");
+    const [translationTOU, setTranslationTOU] = useState("Terms of Use");
+    const [translationAppareance, setTranslationAppareance] = useState("Appareance");
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfAcc = await t(translationAcc);
+                    const translationOfNS = await t(translationNS);
+                    const translationOfContact = await t(translationContact);
+                    const translationOfPP = await t(translationPP);
+                    const translationOfTOU = await t(translationTOU);
+                    const translationOfAppareance = await t(translationAppareance);
+                    setTranslationAppareance(translationOfAppareance);
+                    setTranslationAcc(translationOfAcc);
+                    setTranslationNS(translationOfNS);
+                    setTranslationContact(translationOfContact);
+                    setTranslationPP(translationOfPP);
+                    setTranslationTOU(translationOfTOU);
+                } catch (error) {
+                    console.error('Erreur de traduction AccountStackScreen:', error);
+                }
+            }else{
+                setTranslationAcc("Account");
+                setTranslationNS("Notifications Settings");
+                setTranslationContact("Contact");
+                setTranslationPP("Privacy Policy");
+                setTranslationTOU("Terms of Use");
+                setTranslationAppareance("Appareance");
+            }
+        };
+        fetchTranslation();
+    }, [language]);
+
+
     return (
         <AccountStack.Navigator >
             <AccountStack.Screen name="AccountPage" component={Account} options={{
@@ -249,7 +318,7 @@ export function AccountStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerTitle: 'Account',
+                headerTitle: translationAcc,
             }} />
             <AccountStack.Screen name="ProfileStackScreen" component={ProfileStackScreen} options={{
                 headerShown: false,
@@ -264,7 +333,7 @@ export function AccountStackScreen () {
                 headerShown: false,
             }} />
             <AccountStack.Screen name="NotificationSettings" component={NotificationSettings} options={{
-                headerTitle: 'Notifications Settings',
+                headerTitle: translationNS,
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -275,7 +344,7 @@ export function AccountStackScreen () {
                 // headerShadowVisible: false,
             }}  />
             <AccountStack.Screen name="DisplaySettings" component={DisplaySettings} options={{
-                headerTitle: 'Appearance',
+                headerTitle: translationAppareance,
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -297,7 +366,7 @@ export function AccountStackScreen () {
 
             }} />
             <AccountStack.Screen name="Contact" component={Contact} options={{
-                headerTitle: 'Contact',
+                headerTitle: translationContact,
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -308,7 +377,7 @@ export function AccountStackScreen () {
 
             }} />
             <AccountStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{
-                headerTitle: 'Privacy Policy',
+                headerTitle: translationPP,
                 headerStyle: {
                     backgroundColor:colors.notification,
                 },
@@ -318,7 +387,7 @@ export function AccountStackScreen () {
                 },
             }} />
             <AccountStack.Screen name="TermsOfUse" component={TermsOfUse} options={{
-                headerTitle: 'Terms of Use',
+                headerTitle: translationTOU,
                 headerStyle: {
                     backgroundColor: colors.notification,
                 },
@@ -393,6 +462,7 @@ export function SearchStackScreen () {
                 },
                //hide back button
                headerBackVisible: false,
+                animation:'none',
             }} />
             <SearchStack.Screen name="Recipe" component={Recipe} options={{
                 headerStyle: {
@@ -403,6 +473,9 @@ export function SearchStackScreen () {
                     fontWeight: 'bold',
                 },
             }} />
+            {/*<SearchStack.Screen name="Carousel" component={CarouselRecipes} options={{*/}
+            {/*    headerShown: false,*/}
+            {/*}} />*/}
 
         </SearchStack.Navigator>
     )
@@ -411,6 +484,29 @@ export function SearchStackScreen () {
 export function ProfileStackScreen () {
     const ProfileStack = createNativeStackNavigator<ProfileStackList>();
     const {colors} = useTheme();
+    const {language,setLanguage, t} = useLanguage();
+    const [translationEP, setTranslationEP] = useState("Edit Profile");
+    const [translationProfile, setTranslationProfile] = useState("Profile");
+
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                try {
+                    const translationOfEP = await t(translationEP);
+                    const translationOfProfile = await t(translationProfile);
+                    setTranslationEP(translationOfEP);
+                    setTranslationProfile(translationOfProfile);
+                } catch (error) {
+                    console.error('Erreur de traduction ProfileStackScreen:', error);
+                }
+            }else{
+                setTranslationEP("Edit Profile");
+                setTranslationProfile("Profile");
+            }
+        };
+        fetchTranslation();
+    }, [language]);
+
 
     return (
         <ProfileStack.Navigator >
@@ -422,7 +518,7 @@ export function ProfileStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerTitle: 'Profile',
+                headerTitle: translationProfile,
             }} />
             <ProfileStack.Screen name="EditProfile" component={EditProfile} options={{
                 headerStyle: {
@@ -432,7 +528,7 @@ export function ProfileStackScreen () {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerTitle: 'Edit Profile',
+                headerTitle: translationEP,
             }} />
         </ProfileStack.Navigator>
     )

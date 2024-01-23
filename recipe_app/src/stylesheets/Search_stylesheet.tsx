@@ -33,7 +33,7 @@ export default StyleSheet.create({
     },
     resultsText: {
         paddingLeft: 10,
-        fontSize: 20,
+        fontSize: 17,
     },
     itemBloc: {
         flexDirection: 'column',
@@ -192,5 +192,24 @@ export default StyleSheet.create({
         borderRadius: 100,
         zIndex: 100,
     },
+    resultsHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    recipeTab: {
+        flexDirection: 'row',
+        // justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 8,
+        margin: 5,
+        // backgroundColor: '#f2f2f2',
+        borderRadius: 20,
+    },
+    recipeBtnText: {
+        fontSize: 13,
+        // fontWeight: 'bold',
+    }
+
 
 });

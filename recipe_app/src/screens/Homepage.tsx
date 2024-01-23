@@ -36,6 +36,8 @@ import recipeTags from "../mock/recipePotatoTags.json";
 import CardRecipe from "../components/CardRecipe";
 import {Badge} from "react-native-elements";
 import {IncomingNotificationsContext} from "../../App";
+import {useLanguage} from "../translation/LanguageContext";
+import {useTranslation} from "../translation/TranslationFunc";
 
 
 // @ts-ignore
@@ -44,6 +46,9 @@ type HomeScreenProps = MyStackNavigationProp<HomeStackList, 'HomePage'>;
 // type RecipesScreenProps = MyStackNavigationProp<HomeStackList, 'Recipe'>;
 // @ts-ignore
 const Homepage :  FC = () => {
+    const {translationFunc} = useTranslation();
+    const {language,setLanguage, t} = useLanguage();
+
     const navigation = useNavigation<HomeScreenProps>();
     const height = Dimensions.get('window').height;
     const [recipes, setRecipes] = useState<string[]>([]);
@@ -66,8 +71,52 @@ const Homepage :  FC = () => {
     const [saved, setSaved] = useState<boolean>(false);
     const [favRecipes, setFavRecipes] = useState<any[]>([]);
     const notifsArrived = useContext(IncomingNotificationsContext);
+    const [listOfRecipesIds, setListOfRecipesIds] = useState<string[]>([]);
+    const [listOfRecipesIds2, setListOfRecipesIds2] = useState<string[]>([]);
+    const [translationCuisine, setTranslationCuisine] = useState<any>(cuisinesList);
+    const [translationHi, setTranslationHi] = useState<string>('Hi');
+    const [translationSR, setTranslationSR] = useState<string>('Search recipes');
+    const [translationSR2, setTranslationSR2] = useState<string>('Spotlights recipes');
+    const [translationTI, setTranslationTI] = useState<string>("Today's ingredient : ");
+    const [translationC, setTranslationC] = useState<string>('Cuisines');
+    const [translationDM, setTranslationDM] = useState<string>('Discover more delicious recipes');
+    const [translationIngredient, setTranslationIngredient] = useState<string>(newIngredient);
 
+    useEffect(() => {
+        const fetchTranslation = async () => {
+            if(language != "EN-US") {
+                let tc = [];
+                try {
+                    const elementsTranslated = await translationFunc([translationHi, translationSR, translationSR2, translationTI, translationC, translationDM, translationIngredient]);
+                    setTranslationHi(elementsTranslated[0]);
+                    setTranslationSR(elementsTranslated[1]);
+                    setTranslationSR2(elementsTranslated[2]);
+                    setTranslationTI(elementsTranslated[3]);
+                    setTranslationC(elementsTranslated[4]);
+                    setTranslationDM(elementsTranslated[5]);
+                    setTranslationIngredient(elementsTranslated[6]);
+                    for(let i = 0; i < cuisinesList.length; i++){
+                        const translationOfCuisine = await t(String(cuisinesList[i].name));
+                        tc.push({id: cuisinesList[i].id, name: translationOfCuisine, image: cuisinesList[i].image})
+                    }
+                    setTranslationCuisine(tc);
+                } catch (error) {
+                    console.log(error);
+                }
+            }else {
+                setTranslationHi('Hi');
+                setTranslationSR('Search recipes');
+                setTranslationSR2('Spotlights recipes');
+                setTranslationTI("Today's ingredient : ");
+                setTranslationC('Cuisines');
+                setTranslationDM('Discover more delicious recipes');
+                setTranslationIngredient(newIngredient);
+                setTranslationCuisine(cuisinesList);
 
+            }
+        }
+        fetchTranslation();
+    },[language]);
 
 
     useFocusEffect(
@@ -110,6 +159,12 @@ const Homepage :  FC = () => {
             dataRecipes.sort((a: any, b: any) => {
                 return b.aggregateLikes - a.aggregateLikes;
             });
+            //get all recipes ids
+            let recipesIds : string[] = [];
+            dataRecipes.map((recipe : any) => {
+                recipesIds.push(recipe.id);
+            });
+            setListOfRecipesIds(recipesIds);
             setRecipes(dataRecipes);
             setLoading(false);
         }, (error) => {
@@ -135,6 +190,12 @@ const Homepage :  FC = () => {
                 getRecipesByTags(ing);
                 // setNewIngredient(randomIngredients[Math.floor(Math.random() * randomIngredients.length)]);
             }
+            //get all recipes ids
+            let recipesIds : string[] = [];
+            response.data.recipes.map((recipe : any) => {
+                recipesIds.push(recipe.id);
+            });
+            setListOfRecipesIds2(recipesIds);
             setNewIngredient(ing);
             setPass(true);
             setLoading(false);
@@ -235,7 +296,7 @@ const Homepage :  FC = () => {
                                 {/*<Feather name={"user"} size={24} color={colors.text} />*/}
                             </View>
                         </TouchableOpacity>
-                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.headerText, {color: colors.text}]}>{user == null ? 'Hi !' : 'Hi, ' + user.displayName + ' !'}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.headerText, {color: colors.text}]}>{user == null ? translationHi +'!' : translationHi + ', ' + user.displayName + ' !'}</Text>
                         {/*<Text style={[styles.headerJoke, {color: colors.text}]}>{joke}</Text>*/}
                         <TouchableOpacity style={styles.headerNotification} onPress={() => navigation.navigate('NotificationsScreen') }>
                             <Feather name={"bell"} size={24} color={colors.text} />
@@ -245,9 +306,9 @@ const Homepage :  FC = () => {
 
 
                 {/*</View>*/}
-                <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.push('SearchStackScreen')}>
+                <Pressable  style={[styles.searchBloc, general.shadow, {backgroundColor:colors.notification}]} onPress={() => navigation.navigate('Search', {screen :'SearchStackScreen/SearchPage'})}>
                     <FontAwesome style={styles.searchButton} name={"search"} size={24} color={colors.text} />
-                    <Text style={[styles.searchText, {color: colors.text}]}>Search recipes</Text>
+                    <Text style={[styles.searchText, {color: colors.text}]}>{translationSR}</Text>
                 </Pressable>
                 {/*<View style={[styles.searchBloc, general.shadow,styles.searchButton, {backgroundColor:colors.notification}]}>*/}
                 {/*    */}
@@ -260,7 +321,7 @@ const Homepage :  FC = () => {
                 <View style={styles.recipesDisplay}>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Spotlight Recipes</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>{translationSR2}</Text>
                             <TouchableOpacity style={styles.recipe1Button} onPress={()=> navigation.push('SpotlightRecipes', {recipesArray: recipes})}>
                                 <Feather name={'arrow-right'} size={24} color={colors.text} />
                             </TouchableOpacity>
@@ -270,7 +331,7 @@ const Homepage :  FC = () => {
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     {recipes.map((recipe: any, index: number) => {
                                         return (
-                                            <CardRecipe key={index} recipe={recipe} navigation={navigation} />
+                                            <CardRecipe key={index} recipe={recipe} navigation={navigation} listOfRecipesId={recipes} index={index} />
                                         )
                                     })}
                                 </ScrollView>
@@ -279,14 +340,14 @@ const Homepage :  FC = () => {
                     </View>
                     <View>
                         <View style={styles.blocTitle}>
-                            <Text style={[styles.recipe1Title, {color: colors.text}]}>Today's ingredient : {'\n'}{newIngredient.charAt(0).toUpperCase() + newIngredient.slice(1)}</Text>
+                            <Text style={[styles.recipe1Title, {color: colors.text}]}>{translationTI} {'\n'}{translationIngredient.charAt(0).toUpperCase() + translationIngredient.slice(1)}</Text>
                         </View>
                         <View style={styles.blocDisplay}>
                             {loading ? <SkeletonLoaderHomePage theme={theme} color={colors} /> :
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                     {recipes2.map((recipe2: any, index: number) => {
                                         return (
-                                            <CardRecipe key={index} recipe={recipe2} navigation={navigation} />
+                                            <CardRecipe key={index} recipe={recipe2} navigation={navigation} listOfRecipesId={recipes2} index={index} />
                                         )
                                     })}
                                 </ScrollView>
@@ -295,11 +356,11 @@ const Homepage :  FC = () => {
 
                     </View>
                     <View>
-                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>Cuisines</Text>
+                        <Text style={[styles.cuisineTitle, {color: colors.text}]}>{translationC}</Text>
                         <View style={styles.cuisineBloc}>
-                            {cuisinesList.map((cuisine: any) => {
+                            {translationCuisine.map((cuisine: any) => {
                                 return (
-                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name})} activeOpacity={0.4}>
+                                    <TouchableOpacity key={cuisine.id} style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: colors.background}]} onPress={() => navigation.push('Cuisine', {cuisine: cuisine.name, idC: cuisine.id})} activeOpacity={0.4}>
                                         <LinearGradient
                                             colors={['rgba(0,0,0,0.8)','transparent' ]}
                                             style={styles.cuisineGradient}
@@ -311,6 +372,11 @@ const Homepage :  FC = () => {
                                 )
 
                             })}
+                            <TouchableOpacity style={[styles.cuisineBlocItem, general.shadow, {backgroundColor: '#9fc131', alignItems:'center', justifyContent: 'center', flexDirection: 'column'}]} onPress={() => navigation.navigate('Search', {screen :'SearchStackScreen/SearchPage'})} activeOpacity={0.4}>
+                                <Text style={styles.cuisineBlocItemText2}>{translationDM} 😋</Text>
+                                {/*<Feather name={"arrow-right"} size={30} color={"#f2f2f2"} />*/}
+                                <Image source={require('../../assets/arrow-right.gif')} style={{width: 30, height: 30}} />
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

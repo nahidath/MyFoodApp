@@ -6,8 +6,12 @@ export type HomeStackList = {
     HomePage: undefined;
     Profile: undefined;
     Recipe: {
-        id: string;
-        name: string;
+        id?: string;
+        name?: string;
+        listOfRecipes?: string[];
+        listOfRecipesIDs?: string[];
+        indxCurrent?: number ;
+        screenFrom?: string;
     }
     SpotlightRecipes: {
         recipesArray: string[];
@@ -17,6 +21,7 @@ export type HomeStackList = {
     AccountStackScreen: undefined;
     Cuisine: {
         cuisine: string;
+        idC: number;
     }
     SearchStackScreen: undefined;
     // NotifScreen: undefined;
@@ -64,8 +69,8 @@ export type FavoritesStackList = {
     Favs: undefined;
     LoginStackScreen: undefined;
     Recipe: {
-        id: string;
-        name: string;
+        id?: string;
+        name?: string;
     }
 }
 
@@ -80,8 +85,17 @@ export type NotificationsStackList = {
 export type SearchStackList = {
     SearchPage: undefined;
     Recipe: {
-        id: string;
-        name: string;
+        id?: string;
+        name?: string;
+        listOfRecipes?: string[];
+        listOfRecipesIDs?: string[];
+        indxCurrent?: number ;
+        screenFrom?: string;
+
+    }
+    Carousel : {
+        index: string;
+        listOfRecipes: string[];
     }
 }
 
