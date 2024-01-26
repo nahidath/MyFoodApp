@@ -35,7 +35,8 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
-import {GoogleSignin} from "react-native-google-signin";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import * as Google from 'expo-auth-session
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
 // type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
@@ -204,18 +205,9 @@ export default function Login () {
     //google login
     const handleGoogleLogin = async () => {
         GoogleSignin.configure({
-            webClientId: '',
+            webClientId: '243345150702-biali804f9gk7kllgn63a5oas08aa7r1.apps.googleusercontent.com',
         });
-        // Check if your device supports Google Play
-        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-        // Get the users ID token
-        const { idToken } = await GoogleSignin.signIn();
-
-        // Create a Google credential with the token
-        const googleCredential = GoogleAuthProvider.credential(idToken);
-
-        // Sign-in the user with the credential
-        return signInWithCredential(auth,googleCredential);
+      const [request, response] = await Google.useAuthRequest
 
 
     }
