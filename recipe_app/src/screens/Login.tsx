@@ -35,8 +35,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import * as WebBrowser from 'expo-web-browser';
+import { GoogleSignin, statusCodes, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
 // type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
@@ -157,6 +156,11 @@ export default function Login () {
     //         }
     //     }, [loggedIn])
     // )
+    useEffect(()=>{
+        GoogleSignin.configure({
+            webClientId: "243345150702-2mbqcsf8i6s8rpa08gv7efrnfstng20p.apps.googleusercontent.com",
+        })
+    },[])
 
 
 
@@ -202,31 +206,27 @@ export default function Login () {
 
     //google login
     const handleGoogleLogin = async () => {
-        // GoogleSignin.configure({
-        //     webClientId: '243345150702-biali804f9gk7kllgn63a5oas08aa7r1.apps.googleusercontent.com',
-        // });
-      const [request, response, promptAsync] = Google.useAuthRequest({
-          androidClientId: '243345150702-biali804f9gk7kllgn63a5oas08aa7r1.apps.googleusercontent.com',
-      })
-
-        if(response?.type === 'success') {
-            const {id_token} = response.params;
-            const credential = GoogleAuthProvider.credential(id_token);
-            signInWithCredential(auth, credential).then(async (userCredential) => {
-                const idToken = await userCredential.user?.getIdToken();
-                // const refreshToken = await userCredential.user?.getIdToken(true);
-                // const tokenExpiration = await userCredential.user?.getIdTokenResult().then((result) => result.expirationTime);
-                // await AsyncStorage.setItem('idToken', idToken);
-                // await AsyncStorage.setItem('refreshToken', refreshToken);
-                // await AsyncStorage.setItem('tokenExpiration', tokenExpiration);
-                console.log('idToken: ', idToken);
-                // console.log('refreshToken: ', refreshToken);
-            })
+        try {
+            // await GoogleSignin.hasPlayServices();
+            const {idToken} = await GoogleSignin.signIn();
+            const googleCredential = GoogleAuthProvider.credential(idToken);
+            console.log("userinfo", idToken);
             setError('');
             setLoading(true);
             navigation.navigate( 'HomeStackScreen', {screen: 'HomePage'});
-        }
+            // return signInWithCredential(auth, googleCredential);
 
+
+        } catch (error : any) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                console.log(error)
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                console.log(error)
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                console.log(error)
+            } else {
+            }
+        }
 
     }
 
