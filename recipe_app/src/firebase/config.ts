@@ -1,12 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider  } from 'firebase/auth';
 import { getDatabase } from "firebase/database";
 import {getStorage} from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, initializeFirestore } from "firebase/firestore";
 import {getMessaging} from "firebase/messaging";
 import Constants from "expo-constants";
-import { GoogleAuthProvider } from "firebase/auth";
 
 // @ts-ignore
 import {REACT_APP_API_KEY2, REACT_APP_AUTH_DOMAIN, REACT_APP_PROJECT_ID, REACT_APP_STORAGE_BUCKET, REACT_APP_MESSAGING_SENDER_ID, REACT_APP_APP_ID, REACT_APP_MEASUREMENT_ID,REACT_APP_DATABASE_URL } from "@env";

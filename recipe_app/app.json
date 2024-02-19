@@ -44,8 +44,7 @@
         {
           "photosPermission": "The app accesses your photos to let you put your own profile picture."
         }
-      ],
-      ["@react-native-google-signin/google-signin"]
+      ]
     ]
   }
 }

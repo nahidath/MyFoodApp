@@ -35,7 +35,6 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useTranslation} from "../translation/TranslationFunc";
 import {useLanguage} from "../translation/LanguageContext";
-import { GoogleSignin, statusCodes, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 // @ts-ignore
 type LoginProps = MyStackNavigationProp<LoginStackList, 'Login'>;
 // type Props = NativeStackScreenProps<ProfileStackList, 'LoginStackScreen'>;
@@ -156,11 +155,11 @@ export default function Login () {
     //         }
     //     }, [loggedIn])
     // )
-    useEffect(()=>{
-        GoogleSignin.configure({
-            webClientId: "243345150702-2mbqcsf8i6s8rpa08gv7efrnfstng20p.apps.googleusercontent.com",
-        })
-    },[])
+    // useEffect(()=>{
+    //     GoogleSignin.configure({
+    //         webClientId: "243345150702-2mbqcsf8i6s8rpa08gv7efrnfstng20p.apps.googleusercontent.com",
+    //     })
+    // },[])
 
 
 
@@ -207,25 +206,38 @@ export default function Login () {
     //google login
     const handleGoogleLogin = async () => {
         try {
-            // await GoogleSignin.hasPlayServices();
-            const {idToken} = await GoogleSignin.signIn();
-            const googleCredential = GoogleAuthProvider.credential(idToken);
-            console.log("userinfo", idToken);
-            setError('');
-            setLoading(true);
-            navigation.navigate( 'HomeStackScreen', {screen: 'HomePage'});
-            // return signInWithCredential(auth, googleCredential);
+            // Sign in using a popup.
+            // provider.addScope(&#39;profile&#39;);
+            // provider.addScope(&#39;email&#39;);
+            const result = await signInWithPopup(auth, provider);
+            // The signed-in user info.
+            const user = result.user;
+            console.log('user', user);
+            // This gives you a Google Access Token.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential?.accessToken;
+            console.log('token', token);
+            // // await GoogleSignin.hasPlayServices();
+            // const {idToken} = await GoogleSignin.signIn();
+            // const googleCredential = GoogleAuthProvider.credential(idToken);
+            // console.log("userinfo", idToken);
+            // setError('');
+            // setLoading(true);
+            // navigation.navigate( 'HomeStackScreen', {screen: 'HomePage'});
+            // // return signInWithCredential(auth, googleCredential);
 
 
         } catch (error : any) {
-            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                console.log(error)
-            } else if (error.code === statusCodes.IN_PROGRESS) {
-                console.log(error)
-            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                console.log(error)
-            } else {
-            }
+            // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            //     console.log(error)
+            // } else if (error.code === statusCodes.IN_PROGRESS) {
+            //     console.log(error)
+            // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            //     console.log(error)
+            // } else {
+            // }
+            console.log(error.code);
+            console.log(error.message);
         }
 
     }
